@@ -1,0 +1,33 @@
+Package: DynACof
+Type: Package
+Title: Dynamic crop model to simulate coffee crop ecophysiology for monospecific stands or agroforestry
+Version: 0.1.0
+Date: 2018-03-13
+Authors@R: c(person("Rémi", "Vezy",, "vezy.remi@gmail.com", c("aut", "cre", "cph")),
+    person("Olivier", "Roupsard",, "olivier.roupsard@cirad.fr", c("aut", "cph")),
+    person("Guerric", "le Maire", role = c("aut", "cph")))
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+URL: https://gitlab.com/VEZY/GoPlus_R
+BugReports: https://gitlab.com/VEZY/GoPlus_R/issues
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    data.table,
+    zoo,
+    tidyverse,
+    doSNOW,
+    foreach,
+    parallel,
+    magrittr,
+    methods,
+    snow,
+    lubridate,
+    bigleaf
+RoxygenNote: 6.0.1
+Collate: 
+    '0-Constants.R'
+    '0-Functions.R'
+    '1-Meteo.R'
+    '2-Coffee_DCM.R'
