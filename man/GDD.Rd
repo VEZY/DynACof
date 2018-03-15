@@ -2,10 +2,10 @@
 % Please edit documentation in R/0-Functions.R
 \name{GDD}
 \alias{GDD}
-\alias{degree_days_hourly}
 \title{Daily growing degree days (GDD)}
 \usage{
-GDD(Tmax, Tmin, MinTT = 5, MaxTT = NULL, Round = T)
+GDD(Tmax = NULL, Tmin = NULL, MinTT = 5, MaxTT = NULL, Round = T,
+  Tmean = NULL)
 }
 \arguments{
 \item{Tmax}{Maximum daily temperature (Celsius degree)}
@@ -17,19 +17,23 @@ GDD(Tmax, Tmin, MinTT = 5, MaxTT = NULL, Round = T)
 \item{MaxTT}{Maximum temperature threshold (Celsius degree), optional, default to NULL}
 
 \item{Round}{Boolean. /!\ Important: round the result to 2 decimal, with default to \code{TRUE}.}
+
+\item{Tmean}{Optional. Average daily temperature (Celsius degree). Only needed if Tmax and Tmin are missing.}
 }
 \value{
 \item{GDD}{Growing degree days (Celsius degree)}
 }
 \description{
 Compute the physiological degree days at daily time-step
-             using the maximum and minimum daily temperature.
+             using the maximum and minimum daily temperature (and optionally using the
+             average daily temperature, not recommanded).
 }
 \details{
 Please keep in mind that this function gives an approximation of the degree days. GDD are
 usually computed as the integral of hourly (or less) values.
-The round argument is provided for conveniance, as growing temperatures less than 3 digits are likely to be
-in the measurement error, and will probably have no visible effect on plant phenology.
+The round argument is provided for convenience, as growing temperatures with less than 3 digits are likely to be
+within the measurement error, and will probably have no visible effect on plant phenology.
+Caution, use Tmean only if Tmax and Tmin are not available because it tends to give less powerful approximation.
 }
 \examples{
 # Growing degree days over 10 days :

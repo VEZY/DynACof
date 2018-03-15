@@ -1,4 +1,4 @@
-#' Constants used in this package
+#' Constants used in the DynACof package
 #'
 #' @return This function defines the following constants:
 #' \item{Cp}{specific heat of air for constant pressure (MJ K-1 kg-1), Source: Allen 1998 FAO Eq. 8 p. 32}
@@ -14,25 +14,27 @@
 #' \item{sigma}{Stefan-Boltzmann constant (W m-2 K-4)}
 #' \item{H2OMW}{Conversion factor from kg to mol for H2O (kg mol-1)}
 #' \item{W_umol}{Conversion factor from watt to micromole for H2O (W umol-1)}
-#' 
+#' \item{\eqn{\lambda} (lambda)}{Latent heat of vaporization (MJ kgH2O-1)}
 #'
-#' @note Values are partly burrowed from \code{\link[bigleaf]{bigleaf.constants}} 
-#'       
+#'
+#' @note Values are partly burrowed from \code{\link[bigleaf]{bigleaf.constants}}
+#'
 #' @export
 Constants= function(){
     list(
-    Cp        = 1013*10^-6,  
-    pressure0 = 101325,       
-    FPAR      = 0.5,          
-    g         = 9.81,         
-    Rd        = 287.0586,     
-    Rgas      = 8.314,      
-    Kelvin    = 273.15,       
-    vonkarman = 0.41,         
-    MJ_to_W   = 10^-6,        
+    Cp        = 1013*10^-6,
+    pressure0 = 101325,
+    FPAR      = 0.5,
+    g         = 9.81,
+    Rd        = 287.0586,
+    Rgas      = 8.314,
+    Kelvin    = 273.15,
+    vonkarman = 0.41,
+    MJ_to_W   = 10^-6,
     Gsc       = 1367,            # also found 1366 in Kalogirou (2013)
     sigma     = 5.670367e-08,
     H2OMW     = 18.e-3,
-    W_umol    = 4.57
+    W_umol    = 4.57,
+    lambda    =2.45
     )
 }

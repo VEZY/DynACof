@@ -1,4 +1,4 @@
-#' Model Meteorology Input
+#' Import Meteorology for model input
 #'
 #' @description This function aims to import the meteorology data, check it, and compute missing variables.
 #'
@@ -27,14 +27,13 @@
 #'          The albedo is used to compute the system net radiation that is then used to compute the soil net radiation using an
 #'          extinction coefficient with the plot LAI following the Shuttleworth & Wallace (1985) formulation. This computation is
 #'          likely to change in the near future to add a more uniform process-based formulation (such as Choudhury & Monteith 1988).
-#'
-#' @return \item{A daily timestep meteorology data.frame with different columns : \tabular{ll}{\strong{Var} \tab \strong{unit}\cr
+#'         \tabular{ll}{\strong{Var} \tab \strong{unit}\cr
 #'                    year            \tab year        \cr
 #'                     DOY             \tab day         \cr
 #'                     Date            \tab POSIXct date\cr
 #'                     Rain            \tab mm          \cr
 #'                     Tair            \tab deg C       \cr
-#'                     RH              \tab %           \cr
+#'                     RH              \tab \%           \cr
 #'                     RAD             \tab MJ m-2 d-1  \cr
 #'                     Pressure        \tab hPa         \cr
 #'                     WindSpeed       \tab m s-1       \cr
@@ -47,13 +46,14 @@
 #'                     Tmax            \tab deg C       \cr
 #'                     Tmin            \tab deg C       \cr
 #'                     rho             \tab kg m-3      \cr
-#'                     DaysWithoutRain \tab day
-#' }}
+#'                     DaysWithoutRain \tab day}
+#'
+#' @return A daily timestep meteorology data.frame with different columns
 #'
 #' @author R. Vezy; O. Roupsard
 #'
 #' @export
-Meteo_n_Astronomy= function(file="1-Input/Default/2-Meteorology.txt", Period=NULL,
+Meteorology= function(file="1-Input/Default/2-Meteorology.txt", Period=NULL,
                             Parameters= Import_Parameters()){
     MetData= data.table::fread(file,data.table = F)
     MetData$Date= lubridate::fast_strptime(MetData$Date, "%Y-%m-%d",lt=F)

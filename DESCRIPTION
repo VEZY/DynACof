@@ -31,3 +31,7 @@ Collate:
     '0-Functions.R'
     '1-Meteo.R'
     '2-Coffee_DCM.R'
+    '1-Site.R'
+    '3-Soil.R'
+    '4-Coffee.R'
+    '5-Tree.R'

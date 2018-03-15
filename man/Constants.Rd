@@ -2,7 +2,7 @@
 % Please edit documentation in R/0-Constants.R
 \name{Constants}
 \alias{Constants}
-\title{Constants used in this package}
+\title{Constants used in the DynACof package}
 \usage{
 Constants()
 }
@@ -21,9 +21,10 @@ This function defines the following constants:
 \item{sigma}{Stefan-Boltzmann constant (W m-2 K-4)}
 \item{H2OMW}{Conversion factor from kg to mol for H2O (kg mol-1)}
 \item{W_umol}{Conversion factor from watt to micromole for H2O (W umol-1)}
+\item{\eqn{\lambda} (lambda)}{Latent heat of vaporization (MJ kgH2O-1)}
 }
 \description{
-Constants used in this package
+Constants used in the DynACof package
 }
 \note{
 Values are partly burrowed from \code{\link[bigleaf]{bigleaf.constants}}
