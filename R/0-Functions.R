@@ -594,7 +594,7 @@ Tree.init= function(S){
   S$Table_Day$CM_Stem_Tree= 0.01
   S$Table_Day$CM_Branch_Tree= 0.01
   S$Table_Day$CM_FRoot_Tree= 0.01
-  S$Table_Day$CM_CoarseRoot_Tree= 0.01
+  S$Table_Day$CM_CR_Tree= 0.01
   S$Table_Day$CM_Reserves_Tree= 0.15
 
   S$Table_Day$LAI_Tree=
@@ -609,7 +609,7 @@ Tree.init= function(S){
   S$Table_Day$DM_Leaf_Tree=
     S$Table_Day$DM_Branch_Tree=
     S$Table_Day$DM_Stem_Tree=
-    S$Table_Day$DM_CoarseRoot_Tree=
+    S$Table_Day$DM_CR_Tree=
     S$Table_Day$DM_FRoot_Tree=
     S$Table_Day$DM_Stem_FGM_Tree=
     S$Table_Day$DM_RE_Tree= 0
@@ -619,7 +619,7 @@ Tree.init= function(S){
     S$Table_Day$Mprun_FRoot_Tree=
     S$Table_Day$Mprun_Leaf_Tree=
     S$Table_Day$Mact_Stem_Tree=
-    S$Table_Day$Mact_CoarseRoot_Tree=
+    S$Table_Day$Mact_CR_Tree=
     S$Table_Day$Rm_Tree=
     S$Table_Day$DBH_Tree=
     S$Table_Day$Crown_H_Tree=
@@ -638,7 +638,7 @@ Tree.init= function(S){
     S$Table_Day$H_Tree=
     S$Table_Day$GPP_Tree=
     S$Table_Day$Rm_Leaf_Tree=
-    S$Table_Day$Rm_CoarseRoot_Tree=
+    S$Table_Day$Rm_CR_Tree=
     S$Table_Day$Rm_Branch_Tree=
     S$Table_Day$Rm_Stem_Tree=
     S$Table_Day$Rm_FRoot_Tree=
@@ -646,9 +646,9 @@ Tree.init= function(S){
     S$Table_Day$Alloc_Stem_Tree=
     S$Table_Day$NPP_Stem_Tree=
     S$Table_Day$Rc_Stem_Tree=
-    S$Table_Day$Alloc_CoarseRoot_Tree=
-    S$Table_Day$NPP_CoarseRoot_Tree=
-    S$Table_Day$Rc_CoarseRoot_Tree=
+    S$Table_Day$Alloc_CR_Tree=
+    S$Table_Day$NPP_CR_Tree=
+    S$Table_Day$Rc_CR_Tree=
     S$Table_Day$Alloc_Branch_Tree=
     S$Table_Day$NPP_Branch_Tree=
     S$Table_Day$Rc_Branch_Tree=
@@ -678,7 +678,7 @@ Tree.init= function(S){
   S$Table_Day$Stocking_Tree= S$Parameters$StockingTree_treeha1/10000
   S$Table_Day$TimetoThin_Tree= 0
   S$Table_Day$MThinning_Stem_Tree= 0
-  S$Table_Day$MThinning_CoarseRoot_Tree= 0
+  S$Table_Day$MThinning_CR_Tree= 0
   S$Table_Day$MThinning_Branch_Tree= 0
   S$Table_Day$MThinning_Leaf_Tree=0
   S$Table_Day$MThinning_FRoot_Tree= 0
@@ -732,11 +732,11 @@ Shade.Tree= function(S,i){
     S$Parameters$MRN_Tree*S$Parameters$NContentLeaf_Tree*S$Parameters$Q10Leaf_Tree^
     ((S$Met_c$Tair[i]-S$Parameters$TMR)/10)
 
-  S$Table_Day$Rm_CoarseRoot_Tree[i]=
-    S$Parameters$PaliveCoarseRoot_Tree*
-    S$Table_Day$DM_CoarseRoot_Tree[i-S$Zero_then_One[i]]*
-    S$Parameters$MRN_Tree*S$Parameters$NContentCoarseRoot_Tree*
-    S$Parameters$Q10CoarseRoot_Tree^(
+  S$Table_Day$Rm_CR_Tree[i]=
+    S$Parameters$PaliveCR_Tree*
+    S$Table_Day$DM_CR_Tree[i-S$Zero_then_One[i]]*
+    S$Parameters$MRN_Tree*S$Parameters$NContentCR_Tree*
+    S$Parameters$Q10CR_Tree^(
       (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
 
   S$Table_Day$Rm_Branch_Tree[i]=
@@ -761,7 +761,7 @@ Shade.Tree= function(S,i){
       (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
 
   S$Table_Day$Rm_Tree[i]=
-    S$Table_Day$Rm_Leaf_Tree[i]+ S$Table_Day$Rm_CoarseRoot_Tree[i]+
+    S$Table_Day$Rm_Leaf_Tree[i]+ S$Table_Day$Rm_CR_Tree[i]+
     S$Table_Day$Rm_Branch_Tree[i]+S$Table_Day$Rm_Stem_Tree[i]+
     S$Table_Day$Rm_FRoot_Tree[i]
 
@@ -785,42 +785,42 @@ Shade.Tree= function(S,i){
   #### Stem ####
   # Offer: NB, Rm is used from the previous i, assumed not very different but could also be computed first, actually
   S$Table_Day$Alloc_Stem_Tree[i]=
-    S$Parameters$lambdaStem_Tree*S$Table_Day$Offer_Total_Tree[i]
+    S$Parameters$lambda_Stem_Tree*S$Table_Day$Offer_Total_Tree[i]
   #NPP = Offer * growth cost coefficient:
   S$Table_Day$NPP_Stem_Tree[i]=
-    S$Parameters$epsilonStem_Tree*S$Table_Day$Alloc_Stem_Tree[i]
+    S$Parameters$epsilon_Stem_Tree*S$Table_Day$Alloc_Stem_Tree[i]
   # Growth respiration = Offer * (1-growth cost coefficient):
   S$Table_Day$Rc_Stem_Tree[i]=
-    (1-S$Parameters$epsilonStem_Tree)*S$Table_Day$Alloc_Stem_Tree[i]
+    (1-S$Parameters$epsilon_Stem_Tree)*S$Table_Day$Alloc_Stem_Tree[i]
   # Mortality: No mortality yet for this compartment.
   # If stem mortality has to be set, write it here.
 
 
   #### Coarse Roots ####
   # Offer:
-  S$Table_Day$Alloc_CoarseRoot_Tree[i]=
-    S$Parameters$lambdaCoarseRoot_Tree*S$Table_Day$Offer_Total_Tree[i]
+  S$Table_Day$Alloc_CR_Tree[i]=
+    S$Parameters$lambda_CR_Tree*S$Table_Day$Offer_Total_Tree[i]
   #NPP
-  S$Table_Day$NPP_CoarseRoot_Tree[i]= S$Parameters$epsilonCoarseRoot_Tree*
-    S$Table_Day$Alloc_CoarseRoot_Tree[i]
+  S$Table_Day$NPP_CR_Tree[i]= S$Parameters$epsilon_CR_Tree*
+    S$Table_Day$Alloc_CR_Tree[i]
   # Growth respiration:
-  S$Table_Day$Rc_CoarseRoot_Tree[i]= (1-S$Parameters$epsilonCoarseRoot_Tree)*
-    S$Table_Day$Alloc_CoarseRoot_Tree[i]
+  S$Table_Day$Rc_CR_Tree[i]= (1-S$Parameters$epsilon_CR_Tree)*
+    S$Table_Day$Alloc_CR_Tree[i]
   # Natural mortality
-  S$Table_Day$Mact_CoarseRoot_Tree[i]=
-    S$Table_Day$CM_CoarseRoot_Tree[i-S$Zero_then_One[i]]/S$Parameters$lifespanCoarseRoot_Tree
+  S$Table_Day$Mact_CR_Tree[i]=
+    S$Table_Day$CM_CR_Tree[i-S$Zero_then_One[i]]/S$Parameters$lifespanCR_Tree
 
 
   #### Branches ####
   # NB: Served first as Erythrina must regrow branches in priority after pruning
   S$Table_Day$Alloc_Branch_Tree[i]=
-    S$Parameters$lambdaBranchWood_Tree*S$Table_Day$Offer_Total_Tree[i]
+    S$Parameters$lambda_BranchWood_Tree*S$Table_Day$Offer_Total_Tree[i]
   #NPP
   S$Table_Day$NPP_Branch_Tree[i]=
-    S$Parameters$epsilonBranch_Tree*S$Table_Day$Alloc_Branch_Tree[i]
+    S$Parameters$epsilon_Branch_Tree*S$Table_Day$Alloc_Branch_Tree[i]
   # Growth respiration:
   S$Table_Day$Rc_Branch_Tree[i]=
-    (1-S$Parameters$epsilonBranch_Tree)*S$Table_Day$Alloc_Branch_Tree[i]
+    (1-S$Parameters$epsilon_Branch_Tree)*S$Table_Day$Alloc_Branch_Tree[i]
   # Natural mortality:
   S$Table_Day$Mact_Branch_Tree[i]=
     S$Table_Day$CM_Branch_Tree[i-S$Zero_then_One[i]]/S$Parameters$lifespanBranch_Tree
@@ -829,13 +829,13 @@ Shade.Tree= function(S,i){
   #### Leaves ####
   # Offer:
   S$Table_Day$Alloc_Leaf_Tree[i]=
-    S$Parameters$lambdaLeaf_Tree*S$Table_Day$Offer_Total_Tree[i]
+    S$Parameters$lambda_Leaf_Tree*S$Table_Day$Offer_Total_Tree[i]
   #NPP
   S$Table_Day$NPP_Leaf_Tree[i]=
-    S$Parameters$epsilonLeaf_Tree*S$Table_Day$Alloc_Leaf_Tree[i]
+    S$Parameters$epsilon_Leaf_Tree*S$Table_Day$Alloc_Leaf_Tree[i]
   # Growth respiration:
   S$Table_Day$Rc_Leaf_Tree[i]=
-    (1-S$Parameters$epsilonLeaf_Tree)*S$Table_Day$Alloc_Leaf_Tree[i]
+    (1-S$Parameters$epsilon_Leaf_Tree)*S$Table_Day$Alloc_Leaf_Tree[i]
 
   # Leaf Fall ---------------------------------------------------------------
 
@@ -852,13 +852,13 @@ Shade.Tree= function(S,i){
   #### Fine roots ####
   # Offer
   S$Table_Day$Alloc_FRoot_Tree[i]=
-    S$Parameters$lambdaFRoot_Tree*S$Table_Day$Offer_Total_Tree[i]
+    S$Parameters$lambda_FRoot_Tree*S$Table_Day$Offer_Total_Tree[i]
   # NPP
   S$Table_Day$NPP_FRoot_Tree[i]=
-    S$Parameters$epsilonFRoot_Tree*S$Table_Day$Alloc_FRoot_Tree[i]
+    S$Parameters$epsilon_FRoot_Tree*S$Table_Day$Alloc_FRoot_Tree[i]
   # Growth respiration
   S$Table_Day$Rc_FRoot_Tree[i]=
-    (1-S$Parameters$epsilonFRoot_Tree)*S$Table_Day$Alloc_FRoot_Tree[i]
+    (1-S$Parameters$epsilon_FRoot_Tree)*S$Table_Day$Alloc_FRoot_Tree[i]
   # Natural mortality
   S$Table_Day$Mact_FRoot_Tree[i]=
     S$Table_Day$CM_FRoot_Tree[i-S$Zero_then_One[i]]/S$Parameters$lifespanFRoot_Tree
@@ -868,13 +868,13 @@ Shade.Tree= function(S,i){
 
   # Offer
   S$Table_Day$Alloc_Reserves_Tree[i]=
-    S$Parameters$lambdaReserves_Tree*S$Table_Day$Offer_Total_Tree[i]
+    S$Parameters$lambda_Reserves_Tree*S$Table_Day$Offer_Total_Tree[i]
   # Allocation
   S$Table_Day$NPP_Reserves_Tree[i]=
-    S$Parameters$epsilonReserves_Tree*S$Table_Day$Alloc_Reserves_Tree[i]
+    S$Parameters$epsilon_Reserves_Tree*S$Table_Day$Alloc_Reserves_Tree[i]
   # Cost of allocating to reserves
   S$Table_Day$Rc_Reserves_Tree[i]=
-    (1-S$Parameters$epsilonReserves_Tree)*S$Table_Day$Alloc_Reserves_Tree[i]
+    (1-S$Parameters$epsilon_Reserves_Tree)*S$Table_Day$Alloc_Reserves_Tree[i]
 
 
 
@@ -916,8 +916,8 @@ Shade.Tree= function(S,i){
     # Then add mortality (removing) due to thining :
     S$Table_Day$MThinning_Stem_Tree[i]=
       S$Table_Day$CM_Stem_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
-    S$Table_Day$MThinning_CoarseRoot_Tree[i]=
-      S$Table_Day$CM_CoarseRoot_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
+    S$Table_Day$MThinning_CR_Tree[i]=
+      S$Table_Day$CM_CR_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
     S$Table_Day$MThinning_Branch_Tree[i]=
       S$Table_Day$CM_Branch_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
     S$Table_Day$MThinning_Leaf_Tree[i]=
@@ -940,10 +940,10 @@ Shade.Tree= function(S,i){
     S$Table_Day$CM_Stem_Tree[i-S$Zero_then_One[i]]+S$Table_Day$NPP_Stem_Tree[i]-
     S$Table_Day$Mact_Stem_Tree[i]-S$Table_Day$MThinning_Stem_Tree[i]
 
-  S$Table_Day$CM_CoarseRoot_Tree[i]=
-    S$Table_Day$CM_CoarseRoot_Tree[i-S$Zero_then_One[i]]+
-    S$Table_Day$NPP_CoarseRoot_Tree[i]- S$Table_Day$Mact_CoarseRoot_Tree[i]-
-    S$Table_Day$MThinning_CoarseRoot_Tree[i]
+  S$Table_Day$CM_CR_Tree[i]=
+    S$Table_Day$CM_CR_Tree[i-S$Zero_then_One[i]]+
+    S$Table_Day$NPP_CR_Tree[i]- S$Table_Day$Mact_CR_Tree[i]-
+    S$Table_Day$MThinning_CR_Tree[i]
 
   S$Table_Day$CM_FRoot_Tree[i]=
     S$Table_Day$CM_FRoot_Tree[i-S$Zero_then_One[i]]+
@@ -961,13 +961,13 @@ Shade.Tree= function(S,i){
     S$Table_Day$CM_Branch_Tree[i]/S$Parameters$CContent_wood_Tree
   S$Table_Day$DM_Stem_Tree[i]=
     S$Table_Day$CM_Stem_Tree[i]/S$Parameters$CContent_wood_Tree
-  S$Table_Day$DM_CoarseRoot_Tree[i]=
-    S$Table_Day$CM_CoarseRoot_Tree[i]/S$Parameters$CContent_wood_Tree
+  S$Table_Day$DM_CR_Tree[i]=
+    S$Table_Day$CM_CR_Tree[i]/S$Parameters$CContent_wood_Tree
   S$Table_Day$DM_FRoot_Tree[i]=
     S$Table_Day$CM_FRoot_Tree[i]/S$Parameters$CContent_wood_Tree
 
   S$Table_Day$Rc_Tree[i]=
-    S$Table_Day$Rc_CoarseRoot_Tree[i]+S$Table_Day$Rc_Leaf_Tree[i]+
+    S$Table_Day$Rc_CR_Tree[i]+S$Table_Day$Rc_Leaf_Tree[i]+
     S$Table_Day$Rc_Branch_Tree[i]+S$Table_Day$Rc_Stem_Tree[i]+
     S$Table_Day$Rc_FRoot_Tree[i]+S$Table_Day$Rc_Reserves_Tree[i]
 
@@ -977,7 +977,7 @@ Shade.Tree= function(S,i){
   # NPP_Tree
   S$Table_Day$NPP_Tree[i]=
     S$Table_Day$NPP_Stem_Tree[i]+S$Table_Day$NPP_Branch_Tree[i]+
-    S$Table_Day$NPP_Leaf_Tree[i]+S$Table_Day$NPP_CoarseRoot_Tree[i]+
+    S$Table_Day$NPP_Leaf_Tree[i]+S$Table_Day$NPP_CR_Tree[i]+
     S$Table_Day$NPP_FRoot_Tree[i]+S$Table_Day$NPP_Reserves_Tree[i]
 
   # Daily C balance that should be nil every day:

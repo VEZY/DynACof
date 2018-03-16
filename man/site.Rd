@@ -20,7 +20,7 @@ Tree()
 }
 \value{
 A list of parameters needed for a DynACof simulation. The full list (and example files)
- is available on the \href{https://github.com/VEZY/DynACof}{github repository } in the
+ is available on the \href{https://github.com/VEZY/DynACof/tree/master/data}{github repository } in the
   \code{data/} folder.
 }
 \description{
