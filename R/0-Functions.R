@@ -6,9 +6,24 @@
 ####################################################################################################
 
 
-
-
-
+#' Import model parameters
+#'
+#' @description Import the parameters from local files, or from default (from package data)
+#'
+#' @param path   The path to the parameter files folder. If \code{NULL}, take the default files from the package
+#' @param Names  List of the file names. Default: \code{list(Site="1-Site.R",Soil="3-Soil.R",Coffee="4-Coffee.R",Tree=NULL)}
+#'
+#' @details For the full list of parameters and the format of the parameter files, see \code{\link{site}}.
+#'
+#' @return A list of all input parameters for DynACof
+#'
+#' @examples
+#' # Importing defaults:
+#' Parameters= Import_Parameters()
+#'
+#' @seealso \code{\link{DynACof}} \code{\link{site}}
+#'
+#' @export
 Import_Parameters= function(path= NULL,
                             Names= list(
                               Site="1-Site.R",
@@ -20,11 +35,11 @@ Import_Parameters= function(path= NULL,
     for(x in Names){
       if(is.character(x)){
         source(file = file.path(path,x))
+        print(paste(names(x),"parameters taken from",file.path(path,x)))
       }
     }
   }
   Parameters= c(Constants(),site(),coffee(),soil(),if(!is.null(Names$Tree)){Tree()}else{list(Tree_Species= "No_Shade")})
-
   return(Parameters)
 }
 
