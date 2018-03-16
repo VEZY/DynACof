@@ -19,6 +19,8 @@
 #'
 #' @note Values are partly burrowed from \code{\link[bigleaf]{bigleaf.constants}}
 #'
+#' @seealso \code{\link{DynACof}}
+#'
 #' @export
 Constants= function(){
     list(

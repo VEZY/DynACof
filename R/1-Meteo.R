@@ -27,28 +27,30 @@
 #'          The albedo is used to compute the system net radiation that is then used to compute the soil net radiation using an
 #'          extinction coefficient with the plot LAI following the Shuttleworth & Wallace (1985) formulation. This computation is
 #'          likely to change in the near future to add a more uniform process-based formulation (such as Choudhury & Monteith 1988).
-#'         \tabular{ll}{\strong{Var} \tab \strong{unit}\cr
-#'                    year            \tab year        \cr
-#'                     DOY             \tab day         \cr
-#'                     Date            \tab POSIXct date\cr
-#'                     Rain            \tab mm          \cr
-#'                     Tair            \tab deg C       \cr
-#'                     RH              \tab \%           \cr
-#'                     RAD             \tab MJ m-2 d-1  \cr
-#'                     Pressure        \tab hPa         \cr
-#'                     WindSpeed       \tab m s-1       \cr
-#'                     CO2             \tab ppm         \cr
-#'                     DegreeDays      \tab deg C       \cr
-#'                     PAR             \tab MJ m-2 d-1  \cr
-#'                     FDiff           \tab Fraction    \cr
-#'                     VPD             \tab hPa         \cr
-#'                     Rn              \tab MJ m-2 d-1  \cr
-#'                     Tmax            \tab deg C       \cr
-#'                     Tmin            \tab deg C       \cr
-#'                     rho             \tab kg m-3      \cr
-#'                     DaysWithoutRain \tab day}
+#'         \tabular{ll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
+#'                     year            \tab year        \tab Year of the simulation                       \cr
+#'                     DOY             \tab day         \tab day of the year                              \cr
+#'                     Date            \tab POSIXct date\tab Date in POSICct format                       \cr
+#'                     Rain            \tab mm          \tab Rainfall                                     \cr
+#'                     Tair            \tab deg C       \tab Air temperature (above canopy)               \cr
+#'                     RH              \tab \%          \tab Relative humidity                            \cr
+#'                     RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \cr
+#'                     Pressure        \tab hPa         \tab Atmospheic pressure                          \cr
+#'                     WindSpeed       \tab m s-1       \tab Wind speed                                   \cr
+#'                     CO2             \tab ppm         \tab Atmospheric CO2 concentration                \cr
+#'                     DegreeDays      \tab deg C       \tab Growing degrre days                          \cr
+#'                     PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \cr
+#'                     FDiff           \tab Fraction    \tab Diffuse light fraction                       \cr
+#'                     VPD             \tab hPa         \tab Vapor pressure deficit                       \cr
+#'                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)       \cr
+#'                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
+#'                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
+#'                     rho             \tab kg m-3      \tab Air density of moist air                     \cr
+#'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall}
 #'
 #' @return A daily timestep meteorology data.frame with different columns
+#'
+#' @seealso \code{\link{DynACof}}
 #'
 #' @author R. Vezy; O. Roupsard
 #'

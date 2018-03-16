@@ -67,75 +67,9 @@ Tree= function(){
     PaliveLeaf_Tree      = 1,                          # Leaf living tissue (fraction)
     PaliveFRoot_Tree     = 1,                          # Fine root living tissue (fraction)
 
-    # Computation of the light extinction coefficient using MAESPA metamodels:
-    k= function(S,i){
-      # See MAESPA_Validation project, script 4-Aquiares_Metamodels.R
-      # Source for non-constant k: Sinoquet et al. 2007
-      # DOI: 10.1111/j.1469-8137.2007.02088.x
-      S$Table_Day$K_Dif_Tree[i]= 0.6161 - 0.5354*S$Table_Day$LAD_Tree[i-S$Zero_then_One[i]]
-      S$Table_Day$K_Dir_Tree[i]= 0.4721 - 0.3973*S$Table_Day$LAD_Tree[i-S$Zero_then_One[i]]
-    },
 
-    # Computation of the lue, transpiration and sensible heat flux using MAESPA metamodels:
-    Metamodels= function(S,i){
-      S$Table_Day$lue_Tree[i]= 2.59906 + 0.10707*S$Met_c$AirTemp_C[i] -
-        0.02552*S$Met_c$VPD_hPa[i] + 3.86372*(1-S$Met_c$DiffuseFrSpitters[i]) -
-        0.34895*S$Met_c$PAR_MJ[i]
-
-      S$Table_Day$T_Tree_mmd[i]=
-        0.021820*S$Met_c$VPD_hPa[i] - 0.016112*S$Met_c$AirTemp_C[i] + 0.942021*S$Table_Day$APAR_Tree[i]-
-        1.397349*(1-S$Met_c$DiffuseFrSpitters[i]) + 0.004328*S$Table_Day$LAI_Tree[i]
-      S$Table_Day$T_Tree_mmd[i][S$Table_Day$T_Tree_mmd[i]<0]= 0 #to discard negative values
-
-      S$Table_Day$H_Tree[i]=
-        0.34975 + 0.81448*S$Table_Day$APAR_Dir_Tree[i] + 0.29321*S$Table_Day$APAR_Dif_Tree[i]-
-        0.75987*S$Table_Day$LAI_Tree[i] - 0.55724*S$Table_Day$T_Tree_mmd[i] -
-        0.02898*S$Met_c$VPD_hPa[i]
-    },
-
-    # Allometries equations (any kind of variable can be added here). Called by Shade.Tree() function.
-    # Should output at least DBH_Tree (for LUE), CrownProj_Tree, Crown_H_Tree_m
-    Allometries= function(S,i){
-      S$Table_Day$DBH_Tree[i]=
-        ((S$Table_Day$DM_Stem_Tree[i]/
-            (S$Parameters$CContent_wood_Tree*1000*S$Table_Day$Stocking_Tree[i])/0.5)^0.625)/100
-      # Source: Rojas-García et al. (2015) DOI: 10.1007/s13595-015-0456-y
-      # /!\ DBH is an average DBH among trees.
-      #Tree Height. Source:  CAF2007 used in Van Oijen et al. (2011). With no pruning :
-      S$Table_Day$Height_Tree[i]=
-        round(S$Parameters$Kh*(((S$Table_Day$DM_Stem_Tree[i]/1000)/
-                                  S$Table_Day$Stocking_Tree[i])^S$Parameters$KhExp),2)
-
-      # Crown projected area:
-      S$Table_Day$CrownProj_Tree[i]=
-        round(S$Parameters$Kc*(((S$Table_Day$DM_Branch_Tree[i]/1000)/
-                                  S$Table_Day$Stocking_Tree[i])^S$Parameters$KcExp),2)
-      # Source: Van Oijen et al. (2010, I).
-      S$Table_Day$CrownRad_Tree[i]= sqrt(S$Table_Day$CrownProj_Tree[i]/pi)
-      S$Table_Day$Crown_H_Tree[i]= S$Table_Day$CrownRad_Tree[i] # See Charbonnier et al. 2013, Table 2.
-      S$Table_Day$Trunk_H_Tree[i]= S$Table_Day$Height_Tree[i]-S$Table_Day$Crown_H_Tree[i]
-
-      # If there is a pruning management, change the allometries (mostly derived from Vezy et al. 2018) :
-      if(S$Table_Day$Plot_Age[i]%in%S$Parameters$Pruning_Age_Tree){
-        # Pruning : trunk height does not depend on trunk dry mass anymore (pruning effect)
-        S$Table_Day$Trunk_H_Tree[i]= round(3*(1-exp(-0.2-S$Table_Day$Plot_Age_num[i])),2)
-        S$Table_Day$Height_Tree[i]= S$Table_Day$Crown_H_Tree[i]+S$Table_Day$Trunk_H_Tree[i]
-        # The equation make it grow fast at the early stages and reach a plateau at the
-        # maximum height after ca. few months.
-      }else if(any(S$Table_Day$Plot_Age[i]>S$Parameters$Pruning_Age_Tree)){
-        # if there were any pruning before, add the trunk
-        Lastheight_Trunk=
-          round(3*(1-exp(-0.2-S$Parameters$Pruning_Age_Tree[
-            tail(which(S$Table_Day$Plot_Age[i]>S$Parameters$Pruning_Age_Tree),1)]+1)),2)
-        S$Table_Day$Height_Tree[i]=
-          S$Parameters$Kh*(((S$Table_Day$DM_Stem_Tree[i]/1000)/
-                              S$Table_Day$Stocking_Tree[i])^S$Parameters$KhExp)+Lastheight_Trunk
-        S$Table_Day$Trunk_H_Tree[i]= S$Table_Day$Height_Tree[i]-S$Table_Day$Crown_H_Tree[i]
-      }
-      S$Table_Day$LA_Tree[i]= S$Table_Day$LAI_Tree[i]/S$Table_Day$Stocking_Tree[i]
-      S$Table_Day$LAD_Tree[i]=
-        S$Table_Day$LA_Tree[i]/((S$Table_Day$CrownRad_Tree[i]^2)*
-                                  (0.5*S$Table_Day$Crown_H_Tree[i])*pi*(4/3))
-    }
+    k                    = Light_extinction_K,         # Light extinction coefficient (call external function)
+    Metamodels           = Metamodels,                 # Idem for lue, transpiration and sensible heat flux using MAESPA metamodels
+    Allometries          = Allometries                 # Idem for allometric equations (optional, any kind of variable can be added here).
   )
 }

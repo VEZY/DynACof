@@ -5,8 +5,8 @@
 #' files corresponding to the site, the soil, the coffee layer and the tree layer.
 #' These functions are provided to define the default parameters for DynACof, and are used as example.
 #' They are mainly used invisibly as defaults from \code{\link{Import_Parameters}}, but can still be
-#' called by the user for conveniance (but not needed for a model run). The paraeters are divided into
-#' four functions:
+#' called by the user for conveniance (but not needed for a model run). The parameters are divided into
+#' four functions.
 #'
 #' @section site:
 #' The default site is a stand from the Aquiares farm, located in Costa Rica. It is a \emph{Coffea arabica}
@@ -37,6 +37,8 @@
 #' the one from the default parameter files. Other parameters can be added to the files though.
 #'
 #' @aliases soil coffee Tree
+#'
+#' @seealso \code{\link{DynACof}}
 #'
 #' @export
 site= function(){

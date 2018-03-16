@@ -29,8 +29,8 @@ the list of parameters. It is strongly recommended for clarity to write the para
 files corresponding to the site, the soil, the coffee layer and the tree layer.
 These functions are provided to define the default parameters for DynACof, and are used as example.
 They are mainly used invisibly as defaults from \code{\link{Import_Parameters}}, but can still be
-called by the user for conveniance (but not needed for a model run). The paraeters are divided into
-four functions:
+called by the user for conveniance (but not needed for a model run). The parameters are divided into
+four functions.
 }
 \note{
 The Tree parameter file is optional. All other parameter files should have the same structure as
@@ -65,3 +65,6 @@ average height of 26 m in 2018 on this site. NB: the Tree parameter file is opti
 for monospecific coffee plantations.
 }
 
+\seealso{
+\code{\link{DynACof}}
+}

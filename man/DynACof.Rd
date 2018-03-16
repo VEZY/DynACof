@@ -110,8 +110,7 @@ Fruit development            \tab BudInitPeriod            \tab boolean         
                              \tab Harvest_Fruit            \tab gC m-2              \tab Total fruit carbon mass at harvest                                                 \cr
                              \tab Harvest_Maturity         \tab Fraction            \tab Average fruit maturity at harvest (0-1)                                            \cr
                              \tab Overriped_Fruit          \tab gC m-2 d-1          \tab Overriped fruits that fall onto the ground                                         \cr
-Water                        \tab                          \tab                     \tab                                                                                    \cr
-                             \tab IntercMax                \tab mm                  \tab Maximum potential rainfall interception by canopy                                  \cr
+Water                        \tab IntercMax                \tab mm                  \tab Maximum potential rainfall interception by canopy                                  \cr
                              \tab CanopyHumect             \tab mm                  \tab Rainfall interception by canopy                                                    \cr
                              \tab Throughfall              \tab mm                  \tab Rainfall not intercepted by the canopy, coming to the soil                         \cr
                              \tab SuperficialRunoff        \tab mm                  \tab Water runoff from the superficial soil layer                                       \cr
@@ -147,28 +146,28 @@ Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1
                              \tab MThinning_*_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 }
 
-  \item A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{ll}{\strong{Var} \tab \strong{unit}\cr
-                   year            \tab year        \cr
-                    DOY             \tab day         \cr
-                    Date            \tab POSIXct date\cr
-                    Rain            \tab mm          \cr
-                    Tair            \tab deg C       \cr
-                    RH              \tab \%           \cr
-                    RAD             \tab MJ m-2 d-1  \cr
-                    Pressure        \tab hPa         \cr
-                    WindSpeed       \tab m s-1       \cr
-                    CO2             \tab ppm         \cr
-                    DegreeDays      \tab deg C       \cr
-                    PAR             \tab MJ m-2 d-1  \cr
-                    FDiff           \tab Fraction    \cr
-                    VPD             \tab hPa         \cr
-                    Rn              \tab MJ m-2 d-1  \cr
-                    Tmax            \tab deg C       \cr
-                    Tmin            \tab deg C       \cr
-                    rho             \tab kg m-3      \cr
-                    DaysWithoutRain \tab day
+  \item A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{ll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
+                    year            \tab year        \tab Year of the simulation                       \cr
+                    DOY             \tab day         \tab day of the year                              \cr
+                    Date            \tab POSIXct date\tab Date in POSICct format                       \cr
+                    Rain            \tab mm          \tab Rainfall                                     \cr
+                    Tair            \tab deg C       \tab Air temperature (above canopy)               \cr
+                    RH              \tab \%          \tab Relative humidity                            \cr
+                    RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \cr
+                    Pressure        \tab hPa         \tab Atmospheic pressure                          \cr
+                    WindSpeed       \tab m s-1       \tab Wind speed                                   \cr
+                    CO2             \tab ppm         \tab Atmospheric CO2 concentration                \cr
+                    DegreeDays      \tab deg C       \tab Growing degrre days                          \cr
+                    PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \cr
+                    FDiff           \tab Fraction    \tab Diffuse light fraction                       \cr
+                    VPD             \tab hPa         \tab Vapor pressure deficit                       \cr
+                    Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)       \cr
+                    Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
+                    Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
+                    rho             \tab kg m-3      \tab Air density of moist air                     \cr
+                    DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall
 }
-  \item A list of the input parameters (see inputs)
+  \item A list of the input parameters (see \code{\link{site}})
 }
 }
 \description{
@@ -183,8 +182,8 @@ Almost all variables for coffee exist also for shade trees with a suffix
          LAI_Tree = shade tree LAI.
          Special shade tree variables (see return section) are only optional,
          and may be longer upon parameterization because variables can be added in
-         the Tree parameter file in the \strong{Metamodels} or \strong{Allometries}
-         special lists (see \code{\link{Parameters_f}}).
+         the metamodels parameter file in \strong{\code{\link{Metamodels}}} or
+         \strong{\code{\link{Allometries}}}.
 }
 \examples{
 \dontrun{
@@ -195,6 +194,7 @@ if(interactive()){
 }
 \seealso{
 \code{\link[bigleaf]{aerodynamic.conductance}}
+\code{\link{Meteorology}} \code{\link{site}}
 }
 \author{
 R. Vezy; O. Roupsard

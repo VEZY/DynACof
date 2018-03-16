@@ -29,3 +29,6 @@ Constants used in the DynACof package
 \note{
 Values are partly burrowed from \code{\link[bigleaf]{bigleaf.constants}}
 }
+\seealso{
+\code{\link{DynACof}}
+}
