@@ -104,7 +104,7 @@ Fruit development            \tab BudInitPeriod            \tab boolean         
                              \tab BudBreak                 \tab Buds d-1            \tab Total number of buds breaking dormancy per day                                     \cr
                              \tab Sucrose_Mass             \tab g m-2 d-1           \tab Coffee Fruit Sucrose Mass                                                          \cr
                              \tab Sucrose_Content          \tab g Sugar gDM         \tab Coffee Fruit Sucrose Content                                                       \cr
-                             \tab Maturation_duration_d    \tab days Fruit cohort-1 \tab Coffee Fruit Total Maturation Duration for each cohort                             \cr
+                             \tab Maturation_duration    \tab days Fruit cohort-1 \tab Coffee Fruit Total Maturation Duration for each cohort                             \cr
                              \tab Harvest_Maturity_Pot     \tab Fraction            \tab Daily average fruit maturity (0-1)                                                 \cr
                              \tab Date_harvest             \tab day of year         \tab date of harvest                                                                    \cr
                              \tab Harvest_Fruit            \tab gC m-2              \tab Total fruit carbon mass at harvest                                                 \cr
@@ -135,7 +135,7 @@ Water                        \tab IntercMax                \tab mm              
                              \tab SoilWaterPot             \tab MPa                 \tab Soil water potential                                                               \cr
                              \tab LeafWaterPotential       \tab Mpa                 \tab Coffee leaf water potential                                                        \cr
 Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1    \tab shade tree leaf area                                                               \cr
-                             \tab Crown_H_Tree_m           \tab m                   \tab Crown height                                                                       \cr
+                             \tab Crown_H_Tree             \tab m                   \tab Crown height                                                                       \cr
                              \tab Trunk_H_Tree             \tab m                   \tab Trunk height                                                                       \cr
                              \tab DBH_Tree_m               \tab m                   \tab Diameter at breast height                                                          \cr
                              \tab LAD_Tree                 \tab m2 m-3              \tab Shade tree Leaf Area Density                                                       \cr
@@ -146,7 +146,7 @@ Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1
                              \tab MThinning_*_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 }
 
-  \item A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{ll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
+  \item A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{lll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
                     year            \tab year        \tab Year of the simulation                       \cr
                     DOY             \tab day         \tab day of the year                              \cr
                     Date            \tab POSIXct date\tab Date in POSICct format                       \cr
@@ -161,7 +161,7 @@ Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1
                     PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \cr
                     FDiff           \tab Fraction    \tab Diffuse light fraction                       \cr
                     VPD             \tab hPa         \tab Vapor pressure deficit                       \cr
-                    Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)       \cr
+                    Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
                     rho             \tab kg m-3      \tab Air density of moist air                     \cr

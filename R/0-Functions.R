@@ -125,7 +125,7 @@ Init_Table_Day= function(S){
     S$Table_Day$Alloc_Fruit_Cohort=
     S$Table_Day$NPP_Fruit_Cohort=
     S$Table_Day$CM_Fruit_Cohort=
-    S$Table_Day$Maturation_duration_d=
+    S$Table_Day$Maturation_duration=
     S$Table_Day$Sucrose_Content= 0
   S$Table_Day$Temp_cor_Bud= 1
 
@@ -1495,7 +1495,7 @@ GBCANMS= function(WIND,ZHT,TREEH,Z0=TREEH*0.1,ZPD=TREEH*0.75,GBCANMS1MIN = 0.012
 }
 
 
-# Overide bigleaf function to make it vectorized :
+# Overwrite bigleaf function to make it vectorized :
 rH.to.VPD <- function(rH,Tair){
   if(any(rH > 1)){
     warning("relative humidity (rH) has to be between 0 and 1.")
