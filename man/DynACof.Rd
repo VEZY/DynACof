@@ -90,7 +90,7 @@ Carbon                       \tab GPP                      \tab gC m-2 d-1      
                              \tab NPP_*                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
                              \tab Mnat_*                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
                              \tab Mprun_*                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
-                             \tab MALS                     \tab gC m-2 d-1          \tab Coffee leaf mortality from American Leaf Spot                                      \cr
+                             \tab M_ALS                     \tab gC m-2 d-1          \tab Coffee leaf mortality from American Leaf Spot                                      \cr
                              \tab Mortality_*              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
                              \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
                              \tab CM_*                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
@@ -116,7 +116,7 @@ Water                        \tab IntercMax                \tab mm              
                              \tab SuperficialRunoff        \tab mm                  \tab Water runoff from the superficial soil layer                                       \cr
                              \tab ExcessRunoff             \tab mm                  \tab Discharge from the superficial soil layer                                          \cr
                              \tab TotSuperficialRunoff     \tab mm                  \tab Sum of discharge+ExcessRunoff                                                      \cr
-                             \tab InfilCapa_mmd            \tab mm                  \tab Superficial water infiltration capacity to first layer of soil                     \cr
+                             \tab InfilCapa                \tab mm                  \tab Superficial water infiltration capacity to first layer of soil                     \cr
                              \tab Infiltration             \tab mm                  \tab Superficial water infiltration to first layer of soil                              \cr
                              \tab Drain_[1-3]              \tab mm                  \tab Water drainage from soil layer 1, 2 or 3                                           \cr
                              \tab WSurfaceRes              \tab mm                  \tab Soil water content from the surface layer                                          \cr

@@ -9,12 +9,12 @@ soil= function(){
     Wf1             = 290,      # Field capacity of the first layer (mm)
     Wf2             = 66,       # Field capacity of the second layer (mm)
     Wf3             = 69,       # Field capacity of the third layer (mm)
-    EWMtot          = (Wf1-Wm1)+(Wf2-Wm2)+(Wf3-Wm3),
+    EWMtot          = 93,       # = (Wf1-Wm1)+(Wf2-Wm2)+(Wf3-Wm3) (mm)
     IntercSlope     = 0.2,      # Rainfall interception coefficient (mm LAI-1)
-    WSurfResMax_mm  = 120,      # Maximum soil water level at the surface reservoir. Above this value, excess rainfall runs-off inmediately (mm)
+    WSurfResMax     = 120,      # Maximum soil water level at the surface reservoir. Above this value, excess rainfall runs-off inmediately (mm)
     fc              = 13.4,     # Minimum infiltration capacity (mm d-1)
     alpha           = 101.561,  # Multiplicative coefficient for the maximum infiltration capacity (alpha >= 1)
-    fo              = fc*alpha, # Maximum infiltration capacity (mmd-1)
+    fo              = 1360.917, # Maximum infiltration capacity (mmd-1), = fc*alpha
     kB              = 0.038079, # Discharge coefficient for surface runoff from surface reservoir (d-1)
     k_Rn            = 0.283,    # Radiation extinction coefficient. Source: Shuttleworth and wallace, 1985, p. 851
     Soil_LE_p       = 0.66,     # Partitioning of the available energy between LE and H for the soil

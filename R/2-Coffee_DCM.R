@@ -70,7 +70,7 @@
 #'                              \tab NPP_*                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
 #'                              \tab Mnat_*                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
 #'                              \tab Mprun_*                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
-#'                              \tab MALS                     \tab gC m-2 d-1          \tab Coffee leaf mortality from American Leaf Spot                                      \cr
+#'                              \tab M_ALS                     \tab gC m-2 d-1          \tab Coffee leaf mortality from American Leaf Spot                                      \cr
 #'                              \tab Mortality_*              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
 #'                              \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
 #'                              \tab CM_*                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
@@ -96,7 +96,7 @@
 #'                              \tab SuperficialRunoff        \tab mm                  \tab Water runoff from the superficial soil layer                                       \cr
 #'                              \tab ExcessRunoff             \tab mm                  \tab Discharge from the superficial soil layer                                          \cr
 #'                              \tab TotSuperficialRunoff     \tab mm                  \tab Sum of discharge+ExcessRunoff                                                      \cr
-#'                              \tab InfilCapa_mmd            \tab mm                  \tab Superficial water infiltration capacity to first layer of soil                     \cr
+#'                              \tab InfilCapa                \tab mm                  \tab Superficial water infiltration capacity to first layer of soil                     \cr
 #'                              \tab Infiltration             \tab mm                  \tab Superficial water infiltration to first layer of soil                              \cr
 #'                              \tab Drain_[1-3]              \tab mm                  \tab Water drainage from soil layer 1, 2 or 3                                           \cr
 #'                              \tab WSurfaceRes              \tab mm                  \tab Soil water content from the surface layer                                          \cr
@@ -170,26 +170,21 @@
 #' @seealso \code{\link[bigleaf]{aerodynamic.conductance}}
 #' \code{\link{Meteorology}} \code{\link{site}}
 #' @importFrom bigleaf aerodynamic.conductance
+#' @importFrom foreach %dopar%
+#'
 DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
                   output_f=".RData",Inpath=NULL,
                   Outpath=Inpath,Site="1-Site.R",Meteo="2-Meteorology.txt",
                   Soil="3-Soil.R",Coffee="4-Coffee.R",Tree=NULL){
 
-  SimulationClass <- setRefClass("Simulation",
-                                 fields = list(Table_Day = "data.frame",
-                                               Met_c= "data.frame",
-                                               Parameters= "list",
-                                               Zero_then_One="vector"))
 
   # Importing the parameters ------------------------------------------------
 
-  Parameters= Import_Parameters(path = path, Names = list(Site,Soil,Coffee,Tree))
+  Parameters= Import_Parameters(path = Inpath, Names = list(Site,Soil,Coffee,Tree))
 
   # Importing the meteo -----------------------------------------------------
 
-  Meteo= Meteorology(file=file.path(path,Meteo),Period= Period,Parameters= Parameters,WriteIt = F,
-                     ClimateChange= ClimateChange,CO2Increase= CO2Increase)
-
+  Meteo= Meteorology(file=Inpath,Period= Period,Parameters= Parameters)
 
   ########## Coffee plant Cycles ##########
   # Number of cycles to do over the period (given by the Meteo file):
@@ -214,11 +209,11 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   # parallel processing
 
   # Parallel loop over cycles:
-  NbCores= detectCores()-1 # Set the maximum number of cores working on the model computation
-  cl=makeCluster(min(NbCores,NCycles))
-  registerDoSNOW(cl)
-  CycleList= foreach(cy= 1:NCycles,.combine=rbind,.packages = c("dplyr","zoo")) %dopar% {
-    source(file = "2-Code/00-Functions.R")
+  # NbCores= parallel::detectCores()-1 # Set the maximum number of cores working on the model computation
+  # cl= parallel::makeCluster(min(NbCores,NCycles))
+  # doSNOW::registerDoSNOW(cl)
+  # CycleList= foreach::foreach(cy= 1:NCycles,.combine=rbind,.packages = c("dplyr","zoo")) %dopar% {
+  for(cy in 1:NCycles){
 
     # Initializing the Simulation object:
 
@@ -293,7 +288,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
     # American Leaf Spot:
     S$Table_Day$ALS= ALS(Elevation= S$Parameters$Elevation, SlopeAzimut= S$Parameters$SlopeAzimut,
                          Slope= S$Parameters$Slope, RowDistance= S$Parameters$RowDistance,
-                         Shade= S$Parameters$Shade, CanopyHeight.Coffee= S$Parameters$CanopyHeight.Coffee,
+                         Shade= S$Parameters$Shade, CanopyHeight.Coffee= S$Parameters$Height_Coffee,
                          Fertilization= S$Parameters$Fertilization, ShadeType= S$Parameters$ShadeType,
                          CoffeePruning= S$Parameters$CoffeePruning, df_rain= S$Met_c)
 
@@ -701,7 +696,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # By natural litterfall assuming no diseases
       S$Table_Day$Mnat_Leaf[i]=S$Table_Day$CM_Leaf[i-S$Zero_then_One[i]]/S$Parameters$lifespanLeaf
       # By American Leaf Spot # Litterfall by ALS is difference between 2 dates
-      S$Table_Day$MALS[i]=
+      S$Table_Day$M_ALS[i]=
         S$Zero_then_One[i]*max(0,S$Table_Day$CM_Leaf[i-S$Zero_then_One[i]]*S$Table_Day$ALS[i])
 
       #By pruning
@@ -709,7 +704,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
         S$Table_Day$Mprun_Leaf[i]=S$Table_Day$CM_Leaf[i-S$Zero_then_One[i]]*
           S$Parameters$LeafPruningRate}else{S$Table_Day$Mprun_Leaf[i]=0}
 
-      S$Table_Day$Mortality_Leaf[i]= S$Table_Day$Mnat_Leaf[i] + S$Table_Day$Mprun_Leaf[i]+S$Table_Day$MALS[i]
+      S$Table_Day$Mortality_Leaf[i]= S$Table_Day$Mnat_Leaf[i] + S$Table_Day$Mprun_Leaf[i]+S$Table_Day$M_ALS[i]
 
 
       ############# Fine Roots #####
@@ -800,7 +795,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       #Rn or AE per layer (radiation reaching every layer, valid only during dailight hours,
       # not during night hours)
       # Rn understorey, source Shuttleworth & Wallace, 1985, eq. 21
-      S$Table_Day$Rn_soil[i]=
+      S$Table_Day$Rn_Soil[i]=
         S$Met_c$Rn[i]*exp(-S$Parameters$k_Rn*S$Table_Day$LAIplot[i])
       # source: Shuttleworth & Wallace, 1985, eq. 2.
       # NB: soil heat storage is negligible at daily time-step (or will equilibrate soon),
@@ -829,31 +824,28 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       }
 
       # 2/ SURFACE RUNOFF / INFILTRATION source Gomez-Delgado et al. 2011,
-      # Box B:WSurfResMax_mm = BX; WSurfaceRes_mm=Bt;
+      # Box B:WSurfResMax = BX; WSurfaceRes=Bt;
       #ExcessRunoff=QB2; SuperficialRunoff=QB1;  TotSuperficialRunoff=QB; Infiltration=i
       # 2.a Adding throughfall to superficial-box, calculation of surface runoff, updating of
-      # stock in superficial-box (WSurfaceReserv_mm)
-      #             S$Table_Day$WSurfaceRes_mm[i]=
-      #                 S$Table_Day$WSurfaceRes_mm[i-S$Zero_then_One[i]] + S$Zero_then_One[i]*S$Table_Day$Throughfall[i]
-      # RV: Same as CanopyHumect
-      S$Table_Day$WSurfaceRes_mm[i]=
-        S$Table_Day$WSurfaceRes_mm[i-S$Zero_then_One[i]] + S$Table_Day$Throughfall[i]
+      # stock in superficial-box
+      S$Table_Day$WSurfaceRes[i]=
+        S$Table_Day$WSurfaceRes[i-S$Zero_then_One[i]] + S$Table_Day$Throughfall[i]
 
-      if(S$Table_Day$WSurfaceRes_mm[i] > S$Parameters$WSurfResMax_mm){
-        S$Table_Day$ExcessRunoff[i] = S$Table_Day$WSurfaceRes_mm[i]-S$Parameters$WSurfResMax_mm
-        S$Table_Day$WSurfaceRes_mm[i]= S$Parameters$WSurfResMax_mm # removing ExcessRunoff
-        S$Table_Day$SuperficialRunoff[i] = S$Parameters$kB * S$Table_Day$WSurfaceRes_mm[i]
+      if(S$Table_Day$WSurfaceRes[i] > S$Parameters$WSurfResMax){
+        S$Table_Day$ExcessRunoff[i] = S$Table_Day$WSurfaceRes[i]-S$Parameters$WSurfResMax
+        S$Table_Day$WSurfaceRes[i]= S$Parameters$WSurfResMax # removing ExcessRunoff
+        S$Table_Day$SuperficialRunoff[i] = S$Parameters$kB * S$Table_Day$WSurfaceRes[i]
         #Subsuperficial runoff from runoffbox
         S$Table_Day$TotSuperficialRunoff[i] =
           S$Table_Day$ExcessRunoff[i] + S$Table_Day$SuperficialRunoff[i]
-        S$Table_Day$WSurfaceRes_mm[i] =
-          S$Table_Day$WSurfaceRes_mm[i] - S$Table_Day$SuperficialRunoff[i]
+        S$Table_Day$WSurfaceRes[i] =
+          S$Table_Day$WSurfaceRes[i] - S$Table_Day$SuperficialRunoff[i]
       }else{
-        #updating WSurfaceRes_mm, the ExcessRunoff has already been retrieved
+        #updating WSurfaceRes, the ExcessRunoff has already been retrieved
         S$Table_Day$ExcessRunoff[i]=0
-        S$Table_Day$SuperficialRunoff[i] = S$Parameters$kB * S$Table_Day$WSurfaceRes_mm[i]
+        S$Table_Day$SuperficialRunoff[i] = S$Parameters$kB * S$Table_Day$WSurfaceRes[i]
         S$Table_Day$TotSuperficialRunoff[i] = S$Table_Day$SuperficialRunoff[i]
-        S$Table_Day$WSurfaceRes_mm[i] = S$Table_Day$WSurfaceRes_mm[i] -
+        S$Table_Day$WSurfaceRes[i] = S$Table_Day$WSurfaceRes[i] -
           S$Table_Day$SuperficialRunoff[i]}
 
       # 2.b Computing the infiltration capacity as a function of soil water content in W_1
@@ -871,13 +863,13 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       }
 
       # 2.c Calculating infiltration from superficial-box to soil-boxes and updating stock in superficial-box
-      if(S$Table_Day$InfilCapa[i]<= S$Table_Day$WSurfaceRes_mm[i]){
+      if(S$Table_Day$InfilCapa[i]<= S$Table_Day$WSurfaceRes[i]){
         S$Table_Day$Infiltration[i]= S$Table_Day$InfilCapa[i]   # infiltration (m?dt-1)
-        S$Table_Day$WSurfaceRes_mm[i]=
-          S$Table_Day$WSurfaceRes_mm[i] - S$Table_Day$Infiltration[i]
+        S$Table_Day$WSurfaceRes[i]=
+          S$Table_Day$WSurfaceRes[i] - S$Table_Day$Infiltration[i]
       }else{
-        S$Table_Day$Infiltration[i]= S$Table_Day$WSurfaceRes_mm[i]
-        S$Table_Day$WSurfaceRes_mm[i]= 0
+        S$Table_Day$Infiltration[i]= S$Table_Day$WSurfaceRes[i]
+        S$Table_Day$WSurfaceRes[i]= 0
       }
 
       #3/ Adding Infiltration to soil water content of the previous day, computing drainage,
@@ -926,7 +918,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
            (S$Parameters$Wf3-S$Parameters$Wm3))
 
       #4/Evaporation of the Understorey, E_Soil (from W_1 only)
-      S$Table_Day$E_Soil[i]= S$Table_Day$Rn_soil[i]*S$Parameters$Soil_LE_p/S$Parameters$lambda
+      S$Table_Day$E_Soil[i]= S$Table_Day$Rn_Soil[i]*S$Parameters$Soil_LE_p/S$Parameters$lambda
 
       #Avoiding depleting W_1 below Wm1 and udating Wx after retrieving actual E_Soil
       if((S$Table_Day$W_1[i]-S$Table_Day$E_Soil[i])>=S$Parameters$Wm1){
@@ -1010,7 +1002,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       S$Table_Day$LE_Soil[i]= S$Table_Day$E_Soil[i]*S$Parameters$lambda
 
-      S$Table_Day$H_Soil[i]= S$Table_Day$Rn_soil[i]*(1-S$Parameters$Soil_LE_p)
+      S$Table_Day$H_Soil[i]= S$Table_Day$Rn_Soil[i]*(1-S$Parameters$Soil_LE_p)
 
       S$Table_Day$Q_Soil[i]= 0
       # RV: Q_Soil is negligible at yearly time-step, and equilibriate between several
@@ -1044,7 +1036,10 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
         bigleaf::aerodynamic.conductance(Tair = S$Met_c$Tair[i],
                                          pressure = S$Met_c$Pressure[i]/10,
                                          wind = S$Met_c$WindSpeed[i],
-                                         ustar = ustar[i],
+                                         ustar = GBCANMS(WIND = S$Met_c$WindSpeed[i],
+                                                         ZHT = S$Parameters$ZHT,
+                                                         TREEH = max(S$Table_Day$Height_Tree[i],
+                                                                     S$Parameters$Height_Coffee))$ustar,
                                          H = S$Met_c$Tair[i],
                                          zr = S$Parameters$MeasHeight,
                                          zh = S$Parameters$MeasHeight,
@@ -1054,6 +1049,11 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
                                          stab_correction = F,
                                          Rb_model="Thom_1972")[,"Ga_h"] # m s-1
       # stab_correction could be activated whenever H is well simulated
+      PENMON(Rn= S$Met_c$Rn[i], Wind= S$Met_c$WindSpeed[i], Tair = S$Met_c$Tair[i],
+             ZHT = S$Parameters$ZHT,TREEH = max(S$Table_Day$Height_Tree[i],S$Parameters$Height_Coffee),
+             Pressure = S$Met_c$Pressure[i],
+             Gs = 1E09, VPD = S$Met_c$VPD[i])
+
 
       S$Table_Day$Diff_T[i]=
         (S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/

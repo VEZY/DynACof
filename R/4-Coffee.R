@@ -7,7 +7,7 @@ coffee= function(){
     date_pruning      = 74,         # day of year of pruning
     MeanAgePruning    = 5,          # Age of first pruning (year)
     SLA               = 10.97,      # Specific Leaf Area (m-2 kg-1 dry mass)
-    PDem_Leaf         = 1.2,        # Leaf carbon demand (gC m-2 d-1)
+    Demand_Leaf       = 1.2,        # Leaf carbon demand (gC m-2 d-1)
     LeafPruningRate   = 0.26,       # how much leaves are pruned (ratio)
     k_Dif             = 0.4289,     # Light extinction coefficient for diffuse light (-), computed from MAESPA
     k_Dir             = 0.3579,     # Light extinction coefficient for direct light (-), computed from MAESPA
@@ -30,7 +30,7 @@ coffee= function(){
     ageMaturity       = 3,          # Coffee maturity age (Years)
     FruitMaturation   = 2836,       # Fruit maturation duration until stage 5, ripe (dd). Source: Rodriguez et al. (2011) Table 1.
     FruitOverripe     = 3304,       # Duration until fruit stage 5, overripe, in  the  soil (dd). Source: Rodriguez 2011 Table 1
-    u_log             = FruitMaturation/2, # Parameters for the logistic fruit growth pattern
+    u_log             = 1418,       # Parameters for the logistic fruit growth pattern (FruitMaturation/2)
     s_log             = 300,        # Idem
     S_a               = 5.3207,     # Sucrose concentration in berries throught time (dd) parameter. Source : Pezzopane et al. (2011).
     S_b               = -28.5561,   # Sucrose concentration in berries throught time parameter
@@ -80,8 +80,8 @@ coffee= function(){
     PaliveRsWood      = 0.37,       # Resprout wood living tissue (fraction)
     PaliveSCR         = 0.21,       # Stump and coarse root living tissue (fraction)
     PaliveFRoot       = 1,          # Fine root living tissue (fraction)
-    Opti_C_DemandFruit= Optimum_Berry_DM*CContent_Fruit+Optimum_Berry_DM*CContent_Fruit*(1-epsilonFruit),
-    # Opti_C_DemandFruit stands for the optimum demand in total carbon for each berry (including growth respiration)
+    Opti_C_DemandFruit= 0.164,      # optimum demand in total carbon for each berry (including growth respiration)
+    # = Optimum_Berry_DM*CContent_Fruit+Optimum_Berry_DM*CContent_Fruit*(1-epsilonFruit),
 
     # Parameters for American Leaf Spot
     SlopeAzimut       = 180,        # site slope azimuth (deg)

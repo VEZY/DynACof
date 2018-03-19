@@ -4,13 +4,13 @@
 \alias{Meteorology}
 \title{Import Meteorology for model input}
 \usage{
-Meteorology(file = "1-Input/Default/2-Meteorology.txt", Period = NULL,
-  Parameters = Import_Parameters())
+Meteorology(file = NULL, Period = NULL, Parameters = Import_Parameters())
 }
 \arguments{
 \item{file}{Either the file name to read, a shell command that preprocesses the file (e.g. fread("grep blah filename"))
 or the input itself as a string, see \code{\link[data.table]{fread}}. In both cases, a length 1 character string.
-A filename input is passed through path.expand for convenience and may be a URL starting http:// or file://}
+A filename input is passed through path.expand for convenience and may be a URL starting http:// or file://.
+Default to \code{data/Meteorology.RData}, which is the package example data.}
 
 \item{Period}{The desired time period to be returned inthe form of a vector of two POSIX dates (min and max).}
 

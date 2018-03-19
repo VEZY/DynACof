@@ -1,10 +1,25 @@
-####################################################################################################
-####----------------------------------- MAESPA Metamodels --------------------------------------####
-# Aim: All utility functions used in the model.
-# Authors: Olivier Roupsard (ecophysiological functions) and Rémi Vezy (others)
-# Date: 12/09/2017
-####################################################################################################
-
+#' Generator for class Simulation
+#'
+#' @description Set the reference class for the simulation object, which hold the Meteorology, the simulation outputs and the
+#'              parameters.
+#'
+#' @details This function is internal and shouldn't be called by users.
+#'
+#' @return The generator for the simulation class.
+#'
+#' @examples
+#' # Create an object of class "Simulation":
+#' S= SimulationClass$new()
+#' # Fill in the parameters:
+#' S$Parameters= Parameters
+#' @keywords internal
+#'
+#' @export
+SimulationClass <- setRefClass("Simulation",
+                               fields = list(Table_Day = "data.frame",
+                                             Met_c= "data.frame",
+                                             Parameters= "list",
+                                             Zero_then_One="vector"))
 
 #' Import model parameters
 #'
@@ -134,22 +149,23 @@ Init_Table_Day= function(S){
   S$Table_Day$Rn_tot=NA_real_
   S$Table_Day$lue=
     S$Table_Day$GPP=
-    S$Table_Day$K_Dif_Cof=
-    S$Table_Day$K_Dir_Cof=
+    S$Table_Day$K_Dif=
+    S$Table_Day$K_Dir=
     S$Table_Day$Consumption_RE=
-    S$Table_Day$Offer_Total=
+    S$Table_Day$Offer=
     S$Table_Day$Carbon_Lack_Mortality=
     S$Table_Day$Alloc_RsWood=
     S$Table_Day$NPP_RsWood=
     S$Table_Day$Rc_RsWood=
     S$Table_Day$Mnat_RsWood=
-    S$Table_Day$Mact_RsWood=
+    S$Table_Day$Mortality_RsWood=
     S$Table_Day$Rm_RsWood=
     S$Table_Day$lambdaSCRage=
     S$Table_Day$Alloc_SCR=
     S$Table_Day$NPP_SCR=
     S$Table_Day$Rc_SCR=
     S$Table_Day$Rm_SCR=
+    S$Table_Day$Mortality_SCR=
     S$Table_Day$Harvest_Maturity_Pot=
     S$Table_Day$ratioNodestoLAI=
     S$Table_Day$Offer_Fruit=
@@ -167,7 +183,7 @@ Init_Table_Day= function(S){
     S$Table_Day$M_ALS=
     S$Table_Day$MnatALS_Leaf=
     S$Table_Day$Mprun_Leaf=
-    S$Table_Day$Mact_Leaf=
+    S$Table_Day$Mortality_Leaf=
     S$Table_Day$Rm_Leaf=
     S$Table_Day$Demand_FRoot=
     S$Table_Day$Offer_FRoot=
@@ -176,7 +192,7 @@ Init_Table_Day= function(S){
     S$Table_Day$Rc_FRoot=
     S$Table_Day$Mnat_FRoot=
     S$Table_Day$Mprun_FRoot=
-    S$Table_Day$Mact_FRoot=
+    S$Table_Day$Mortality_FRoot=
     S$Table_Day$Rm_FRoot=
     S$Table_Day$Rc=
     S$Table_Day$Ra=
@@ -1073,7 +1089,7 @@ ALS= function(Elevation, SlopeAzimut= 0, Slope=0, RowDistance= 1.5,
     Sum_Ia_ALS[df_rain$DOY<=15]*
     exp(0.0180311*(df_rain$DOY[df_rain$DOY<=15]-166+365))
 
-  Defol_ALS= (Defol_ALS_pc-Defol_ALS_pc[previous_i(1:nrow(S$Met_c),n_prev = 1)])/100
+  Defol_ALS= (Defol_ALS_pc-Defol_ALS_pc[previous_i(1:nrow(df_rain),n_prev = 1)])/100
   Defol_ALS[Defol_ALS<0]= 0
 
   return(Defol_ALS)
@@ -1244,10 +1260,10 @@ Diffuse_d= function(DOY, RAD, Latitude= 35, type=c("Spitters","Page","Gopinathan
 #' @export
 Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
   solar_declin= 23.45*sin_deg(((DOY+284)*360)/365)
-  sunset_hour_angle= acos_deg(-tan_deg(Parameters$Latitude)*tan_deg(solar_declin))
-  S0= (86400/pi)*Parameters$Gsc*(1+0.033*cos_deg((360*DOY)/365))*
-    (cos_deg(Parameters$Latitude)*cos_deg(solar_declin)*sin_deg(sunset_hour_angle)+
-       ((pi*sunset_hour_angle)/180)*sin_deg(Parameters$Latitude)*sin_deg(solar_declin))
+  sunset_hour_angle= acos_deg(-tan_deg(Latitude)*tan_deg(solar_declin))
+  S0= (86400/pi)*Gsc*(1+0.033*cos_deg((360*DOY)/365))*
+    (cos_deg(Latitude)*cos_deg(solar_declin)*sin_deg(sunset_hour_angle)+
+       ((pi*sunset_hour_angle)/180)*sin_deg(Latitude)*sin_deg(solar_declin))
   return(S0*10^-6)
 }
 
@@ -1298,7 +1314,7 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,type_ea=c("VPD","Temp"),
                   sigma= Constants()$sigma,Gsc= Constants()$Gsc){
   Rsa= Rad_ext(DOY = DOY,Latitude = Latitude, Gsc = Gsc)
-  Rso= (0.75+0.00002*S$Parameters$Elevation)*Rsa
+  Rso= (0.75+0.00002*Elevation)*Rsa
 
   if(!is.null(Rh)){
     ea= (Rh/100)*((bigleaf::Esat.slope(Tair = Tmax)[,"Esat"]+
@@ -1406,7 +1422,10 @@ PENMON= function(Rn,Wind,Tair,ZHT,TREEH,Parameters= Constants(),Pressure,Gs,VPD)
 #'          is canopy height, s is the average silhouette area (projected area of the tree on a vertical plane)
 #'           and S the specific area, with \deqn{S= A/n}, where A is the total plot area and n the number of trees.
 #'          2) For ZPD, Verhoef et al. (1997) said \deqn{d= 0.67}. h is a good proxy without any prior knowledge.
-#' @return \item{\eqn{GBH}}{Canopy and Soil boundary layer conductance (mol m-2 s-1)}
+#' @return A list of three :
+#'         \item{ustar}{The friction velocity (m s-1)}
+#'         \item{\eqn{Canopy}}{Atmosphere to canopy boundary layer conductance (mol m-2 s-1)}
+#'         \item{Soil}{Canopy to soil boundary layer conductance (mol m-2 s-1)}
 #'
 #' @references Van de Griend (1989), Choudhury & Monteith (1988)
 #'
@@ -1418,28 +1437,6 @@ PENMON= function(Rn,Wind,Tair,ZHT,TREEH,Parameters= Constants(),Pressure,Gs,VPD)
 #'
 #' @export
 GBCANMS= function(WIND,ZHT,TREEH,Z0=TREEH*0.1,ZPD=TREEH*0.75,GBCANMS1MIN = 0.0123,VONKARMAN= Constants()$vonkarman){
-  # Canopy boundary layer conductance (from Jones 1992 p 68)
-  # in m s-1
-  # GBCANMS1MIN default is GBCANMS1 for WIND= 0.035 and CANOPY HEIGHT at 25 m
-  #**********************************************************************
-
-  # In this model, we assumed 2 aerodynamic conductances in series
-  # 1) from the atmosphere to the canopy, based on Van de Griend 1989
-  #       this is actually 2 conductances, one in the inertial sublayer and one in the roughness sublayer
-  # 2) Within the canopy to the soil, based on CHoudhury & Monteith 1988
-
-  # Aerodynamic conductance from the canopy to the atmosphere
-  # Formula from Jones 1992 p 68, aerodynamic conductance air-canopy - air, adapted from the CASTANEA model (Dufrene et al., 2005)
-  # OLIVER & MAYHEAD (1974) :
-  # ZPD = 0.75 * TREEH
-  # Z0 = 0.1 *  TREEH
-  # ZPD = 0.67 * TREEH
-  # Z0 = 0.046 *  TREEH
-  # RV: Z0 and ZPD are unknown... Carefull, model is sensible to z0.
-  # NB: Lettau (1969) proposed an other way: Z0= 0.5 . h* . s / S where h* is canopy height, s is
-  # the average silhouette area (projected area of the tree on a vertical plane) and S the specific
-  # area, with S= A/n, where A is the total plot area and n the number of trees.
-  # For ZPD, Verhoef et al. (1997) said d= 0.67 . h is a good proxy without any prior knowledge.
 
   ZSTAR=ZHT
   # ZSTAR can be corrected if lower than maximum tree height (TREEH) because GBCANMS have to be computed
@@ -1491,7 +1488,7 @@ GBCANMS= function(WIND,ZHT,TREEH,Z0=TREEH*0.1,ZPD=TREEH*0.75,GBCANMS1MIN = 0.012
   # Aerodynamic conductance soil-air below canopy according to Chourdhury et al., 1988
   GBCANMS2 = ALPHA * KH / ( TREEH * exp(ALPHA) * (exp(-ALPHA * Z0HT2/TREEH)  -  exp(-ALPHA * (ZPD+Z0) / TREEH) ) )
 
-  return(list(Canopy= GBCANMS1, Soil= GBCANMS2))
+  return(list(ustar= WINDSTAR,Canopy= GBCANMS1, Soil= GBCANMS2))
 }
 
 

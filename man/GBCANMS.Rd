@@ -23,7 +23,10 @@ GBCANMS(WIND, ZHT, TREEH, Z0 = TREEH * 0.1, ZPD = TREEH * 0.75,
 \item{VONKARMAN}{Con Karman constant, default to \code{Constants()$vonkarman}, 0.41.}
 }
 \value{
-\item{\eqn{GBH}}{Canopy and Soil boundary layer conductance (mol m-2 s-1)}
+A list of three :
+        \item{ustar}{The friction velocity (m s-1)}
+        \item{\eqn{Canopy}}{Atmosphere to canopy boundary layer conductance (mol m-2 s-1)}
+        \item{Soil}{Canopy to soil boundary layer conductance (mol m-2 s-1)}
 }
 \description{
 This function assumes two aerodynamic conductances in series:
