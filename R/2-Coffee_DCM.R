@@ -51,6 +51,8 @@
 #'                              \tab lue                      \tab gC MJ               \tab Light use efficiency                                                               \cr
 #'                              \tab Tcan_MAESPA_Coffee       \tab deg C               \tab Coffee canopy temperature computed using MAESPA metamodel                          \cr
 #'                              \tab Tcan_Coffee              \tab deg C               \tab Coffee canopy temperature computed by DynACof                                      \cr
+#'                              \tab WindSpeed_*              \tab m s-1               \tab Wind speed at the center of the layer                                              \cr
+#'                              \tab TairCanopy_*             \tab deg C               \tab Air tempetature at the center of the layer                                         \cr
 #'                              \tab DegreeDays_Tcan          \tab deg C               \tab Growing degree days computed using Coffee Canopy Temperature                       \cr
 #' Carbon                       \tab GPP                      \tab gC m-2 d-1          \tab Gross primary productivity                                                         \cr
 #'                              \tab Consumption_RE           \tab gC m-2 d-1          \tab Daily reserve consumption                                                          \cr
@@ -1032,34 +1034,55 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
 
       #11/ Tcanopy Coffee
+
+      S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
+        (S$Met_c$rho[i]*S$Parameters$Cp*
+           GBCANMS(WIND = S$Table_Day$WindSpeed_Coffee[i], ZHT = S$Parameters$ZHT,
+                   TREEH = max(S$Table_Day$Height_Tree[i],
+                               S$Parameters$Height_Coffee))$Canopy*CMOLAR)
       S$Table_Day$Ga[i]=
-        bigleaf::aerodynamic.conductance(Tair = S$Met_c$Tair[i],
-                                         pressure = S$Met_c$Pressure[i]/10,
-                                         wind = S$Met_c$WindSpeed[i],
-                                         ustar = GBCANMS(WIND = S$Met_c$WindSpeed[i],
+        bigleaf::aerodynamic.conductance(Tair= S$Table_Day$TairCanopy_Tree[i],
+                                         pressure= S$Met_c$Pressure[i]/10,
+                                         wind= S$Table_Day$WindSpeed_Coffee[i],
+                                         usta = GBCANMS(WIND = S$Met_c$WindSpeed[i],
                                                          ZHT = S$Parameters$ZHT,
                                                          TREEH = max(S$Table_Day$Height_Tree[i],
                                                                      S$Parameters$Height_Coffee))$ustar,
-                                         H = S$Met_c$Tair[i],
-                                         zr = S$Parameters$MeasHeight,
-                                         zh = S$Parameters$MeasHeight,
-                                         d = S$Parameters$DisplacementHeight.coffee,
-                                         z0m = S$Parameters$z0.coffee,
+                                         H = S$Table_Day$H_Coffee[i],
+                                         zr = S$Parameters$ZHT,
+                                         zh =  max(S$Table_Day$Height_Tree[i],
+                                                   S$Parameters$Height_Coffee),
+                                         d = 0.75*max(S$Table_Day$Height_Tree[i],
+                                                      S$Parameters$Height_Coffee),
+                                         z0m = 0.1*max(S$Table_Day$Height_Tree[i],
+                                                       S$Parameters$Height_Coffee),
                                          wind_profile = T,
                                          stab_correction = F,
                                          Rb_model="Thom_1972")[,"Ga_h"] # m s-1
       # stab_correction could be activated whenever H is well simulated
-      PENMON(Rn= S$Met_c$Rn[i], Wind= S$Met_c$WindSpeed[i], Tair = S$Met_c$Tair[i],
-             ZHT = S$Parameters$ZHT,TREEH = max(S$Table_Day$Height_Tree[i],S$Parameters$Height_Coffee),
-             Pressure = S$Met_c$Pressure[i],
-             Gs = 1E09, VPD = S$Met_c$VPD[i])
+
+      S$Table_Day$WindSpeed_Coffee[i]=
+        GetWind(LAI_lay = S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                LAI_abv = S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                extwind = S$Parameters$extwind)
+
+      CMOLAR= (S$Met_c$Pressure[i]*100)/(S$Parameters$Rgas*(S$Table_Day$TairCanopy_Tree[i]+S$Parameters$Kelvin))
+      S$Table_Day$TairCanopy[i]=
+        S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
+        (S$Met_c$rho[i]*S$Parameters$Cp*
+           GBCANMS(WIND = S$Table_Day$WindSpeed_Coffee[i], ZHT = S$Parameters$ZHT,
+                   TREEH = max(S$Table_Day$Height_Tree[i],
+                               S$Parameters$Height_Coffee))$Canopy*CMOLAR)
+
+      CMOLAR= (S$Met_c$Pressure[i]*100)/(S$Parameters$Rgas*(S$Table_Day$TairCanopy[i]+S$Parameters$Kelvin))
+      S$Table_Day$Tcan_Coffee[i]=
+        S$Table_Day$TairCanopy[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
+        (S$Met_c$rho[i]*S$Parameters$Cp*
+           GBCANMS(WIND = S$Table_Day$WindSpeed_Coffee[i], ZHT = S$Parameters$ZHT,
+                   TREEH = max(S$Table_Day$Height_Tree[i],
+                               S$Parameters$Height_Coffee))$Canopy*CMOLAR)
 
 
-      S$Table_Day$Diff_T[i]=
-        (S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
-        (S$Met_c$rho[i]*S$Parameters$Cp*S$Table_Day$Ga[i])
-
-      S$Table_Day$Tcan_Coffee[i]= S$Met_c$Tair[i]+S$Table_Day$Diff_T[i]
 
     }
     list(Table_Day= S$Table_Day)

@@ -15,7 +15,7 @@
 #' \item{H2OMW}{Conversion factor from kg to mol for H2O (kg mol-1)}
 #' \item{W_umol}{Conversion factor from watt to micromole for H2O (W umol-1)}
 #' \item{\eqn{\lambda} (lambda)}{Latent heat of vaporization (MJ kgH2O-1)}
-#'
+#' \item{cl}{Drag coefficient per unit leaf area (m s-1)}
 #'
 #' @note Values are partly burrowed from \code{\link[bigleaf]{bigleaf.constants}}
 #'
@@ -37,6 +37,7 @@ Constants= function(){
     sigma     = 5.670367e-08,
     H2OMW     = 18.e-3,
     W_umol    = 4.57,
-    lambda    =2.45
+    lambda    = 2.45,
+    cl        = 0.4
     )
 }

@@ -55,6 +55,9 @@
 #'
 #' @author R. Vezy; O. Roupsard
 #'
+#' @importFrom magrittr "%>%"
+#' @importFrom dplyr group_by summarise mutate ungroup transmute
+#'
 #' @export
 Meteorology= function(file=NULL, Period=NULL,
                       Parameters= Import_Parameters()){
