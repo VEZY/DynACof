@@ -4,7 +4,9 @@
 \alias{GetWind}
 \title{Get the average wind speed at center of canopy layer}
 \usage{
-GetWind(Wind, LAI_lay, LAI_abv, extwind = 0)
+GetWind(Wind, LAI_lay, LAI_abv, extwind = 0, H_canopy, ZHT, Z0 = H_canopy *
+  0.1, ZPD = H_canopy * 0.75, alpha = 1.5, ZW = ZPD + alpha * (H_canopy -
+  ZPD), vonkarman = Constants()$vonkarman)
 }
 \arguments{
 \item{Wind}{Above canopy wind speed (m s-1)}
@@ -14,25 +16,52 @@ GetWind(Wind, LAI_lay, LAI_abv, extwind = 0)
 \item{LAI_abv}{Cumulated leaf area index above the layer (m2 leaves m-2 soil)}
 
 \item{extwind}{Extinction coefficient. Default: \code{0}, no extinction.}
+
+\item{H_canopy}{Average canopy height of the taller crop (m)}
+
+\item{ZHT}{Wind measurement height (m)}
+
+\item{Z0}{Roughness length (m). Default: \code{0.1*TREEH}}
+
+\item{ZPD}{Zero-plane displacement (m), Default: \code{0.75*TREEH}}
+
+\item{alpha}{Constant for diffusivity at top canopy. Default: \code{1.5} following
+Van de Griend et al (1989).}
+
+\item{ZW}{Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}}
+
+\item{vonkarman}{Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.}
 }
 \value{
 \item{WindLay}{The winspeed at the center of the layer (m s-1)}
 }
 \description{
-Calculate the wind speed decrease with increasing canopy depth using an
-             exponential extinction coefficient and a cumulated LAI above the target point.
+Calculate the wind speed decrease in two steps:
+\enumerate{
+  \item Decrease the measured wind speed from measurement height until top of the canopy
+        using the formulation of Van de Griend and Van Boxel (1989)
+  \item Decrease wind speed further with increasing canopy depth using an exponential
+        extinction coefficient and a cumulated LAI above the target point.
+}
 }
 \details{
-As the function computes the average wind speed at the center of the layer, it uses
-         the \code{LAI_lay} parameter to add half of the target layer to the cumulated LAI above:
-         \deqn{WindLay=Wind*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}}{
-         WindLay= Wind*e(-extwind*(LAI_abv+LAI_lay/2)}
+As the function computes the average wind speed at the center of the canopy layer, it
+         uses the \code{LAI_lay} parameter to add half of the target layer to the cumulated LAI
+         above:
+         \deqn{WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}}{
+         WindLay= Wh*e(-extwind*(LAI_abv+LAI_lay/2)}
+         with \code{Wh} the wind speed at top of the canopy.
+         Note: the \code{alpha} parameter can also be computed as:
+         \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
 }
 \examples{
 # Windspeed in a coffee layer managed in agroforestry system
-GetWind(Wind=3,LAI_lay=4,LAI_abv=0.5,extwind= 0.58)
+GetWind(Wind=3,LAI_lay=4,LAI_abv=0.3,extwind= 0.58,H_canopy = 24,ZHT = 25)
 
 }
 \references{
-\href{https://maespa.github.io}{MAESPA model}
+Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
+            with a multilayer canopy representation for remote sensing purposes. Water
+            Resources Research, 1989. 25(5): p. 949-971.
+            Part of the code is taken from the \href{https://maespa.github.io}{MAESPA model}.
 }

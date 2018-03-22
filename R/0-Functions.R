@@ -1605,6 +1605,8 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
 #' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
 #'                  Van de Griend et al (1989).
 #' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
+#' @param LAI       Leaf area index of the upper layer (m2 leaf m-2 soil)
+#' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
 #' @details \code{alpha} can also be computed as:
@@ -1614,29 +1616,51 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
 #'          where \code{r1}, \code{r2} and \code{r3} are the aerodynamic resistances of the inertial
 #'          sublayer, the roughness sublayer and the top layer of the canopy respectively. Because
 #'          wind speed measurements are more often made directly in the roughness sublayer, the
-#'          resistance in the inertial sublayer \code{r1} is set to \code{0} though.
+#'          resistance in the inertial sublayer \code{r1} is set to \code{0} though. \code{r2} and
+#'          \code{r3} are computed using the equation 43 of Van de Griend and Van Boxel (refer to
+#'          the pdf version of the help file for Latex rendering) :
+#'          \deqn{r2=\int_{zh}^{zw}\frac{1}{K''}}{r2= Integral{zh,zw}(1/K'')dz}
+#'          with \deqn{K''= kU_*(z_w-d)}{K''= k x Ustar x (zw-d)}.
+#'          And:
+#'          \deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{zh,zw}(1/K''')dz}
+#'          with \deqn{K'''= U_z\frac{K_h}{U_h}}{K'''= Uz x (Kh/Uh)}.
 #'
+#'          Integration of \code{r2} and \code{r3} integral equations give:
+#'          \deqn{\frac{(\ln(ZPD-ZW)^2-\ln(ZPD-Z2)^2)}{(2kU_*)}}{
+#'          r2= (log((ZPD-ZW)^2)-log((ZPD-Z2)^2))/(2*vonkarman*Ustar)}
+#'          simplified in:
+#'          \deqn{r2= \frac{1}{kU_*}\ln(\frac{ZPD-ZW}{ZPD-Z2})}{r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z2))}
+#'          and   \deqn{r3= \frac{Uh}{Kh}\ln(\frac{Uh}{U_{interlayer}})}{r3= (Uh/Kh)*log(Uh/U_interlayer)}
 #' @return \item{G_bulk}{The bulk aerodynamic conductance (m s-1)}
 #'
 #' @references Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
 #'             with a multilayer canopy representation for remote sensing purposes. Water
 #'             Resources Research, 1989. 25(5): p. 949-971.
 #'
+#' @seealso \code{\link{G_interlay}} and \code{\link{GetWind}}, which is used internaly.
+#'
 #' @examples
 #' # The bulk aerodynamic conductance for a coffee plantation managed in agroforestry system:
-#' G_bulk(Wind=3,ZHT=25,Z1= site()$Height_Coffee,Z2=24)
+#' G_bulk(Wind=3,ZHT=25,Z1= site()$Height_Coffee,Z2=24,LAI = 0.5,extwind = 0.58)
 #'
 #' @export
 G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),
-                 vonkarman=Constants()$vonkarman){
+                 LAI,extwind=0,vonkarman=Constants()$vonkarman){
 
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   Kh= alpha*vonkarman*Ustar*(Z2-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
   Uh= Uw-(Ustar/vonkarman)*(1-((Z2-ZPD)/(ZW-ZPD)))
   r1= 0
-  r2= (log((ZPD-ZW)^2)-log((ZPD-Z2)^2))/(2*vonkarman*Ustar)
-  r3= (Uh/Kh)*log(Z2/((Z2+Z1)/2))
+  # r2= (log((ZPD-ZW)^2)-log((ZPD-Z2)^2))/(2*vonkarman*Ustar)
+  r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z2))
+  # r2= (1/(vonkarman*Ustar))*((ZW-Z2)/(ZW-ZPD)) # this equation is found in Van de Griend
+  # but it is wrong.
+
+  U_inter= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI,extwind= extwind,
+                   H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+
+  r3= (Uh/Kh)*log(Uh/U_inter)
   ga_bulk= 1/(r1 + r2 +r3)
 
   return(ga_bulk)
@@ -1666,21 +1690,26 @@ G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2
 
 #' @details \code{alpha} can also be computed as:
 #'          \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
-#'
+#'          The aerodynamic conductance between canopy layers is computed as:
+#'          \deqn{g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}}{g_af= 1/((Uh/Kh)*log(U_mid/U_inter))}
+#'          where \eqn{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
+#'          \eqn{U_inter} is the wind speed at height between the two canopy layers.
 #' @return \item{g_af}{The aerodynamic conductance of the air between two canopy layers (m s-1)}
 #'
 #' @references Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
 #'             with a multilayer canopy representation for remote sensing purposes. Water
 #'             Resources Research, 1989. 25(5): p. 949-971.
 #'
+#' @seealso \code{\link{G_bulk}} and \code{\link{GetWind}}, which is used internaly.
+#'
 #' @examples
 #' # G_af for a coffee plantation managed in agroforestry system:
-#' G_interlay(Wind=3,ZHT=25,Z1= site()$Height_Coffee,Z2=24,LAI= 0.5,extwind=0.58)
+#' G_interlay(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z2=24,LAI= 0.5,extwind=0.58)
 #'
 #'
 #' @export
 G_interlay= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),LAI,
-                     vonkarman=Constants()$vonkarman,extwind=0){
+                     extwind=0,vonkarman=Constants()$vonkarman){
 
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   Kh= alpha*vonkarman*Ustar*(Z2-ZPD)

@@ -20,7 +20,7 @@ GBCANMS(WIND, ZHT, TREEH, Z0 = TREEH * 0.1, ZPD = TREEH * 0.75,
 
 \item{GBCANMS1MIN}{Minimum allowed atmosphere to canopy conductance (mol m-2 s-1), default to 0.0123}
 
-\item{VONKARMAN}{Con Karman constant, default to \code{Constants()$vonkarman}, 0.41.}
+\item{VONKARMAN}{Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.}
 }
 \value{
 A list of three :
