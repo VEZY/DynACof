@@ -431,8 +431,6 @@ Shade.Tree= function(S,i){
             H_canopy = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
             ZHT = S$Parameters$ZHT)
 
-  CMOLAR= (S$Met_c$Pressure[i]*100) / (S$Parameters$Rgas * (S$Met_c$Tair[i]+S$Parameters$Kelvin))
-
   S$Table_Day$TairCanopy_Tree[i]=
     S$Met_c$Tair[i]+(S$Table_Day$H_Tree[i]*Parameters$MJ_to_W)/
     (S$Met_c$rho[i]*S$Parameters$Cp*
@@ -441,6 +439,19 @@ Shade.Tree= function(S,i){
               Z2 = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]]))
   # NB : using WindSpeed and not WindSpeed_Tree because wind extinction is already
   # computed in G_bulk (until top of canopy).
+
+  S$Table_Day$Tleaf_Tree[i]=
+    S$Met_c$Tair[i]+(S$Table_Day$H_Tree[i]*Parameters$MJ_to_W)/
+    (S$Met_c$rho[i]*S$Parameters$Cp*
+       1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                   Z1 = S$Parameters$Height_Coffee,
+                   Z2 = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]])+
+            1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf_Tree,
+                   LAI_lay=S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                   LAI_abv=0,ZHT = S$Parameters$ZHT,Z2 = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],extwind= S$Parameters$extwind)
+       ))
+
+
 
   #GPP
   S$Table_Day$GPP_Tree[i]= S$Table_Day$lue_Tree[i]*S$Table_Day$APAR_Tree[i]
@@ -1593,8 +1604,9 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
 
 #' Bulk aerodynamic conductance
 #'
-#' @description Compute the aerodynamic conductance above the canopy following
-#'              Van de Griend and Van Boxel (1989).
+#' @description Compute the aerodynamic conductance for sensible and
+#'              latent heat above the canopy following Van de Griend and
+#'              Van Boxel (1989).
 #'
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
@@ -1656,8 +1668,7 @@ G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2
   r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z2))
   # r2= (1/(vonkarman*Ustar))*((ZW-Z2)/(ZW-ZPD)) # this equation is found in Van de Griend
   # but it is wrong.
-
-  U_inter= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI,extwind= extwind,
+  U_inter= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI/2,extwind= extwind,
                    H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
 
   r3= (Uh/Kh)*log(Uh/U_inter)
@@ -1671,10 +1682,11 @@ G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2
 
 
 
-#' Aerodynamic conductance between layers of canopy
+#' Canopy layer to canopy layer aerodynamic conductance
 #'
-#' @description Compute the aerodynamic conductance between canopy layers
-#'              following Van de Griend and Van Boxel (1989).
+#' @description Compute the aerodynamic conductance for sensible and
+#'              latent heat between canopy layers following Van de Griend
+#'              and Van Boxel (1989).
 #'
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
@@ -1685,15 +1697,20 @@ G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2
 #' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
 #'                  Van de Griend et al (1989).
 #' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
-#' @param LAI       Leaf area index of the upper layer (m2 leaf m-2 soil).
+#' @param LAI_top   Leaf area index of the upper layer (m2 leaf m-2 soil).
+#' @param LAI_bot   Leaf area index of the layer below the upper layer (m2 leaf m-2 soil).
+#' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
 #' @details \code{alpha} can also be computed as:
 #'          \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
 #'          The aerodynamic conductance between canopy layers is computed as:
 #'          \deqn{g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}}{g_af= 1/((Uh/Kh)*log(U_mid/U_inter))}
-#'          where \eqn{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
-#'          \eqn{U_inter} is the wind speed at height between the two canopy layers.
+#'          where usually \eqn{U_mid} is the wind speed at median cumulated LAI between
+#'          the top and the soil, and \eqn{U_inter} the wind speed at height between
+#'          the two canopy layers. In this function, \eqn{U_mid} and \eqn{U_inter} are computed
+#'          relative to the leaf area instead of the height of the vegetation layers.
+#'
 #' @return \item{g_af}{The aerodynamic conductance of the air between two canopy layers (m s-1)}
 #'
 #' @references Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
@@ -1704,27 +1721,211 @@ G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2
 #'
 #' @examples
 #' # G_af for a coffee plantation managed in agroforestry system:
-#' G_interlay(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z2=24,LAI= 0.5,extwind=0.58)
+#' G_interlay(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z2=24,
+#'  LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
 #'
 #'
 #' @export
-G_interlay= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),LAI,
-                     extwind=0,vonkarman=Constants()$vonkarman){
+G_interlay= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),
+                     LAI_top,LAI_bot,extwind=0,vonkarman=Constants()$vonkarman){
 
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   Kh= alpha*vonkarman*Ustar*(Z2-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
   Uh= Uw-(Ustar/vonkarman)*(1-((Z2-ZPD)/(ZW-ZPD)))
-
-  U_inter= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI,extwind= extwind,
+  # U_inter is computed using LAI instead of height, so (z1+z2)/2 become
+  # LAI_top/2
+  U_inter= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI_top/2,extwind= extwind,
                    H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
-  # Taking U(Z2/2) as the wind speed at the middle of the upper layer LAI (instead of
-  # the mid height of the upper layer)
-  U_mid= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI/2,extwind= extwind,
+  # U_mid is computed using LAI instead of height, so z2/2 become
+  # (LAI_top+LAI_bot)/2, (LAI_top+LAI_bot) for top layer.
+  U_mid= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= (LAI_top+LAI_bot)/2,extwind= extwind,
                  H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
 
-  g_af= 1/((Uh/Kh)*log(U_mid/U_inter))
+  g_af= 1/((Uh/Kh)*log(U_inter/U_mid))
 
   return(g_af)
 }
 
+
+#' Canopy to soil aerodynamic conductance
+#'
+#' @description Compute the aerodynamic conductance for sensible and
+#'              latent heat between the center of the lowest canopy layer
+#'              and the soil surface following Van de Griend and Van Boxel (1989).
+#'
+#' @param Wind      Average daily wind speed above canopy (m s-1)
+#' @param ZHT       Wind measurement height (m)
+#' @param Z1        Average canopy height of the shorter crop (m)
+#' @param Z2        Average canopy height of the taller crop (m)
+#' @param Z0        Roughness length (m). Default: \code{0.1*TREEH}
+#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*TREEH}
+#' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
+#'                  Van de Griend et al (1989).
+#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
+#' @param LAI_top   Leaf area index of the upper layer (m2 leaf m-2 soil).
+#' @param LAI_bot   Leaf area index of the layer below the upper layer (m2 leaf m-2 soil).
+#' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
+#' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
+
+#' @details \code{alpha} can also be computed as:
+#'          \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
+#'          The aerodynamic conductance between the lowest canopy layer and the soil
+#'          is computed as:
+#'          \deqn{g_{a0}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{0})}}{g_a0= 1/((Uh/Kh)*log(U_mid/U_0))}
+#'          where \eqn{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
+#'          \eqn{U_0} the wind speed at soil surface.
+#' @return \item{g_a0}{The aerodynamic conductance of the air between the lowest canopy layer
+#'                     and the soil surface (m s-1)}
+#'
+#' @references Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
+#'             with a multilayer canopy representation for remote sensing purposes. Water
+#'             Resources Research, 1989. 25(5): p. 949-971.
+#'
+#' @seealso \code{\link{G_bulk}} and \code{\link{GetWind}}, which is used internaly.
+#'
+#' @examples
+#' # G_a0 for a coffee plantation managed in agroforestry system:
+#' G_soilcan(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z2=24,
+#'  LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
+#'
+#' @export
+G_soilcan= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),
+                     LAI_top,LAI_bot,extwind=0,vonkarman=Constants()$vonkarman){
+  Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
+  Kh= alpha*vonkarman*Ustar*(Z2-ZPD)
+  Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
+  Uh= Uw-(Ustar/vonkarman)*(1-((Z2-ZPD)/(ZW-ZPD)))
+  U_mid= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= (LAI_top+LAI_bot)/2,extwind= extwind,
+                 H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+  U_0= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI_top+LAI_bot,extwind= extwind,
+               H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+
+  g_a0= 1/((Uh/Kh)*log(U_mid/U_0))
+
+  return(g_a0)
+}
+
+
+
+#' Leaf boundary layer conductance for heat
+#'
+#' @description Compute the bulk leaf boundary layer conductance for heat using
+#'              the wind speed, the leaf dimension, and leaf area distribution
+#'              following Jones (1992) or Leuning et al. (1995).
+#'
+#' @param Wind        Average daily wind speed above canopy (m s-1)
+#' @param wleaf       Average leaf width (m)
+#' @param LAI_lay     Leaf area index of the layer (m2 leaves m-2 soil)
+#' @param LAI_abv     Cumulated leaf area index above the layer (m2 leaves m-2 soil)
+#' @param extwind     Extinction coefficient. Default: \code{0}, no extinction.
+#' @param Z2          Average canopy height of the taller crop (m)
+#' @param ZHT         Wind measurement height (m)
+#' @param Z0          Roughness length (m). Default: \code{0.1*TREEH}
+#' @param ZPD         Zero-plane displacement (m), Default: \code{0.75*TREEH}
+#' @param alpha       Constant for diffusivity at top canopy. Default: \code{1.5} following
+#'                    Van de Griend et al (1989).
+#' @param ZW          Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
+#' @param Tleaf       Leaf temperature (deg C). Only needed if \code{formulation="Leuning_1995"}
+#' @param Tair        Canopy air temperature (deg C). Only needed if \code{formulation="Leuning_1995"}
+#' @param Dheat       Molecular diffusivity for heat (m2 s-1). Default to \code{Constants()$Dheat}
+#' @param formulation The formulation used to compute \eqn{Gb_h}
+
+#' @details The leaf boundary layer conductance for heat can be transformed into leaf boundary
+#'          layer conductance for water vapour as follow:
+#'          \deqn{Gb_w= 1.075*gb_h}
+#'          Note that \eqn{Gb_w} should be doubled for amphistomatous plants (stomata on
+#'          both sides of the leaves).
+#'
+#' @return \item{Gb}{The leaf boundary layer conductance for heat (m s-1)}
+#'
+#' @references \itemize{
+#'   \item Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration:
+#'         scaling from leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
+#'   \item Mahat, V., D.G. Tarboton, and N.P. Molotch, Testing above‐ and below‐canopy represetations
+#'         of turbulent fluxes in an energy balance snowmelt model. Water Resources Research, 2013.
+#'         49(2): p. 1107-1122.
+#' }
+#'
+#' @seealso \code{\link{G_bulk}}, \code{\link{G_soilcan}}, \code{\link{G_interlay}} and
+#'          \code{\link{GetWind}}, which is used internaly.
+#'
+#' @examples
+#' # Gb for a coffee plantation managed in agroforestry system:
+#' Gb_h(Wind=3,wleaf=0.068,LAI_lay=4,LAI_abv=0.5,ZHT=25,Z2=24,extwind=0.58)
+#'
+#' @export
+Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z2,ZHT,
+               Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),
+               Tleaf,Tair,Dheat=Constants()$Dheat,
+               formulation=c("Jones_1992","Leuning_1995")){
+  # Jones used in Mahat et al. 2013 :
+  # Mahat, V., D.G. Tarboton, and N.P. Molotch, Testing above‐ and below‐canopy represetations
+  # of turbulent fluxes in an energy balance snowmelt model. Water Resources Research, 2013. 49(2): p. 1107-1122.
+  formulation= match.arg(formulation)
+  U_z= GetWind(Wind= Wind,LAI_lay= LAI_lay, LAI_abv= LAI_abv,extwind= extwind,
+               H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+
+  if(formulation=="Jones_1992"){
+    Gb= 0.01*sqrt(U_z/wleaf)
+    # Gb= (0.02/extwind)*sqrt(U_h/wleaf)*(1-exp(-extwind/2)) # integrated over the profile
+  }else{
+    # Leaf boundary layer conductance for heat under forced convection:
+    GBHFORCED = 0.003 * sqrt(U_z/wleaf)
+    # Boundary layer conductance for heat - single sided, free convection:
+    GRASHOF = 1.6E8 * abs(Tleaf-Tair) * (wleaf**3.)
+    GBHFREE = 0.5 * Dheat * (GRASHOF**0.25) / wleaf
+    Gb= 1/(1/GBHFREE)+(1/GBHFORCED)
+  }
+
+  return(Gb)
+}
+
+
+
+#' Leaf boundary layer conductance for heat under forced convection
+#'
+#' @description Compute the boundary layer conductance for heat - single sided, forced convection
+#'              using air temperature, pressure, wind speed, and the leaf width.
+#'
+#' @param Tair        Average daily air temperature (celsius degree)
+#' @param Pressure    Atmospheric pressure (hPa)
+#' @param WindSpeed   Wind speed (m s-1)
+#' @param wleaf       Leaf width (m)
+
+#' @details
+#' @return \item{\eqn{Gb_h}}{Leaf boundary layer conductance for heat under forced convection (mol m-2 s-1)}
+#'
+#' @references Leuning et al (1995) PC&E 18:1183-1200 Eqn E1
+#'
+#' @examples
+#' # Daily net radiation on january 1st at latitude 9 N :
+#' Rad_net(DOY= 1,RAD= 5,Tair= 13.9,VPD=1.05,Latitude=9,Elevation=1000,albedo=0.146)
+#'
+#' @export
+GBHFORCED= function(Tair,Pressure,WindSpeed,wleaf= 0.068,Parameters=Constants()){
+  # Boundary layer conductance for heat - single sided, forced convection
+  # in mol m-2 s-1
+  # See Leuning et al (1995) PC&E 18:1183-1200 Eqn E1
+  #**********************************************************************
+  CMOLAR = (Pressure*100) / (Parameters$Rgas*(Tair+Parameters$Kelvin))
+  GBHFORCED = 0.003 * sqrt(WindSpeed/wleaf) * CMOLAR
+
+  return(GBHFORCED)
+}
+
+
+
+GBHFREE= function(Tair,Tleaf,Pressure,wleaf= 0.068,Parameters=Constants()){
+  # Boundary layer conductance for heat - single sided, free convection
+  # in mol m-2 s-1
+  # See Leuning et al (1995) PC&E 18:1183-1200 Eqns E3 & E4
+  #**********************************************************************
+  DHEAT = 21.5e-6     # molecular diffusivity for heat
+  CMOLAR = (Pressure*100)/(Parameters$Rgas*(Tair+Parameters$Kelvin))
+  GRASHOF = 1.6E8 * abs(TLEAF-TAIR) * (WLEAF**3.) # Grashof number
+  GBHFREE = 0.5 * DHEAT * (GRASHOF**0.25) / WLEAF * CMOLAR
+  GBHFREE[(TLEAF-TAIR)==0]=0
+
+  return(GBHFREE)
+}
