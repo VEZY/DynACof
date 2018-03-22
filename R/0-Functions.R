@@ -1623,7 +1623,7 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
 #'             Resources Research, 1989. 25(5): p. 949-971.
 #'
 #' @examples
-#' # The bulk aerodynamic conductance for a coffee pantation managed in agroforestry system:
+#' # The bulk aerodynamic conductance for a coffee plantation managed in agroforestry system:
 #' G_bulk(Wind=3,ZHT=25,Z1= site()$Height_Coffee,Z2=24)
 #'
 #' @export
@@ -1641,3 +1641,61 @@ G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2
 
   return(ga_bulk)
 }
+
+
+
+
+
+
+#' Aerodynamic conductance between layers of canopy
+#'
+#' @description Compute the aerodynamic conductance between canopy layers
+#'              following Van de Griend and Van Boxel (1989).
+#'
+#' @param Wind      Average daily wind speed above canopy (m s-1)
+#' @param ZHT       Wind measurement height (m)
+#' @param Z1        Average canopy height of the shorter crop (m)
+#' @param Z2        Average canopy height of the taller crop (m)
+#' @param Z0        Roughness length (m). Default: \code{0.1*TREEH}
+#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*TREEH}
+#' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
+#'                  Van de Griend et al (1989).
+#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
+#' @param LAI       Leaf area index of the upper layer (m2 leaf m-2 soil).
+#' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
+
+#' @details \code{alpha} can also be computed as:
+#'          \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
+#'
+#' @return \item{g_af}{The aerodynamic conductance of the air between two canopy layers (m s-1)}
+#'
+#' @references Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
+#'             with a multilayer canopy representation for remote sensing purposes. Water
+#'             Resources Research, 1989. 25(5): p. 949-971.
+#'
+#' @examples
+#' # G_af for a coffee plantation managed in agroforestry system:
+#' G_interlay(Wind=3,ZHT=25,Z1= site()$Height_Coffee,Z2=24,LAI= 0.5,extwind=0.58)
+#'
+#'
+#' @export
+G_interlay= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),LAI,
+                     vonkarman=Constants()$vonkarman,extwind=0){
+
+  Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
+  Kh= alpha*vonkarman*Ustar*(Z2-ZPD)
+  Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
+  Uh= Uw-(Ustar/vonkarman)*(1-((Z2-ZPD)/(ZW-ZPD)))
+
+  U_inter= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI,extwind= extwind,
+                   H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+  # Taking U(Z2/2) as the wind speed at the middle of the upper layer LAI (instead of
+  # the mid height of the upper layer)
+  U_mid= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI/2,extwind= extwind,
+                 H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+
+  g_af= 1/((Uh/Kh)*log(U_mid/U_inter))
+
+  return(g_af)
+}
+
