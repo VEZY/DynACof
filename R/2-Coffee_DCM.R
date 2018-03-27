@@ -12,11 +12,16 @@
 #' @param Inpath   Path to the input parameter list folder, Default: \code{"1-Input/Default"}
 #' @param Outpath  Path pointing to the folder were the results will be writen, Default: \code{=Inpath}
 #' @param Simulation_Name Character name of the simulation file name if \code{WriteIt=T}. Default: \code{DynACof}
-#' @param Site     Site parameters file name, see details. Default: \code{'1-Site.R'}
-#' @param Meteo    Meteo parameters file name, see details. Default: \code{'2-Meteorology.txt'}
-#' @param Soil     Soil parameters file name, see details. Default: \code{'3-Soil.R'}
-#' @param Coffee   Coffee parameters file name, see details. Default: \code{'4-Coffee.R'}
-#' @param Tree     Shade tree parameters file name, see details. Default: \code{NULL}
+#' @param FileName A list of input file names :
+#' \describe{
+#'   \item{Site}{Site parameters file name, see details. Default: \code{'1-Site.R'}}
+#'   \item{Meteo}{Meteo parameters file name, see details. Default: \code{'2-Meteorology.txt'}}
+#'   \item{Soil}{Soil parameters file name, see details. Default: \code{'3-Soil.R'}}
+#'   \item{Coffee}{Coffee parameters file name, see details. Default: \code{'4-Coffee.R'}}
+#'   \item{Tree}{Shade tree parameters file name, see details. Default: \code{NULL}}
+#' }
+#' Default input filenames are provided with the package so the model can run with no input parameter files at all.
+#'
 #' @return A list containing three objects :
 #' \itemize{
 #'   \item A data.frame of the simulation outputs at daily time-step:  #' \tabular{llll}{
@@ -179,18 +184,18 @@
 #'
 DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
                   output_f=".RData",Inpath=NULL,Outpath=Inpath,Simulation_Name="DynACof",
-                  Site="1-Site.R",Meteo="2-Meteorology.txt",Soil="3-Soil.R",
-                  Coffee="4-Coffee.R",Tree=NULL){
+                  FileName= list(Site="1-Site.R",Meteo="2-Meteorology.txt",Soil="3-Soil.R",
+                                 Coffee="4-Coffee.R",Tree=NULL)){
 
 
   # Importing the parameters ------------------------------------------------
 
-  Parameters= Import_Parameters(path = Inpath, Names = list(Site,Soil,Coffee,Tree))
+  Parameters= Import_Parameters(path = Inpath, Names= FileName[-grep("Meteo",FileName)])
 
   # Importing the meteo -----------------------------------------------------
 
-  Meteo= Meteorology(file=Inpath,Period= Period,Parameters= Parameters)
-
+  Meteo= Meteorology(file= file.path(Inpath,FileName$Meteo),Period= Period,Parameters= Parameters)
+  Parameters$files$Meteorology= file.path(Inpath,FileName$Meteo) # save the meteo file path
   ########## Coffee plant Cycles ##########
   # Number of cycles to do over the period (given by the Meteo file):
   NCycles= ceiling((max(Meteo$year)-min(Meteo$year))/Parameters$AgeCoffeeMax)

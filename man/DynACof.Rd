@@ -6,9 +6,8 @@
 \usage{
 DynACof(Period = NULL, WriteIt = F, returnIt = F, ...,
   output_f = ".RData", Inpath = NULL, Outpath = Inpath,
-  Simulation_Name = "DynACof", Site = "1-Site.R",
-  Meteo = "2-Meteorology.txt", Soil = "3-Soil.R", Coffee = "4-Coffee.R",
-  Tree = NULL)
+  Simulation_Name = "DynACof", FileName = list(Site = "1-Site.R", Meteo =
+  "2-Meteorology.txt", Soil = "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}
@@ -28,15 +27,15 @@ DynACof(Period = NULL, WriteIt = F, returnIt = F, ...,
 
 \item{Simulation_Name}{Character name of the simulation file name if \code{WriteIt=T}. Default: \code{DynACof}}
 
-\item{Site}{Site parameters file name, see details. Default: \code{'1-Site.R'}}
-
-\item{Meteo}{Meteo parameters file name, see details. Default: \code{'2-Meteorology.txt'}}
-
-\item{Soil}{Soil parameters file name, see details. Default: \code{'3-Soil.R'}}
-
-\item{Coffee}{Coffee parameters file name, see details. Default: \code{'4-Coffee.R'}}
-
-\item{Tree}{Shade tree parameters file name, see details. Default: \code{NULL}}
+\item{FileName}{A list of input file names :
+\describe{
+  \item{Site}{Site parameters file name, see details. Default: \code{'1-Site.R'}}
+  \item{Meteo}{Meteo parameters file name, see details. Default: \code{'2-Meteorology.txt'}}
+  \item{Soil}{Soil parameters file name, see details. Default: \code{'3-Soil.R'}}
+  \item{Coffee}{Coffee parameters file name, see details. Default: \code{'4-Coffee.R'}}
+  \item{Tree}{Shade tree parameters file name, see details. Default: \code{NULL}}
+}
+Default input filenames are provided with the package so the model can run with no input parameter files at all.}
 }
 \value{
 A list containing three objects :
@@ -195,7 +194,7 @@ Almost all variables for coffee exist also for shade trees with a suffix
 \dontrun{
 if(interactive()){
  Sys.setenv(TZ="UTC")
- DynACof()
+ DynACof(WriteIt = T, Period= as.POSIXct(c("1979-01-01", "1982-01-01")),Outpath = "Results")
  }
 }
 }

@@ -20,10 +20,13 @@ Import the parameters from local files, or from default (from package data)
 }
 \details{
 For the full list of parameters and the format of the parameter files, see \code{\link{site}}.
+         The function return the parameter files path in the list, to access it, see example.
 }
 \examples{
 # Importing defaults:
 Parameters= Import_Parameters()
+# Parameters files path:
+Parameters$files
 
 }
 \seealso{
