@@ -9,3 +9,17 @@
 #'   the \code{\link{Meteorology}} function recommendantions.
 #'
 "Aquiares"
+
+#' Output variables
+#'
+#' Generic output variables from DynACof, with their units and brief description
+#'
+#' @format A data frame with three columns:
+#' \describe{
+#'   \item{Type}{Variable name}
+#'   \item{Unit}{unit of the variable}
+#'   \item{Definition}{a brief definition of the variable}
+#' }
+#' For the moment the model has 106 output variables.
+#'
+"varnames"

@@ -229,7 +229,7 @@ Init_Table_Day= function(S){
     S$Table_Day$H_tot=
     S$Table_Day$LE_tot=
     S$Table_Day$Diff_T=
-    S$Table_Day$Tcan_Coffee=
+    S$Table_Day$Tleaf_Coffee=
     S$Table_Day$WindSpeed_Coffee=
     S$Table_Day$TairCanopy=
     S$Table_Day$APAR_Dif=
@@ -425,30 +425,30 @@ Shade.Tree= function(S,i){
   S$Parameters$Metamodels(S,i)
   # Computing the air temperature in the shade tree layer:
 
-  S$Table_Day$WindSpeed_Tree[i]=
-    GetWind(Wind=S$Met_c$WindSpeed[i],LAI_lay=S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
-            LAI_abv=0,extwind= S$Parameters$extwind,
-            H_canopy = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
-            ZHT = S$Parameters$ZHT)
 
   S$Table_Day$TairCanopy_Tree[i]=
     S$Met_c$Tair[i]+(S$Table_Day$H_Tree[i]*Parameters$MJ_to_W)/
-    (S$Met_c$rho[i]*S$Parameters$Cp*
+    (bigleaf::air.density(S$Met_c$Tair[i],S$Met_c$Pressure[i]/10)*
+       S$Parameters$Cp*
        G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
               Z1 = S$Parameters$Height_Coffee,
-              Z2 = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]]))
+              Z_top = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]]))
   # NB : using WindSpeed and not WindSpeed_Tree because wind extinction is already
   # computed in G_bulk (until top of canopy).
 
   S$Table_Day$Tleaf_Tree[i]=
     S$Met_c$Tair[i]+(S$Table_Day$H_Tree[i]*Parameters$MJ_to_W)/
-    (S$Met_c$rho[i]*S$Parameters$Cp*
-       1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                   Z1 = S$Parameters$Height_Coffee,
-                   Z2 = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]])+
+    (bigleaf::air.density(S$Met_c$Tair[i],S$Met_c$Pressure[i]/10)*
+       S$Parameters$Cp*
+       1/(1/G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
+                   LAI= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                   extwind= S$Parameters$extwind,
+                   Z_top= S$Table_Day$Height_Tree[i-S$Zero_then_One[i]])+
             1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf_Tree,
-                   LAI_lay=S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
-                   LAI_abv=0,ZHT = S$Parameters$ZHT,Z2 = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],extwind= S$Parameters$extwind)
+                   LAI_lay= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                   LAI_abv= 0,ZHT = S$Parameters$ZHT,
+                   Z_top = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                   extwind= S$Parameters$extwind)
        ))
 
 
@@ -728,43 +728,27 @@ Shade.Tree= function(S,i){
 }
 
 
-write.results= function(FinalList,output=".RData",Simulation_Name= NULL,...){
-  if(is.null(Simulation_Name)){
-    Simulation_Name= gsub(" ","_",paste(FinalList$Parameters$Location,FinalList$Parameters$Species_ID,
-                                        FinalList$Parameters$StockingTree_treeha1,
-                                        paste(paste(names(unlist(FinalList$Climate)),
-                                                    unlist(FinalList$Climate), sep="="), collapse='_'),collapse="_"))
+write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath= "Outputs",...){
+
+  if(!is.null(Outpath)&&!dir.exists(file.path(Outpath))){
+    dir.create(file.path(Outpath))
   }
-  if(!dir.exists(file.path("3-Results/",Simulation_Name))){
-    dir.create(file.path("3-Results/",Simulation_Name))
-  }
+  if(is.null(Outpath)){Outpath="."}
   if(output!=".RData"){
     fwrite(FinalList$Table_Day,
-           paste0("3-Results/",Simulation_Name,"/Simulation_Output_",
-                  format(FinalList$Met_c$Date[1], '%m-%Y'), "_",
-                  format(tail(FinalList$Met_c$Date,1), '%m-%Y'),".csv"),
-           sep=";",row.names = F, col.names = TRUE, ...)
-    fwrite(FinalList$PerCohortFruitDemand,
-           paste0("3-Results/",Simulation_Name,"/PerCohortFruitDemand", "_",
-                  format(FinalList$Met_c$Date[1], '%m-%Y'), "_",
-                  format(tail(FinalList$Met_c$Date,1), '%m-%Y'),".csv"),
+           paste0(Outpath,"/",Simulation_Name,".csv"),
            sep=";",row.names = F, col.names = TRUE, ...)
     fwrite(FinalList$Met_c,
-           paste0("3-Results/",Simulation_Name,"/Met_c", "_",
-                  format(FinalList$Met_c$Date[1], '%m-%Y'), "_",
-                  format(tail(FinalList$Met_c$Date,1), '%m-%Y'),".csv"),
+           paste0(Outpath,"/",Simulation_Name,"_Meteorology.csv"),
            sep=";",row.names = F, col.names = TRUE, ...)
-    capture.output(FinalList$Parameters, file =  paste0("3-Results/",Simulation_Name,"/Parameters", "_",
-                                                        format(FinalList$Met_c$Date[1], '%m-%Y'), "_",
-                                                        format(tail(FinalList$Met_c$Date,1), '%m-%Y'),".txt"))
+    capture.output(FinalList$Parameters,
+                   file =  paste0(Outpath,"/",Simulation_Name,"_Parameters",".txt"))
   }else{
     S= FinalList
-    save(S,file = paste0("3-Results/",Simulation_Name,"/Simulation", "_",
-                         format(FinalList$Met_c$Date[1], '%m-%Y'), "_",
-                         format(tail(FinalList$Met_c$Date,1), '%m-%Y'),".RData"))
+    save(S,file = paste0(Outpath,"/",Simulation_Name,".RData"))
   }
 
-  cat("Simulation results saved in ", file.path(getwd(),"3-Results",Simulation_Name), "\n")
+  cat("Simulation results saved in ", file.path(getwd(),Outpath,Simulation_Name), "\n")
 }
 
 
@@ -1558,10 +1542,10 @@ rH.to.VPD <- function(rH,Tair){
 #' @param LAI_lay   Leaf area index of the layer (m2 leaves m-2 soil)
 #' @param LAI_abv   Cumulated leaf area index above the layer (m2 leaves m-2 soil)
 #' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
-#' @param H_canopy  Average canopy height of the taller crop (m)
+#' @param Z_top     Average canopy height of the taller crop (m)
 #' @param ZHT       Wind measurement height (m)
-#' @param Z0        Roughness length (m). Default: \code{0.1*TREEH}
-#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*TREEH}
+#' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
+#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
 #' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
 #'                  Van de Griend et al (1989).
 #' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
@@ -1584,16 +1568,16 @@ rH.to.VPD <- function(rH,Tair){
 #'
 #' @examples
 #' # Windspeed in a coffee layer managed in agroforestry system
-#' GetWind(Wind=3,LAI_lay=4,LAI_abv=0.3,extwind= 0.58,H_canopy = 24,ZHT = 25)
+#' GetWind(Wind=3,LAI_lay=4,LAI_abv=0.3,extwind= 0.58,Z_top = 24,ZHT = 25)
 #'
 #' @export
-GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
-                  ZPD=H_canopy*0.75,alpha=1.5,ZW=ZPD+alpha*(H_canopy-ZPD),
+GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
+                  ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                   vonkarman=Constants()$vonkarman){
 
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   # Wind at the top of the canopy:
-  Uh= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)-(Ustar/vonkarman)*(1-((H_canopy-ZPD)/(ZW-ZPD)))
+  Uh= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)-(Ustar/vonkarman)*(1-((Z_top-ZPD)/(ZW-ZPD)))
 
   LAI_abv = LAI_lay/2+LAI_abv
   WindLay= Uh*exp(-extwind*LAI_abv)
@@ -1610,19 +1594,18 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
 #'
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
-#' @param Z1        Average canopy height of the shorter crop (m)
-#' @param Z2        Average canopy height of the taller crop (m)
-#' @param Z0        Roughness length (m). Default: \code{0.1*TREEH}
-#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*TREEH}
+#' @param Z_top     Average canopy height of the taller crop (m)
+#' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
+#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
 #' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
 #'                  Van de Griend et al (1989).
-#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
+#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
 #' @param LAI       Leaf area index of the upper layer (m2 leaf m-2 soil)
 #' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
 #' @details \code{alpha} can also be computed as:
-#'          \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
+#'          \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
 #'          The bulk aerodynamic conductance \eqn{ga_bulk}{ga_bulk} is computed as follow:
 #'          \deqn{ga_bulk=\frac{1}{r1+r2+r3}}{ga_bulk= 1/(r1+r2+r3)}
 #'          where \code{r1}, \code{r2} and \code{r3} are the aerodynamic resistances of the inertial
@@ -1634,7 +1617,7 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
 #'          \deqn{r2=\int_{zh}^{zw}\frac{1}{K''}}{r2= Integral{zh,zw}(1/K'')dz}
 #'          with \deqn{K''= kU_*(z_w-d)}{K''= k x Ustar x (zw-d)}.
 #'          And:
-#'          \deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{zh,zw}(1/K''')dz}
+#'          \deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{z2+z1)/2,zh}(1/K''')dz}
 #'          with \deqn{K'''= U_z\frac{K_h}{U_h}}{K'''= Uz x (Kh/Uh)}.
 #'
 #'          Integration of \code{r2} and \code{r3} integral equations give:
@@ -1643,6 +1626,7 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
 #'          simplified in:
 #'          \deqn{r2= \frac{1}{kU_*}\ln(\frac{ZPD-ZW}{ZPD-Z2})}{r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z2))}
 #'          and   \deqn{r3= \frac{Uh}{Kh}\ln(\frac{Uh}{U_{interlayer}})}{r3= (Uh/Kh)*log(Uh/U_interlayer)}
+#'
 #' @return \item{G_bulk}{The bulk aerodynamic conductance (m s-1)}
 #'
 #' @references Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
@@ -1653,23 +1637,23 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,H_canopy,ZHT,Z0=H_canopy*0.1,
 #'
 #' @examples
 #' # The bulk aerodynamic conductance for a coffee plantation managed in agroforestry system:
-#' G_bulk(Wind=3,ZHT=25,Z1= site()$Height_Coffee,Z2=24,LAI = 0.5,extwind = 0.58)
+#' G_bulk(Wind=3,ZHT=25,Z_top=24,LAI = 0.5,extwind = 0.58)
 #'
 #' @export
-G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),
+G_bulk= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                  LAI,extwind=0,vonkarman=Constants()$vonkarman){
 
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
-  Kh= alpha*vonkarman*Ustar*(Z2-ZPD)
+  Kh= alpha*vonkarman*Ustar*(Z_top-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
-  Uh= Uw-(Ustar/vonkarman)*(1-((Z2-ZPD)/(ZW-ZPD)))
+  Uh= Uw-(Ustar/vonkarman)*(1-((Z_top-ZPD)/(ZW-ZPD)))
   r1= 0
-  # r2= (log((ZPD-ZW)^2)-log((ZPD-Z2)^2))/(2*vonkarman*Ustar)
-  r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z2))
-  # r2= (1/(vonkarman*Ustar))*((ZW-Z2)/(ZW-ZPD)) # this equation is found in Van de Griend
+  # r2= (log((ZPD-ZW)^2)-log((ZPD-Z_top)^2))/(2*vonkarman*Ustar)
+  r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z_top))
+  # r2= (1/(vonkarman*Ustar))*((ZW-Z_top)/(ZW-ZPD)) # this equation is found in Van de Griend
   # but it is wrong.
   U_inter= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI/2,extwind= extwind,
-                   H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+                   Z_top= Z_top, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
 
   r3= (Uh/Kh)*log(Uh/U_inter)
   ga_bulk= 1/(r1 + r2 +r3)
@@ -1690,20 +1674,19 @@ G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2
 #'
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
-#' @param Z1        Average canopy height of the shorter crop (m)
-#' @param Z2        Average canopy height of the taller crop (m)
-#' @param Z0        Roughness length (m). Default: \code{0.1*TREEH}
-#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*TREEH}
+#' @param Z_top     Average canopy height of the taller crop (m)
+#' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
+#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
 #' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
 #'                  Van de Griend et al (1989).
-#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
+#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
 #' @param LAI_top   Leaf area index of the upper layer (m2 leaf m-2 soil).
 #' @param LAI_bot   Leaf area index of the layer below the upper layer (m2 leaf m-2 soil).
 #' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
 #' @details \code{alpha} can also be computed as:
-#'          \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
+#'          \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
 #'          The aerodynamic conductance between canopy layers is computed as:
 #'          \deqn{g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}}{g_af= 1/((Uh/Kh)*log(U_mid/U_inter))}
 #'          where usually \eqn{U_mid} is the wind speed at median cumulated LAI between
@@ -1721,26 +1704,25 @@ G_bulk= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2
 #'
 #' @examples
 #' # G_af for a coffee plantation managed in agroforestry system:
-#' G_interlay(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z2=24,
-#'  LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
+#' G_interlay(Wind = 3,ZHT = 25,Z_top = 2,LAI_top = 0.5,LAI_bot = 4)
 #'
 #'
 #' @export
-G_interlay= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),
+G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                      LAI_top,LAI_bot,extwind=0,vonkarman=Constants()$vonkarman){
 
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
-  Kh= alpha*vonkarman*Ustar*(Z2-ZPD)
+  Kh= alpha*vonkarman*Ustar*(Z_top-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
-  Uh= Uw-(Ustar/vonkarman)*(1-((Z2-ZPD)/(ZW-ZPD)))
-  # U_inter is computed using LAI instead of height, so (z1+z2)/2 become
+  Uh= Uw-(Ustar/vonkarman)*(1-((Z_top-ZPD)/(ZW-ZPD)))
+  # U_inter is computed using LAI instead of height, so (z1+Z_top)/2 become
   # LAI_top/2
   U_inter= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI_top/2,extwind= extwind,
-                   H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
-  # U_mid is computed using LAI instead of height, so z2/2 become
+                   Z_top= Z_top, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+  # U_mid is computed using LAI instead of height, so Z_top/2 become
   # (LAI_top+LAI_bot)/2, (LAI_top+LAI_bot) for top layer.
   U_mid= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= (LAI_top+LAI_bot)/2,extwind= extwind,
-                 H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+                 Z_top= Z_top, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
 
   g_af= 1/((Uh/Kh)*log(U_inter/U_mid))
 
@@ -1756,20 +1738,19 @@ G_interlay= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha
 #'
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
-#' @param Z1        Average canopy height of the shorter crop (m)
-#' @param Z2        Average canopy height of the taller crop (m)
-#' @param Z0        Roughness length (m). Default: \code{0.1*TREEH}
-#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*TREEH}
+#' @param Z_top        Average canopy height of the taller crop (m)
+#' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
+#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
 #' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
 #'                  Van de Griend et al (1989).
-#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
+#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
 #' @param LAI_top   Leaf area index of the upper layer (m2 leaf m-2 soil).
 #' @param LAI_bot   Leaf area index of the layer below the upper layer (m2 leaf m-2 soil).
 #' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
 #' @details \code{alpha} can also be computed as:
-#'          \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
+#'          \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
 #'          The aerodynamic conductance between the lowest canopy layer and the soil
 #'          is computed as:
 #'          \deqn{g_{a0}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{0})}}{g_a0= 1/((Uh/Kh)*log(U_mid/U_0))}
@@ -1786,20 +1767,20 @@ G_interlay= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha
 #'
 #' @examples
 #' # G_a0 for a coffee plantation managed in agroforestry system:
-#' G_soilcan(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z2=24,
+#' G_soilcan(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z_top=24,
 #'  LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
 #'
 #' @export
-G_soilcan= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),
+G_soilcan= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                      LAI_top,LAI_bot,extwind=0,vonkarman=Constants()$vonkarman){
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
-  Kh= alpha*vonkarman*Ustar*(Z2-ZPD)
+  Kh= alpha*vonkarman*Ustar*(Z_top-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
-  Uh= Uw-(Ustar/vonkarman)*(1-((Z2-ZPD)/(ZW-ZPD)))
+  Uh= Uw-(Ustar/vonkarman)*(1-((Z_top-ZPD)/(ZW-ZPD)))
   U_mid= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= (LAI_top+LAI_bot)/2,extwind= extwind,
-                 H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+                 Z_top= Z_top, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
   U_0= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI_top+LAI_bot,extwind= extwind,
-               H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+               Z_top= Z_top, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
 
   g_a0= 1/((Uh/Kh)*log(U_mid/U_0))
 
@@ -1819,16 +1800,17 @@ G_soilcan= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*
 #' @param LAI_lay     Leaf area index of the layer (m2 leaves m-2 soil)
 #' @param LAI_abv     Cumulated leaf area index above the layer (m2 leaves m-2 soil)
 #' @param extwind     Extinction coefficient. Default: \code{0}, no extinction.
-#' @param Z2          Average canopy height of the taller crop (m)
+#' @param Z_top          Average canopy height of the taller crop (m)
 #' @param ZHT         Wind measurement height (m)
-#' @param Z0          Roughness length (m). Default: \code{0.1*TREEH}
-#' @param ZPD         Zero-plane displacement (m), Default: \code{0.75*TREEH}
+#' @param Z0          Roughness length (m). Default: \code{0.1*Z_top}
+#' @param ZPD         Zero-plane displacement (m), Default: \code{0.75*Z_top}
 #' @param alpha       Constant for diffusivity at top canopy. Default: \code{1.5} following
 #'                    Van de Griend et al (1989).
-#' @param ZW          Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
+#' @param ZW          Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
 #' @param Tleaf       Leaf temperature (deg C). Only needed if \code{formulation="Leuning_1995"}
 #' @param Tair        Canopy air temperature (deg C). Only needed if \code{formulation="Leuning_1995"}
-#' @param Dheat       Molecular diffusivity for heat (m2 s-1). Default to \code{Constants()$Dheat}
+#' @param Dheat       Molecular diffusivity for heat (m2 s-1). Default to \code{Constants()$Dheat}.
+#'                    Only needed if \code{formulation="Leuning_1995"}
 #' @param formulation The formulation used to compute \eqn{Gb_h}
 
 #' @details The leaf boundary layer conductance for heat can be transformed into leaf boundary
@@ -1852,30 +1834,23 @@ G_soilcan= function(Wind,ZHT,Z1,Z2,Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*
 #'
 #' @examples
 #' # Gb for a coffee plantation managed in agroforestry system:
-#' Gb_h(Wind=3,wleaf=0.068,LAI_lay=4,LAI_abv=0.5,ZHT=25,Z2=24,extwind=0.58)
+#' Gb_h(Wind=3,wleaf=0.068,LAI_lay=4,LAI_abv=0.5,ZHT=25,Z_top=24,extwind=0.58)
 #'
 #' @export
-Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z2,ZHT,
-               Z0=Z2*0.1,ZPD=Z2*0.75,alpha=1.5,ZW=ZPD+alpha*(Z2-ZPD),
+Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
+               Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                Tleaf,Tair,Dheat=Constants()$Dheat,
                formulation=c("Jones_1992","Leuning_1995")){
-  # Jones used in Mahat et al. 2013 :
-  # Mahat, V., D.G. Tarboton, and N.P. Molotch, Testing above‐ and below‐canopy represetations
-  # of turbulent fluxes in an energy balance snowmelt model. Water Resources Research, 2013. 49(2): p. 1107-1122.
   formulation= match.arg(formulation)
   U_z= GetWind(Wind= Wind,LAI_lay= LAI_lay, LAI_abv= LAI_abv,extwind= extwind,
-               H_canopy= Z2, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
+               Z_top= Z_top, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
 
   if(formulation=="Jones_1992"){
     Gb= 0.01*sqrt(U_z/wleaf)
     # Gb= (0.02/extwind)*sqrt(U_h/wleaf)*(1-exp(-extwind/2)) # integrated over the profile
   }else{
-    # Leaf boundary layer conductance for heat under forced convection:
-    GBHFORCED = 0.003 * sqrt(U_z/wleaf)
-    # Boundary layer conductance for heat - single sided, free convection:
-    GRASHOF = 1.6E8 * abs(Tleaf-Tair) * (wleaf**3.)
-    GBHFREE = 0.5 * Dheat * (GRASHOF**0.25) / wleaf
-    Gb= 1/(1/GBHFREE)+(1/GBHFORCED)
+    Gb= 1/(1/Gb_h_Free(Tair= Tair, Tleaf= Tleaf, wleaf= wleaf, Dheat= Dheat))+
+      (1/Gb_h_Forced(Wind = Wind, wleaf = wleaf))
   }
 
   return(Gb)
@@ -1883,49 +1858,47 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z2,ZHT,
 
 
 
-#' Leaf boundary layer conductance for heat under forced convection
+#' Leaf boundary layer conductance for heat under forced and free convection
 #'
-#' @description Compute the boundary layer conductance for heat - single sided, forced convection
-#'              using air temperature, pressure, wind speed, and the leaf width.
+#' @description Compute the boundary layer conductance for heat - single sided, forced or
+#'              free convection using the Leuning et al. (1995) equations.
 #'
-#' @param Tair        Average daily air temperature (celsius degree)
-#' @param Pressure    Atmospheric pressure (hPa)
-#' @param WindSpeed   Wind speed (m s-1)
-#' @param wleaf       Leaf width (m)
-
+#' @param Tair   Average daily air temperature (deg C)
+#' @param Tleaf  Average daily leaf temperature (deg C)
+#' @param Wind   Wind speed (m s-1). Default to \code{0.068}
+#' @param wleaf  Leaf width (m)
+#' @param Dheat  Molecular diffusivity for heat (m2 s-1). Default to: \code{Constants()$Dheat}.
+#'
+#' @aliases Gb_h_Forced Gb_h_Free
+#'
 #' @details
-#' @return \item{\eqn{Gb_h}}{Leaf boundary layer conductance for heat under forced convection (mol m-2 s-1)}
 #'
-#' @references Leuning et al (1995) PC&E 18:1183-1200 Eqn E1
+#' @return \item{\eqn{Gb_h_Forced}}{Leaf boundary layer conductance for heat under forced convection (m s-1)}
+#'         \item{\eqn{Gb_h_Free}}{Leaf boundary layer conductance for heat under free convection (m s-1)}
+#' @references Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration: scaling from
+#'             leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
+#'
+#' @seealso The \href{https://maespa.github.io/}{MAESPA model}, from which both functions are taken (FORTRAN code).
+#'          The function from which both are usually called internally: \code{\link{Gb_h}}
 #'
 #' @examples
-#' # Daily net radiation on january 1st at latitude 9 N :
-#' Rad_net(DOY= 1,RAD= 5,Tair= 13.9,VPD=1.05,Latitude=9,Elevation=1000,albedo=0.146)
+#' Gb_h_Forced(Wind=3)
+#' Gb_h_Free(Tair= 25,Tleaf= 26)
 #'
 #' @export
-GBHFORCED= function(Tair,Pressure,WindSpeed,wleaf= 0.068,Parameters=Constants()){
-  # Boundary layer conductance for heat - single sided, forced convection
-  # in mol m-2 s-1
-  # See Leuning et al (1995) PC&E 18:1183-1200 Eqn E1
-  #**********************************************************************
-  CMOLAR = (Pressure*100) / (Parameters$Rgas*(Tair+Parameters$Kelvin))
-  GBHFORCED = 0.003 * sqrt(WindSpeed/wleaf) * CMOLAR
+Gb_h_Forced= function(Wind,wleaf= 0.068){
+  GBHFORCED = 0.003 * sqrt(Wind/wleaf)
 
   return(GBHFORCED)
 }
 
 
-
-GBHFREE= function(Tair,Tleaf,Pressure,wleaf= 0.068,Parameters=Constants()){
-  # Boundary layer conductance for heat - single sided, free convection
-  # in mol m-2 s-1
-  # See Leuning et al (1995) PC&E 18:1183-1200 Eqns E3 & E4
-  #**********************************************************************
-  DHEAT = 21.5e-6     # molecular diffusivity for heat
-  CMOLAR = (Pressure*100)/(Parameters$Rgas*(Tair+Parameters$Kelvin))
-  GRASHOF = 1.6E8 * abs(TLEAF-TAIR) * (WLEAF**3.) # Grashof number
-  GBHFREE = 0.5 * DHEAT * (GRASHOF**0.25) / WLEAF * CMOLAR
-  GBHFREE[(TLEAF-TAIR)==0]=0
+#' @rdname Gb_h_Forced
+#' @export
+Gb_h_Free= function(Tair,Tleaf,wleaf= 0.068,Dheat=Constants()$Dheat){
+  GRASHOF= 1.6E8 * abs(Tleaf-Tair) * (wleaf**3.)
+  GBHFREE= 0.5*Dheat*(GRASHOF**0.25)/wleaf
+  GBHFREE[(Tleaf-Tair)==0]=0
 
   return(GBHFREE)
 }

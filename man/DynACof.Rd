@@ -6,8 +6,9 @@
 \usage{
 DynACof(Period = NULL, WriteIt = F, returnIt = F, ...,
   output_f = ".RData", Inpath = NULL, Outpath = Inpath,
-  Site = "1-Site.R", Meteo = "2-Meteorology.txt", Soil = "3-Soil.R",
-  Coffee = "4-Coffee.R", Tree = NULL)
+  Simulation_Name = "DynACof", Site = "1-Site.R",
+  Meteo = "2-Meteorology.txt", Soil = "3-Soil.R", Coffee = "4-Coffee.R",
+  Tree = NULL)
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}
@@ -24,6 +25,8 @@ DynACof(Period = NULL, WriteIt = F, returnIt = F, ...,
 \item{Inpath}{Path to the input parameter list folder, Default: \code{"1-Input/Default"}}
 
 \item{Outpath}{Path pointing to the folder were the results will be writen, Default: \code{=Inpath}}
+
+\item{Simulation_Name}{Character name of the simulation file name if \code{WriteIt=T}. Default: \code{DynACof}}
 
 \item{Site}{Site parameters file name, see details. Default: \code{'1-Site.R'}}
 
@@ -166,7 +169,6 @@ Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1
                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
-                    rho             \tab kg m-3      \tab Air density of moist air                     \cr
                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall
 }
   \item A list of the input parameters (see \code{\link{site}})
@@ -186,11 +188,14 @@ Almost all variables for coffee exist also for shade trees with a suffix
          and may be longer upon parameterization because variables can be added in
          the metamodels parameter file in \strong{\code{\link{Metamodels}}} or
          \strong{\code{\link{Allometries}}}.
+         It is highly recommended to set the system environment timezone to the one from the meteorology file.
+         For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ Sys.setenv(TZ="UTC")
+ DynACof()
  }
 }
 }

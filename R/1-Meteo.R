@@ -6,7 +6,7 @@
 #'                    or the input itself as a string, see \code{\link[data.table]{fread}}. In both cases, a length 1 character string.
 #'                    A filename input is passed through path.expand for convenience and may be a URL starting http:// or file://.
 #'                    Default to \code{data/Meteorology.RData}, which is the package example data.
-#' @param Period      The desired time period to be returned inthe form of a vector of two POSIX dates (min and max).
+#' @param Period      The desired time period to be returned in the form of a vector of two POSIX dates (min and max).
 #' @param WriteIt     If TRUE, will write the output of the function in the same path.
 #' @param ...         Additional parameters to pass to the \code{\link[data.table]{fwrite}} function (sep is fixed to \code{;}
 #'                    and colnames to \code{T}).
@@ -28,7 +28,7 @@
 #'          The albedo is used to compute the system net radiation that is then used to compute the soil net radiation using an
 #'          extinction coefficient with the plot LAI following the Shuttleworth & Wallace (1985) formulation. This computation is
 #'          likely to change in the near future to add a more uniform process-based formulation (such as Choudhury & Monteith 1988).
-#'         \tabular{ll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
+#'         \tabular{lll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
 #'                     year            \tab year        \tab Year of the simulation                       \cr
 #'                     DOY             \tab day         \tab day of the year                              \cr
 #'                     Date            \tab POSIXct date\tab Date in POSICct format                       \cr
@@ -43,11 +43,12 @@
 #'                     PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \cr
 #'                     FDiff           \tab Fraction    \tab Diffuse light fraction                       \cr
 #'                     VPD             \tab hPa         \tab Vapor pressure deficit                       \cr
-#'                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)       \cr
+#'                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
 #'                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
 #'                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
-#'                     rho             \tab kg m-3      \tab Air density of moist air                     \cr
 #'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall}
+#'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
+#'          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
 #'
 #' @return A daily timestep meteorology data.frame with different columns
 #'
@@ -58,10 +59,21 @@
 #' @importFrom magrittr "%>%"
 #' @importFrom dplyr group_by summarise mutate ungroup transmute
 #'
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  Sys.setenv(TZ="UTC")
+#'  Meteorology()
+#'  }
+#' }
+#'
 #' @export
 Meteorology= function(file=NULL, Period=NULL,
                       Parameters= Import_Parameters()){
-  if(is.null(file)){MetData= Aquiares}else{
+  if(is.null(file)){
+    data(Aquiares)
+    MetData= Aquiares
+  }else{
     MetData= data.table::fread(file,data.table = F)
   }
 
@@ -91,11 +103,12 @@ Meteorology= function(file=NULL, Period=NULL,
       }
       if(Period[1]<min(MetData$Date)){
         warning(paste("Meteo file do not cover the given period", "\n",
-                      "Min date in meteo file= ",as.character(format(max(MetData$Date), "%Y-%m-%d")),
-                      " ; min given period= ", as.character(Period[2]), "\n",
+                      "Min date in meteo file= ",as.character(format(min(MetData$Date), "%Y-%m-%d")),
+                      " ; min given period= ", as.character(Period[1]), "\n",
                       "setting the minimum date of simulation to the one from the meteo file"))
       }
     }
+    MetData= MetData[MetData$Date>=Period[1]&MetData$Date<=(Period[2]),]
   }
 
   # Missing RAD:
@@ -203,8 +216,6 @@ Meteorology= function(file=NULL, Period=NULL,
   MetData$year= lubridate::year(MetData$Date)
   MetData$DOY= lubridate::yday(MetData$Date)
 
-  MetData$rho= bigleaf::air.density(MetData$Tair,MetData$Pressure/10) # (kg m-3)
-
   # Compute net radiation using the Allen et al. (1998) equation :
 
   if(!is.null(MetData$RH)){
@@ -232,14 +243,14 @@ Meteorology= function(file=NULL, Period=NULL,
   # Force to keep only the input variable the model need to avoid any issues:
   Varnames= c('year','DOY','Date','Rain','Tair','RH','RAD','Pressure',
               'WindSpeed','CO2','DegreeDays','PAR','FDiff',
-              'VPD','Rn','Tmax','Tmin','rho','DaysWithoutRain')
+              'VPD','Rn','Tmax','Tmin','DaysWithoutRain')
   MetData= MetData[colnames(MetData)%in%Varnames]
 
   attr(MetData,"unit")=
     data.frame(Var= Varnames,
                unit=c("year","day","POSIXct date","mm","deg C","%","MJ m-2 d-1","hPa",
                       "m s-1","ppm","deg C","MJ m-2 d-1","Fraction","hPa","MJ m-2 d-1",
-                      "deg C","deg C","kg m-3","day"))
+                      "deg C","deg C","day"))
 
   cat("Meteo computation done")
   return(MetData)

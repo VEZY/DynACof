@@ -11,6 +11,7 @@
 #'                 \code{.RData}, the output list will be writen in several \code{.csv} and \code{.txt} format. Default: \code{.RData}
 #' @param Inpath   Path to the input parameter list folder, Default: \code{"1-Input/Default"}
 #' @param Outpath  Path pointing to the folder were the results will be writen, Default: \code{=Inpath}
+#' @param Simulation_Name Character name of the simulation file name if \code{WriteIt=T}. Default: \code{DynACof}
 #' @param Site     Site parameters file name, see details. Default: \code{'1-Site.R'}
 #' @param Meteo    Meteo parameters file name, see details. Default: \code{'2-Meteorology.txt'}
 #' @param Soil     Soil parameters file name, see details. Default: \code{'3-Soil.R'}
@@ -146,7 +147,6 @@
 #'                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
 #'                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
 #'                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
-#'                     rho             \tab kg m-3      \tab Air density of moist air                     \cr
 #'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall
 #' }
 #'   \item A list of the input parameters (see \code{\link{site}})
@@ -160,11 +160,14 @@
 #'          and may be longer upon parameterization because variables can be added in
 #'          the metamodels parameter file in \strong{\code{\link{Metamodels}}} or
 #'          \strong{\code{\link{Allometries}}}.
+#'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
+#'          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
 #'
 #' @examples
 #' \dontrun{
 #' if(interactive()){
-#'  #EXAMPLE1
+#'  Sys.setenv(TZ="UTC")
+#'  DynACof(WriteIt = T, Period= as.POSIXct(c("1979-01-01", "1982-01-01")),Outpath = "Results")
 #'  }
 #' }
 #' @export
@@ -175,9 +178,9 @@
 #' @importFrom foreach %dopar%
 #'
 DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
-                  output_f=".RData",Inpath=NULL,
-                  Outpath=Inpath,Site="1-Site.R",Meteo="2-Meteorology.txt",
-                  Soil="3-Soil.R",Coffee="4-Coffee.R",Tree=NULL){
+                  output_f=".RData",Inpath=NULL,Outpath=Inpath,Simulation_Name="DynACof",
+                  Site="1-Site.R",Meteo="2-Meteorology.txt",Soil="3-Soil.R",
+                  Coffee="4-Coffee.R",Tree=NULL){
 
 
   # Importing the parameters ------------------------------------------------
@@ -211,11 +214,11 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   # parallel processing
 
   # Parallel loop over cycles:
-  # NbCores= parallel::detectCores()-1 # Set the maximum number of cores working on the model computation
-  # cl= parallel::makeCluster(min(NbCores,NCycles))
-  # doSNOW::registerDoSNOW(cl)
-  # CycleList= foreach::foreach(cy= 1:NCycles,.combine=rbind,.packages = c("dplyr","zoo")) %dopar% {
-  for(cy in 1:NCycles){
+  NbCores= parallel::detectCores()-1 # Set the maximum number of cores working on the model computation
+  cl= parallel::makeCluster(min(NbCores,NCycles))
+  doSNOW::registerDoSNOW(cl)
+  CycleList= foreach::foreach(cy= 1:NCycles,.combine=rbind,.packages = c("dplyr","zoo")) %dopar% {
+  # for(cy in 1:NCycles){
 
     # Initializing the Simulation object:
 
@@ -787,8 +790,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
         0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*PARcof + 2.676284*S$Table_Day$SoilWaterPot[i]
 
       # S$Table_Day$LeafWaterPotential[i]=
-      #     -0.096845 - 0.080517*MetData$PARm2d1 +
-      #     0.481117*(1-MetData$FDiff) - 0.001692*MetData$DaysWithoutRain
+      #     -0.096845 - 0.080517*S$Met_c$PARm2d1 +
+      #     0.481117*(1-S$Met_c$FDiff) - 0.001692*S$Met_c$DaysWithoutRain
 
       # LAI plot is the sum of the LAI of the Tree + coffee LAI
       # (LAIplot[i] is first equal to 0, then added LAI of tree, and here adding LAI of coffee)
@@ -1033,80 +1036,80 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
         S$Table_Day$Rn_Soil[i]
 
 
-      #11/ Tcanopy Coffee
+      #11/ Tcanopy Coffee : using bulk conductance if no trees, interlayer conductance if trees
+      if(S$Table_Day$Height_Tree[i-S$Zero_then_One[i]]>S$Parameters$Height_Coffee){
 
-      # S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
-      #   (S$Met_c$rho[i]*S$Parameters$Cp*
-      #      GBCANMS(WIND = S$Table_Day$WindSpeed_Coffee[i], ZHT = S$Parameters$ZHT,
-      #              TREEH = max(S$Table_Day$Height_Tree[i],
-      #                          S$Parameters$Height_Coffee))$Canopy*CMOLAR)
-      # S$Table_Day$Ga[i]=
-      #   bigleaf::aerodynamic.conductance(Tair= S$Table_Day$TairCanopy_Tree[i],
-      #                                    pressure= S$Met_c$Pressure[i]/10,
-      #                                    wind= S$Table_Day$WindSpeed_Coffee[i],
-      #                                    usta = GBCANMS(WIND = S$Met_c$WindSpeed[i],
-      #                                                    ZHT = S$Parameters$ZHT,
-      #                                                    TREEH = max(S$Table_Day$Height_Tree[i],
-      #                                                                S$Parameters$Height_Coffee))$ustar,
-      #                                    H = S$Table_Day$H_Coffee[i],
-      #                                    zr = S$Parameters$ZHT,
-      #                                    zh =  max(S$Table_Day$Height_Tree[i],
-      #                                              S$Parameters$Height_Coffee),
-      #                                    d = 0.75*max(S$Table_Day$Height_Tree[i],
-      #                                                 S$Parameters$Height_Coffee),
-      #                                    z0m = 0.1*max(S$Table_Day$Height_Tree[i],
-      #                                                  S$Parameters$Height_Coffee),
-      #                                    wind_profile = T,
-      #                                    stab_correction = F,
-      #                                    Rb_model="Thom_1972")[,"Ga_h"] # m s-1
-      # stab_correction could be activated whenever H is well simulated
+        S$Table_Day$TairCanopy[i]=
+          S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+             S$Parameters$Cp*
+             G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                        LAI_top= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                        LAI_bot= S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                        Z_top= S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                        extwind = S$Parameters$extwind))
 
-      S$Table_Day$WindSpeed_Coffee[i]=
-        GetWind(LAI_lay = S$Table_Day$LAI[i-S$Zero_then_One[i]],
-                LAI_abv = S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
-                extwind = S$Parameters$extwind)
-
-      CMOLAR= (S$Met_c$Pressure[i]*100)/(S$Parameters$Rgas*(S$Table_Day$TairCanopy_Tree[i]+S$Parameters$Kelvin))
-      S$Table_Day$TairCanopy[i]=
-        S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
-        (S$Met_c$rho[i]*S$Parameters$Cp*
-           GBCANMS(WIND = S$Table_Day$WindSpeed_Coffee[i], ZHT = S$Parameters$ZHT,
-                   TREEH = max(S$Table_Day$Height_Tree[i],
-                               S$Parameters$Height_Coffee))$Canopy*CMOLAR)
-
-      CMOLAR= (S$Met_c$Pressure[i]*100)/(S$Parameters$Rgas*(S$Table_Day$TairCanopy[i]+S$Parameters$Kelvin))
-      S$Table_Day$Tcan_Coffee[i]=
-        S$Table_Day$TairCanopy[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
-        (S$Met_c$rho[i]*S$Parameters$Cp*
-           GBCANMS(WIND = S$Table_Day$WindSpeed_Coffee[i], ZHT = S$Parameters$ZHT,
-                   TREEH = max(S$Table_Day$Height_Tree[i],
-                               S$Parameters$Height_Coffee))$Canopy*CMOLAR)
+        S$Table_Day$Tleaf_Coffee[i]=
+          S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+             S$Parameters$Cp*
+             1/(1/G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                             LAI_top= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                             LAI_bot= S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                             Z_top= S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                             extwind = S$Parameters$extwind)+
+                  1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
+                         LAI_lay=S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                         LAI_abv=S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                         ZHT = S$Parameters$ZHT,
+                         Z2 = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                         extwind= S$Parameters$extwind)))
 
 
+      }else{
+        S$Table_Day$TairCanopy[i]=
+          S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+             S$Parameters$Cp*
+             G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                    Z_top = S$Parameters$Height_Coffee,
+                    LAI = S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                    extwind = S$Parameters$extwind))
+
+        S$Table_Day$Tleaf_Coffee[i]=
+          S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+             S$Parameters$Cp*
+             1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                         Z_top = S$Parameters$Height_Coffee,
+                         LAI = S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                         extwind = S$Parameters$extwind)+
+                  1/Gb_h(Wind= S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
+                         LAI_lay= S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                         LAI_abv= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                         ZHT= S$Parameters$ZHT,
+                         Z_top= S$Parameters$Height_Coffee,
+                         extwind= S$Parameters$extwind)))
+      }
+      # NB : if no trees, TairCanopy_Tree= Tair
 
     }
     list(Table_Day= S$Table_Day)
   }
-  stopCluster(cl)
+  snow::stopCluster(cl)
   # Reordering the lists to make the results as previous versions of the model:
   Table= data.frame(do.call(rbind, CycleList[c(1:NCycles)]))
 
   # Force to keep interesting output variables only:
   UnwantedVarnames= c('.Fruit_Cohort',"Bud_available","BudBreak_cohort")
-  Table= Table[,grep(pattern = UnwantedVarnames, x = colnames(Table), perl = T)]
+  Table= Table[,!colnames(Table)%in%UnwantedVarnames]
 
-  attr(MetData,"unit")=
-    data.frame(Var= Varnames,
-               unit=c("year","day","POSIXct date","mm","deg C","%","MJ m-2 d-1","hPa",
-                      "m s-1","ppm","deg C","MJ m-2 d-1","Fraction","hPa","MJ m-2 d-1",
-                      "deg C","deg C","kg m-3","day"))
-
-
+  attr(Table,"unit")= data.frame(varnames)
 
   cat("\n", "Simulation completed successfully", "\n")
   FinalList= list(Table_Day= Table,Met_c= Meteo, Parameters= Parameters)
   if(WriteIt){
-    write.results(FinalList,output,...)
+    write.results(FinalList,output_f,Simulation_Name,Outpath,...)
   }
   if(returnIt){
     return(FinalList)

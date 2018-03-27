@@ -23,6 +23,7 @@ This function defines the following constants:
 \item{W_umol}{Conversion factor from watt to micromole for H2O (W umol-1)}
 \item{\eqn{\lambda} (lambda)}{Latent heat of vaporization (MJ kgH2O-1)}
 \item{cl}{Drag coefficient per unit leaf area (m s-1)}
+\item{Dheat}{Molecular diffusivity for heat (m2 s-1)}
 }
 \description{
 Constants used in the DynACof package

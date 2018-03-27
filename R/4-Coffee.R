@@ -7,6 +7,7 @@ coffee= function(){
     date_pruning      = 74,         # day of year of pruning
     MeanAgePruning    = 5,          # Age of first pruning (year)
     SLA               = 10.97,      # Specific Leaf Area (m-2 kg-1 dry mass)
+    wleaf             = 0.068,      # Leaf width (m)
     Demand_Leaf       = 1.2,        # Leaf carbon demand (gC m-2 d-1)
     LeafPruningRate   = 0.26,       # how much leaves are pruned (ratio)
     k_Dif             = 0.4289,     # Light extinction coefficient for diffuse light (-), computed from MAESPA

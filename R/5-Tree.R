@@ -6,6 +6,7 @@ Tree= function(){
     Species_ID           = "Erythrina_Aquiares",      # Optionnal species ID
     StockingTree_treeha1 = 7.38,                      # density at planting (trees ha-1). Source: Taugourdeau et al. (2014)
     SLA_Tree             = 17.4,                      # Specific leaf area (m2 kg-1). Source: Van Oijen et al. (2010, I)
+    wleaf_Tree           = 0.068,                     # Leaf width (m)
     Leaf_fall_rate_Tree  = 0.09,                      # Mortality during leaf fall (fraction of the leaf mass)
     Fall_Period_Tree     = c(1:30),                   # Time period were leaves fall at high rate (DOY)
     ThinThresh           = 0,                         # Low transmittance threshold under wich thinning is triggered (0-1)

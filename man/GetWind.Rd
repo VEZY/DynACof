@@ -4,9 +4,9 @@
 \alias{GetWind}
 \title{Get the average wind speed at center of canopy layer}
 \usage{
-GetWind(Wind, LAI_lay, LAI_abv, extwind = 0, H_canopy, ZHT, Z0 = H_canopy *
-  0.1, ZPD = H_canopy * 0.75, alpha = 1.5, ZW = ZPD + alpha * (H_canopy -
-  ZPD), vonkarman = Constants()$vonkarman)
+GetWind(Wind, LAI_lay, LAI_abv, extwind = 0, Z_top, ZHT, Z0 = Z_top * 0.1,
+  ZPD = Z_top * 0.75, alpha = 1.5, ZW = ZPD + alpha * (Z_top - ZPD),
+  vonkarman = Constants()$vonkarman)
 }
 \arguments{
 \item{Wind}{Above canopy wind speed (m s-1)}
@@ -17,13 +17,13 @@ GetWind(Wind, LAI_lay, LAI_abv, extwind = 0, H_canopy, ZHT, Z0 = H_canopy *
 
 \item{extwind}{Extinction coefficient. Default: \code{0}, no extinction.}
 
-\item{H_canopy}{Average canopy height of the taller crop (m)}
+\item{Z_top}{Average canopy height of the taller crop (m)}
 
 \item{ZHT}{Wind measurement height (m)}
 
-\item{Z0}{Roughness length (m). Default: \code{0.1*TREEH}}
+\item{Z0}{Roughness length (m). Default: \code{0.1*Z_top}}
 
-\item{ZPD}{Zero-plane displacement (m), Default: \code{0.75*TREEH}}
+\item{ZPD}{Zero-plane displacement (m), Default: \code{0.75*Z_top}}
 
 \item{alpha}{Constant for diffusivity at top canopy. Default: \code{1.5} following
 Van de Griend et al (1989).}
@@ -56,7 +56,7 @@ As the function computes the average wind speed at the center of the canopy laye
 }
 \examples{
 # Windspeed in a coffee layer managed in agroforestry system
-GetWind(Wind=3,LAI_lay=4,LAI_abv=0.3,extwind= 0.58,H_canopy = 24,ZHT = 25)
+GetWind(Wind=3,LAI_lay=4,LAI_abv=0.3,extwind= 0.58,Z_top = 24,ZHT = 25)
 
 }
 \references{

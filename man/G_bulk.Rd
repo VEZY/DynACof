@@ -4,8 +4,8 @@
 \alias{G_bulk}
 \title{Bulk aerodynamic conductance}
 \usage{
-G_bulk(Wind, ZHT, Z1, Z2, Z0 = Z2 * 0.1, ZPD = Z2 * 0.75, alpha = 1.5,
-  ZW = ZPD + alpha * (Z2 - ZPD), LAI, extwind = 0,
+G_bulk(Wind, ZHT, Z_top, Z0 = Z_top * 0.1, ZPD = Z_top * 0.75,
+  alpha = 1.5, ZW = ZPD + alpha * (Z_top - ZPD), LAI, extwind = 0,
   vonkarman = Constants()$vonkarman)
 }
 \arguments{
@@ -13,18 +13,16 @@ G_bulk(Wind, ZHT, Z1, Z2, Z0 = Z2 * 0.1, ZPD = Z2 * 0.75, alpha = 1.5,
 
 \item{ZHT}{Wind measurement height (m)}
 
-\item{Z1}{Average canopy height of the shorter crop (m)}
+\item{Z_top}{Average canopy height of the taller crop (m)}
 
-\item{Z2}{Average canopy height of the taller crop (m)}
+\item{Z0}{Roughness length (m). Default: \code{0.1*Z_top}}
 
-\item{Z0}{Roughness length (m). Default: \code{0.1*TREEH}}
-
-\item{ZPD}{Zero-plane displacement (m), Default: \code{0.75*TREEH}}
+\item{ZPD}{Zero-plane displacement (m), Default: \code{0.75*Z_top}}
 
 \item{alpha}{Constant for diffusivity at top canopy. Default: \code{1.5} following
 Van de Griend et al (1989).}
 
-\item{ZW}{Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}}
+\item{ZW}{Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}}
 
 \item{LAI}{Leaf area index of the upper layer (m2 leaf m-2 soil)}
 
@@ -36,12 +34,13 @@ Van de Griend et al (1989).}
 \item{G_bulk}{The bulk aerodynamic conductance (m s-1)}
 }
 \description{
-Compute the aerodynamic conductance above the canopy following
-             Van de Griend and Van Boxel (1989).
+Compute the aerodynamic conductance for sensible and
+             latent heat above the canopy following Van de Griend and
+             Van Boxel (1989).
 }
 \details{
 \code{alpha} can also be computed as:
-         \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
+         \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
          The bulk aerodynamic conductance \eqn{ga_bulk}{ga_bulk} is computed as follow:
          \deqn{ga_bulk=\frac{1}{r1+r2+r3}}{ga_bulk= 1/(r1+r2+r3)}
          where \code{r1}, \code{r2} and \code{r3} are the aerodynamic resistances of the inertial
@@ -53,7 +52,7 @@ Compute the aerodynamic conductance above the canopy following
          \deqn{r2=\int_{zh}^{zw}\frac{1}{K''}}{r2= Integral{zh,zw}(1/K'')dz}
          with \deqn{K''= kU_*(z_w-d)}{K''= k x Ustar x (zw-d)}.
          And:
-         \deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{zh,zw}(1/K''')dz}
+         \deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{z2+z1)/2,zh}(1/K''')dz}
          with \deqn{K'''= U_z\frac{K_h}{U_h}}{K'''= Uz x (Kh/Uh)}.
 
          Integration of \code{r2} and \code{r3} integral equations give:
@@ -65,7 +64,7 @@ Compute the aerodynamic conductance above the canopy following
 }
 \examples{
 # The bulk aerodynamic conductance for a coffee plantation managed in agroforestry system:
-G_bulk(Wind=3,ZHT=25,Z1= site()$Height_Coffee,Z2=24,LAI = 0.5,extwind = 0.58)
+G_bulk(Wind=3,ZHT=25,Z_top=24,LAI = 0.5,extwind = 0.58)
 
 }
 \references{
