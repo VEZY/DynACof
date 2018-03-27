@@ -68,8 +68,6 @@ Tree= function(){
     PaliveCR_Tree        = 0.21,                       # Coarse roots living tissue (fraction)
     PaliveLeaf_Tree      = 1,                          # Leaf living tissue (fraction)
     PaliveFRoot_Tree     = 1,                          # Fine root living tissue (fraction)
-
-
     k                    = Light_extinction_K,         # Light extinction coefficient (call external function)
     Metamodels           = Metamodels,                 # Idem for lue, transpiration and sensible heat flux using MAESPA metamodels
     Allometries          = Allometries                 # Idem for allometric equations (optional, any kind of variable can be added here).

@@ -108,20 +108,51 @@ add.alpha <- function(col, alpha=1){
           rgb(x[1], x[2], x[3], alpha=alpha))
 }
 
+
+#' Find the ith previous index
+#'
+#' @description Find the ith previous index while avoiding 0 or negative indexes.
+#'
+#' @param x      Current index
+#' @param n_prev Target number of indexes before x
+#'
+#'
+#' @details This function is used to find the nth previous index without making an error with negative
+#'          or 0 index.
+#'
+#' @keywords internal
+#'
+#' @examples
+#' # Find the 10th index before 15:
+#' previous_i(15,10)
+#' # Find the 10th index before 5:
+#' previous_i(5,10)
+#' # should return 1 (no index before 1)
+#'
+#' @export
 previous_i= function(x,n_prev){
   x= x-n_prev
   x[x<=0]= 1
   return(x)
 }
 
-Init_Table_Day= function(S){
-  # Function to initialise the model variables.
-  # Initialise shade tree variables according to species also
 
-  ########## Initializing State Variables ####
+#' Initialise model variables.
+#'
+#' @description Initialise all model variables before start
+#'
+#' @param S Model internal working list (= to output list at start)
+#'
+#' @aliases No_Shade.init Tree.init
+#'
+#' @details User should not use this function
+#'
+#' @keywords internal
+#'
+#' @export
+Init_Table_Day= function(S){
   S$Table_Day$LAI= 0.1
   S$Table_Day$LAIplot= 0
-
   #Leaf Area per Plant location, to convert per ha using density,cannot be zero at beginning,
   # otherwise, GPP does not start and nothing grows
   S$Table_Day$CM_RE=  0
@@ -278,6 +309,8 @@ Init_Table_Day= function(S){
   }
 }
 
+#' @rdname Init_Table_Day
+#' @export
 No_Shade.init= function(S){
   # NB: if Tree_Species is NULL (i.e. no shade trees), then do not add
   # any trees related variables to the main table, except for the few ones
@@ -302,6 +335,8 @@ No_Shade= function(...){
 
 }
 
+#' @rdname Init_Table_Day
+#' @export
 Tree.init= function(S){
   # Initialisation of Shade tree variables:
   S$Table_Day$CM_Leaf_Tree= 0.01   #Dry Mass of Leaf
@@ -350,6 +385,7 @@ Tree.init= function(S){
     S$Table_Day$lue_Tree=
     S$Table_Day$T_Tree=
     S$Table_Day$H_Tree=
+    S$Table_Day$Tleaf_Tree=
     S$Table_Day$GPP_Tree=
     S$Table_Day$Rm_Leaf_Tree=
     S$Table_Day$Rm_CR_Tree=
@@ -423,15 +459,15 @@ Shade.Tree= function(S,i){
 
   #For stocking Cordia=50, without thinning, with metamodel
   S$Table_Day$APAR_Dif_Tree[i]=
-    (S$Met_c$PAR_MJ[i]*S$Met_c$FDiff[i])*
+    (S$Met_c$PAR[i]*S$Met_c$FDiff[i])*
     (1-exp(-S$Table_Day$K_Dif_Tree[i]*S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]]))#MJ m-2 d-1
-  S$Table_Day$APAR_Dir_Tree[i]= (S$Met_c$PAR_MJ[i]*(1-S$Met_c$FDiff[i]))*
+  S$Table_Day$APAR_Dir_Tree[i]= (S$Met_c$PAR[i]*(1-S$Met_c$FDiff[i]))*
     (1-exp(-S$Table_Day$K_Dir_Tree[i]*S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]]))#MJ m-2 d-1
   S$Table_Day$APAR_Tree[i]= max(0,S$Table_Day$APAR_Dir_Tree[i]+S$Table_Day$APAR_Dif_Tree[i])
-  # S$Table_Day$APAR_Tree[i]= S$Met_c$PAR_MJ[i]*(1-exp(-S$Table_Day$k_Tree[i]*
+  # S$Table_Day$APAR_Tree[i]= S$Met_c$PAR[i]*(1-exp(-S$Table_Day$k_Tree[i]*
   # S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]]))
   S$Table_Day$Transmittance_Tree[i]=
-    1-(S$Table_Day$APAR_Tree[i]/S$Met_c$PAR_MJ[i])
+    1-(S$Table_Day$APAR_Tree[i]/S$Met_c$PAR[i])
   S$Table_Day$Transmittance_Tree[i][is.nan(S$Table_Day$Transmittance_Tree[i])]=0
   # Calling the metamodels for LUE, Transpiration and sensible heat flux :
   S$Parameters$Metamodels(S,i)
@@ -439,17 +475,18 @@ Shade.Tree= function(S,i){
 
 
   S$Table_Day$TairCanopy_Tree[i]=
-    S$Met_c$Tair[i]+(S$Table_Day$H_Tree[i]*Parameters$MJ_to_W)/
+    S$Met_c$Tair[i]+(S$Table_Day$H_Tree[i]*S$Parameters$MJ_to_W)/
     (bigleaf::air.density(S$Met_c$Tair[i],S$Met_c$Pressure[i]/10)*
        S$Parameters$Cp*
-       G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-              Z1 = S$Parameters$Height_Coffee,
-              Z_top = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]]))
+       G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
+              LAI= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+              extwind= S$Parameters$extwind,
+              Z_top= S$Table_Day$Height_Tree[i-S$Zero_then_One[i]]))
   # NB : using WindSpeed and not WindSpeed_Tree because wind extinction is already
   # computed in G_bulk (until top of canopy).
 
   S$Table_Day$Tleaf_Tree[i]=
-    S$Met_c$Tair[i]+(S$Table_Day$H_Tree[i]*Parameters$MJ_to_W)/
+    S$Met_c$Tair[i]+(S$Table_Day$H_Tree[i]*S$Parameters$MJ_to_W)/
     (bigleaf::air.density(S$Met_c$Tair[i],S$Met_c$Pressure[i]/10)*
        S$Parameters$Cp*
        1/(1/G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
@@ -1104,7 +1141,7 @@ ALS= function(Elevation, SlopeAzimut= 0, Slope=0, RowDistance= 1.5,
     df_rain%>%
     transmute(year, Rain, mid_june_to_mid_august= ifelse(DOY>=166&DOY<=227,T,F))%>%
     group_by(year)%>%
-    transmute(SumRainJunetoAugust_Year = sum(Rain*mid_june_to_mid_august))%>%
+    transmute(year,SumRainJunetoAugust_Year = sum(Rain*mid_june_to_mid_august))%>%
     .[["SumRainJunetoAugust_Year"]]
   Ia_ShortDrought15JuneAugust= 0.0012200723943985*ShortDrought15JuneAugust_mm - 0.923932085933056
 
@@ -1851,7 +1888,7 @@ G_soilcan= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+
 #' @export
 Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
                Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
-               Tleaf,Tair,Dheat=Constants()$Dheat,
+               Tleaf=NULL,Tair=NULL,Dheat=Constants()$Dheat,
                formulation=c("Jones_1992","Leuning_1995")){
   formulation= match.arg(formulation)
   U_z= GetWind(Wind= Wind,LAI_lay= LAI_lay, LAI_abv= LAI_abv,extwind= extwind,

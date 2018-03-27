@@ -219,11 +219,11 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   # parallel processing
 
   # Parallel loop over cycles:
-  NbCores= parallel::detectCores()-1 # Set the maximum number of cores working on the model computation
-  cl= parallel::makeCluster(min(NbCores,NCycles))
-  doSNOW::registerDoSNOW(cl)
-  CycleList= foreach::foreach(cy= 1:NCycles,.combine=rbind,.packages = c("dplyr","zoo")) %dopar% {
-  # for(cy in 1:NCycles){
+  # NbCores= parallel::detectCores()-1 # Set the maximum number of cores working on the model computation
+  # cl= parallel::makeCluster(min(NbCores,NCycles))
+  # doSNOW::registerDoSNOW(cl)
+  # CycleList= foreach::foreach(cy= 1:NCycles,.combine=rbind,.packages = c("dplyr","zoo")) %dopar% {
+  for(cy in 1:NCycles){
 
     # Initializing the Simulation object:
 
@@ -1067,7 +1067,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
                          LAI_lay=S$Table_Day$LAI[i-S$Zero_then_One[i]],
                          LAI_abv=S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
                          ZHT = S$Parameters$ZHT,
-                         Z2 = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                         Z_top = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
                          extwind= S$Parameters$extwind)))
 
 
