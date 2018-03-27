@@ -58,12 +58,13 @@ Tree= function(){
     PaliveStem_rate_Tree = 5,                         # Rate of decreasing stem living tissue
     PaliveStem_AgeMax_Tree= 40,                       # Age at which PaliveStem_End_Tree refers (age)
     PaliveStem_Tree      =                            # Computation of living tissue at each age (do not modify)
-      data.frame(Age= 1:PaliveStem_AgeMax_Tree,
-                 PaliveStem_Tree=
-                   PaliveStem_End_Tree+
-                   ((PaliveStem_0_Tree-PaliveStem_End_Tree)*
-                      exp(seq(0,-PaliveStem_rate_Tree,
-                              length.out = PaliveStem_AgeMax_Tree)))),
+      data.frame(Age= 1:40,PaliveStem_Tree=round(0.05+((1-0.05)*exp(seq(0,-5,length.out = 40))),3)),
+    # data.frame(Age= 1:PaliveStem_AgeMax_Tree,
+    #            PaliveStem_Tree=
+    #              PaliveStem_End_Tree+
+    #              ((PaliveStem_0_Tree-PaliveStem_End_Tree)*
+    #                 exp(seq(0,-PaliveStem_rate_Tree,
+    #                         length.out = PaliveStem_AgeMax_Tree)))),
     PaliveCR_Tree        = 0.21,                       # Coarse roots living tissue (fraction)
     PaliveLeaf_Tree      = 1,                          # Leaf living tissue (fraction)
     PaliveFRoot_Tree     = 1,                          # Fine root living tissue (fraction)
