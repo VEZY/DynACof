@@ -70,45 +70,6 @@ Import_Parameters= function(path= NULL,
   return(Parameters)
 }
 
-
-Convert.Var= function(Var, Conv,KHRS=48){
-  # Utility function for multiple type of conversions.
-  Conv= match.arg(Conv, choices = c("mmol.m-2.s-1_To_mm.semihour","mmol.m-2.s-1_To_W.m-2",
-                                    "mm.semihour_To_W.m-2",
-                                    "W.m-2_To_mm.semihour",
-                                    "MJ.m-2.s-1_to_W.m-2",
-                                    "W.m-2_to_MJ.m-2.s-1",
-                                    "umol.m-2.s-1_to_W.m-2",
-                                    "W.m-2_to_umol.m-2.s-1"))
-  SPERHR = 3600 * 24.0 / KHRS
-  CONVol.to = SPERHR * 1E-06 * 18 # From MAESPA, mmol.m-2.s-1 to mm
-  CONV_mm.to.W= (2.45*10^6)/SPERHR
-  CONV_W.to.umol= 4.57
-  if(Conv=="mmol.m-2.s-1_To_mm.semihour"){Var= Var*CONVol.to}
-  if(Conv=="mmol.m-2.s-1_To_W.m-2"){Var= Var*CONVol.to*CONV_mm.to.W}
-  if(Conv=="mm.semihour_To_W.m-2"){Var= Var*CONV_mm.to.W}
-  if(Conv=="W.m-2_To_mm.semihour"){Var= Var/CONV_mm.to.W}
-  if(Conv=="MJ.m-2.s-1_to_W.m-2"){Var= Var*10^6}
-  if(Conv=="W.m-2_to_MJ.m-2.s-1"){Var= Var*10^-6}
-  if(Conv=="umol.m-2.s-1_to_W.m-2"){Var= Var/CONV_W.to.umol}
-  if(Conv=="W.m-2_to_umol.m-2.s-1"){Var= Var*CONV_W.to.umol}
-  return(Var)
-}
-
-
-
-
-add.alpha <- function(col, alpha=1){
-  # From GIS.Tools,
-  # https://gist.githubusercontent.com/mages/5339689/raw/2aaa482dfbbecbfcb726525a3d81661f9d802a8e/add.alpha.R
-  if(missing(col))
-    stop("Please provide a vector of colours.")
-  apply(sapply(col, col2rgb)/255, 2,
-        function(x)
-          rgb(x[1], x[2], x[3], alpha=alpha))
-}
-
-
 #' Find the ith previous index
 #'
 #' @description Find the ith previous index while avoiding 0 or negative indexes.
@@ -331,10 +292,6 @@ No_Shade.init= function(S){
   S$Table_Day$TairCanopy_Tree= S$Met_c$Tair
 }
 
-No_Shade= function(...){
-
-}
-
 #' @rdname Init_Table_Day
 #' @export
 Tree.init= function(S){
@@ -447,6 +404,30 @@ Tree.init= function(S){
 
 }
 
+
+
+#' Shade Tree module
+#'
+#' @description This make all computations for shade trees (similar to coffee, but no fruits) for the ith
+#'              day by modifying the \code{S} list in place.
+#'
+#' @param S The main simulation list to make the computation on and to modify.
+#' @param i The index of the day since the first day of the simulation.
+#'
+#' @return Nothing, modify the list of simulation \code{S} in place. See \code{\link{DynACof}} for
+#'         more details.
+#'
+#' @note This function shouldn't be called by the user. It is made as a module so it is easier for
+#'       advanced users to modify the code.
+#'       \code{No_Shade()} is used as an empty function that is called when there are no shade trees.
+#'
+#' @aliases No_Shade
+#'
+#' @keywords internal
+#'
+#' @seealso \code{\link{DynACof}}
+#'
+#' @export
 Shade.Tree= function(S,i){
   # Shade tree layer computations (common for all species)
   # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
@@ -776,7 +757,33 @@ Shade.Tree= function(S,i){
   S$Table_Day$LAIplot[i]= S$Table_Day$LAIplot[i] + S$Table_Day$LAI_Tree[i]
 }
 
+#' @rdname Shade.Tree
+#' @export
+No_Shade= function(...){
 
+}
+
+
+
+#' Write output results to disk
+#'
+#' @description Write the ouptut list to disk either under a unique \code{.RData} file or three separated
+#'              files:
+#' \itemize{
+#'   \item Model Output (csv file)
+#'   \item Meteoroloy output (input to the model, csv file)
+#'   \item Model parameters (txt file)
+#' }
+#'
+#' @param FinalList        The model output list
+#' @param output           Output format. Character. \code{".RData"} if single file, or anything else for
+#'                         3 separate file. Default: \code{".RData"}
+#' @param Simulation_Name  The name of the simulation. Used for the name of the outputs. Default: \code{NULL}.
+#' @param Outpath          The path to the folder to write on.
+#' @param ...              Further parameters to pass to \code{\link[data.table]{fwrite}}. Only used if
+#'                         \code{output!=".RData"}.
+#'
+#' @export
 write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath= "Outputs",...){
 
   if(!is.null(Outpath)&&!dir.exists(file.path(Outpath))){
@@ -784,10 +791,10 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
   }
   if(is.null(Outpath)){Outpath="."}
   if(output!=".RData"){
-    fwrite(FinalList$Table_Day,
+    data.table::fwrite(FinalList$Table_Day,
            paste0(Outpath,"/",Simulation_Name,".csv"),
            sep=";",row.names = F, col.names = TRUE, ...)
-    fwrite(FinalList$Met_c,
+    data.table::fwrite(FinalList$Met_c,
            paste0(Outpath,"/",Simulation_Name,"_Meteorology.csv"),
            sep=";",row.names = F, col.names = TRUE, ...)
     capture.output(FinalList$Parameters,
@@ -798,140 +805,6 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
   }
 
   cat("Simulation results saved in ", file.path(getwd(),Outpath,Simulation_Name), "\n")
-}
-
-
-
-plot.stacked <- function(
-  x, y,
-  order.method = "as.is",
-  ylab="", xlab="",
-  border = NULL, lwd=1,
-  col=rainbow(length(y[1,])),
-  ylim=NULL,xlim=NULL,
-  density= -1, lty=1,
-  Fignum= NULL,
-  ...
-){
-  #plot.stacked makes a stacked plot where each y series is plotted on top
-  #of the each other using filled polygons
-  #
-  #Arguments include:
-  #'x' - a vector of values
-  #'y' - a matrix of data series (columns) corresponding to x
-  #'order.method' = c("as.is", "max", "first")
-  #  "as.is" - plot in order of y column
-  #  "max" - plot in order of when each y series reaches maximum value
-  #  "first" - plot in order of when each y series first value > 0
-  #'col' - fill colors for polygons corresponding to y columns (will recycle)
-  #'border' - border colors for polygons corresponding to y columns (will recycle) (see ?polygon for details)
-  #'lwd' - border line width for polygons corresponding to y columns (will recycle)
-  #'...' - other plot arguments
-  # Source : https://gist.github.com/menugget/7864471#file-plot-stacked-2-r
-  # Adapted to use time series.
-  # if(sum(y < 0) > 0) stop("y cannot contain negative numbers")
-
-  if(!is.matrix(y)){y= as.matrix(y)}
-
-  if(is.null(border)) border <- par("fg")
-  border <- as.vector(matrix(border, nrow=ncol(y), ncol=1))
-  density= as.vector(matrix(density, nrow=ncol(y), ncol=1))
-  col <- as.vector(matrix(col, nrow=ncol(y), ncol=1))
-  lwd <- as.vector(matrix(lwd, nrow=ncol(y), ncol=1))
-  lty <- as.vector(matrix(lty, nrow=ncol(y), ncol=1))
-
-  if(order.method == "max") {
-    ord <- order(apply(y, 2, which.max))
-    y <- y[, ord]
-    col <- col[ord]
-    border <- border[ord]
-    density= density[ord]
-    lty= lty[ord]
-  }
-
-  if(order.method == "first") {
-    ord <- order(apply(y, 2, function(x) min(which(x>0))))
-    y <- y[, ord]
-    col <- col[ord]
-    border <- border[ord]
-    density= density[ord]
-    lty= lty[ord]
-  }
-
-  top.old <- rep(0,length(x))
-  polys <- vector(mode="list", ncol(y))
-  for(i in seq(polys)){
-    top.new <- top.old + y[,i]
-    polys[[i]] <- list(x=c(x, rev(x)), y=c(top.old, rev(top.new)))
-    top.old <- top.new
-  }
-
-  if(is.null(ylim)) ylim <- range(sapply(polys, function(x) range(x$y, na.rm=TRUE)), na.rm=TRUE)
-  if(is.null(xlim)){xlim=c(min(x, na.rm = T),max(x, na.rm = T))}
-  plot(x,y[,1], ylab=ylab, xlab=xlab, ylim=ylim, t="n",xlim=xlim, ...)
-  text(x = xlim[1], y = ylim[2]-(ylim[2]-ylim[1])/10,labels = Fignum, pos = 4)
-  for(i in seq(polys)){
-    polygon(polys[[i]], border=border[i], col=col[i], lwd=lwd[i], density= density[i],lty=lty[i])
-  }
-
-}
-
-
-r2_fun= function(sim,obs,na.rm= T){
-  SStot= sum((obs-mean(obs,na.rm= T))^2, na.rm = na.rm) # total sum of squares
-  # SSreg= sum((sim-mean(obs))^2) # explained sum of squares
-  SSres= sum((obs-sim)^2, na.rm = na.rm) # residual sum of squares
-  rsquared= round(1-(SSres/SStot),3)
-  return(rsquared)
-}
-rmse_fun= function(sim,obs,na.rm= T){round(sqrt(mean((sim-obs)^2,na.rm=na.rm)), 3)}
-mse_fun= function(sim,obs,na.rm= T){round(mean((sim-obs)^2,na.rm = na.rm), 3)}
-
-
-check_C_balance= function(S){
-  # Check the C balance for each simulation cycle.
-  # Input: S list, from simulation outpout.
-  # Output: Percentage of closure:
-  # If >100, C_Offer>sum(mortality + exports + Delta dry mass + respiration + reserves)
-  print("Computing C balance as : GPP-(Mortality + Delta C Mass + Growth Respiration + Maintenance Respiration)")
-  Table_balance=
-    S$Table_Day%>%
-    # filter(Plot_Age==1)%>%
-    # head(.,100)%>%
-    group_by(Cycle)%>%
-    summarise(
-      C_Offer= sum(GPP),
-      Exports_Mortality=
-        sum(Mact_RsWood+Mact_SCR+
-              Mact_Leaf+Mact_FRoot+Overriped_Fruit)+
-        sum(Harvest_Fruit,na.rm = T)+sum(Carbon_Lack_Mortality),
-      C_Delta= tail(CM_RsWood+CM_SCR+CM_Leaf+CM_FRoot+CM_RE+CM_Fruit,1)-
-        head(CM_RsWood+CM_SCR+CM_Leaf+CM_FRoot+CM_RE+CM_Fruit,1),
-      Consump_RE= tail(Consumption_RE,1),
-      Rm= sum(Rm), Ra=sum(Ra),
-      Rc= sum(Rc), RE= sum(NPP_RE))
-  Cbalance_Cof= Table_balance$C_Offer-(Table_balance$C_Delta+Table_balance$Rc+Table_balance$Rm+Table_balance$Exports_Mortality)
-  print(paste("The carbon balance for Coffee is :", round(Cbalance_Cof,2)))
-  print(paste("Wich represents",
-              abs(round(1-(Table_balance$C_Delta+Table_balance$Rc+Table_balance$Rm+Table_balance$Exports_Mortality)/
-                          Table_balance$C_Offer,5)), "% of the cumulated C Offer"))
-  invisible(Cbalance_Cof)
-}
-
-F_repartition= function(xi,u_log,s_log){1/(1+exp(-((xi-u_log)/s_log)))}
-F_densite= function(xi,u_log,s_log){
-  exp(-((xi-u_log)/s_log))/(s_log*(1+exp(-((xi-u_log)/s_log)))^2)
-}
-F_Integ_Dens= function(x,index,u_log,s_log){
-  # Compute integrated density (for not continuous xi)
-  F_repartition(x[seq_along(index)+1],u_log,s_log)-
-    F_repartition(x[seq_along(index)],u_log,s_log)
-}
-Sucrose_cont_perc= function(x,a,b,x0,y0){
-  # Sucrose accumulates with a logistic increase on fruit throught time
-  # Source : Pezzopane et al. (2012)
-  # Return : Sucrose content (% total dry mass)
-  (y0+a/(1+(x/x0)^b))/100
 }
 
 
@@ -981,61 +854,6 @@ GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
 }
 
 
-
-
-Import_Aquiares_data= function(S=NULL){
-  # is S is provided, merge the two data.frames
-  Aquiares_df= fread("1-DATA/OutDF.MeteoHydroCFluxes2009to2016.csv", data.table = F)
-  Aquiares_df%<>%
-    select(DateSemih, DOY, Year, PARtot, PPT= Rain, Tair, Tair3m_GF, VPD,
-           GPPLasslop_GF, SEGPPLasslop_GF, LE_GF, Rn.Wm2,
-           LAI_coffee_fromNDVI_GF, LAI_Coffee_measured,LAIplot,LAIeryth_towerplot,
-           LAIeryth_basin,H_GF)%>%
-    group_by(Year,DOY)%>%
-    summarise(
-      Date= mean(as.POSIXct(DateSemih)),
-      # Meteorology:
-      PAR= sum(PARtot/4.57*1E-6*3600*24.0/48), # in MJ.m-2.day-1
-      Tair_abv= mean(Tair),
-      Tair_3m= mean(Tair3m_GF),
-      VPD= mean(VPD),
-
-      # Water:
-      PPT= sum(PPT),
-      # ETR= sum(Convert.Var(LE_GF,"mmol.m-2.s-1_To_mm.semihour")),
-      # ETR_W= sum(Convert.Var(LE_GF,"mmol.m-2.s-1_To_W.m-2")*1E-6*3600*24/48),
-      ETR= sum(Convert.Var(LE_GF,"W.m-2_To_mm.semihour")),
-      # Energy:
-      H= sum(H_GF*1E-6*3600*24/48),            # in MJ.m-2.day-1
-      Rn= sum(Rn.Wm2*1E-6*3600*24/48),       # in MJ.m-2.day-1
-      # Carbon
-      GPP= sum(GPPLasslop_GF*30*60*10^-6*12),      # In gC.m-2.day-1
-      GPP_SE= sum(SEGPPLasslop_GF*30*60*10^-6*12),      # In gC.m-2.day-1
-      # Leaf area index:
-      LAI_Cof= mean(LAI_coffee_fromNDVI_GF),
-      LAI_Tree= mean(LAIeryth_towerplot),
-      LAI_Plot= mean(LAIplot)
-      # LAICof_meas= mean(LAI_Coffee_measured),
-      # LAIEry_basin= mean(LAIeryth_basin)
-    )%>%mutate(Date= as.POSIXct(format(Date, "%Y-%m-%d")))
-  if(!is.null(S)){
-    S$Table_Day$Date= as.POSIXct(S$Met_c$Date)
-    colnames(Aquiares_df)[-c(1:3)]= paste0(colnames(Aquiares_df),"_Meas")[-c(1:3)]
-    S$Table_Day= merge(S$Table_Day, Aquiares_df, by = "Date", all.x = T)
-
-    return(S)
-  }else{
-    attr(Aquiares_df,"Units")= c("Year","Day Of Year","Posixct time","MJ m-2 day-1",
-                                 "Celsius degree","Celsius degree","hPa","mm","mm day-1",
-                                 "MJ m-2 day-1","MJ m-2 day-1",
-                                 "gC m-2 day-1","gC m-2 day-1","m2 leaves m-2 soil",
-                                 # "m2 leaves m-2 soil","m2 leaves m-2 soil",
-                                 "m2 leaves m-2 soil","m2 leaves m-2 soil")
-    return(Aquiares_df)
-  }
-}
-
-
 #' Warn or stop execution if mandatory meteorology input variables are not provided
 #'
 #' @description Help to explain which variable is missing and/or if there are replacements
@@ -1050,6 +868,7 @@ Import_Aquiares_data= function(S=NULL){
 #'       \code{"Var"}
 #'
 #' @keywords internal
+#'
 warn.var= function(Var,replacement,type="error"){
   if(type=="error"){
     stop(paste(Var,"missing from input Meteo. Cannot proceed unless provided.",
@@ -1574,9 +1393,6 @@ rH.to.VPD <- function(rH,Tair){
 }
 
 
-
-
-
 #' Get the average wind speed at center of canopy layer
 #'
 #' @description Calculate the wind speed decrease in two steps:
@@ -1709,9 +1525,6 @@ G_bulk= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alp
 
   return(ga_bulk)
 }
-
-
-
 
 
 
@@ -1951,3 +1764,232 @@ Gb_h_Free= function(Tair,Tleaf,wleaf= 0.068,Dheat=Constants()$Dheat){
 
   return(GBHFREE)
 }
+
+
+
+
+plot.stacked <- function(
+  x, y,
+  order.method = "as.is",
+  ylab="", xlab="",
+  border = NULL, lwd=1,
+  col=rainbow(length(y[1,])),
+  ylim=NULL,xlim=NULL,
+  density= -1, lty=1,
+  Fignum= NULL,
+  ...
+){
+  #plot.stacked makes a stacked plot where each y series is plotted on top
+  #of the each other using filled polygons
+  #
+  #Arguments include:
+  #'x' - a vector of values
+  #'y' - a matrix of data series (columns) corresponding to x
+  #'order.method' = c("as.is", "max", "first")
+  #  "as.is" - plot in order of y column
+  #  "max" - plot in order of when each y series reaches maximum value
+  #  "first" - plot in order of when each y series first value > 0
+  #'col' - fill colors for polygons corresponding to y columns (will recycle)
+  #'border' - border colors for polygons corresponding to y columns (will recycle) (see ?polygon for details)
+  #'lwd' - border line width for polygons corresponding to y columns (will recycle)
+  #'...' - other plot arguments
+  # Source : https://gist.github.com/menugget/7864471#file-plot-stacked-2-r
+  # Adapted to use time series.
+  # if(sum(y < 0) > 0) stop("y cannot contain negative numbers")
+
+  if(!is.matrix(y)){y= as.matrix(y)}
+
+  if(is.null(border)) border <- par("fg")
+  border <- as.vector(matrix(border, nrow=ncol(y), ncol=1))
+  density= as.vector(matrix(density, nrow=ncol(y), ncol=1))
+  col <- as.vector(matrix(col, nrow=ncol(y), ncol=1))
+  lwd <- as.vector(matrix(lwd, nrow=ncol(y), ncol=1))
+  lty <- as.vector(matrix(lty, nrow=ncol(y), ncol=1))
+
+  if(order.method == "max") {
+    ord <- order(apply(y, 2, which.max))
+    y <- y[, ord]
+    col <- col[ord]
+    border <- border[ord]
+    density= density[ord]
+    lty= lty[ord]
+  }
+
+  if(order.method == "first") {
+    ord <- order(apply(y, 2, function(x) min(which(x>0))))
+    y <- y[, ord]
+    col <- col[ord]
+    border <- border[ord]
+    density= density[ord]
+    lty= lty[ord]
+  }
+
+  top.old <- rep(0,length(x))
+  polys <- vector(mode="list", ncol(y))
+  for(i in seq(polys)){
+    top.new <- top.old + y[,i]
+    polys[[i]] <- list(x=c(x, rev(x)), y=c(top.old, rev(top.new)))
+    top.old <- top.new
+  }
+
+  if(is.null(ylim)) ylim <- range(sapply(polys, function(x) range(x$y, na.rm=TRUE)), na.rm=TRUE)
+  if(is.null(xlim)){xlim=c(min(x, na.rm = T),max(x, na.rm = T))}
+  plot(x,y[,1], ylab=ylab, xlab=xlab, ylim=ylim, t="n",xlim=xlim, ...)
+  text(x = xlim[1], y = ylim[2]-(ylim[2]-ylim[1])/10,labels = Fignum, pos = 4)
+  for(i in seq(polys)){
+    polygon(polys[[i]], border=border[i], col=col[i], lwd=lwd[i], density= density[i],lty=lty[i])
+  }
+
+}
+
+
+r2_fun= function(sim,obs,na.rm= T){
+  SStot= sum((obs-mean(obs,na.rm= T))^2, na.rm = na.rm) # total sum of squares
+  # SSreg= sum((sim-mean(obs))^2) # explained sum of squares
+  SSres= sum((obs-sim)^2, na.rm = na.rm) # residual sum of squares
+  rsquared= round(1-(SSres/SStot),3)
+  return(rsquared)
+}
+rmse_fun= function(sim,obs,na.rm= T){round(sqrt(mean((sim-obs)^2,na.rm=na.rm)), 3)}
+mse_fun= function(sim,obs,na.rm= T){round(mean((sim-obs)^2,na.rm = na.rm), 3)}
+
+
+check_C_balance= function(S){
+  # Check the C balance for each simulation cycle.
+  # Input: S list, from simulation outpout.
+  # Output: Percentage of closure:
+  # If >100, C_Offer>sum(mortality + exports + Delta dry mass + respiration + reserves)
+  print("Computing C balance as : GPP-(Mortality + Delta C Mass + Growth Respiration + Maintenance Respiration)")
+  Table_balance=
+    S$Table_Day%>%
+    # filter(Plot_Age==1)%>%
+    # head(.,100)%>%
+    group_by(Cycle)%>%
+    summarise(
+      C_Offer= sum(GPP),
+      Exports_Mortality=
+        sum(Mact_RsWood+Mact_SCR+
+              Mact_Leaf+Mact_FRoot+Overriped_Fruit)+
+        sum(Harvest_Fruit,na.rm = T)+sum(Carbon_Lack_Mortality),
+      C_Delta= tail(CM_RsWood+CM_SCR+CM_Leaf+CM_FRoot+CM_RE+CM_Fruit,1)-
+        head(CM_RsWood+CM_SCR+CM_Leaf+CM_FRoot+CM_RE+CM_Fruit,1),
+      Consump_RE= tail(Consumption_RE,1),
+      Rm= sum(Rm), Ra=sum(Ra),
+      Rc= sum(Rc), RE= sum(NPP_RE))
+  Cbalance_Cof= Table_balance$C_Offer-(Table_balance$C_Delta+Table_balance$Rc+Table_balance$Rm+Table_balance$Exports_Mortality)
+  print(paste("The carbon balance for Coffee is :", round(Cbalance_Cof,2)))
+  print(paste("Wich represents",
+              abs(round(1-(Table_balance$C_Delta+Table_balance$Rc+Table_balance$Rm+Table_balance$Exports_Mortality)/
+                          Table_balance$C_Offer,5)), "% of the cumulated C Offer"))
+  invisible(Cbalance_Cof)
+}
+
+F_repartition= function(xi,u_log,s_log){1/(1+exp(-((xi-u_log)/s_log)))}
+F_densite= function(xi,u_log,s_log){
+  exp(-((xi-u_log)/s_log))/(s_log*(1+exp(-((xi-u_log)/s_log)))^2)
+}
+F_Integ_Dens= function(x,index,u_log,s_log){
+  # Compute integrated density (for not continuous xi)
+  F_repartition(x[seq_along(index)+1],u_log,s_log)-
+    F_repartition(x[seq_along(index)],u_log,s_log)
+}
+Sucrose_cont_perc= function(x,a,b,x0,y0){
+  # Sucrose accumulates with a logistic increase on fruit throught time
+  # Source : Pezzopane et al. (2012)
+  # Return : Sucrose content (% total dry mass)
+  (y0+a/(1+(x/x0)^b))/100
+}
+
+
+Convert.Var= function(Var, Conv,KHRS=48){
+  # Utility function for multiple type of conversions.
+  Conv= match.arg(Conv, choices = c("mmol.m-2.s-1_To_mm.semihour","mmol.m-2.s-1_To_W.m-2",
+                                    "mm.semihour_To_W.m-2",
+                                    "W.m-2_To_mm.semihour",
+                                    "MJ.m-2.s-1_to_W.m-2",
+                                    "W.m-2_to_MJ.m-2.s-1",
+                                    "umol.m-2.s-1_to_W.m-2",
+                                    "W.m-2_to_umol.m-2.s-1"))
+  SPERHR = 3600 * 24.0 / KHRS
+  CONVol.to = SPERHR * 1E-06 * 18 # From MAESPA, mmol.m-2.s-1 to mm
+  CONV_mm.to.W= (2.45*10^6)/SPERHR
+  CONV_W.to.umol= 4.57
+  if(Conv=="mmol.m-2.s-1_To_mm.semihour"){Var= Var*CONVol.to}
+  if(Conv=="mmol.m-2.s-1_To_W.m-2"){Var= Var*CONVol.to*CONV_mm.to.W}
+  if(Conv=="mm.semihour_To_W.m-2"){Var= Var*CONV_mm.to.W}
+  if(Conv=="W.m-2_To_mm.semihour"){Var= Var/CONV_mm.to.W}
+  if(Conv=="MJ.m-2.s-1_to_W.m-2"){Var= Var*10^6}
+  if(Conv=="W.m-2_to_MJ.m-2.s-1"){Var= Var*10^-6}
+  if(Conv=="umol.m-2.s-1_to_W.m-2"){Var= Var/CONV_W.to.umol}
+  if(Conv=="W.m-2_to_umol.m-2.s-1"){Var= Var*CONV_W.to.umol}
+  return(Var)
+}
+
+
+
+
+add.alpha <- function(col, alpha=1){
+  # From GIS.Tools,
+  # https://gist.githubusercontent.com/mages/5339689/raw/2aaa482dfbbecbfcb726525a3d81661f9d802a8e/add.alpha.R
+  if(missing(col))
+    stop("Please provide a vector of colours.")
+  apply(sapply(col, col2rgb)/255, 2,
+        function(x)
+          rgb(x[1], x[2], x[3], alpha=alpha))
+}
+
+
+
+
+Import_Aquiares_data= function(S=NULL){
+  # is S is provided, merge the two data.frames
+  Aquiares_df= fread("1-DATA/OutDF.MeteoHydroCFluxes2009to2016.csv", data.table = F)
+  Aquiares_df%<>%
+    select(DateSemih, DOY, Year, PARtot, PPT= Rain, Tair, Tair3m_GF, VPD,
+           GPPLasslop_GF, SEGPPLasslop_GF, LE_GF, Rn.Wm2,
+           LAI_coffee_fromNDVI_GF, LAI_Coffee_measured,LAIplot,LAIeryth_towerplot,
+           LAIeryth_basin,H_GF)%>%
+    group_by(Year,DOY)%>%
+    summarise(
+      Date= mean(as.POSIXct(DateSemih)),
+      # Meteorology:
+      PAR= sum(PARtot/4.57*1E-6*3600*24.0/48), # in MJ.m-2.day-1
+      Tair_abv= mean(Tair),
+      Tair_3m= mean(Tair3m_GF),
+      VPD= mean(VPD),
+
+      # Water:
+      PPT= sum(PPT),
+      # ETR= sum(Convert.Var(LE_GF,"mmol.m-2.s-1_To_mm.semihour")),
+      # ETR_W= sum(Convert.Var(LE_GF,"mmol.m-2.s-1_To_W.m-2")*1E-6*3600*24/48),
+      ETR= sum(Convert.Var(LE_GF,"W.m-2_To_mm.semihour")),
+      # Energy:
+      H= sum(H_GF*1E-6*3600*24/48),            # in MJ.m-2.day-1
+      Rn= sum(Rn.Wm2*1E-6*3600*24/48),       # in MJ.m-2.day-1
+      # Carbon
+      GPP= sum(GPPLasslop_GF*30*60*10^-6*12),      # In gC.m-2.day-1
+      GPP_SE= sum(SEGPPLasslop_GF*30*60*10^-6*12),      # In gC.m-2.day-1
+      # Leaf area index:
+      LAI_Cof= mean(LAI_coffee_fromNDVI_GF),
+      LAI_Tree= mean(LAIeryth_towerplot),
+      LAI_Plot= mean(LAIplot)
+      # LAICof_meas= mean(LAI_Coffee_measured),
+      # LAIEry_basin= mean(LAIeryth_basin)
+    )%>%mutate(Date= as.POSIXct(format(Date, "%Y-%m-%d")))
+  if(!is.null(S)){
+    S$Table_Day$Date= as.POSIXct(S$Met_c$Date)
+    colnames(Aquiares_df)[-c(1:3)]= paste0(colnames(Aquiares_df),"_Meas")[-c(1:3)]
+    S$Table_Day= merge(S$Table_Day, Aquiares_df, by = "Date", all.x = T)
+
+    return(S)
+  }else{
+    attr(Aquiares_df,"Units")= c("Year","Day Of Year","Posixct time","MJ m-2 day-1",
+                                 "Celsius degree","Celsius degree","hPa","mm","mm day-1",
+                                 "MJ m-2 day-1","MJ m-2 day-1",
+                                 "gC m-2 day-1","gC m-2 day-1","m2 leaves m-2 soil",
+                                 # "m2 leaves m-2 soil","m2 leaves m-2 soil",
+                                 "m2 leaves m-2 soil","m2 leaves m-2 soil")
+    return(Aquiares_df)
+  }
+}
+
