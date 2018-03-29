@@ -29,12 +29,16 @@ Imports:
 RoxygenNote: 6.0.1
 Collate: 
     '0-Constants.R'
+    '0-Initialization.R'
+    '0-Import.R'
     '0-Functions.R'
-    '1-Meteo.R'
-    '2-Coffee_DCM.R'
     '0-Site.R'
     '0-Soil.R'
     '0-Coffee.R'
     '0-Tree.R'
+    '1-Meteo.R'
+    '2-Coffee_DCM.R'
+    '2-Disease.R'
+    '2-Tree_DCM.R'
     '3-Metamodels.R'
     'data.R'
