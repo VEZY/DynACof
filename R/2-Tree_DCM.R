@@ -1,5 +1,5 @@
 
-#' Shade Tree module
+#' Shade Tree subroutine
 #'
 #' @description This make all computations for shade trees (similar to coffee, but no fruits) for the ith
 #'              day by modifying the \code{S} list in place.
@@ -10,7 +10,7 @@
 #' @return Nothing, modify the list of simulation \code{S} in place. See \code{\link{DynACof}} for
 #'         more details.
 #'
-#' @note This function shouldn't be called by the user. It is made as a module so it is easier for
+#' @note This function shouldn't be called by the user. It is made as a subroutine so it is easier for
 #'       advanced users to modify the code.
 #'       \code{No_Shade()} is used as an empty function that is called when there are no shade trees.
 #'
@@ -270,7 +270,7 @@ Shade.Tree= function(S,i){
 
   if(S$Table_Day$TimetoThin_Tree[i]==1){
     # First, reduce stocking by the predefined rate of thining:
-    S$Table_Day$Stocking_Tree[i:nrow(S$Table_Day)]=
+    S$Table_Day$Stocking_Tree[i:length(S$Table_Day$LAI)]=
       S$Table_Day$Stocking_Tree[i-1]*(1-S$Parameters$RateThinning_Tree)
     # Then add mortality (removing) due to thining :
     S$Table_Day$MThinning_Stem_Tree[i]=

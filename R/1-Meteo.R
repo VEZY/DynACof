@@ -245,6 +245,7 @@ Meteorology= function(file=NULL, Period=NULL,
               'WindSpeed','CO2','DegreeDays','PAR','FDiff',
               'VPD','Rn','Tmax','Tmin','DaysWithoutRain')
   MetData= MetData[colnames(MetData)%in%Varnames]
+  MetData[,-c(1:3)]= round(MetData[,-c(1:3)],3)
 
   attr(MetData,"unit")=
     data.frame(Var= Varnames,
@@ -252,6 +253,6 @@ Meteorology= function(file=NULL, Period=NULL,
                       "m s-1","ppm","deg C","MJ m-2 d-1","Fraction","hPa","MJ m-2 d-1",
                       "deg C","deg C","day"))
 
-  cat("Meteo computation done")
+  cat("Meteo computation done\n")
   return(MetData)
 }

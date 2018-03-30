@@ -40,5 +40,6 @@ Collate:
     '2-Coffee_DCM.R'
     '2-Disease.R'
     '2-Tree_DCM.R'
+    '2-Soil_DCM.R'
     '3-Metamodels.R'
     'data.R'

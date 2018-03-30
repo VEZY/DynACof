@@ -76,8 +76,9 @@ ALS= function(Elevation, SlopeAzimut= 0, Slope=0, RowDistance= 1.5,
     df_rain%>%
     transmute(year, Rain, mid_june_to_mid_august= ifelse(DOY>=166&DOY<=227,T,F))%>%
     group_by(year)%>%
-    transmute(year,SumRainJunetoAugust_Year = sum(Rain*mid_june_to_mid_august))%>%
+    transmute(SumRainJunetoAugust_Year = sum(Rain*mid_june_to_mid_august))%>%
     .[["SumRainJunetoAugust_Year"]]
+
   Ia_ShortDrought15JuneAugust= 0.0012200723943985*ShortDrought15JuneAugust_mm - 0.923932085933056
 
   Sum_Ia_ALS= Ia_Elevation+Ia_SlopeAzimut+Ia_Slope+Ia_RowDistance+Ia_Shade+
