@@ -8,11 +8,12 @@ output:
 
 
   
-# DynACof: The Dynamic Agroforestry Coffee Crop Model  
-<img src="man/figures/logo.png" align="right" />  
+# DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" align="right" />
+
 [![Travis build status](https://travis-ci.org/VEZY/DynACof.svg?branch=master)](https://travis-ci.org/VEZY/DynACof)  
 
 ## Overview
+
 The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield,
 energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
 metamodels from the 3D process-based MAESPA. The model also uses coffee bud and fruit cohorts for reproductive
@@ -62,6 +63,7 @@ model uses the `data.table::fread` function internally.
 
 Enjoy !!
 
+---
+The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> 
 
-The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> https://logomakr.com/2GmRlK
-See: logomakr.com/2GmRlK
+
