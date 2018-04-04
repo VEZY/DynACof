@@ -55,7 +55,8 @@ The daily net radiation is computed using the surface albedo. This method is onl
 }
 \examples{
 # Daily net radiation on january 1st at latitude 9 N :
-Rad_net(DOY= 1,RAD= 5,Tair= 13.9,VPD=1.05,Latitude=9,Elevation=1000,albedo=0.146)
+Rad_net(DOY= 1,RAD= 5,Tmax= 16,Tmin= 10,VPD=1.05,
+        Latitude=9,Elevation=1000,albedo=0.146)
 
 }
 \references{
