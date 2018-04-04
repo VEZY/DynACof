@@ -34,12 +34,12 @@ Shade.Tree= function(S,i){
   #For stocking Cordia=50, without thinning, with metamodel
   S$Table_Day$APAR_Dif_Tree[i]=
     (S$Met_c$PAR[i]*S$Met_c$FDiff[i])*
-    (1-exp(-S$Table_Day$K_Dif_Tree[i]*S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]]))#MJ m-2 d-1
+    (1-exp(-S$Table_Day$K_Dif_Tree[i]*S$Table_Day$LAI_Tree[previous_i(i,1)]))#MJ m-2 d-1
   S$Table_Day$APAR_Dir_Tree[i]= (S$Met_c$PAR[i]*(1-S$Met_c$FDiff[i]))*
-    (1-exp(-S$Table_Day$K_Dir_Tree[i]*S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]]))#MJ m-2 d-1
+    (1-exp(-S$Table_Day$K_Dir_Tree[i]*S$Table_Day$LAI_Tree[previous_i(i,1)]))#MJ m-2 d-1
   S$Table_Day$APAR_Tree[i]= max(0,S$Table_Day$APAR_Dir_Tree[i]+S$Table_Day$APAR_Dif_Tree[i])
   # S$Table_Day$APAR_Tree[i]= S$Met_c$PAR[i]*(1-exp(-S$Table_Day$k_Tree[i]*
-  # S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]]))
+  # S$Table_Day$LAI_Tree[previous_i(i,1)]))
   S$Table_Day$Transmittance_Tree[i]=
     1-(S$Table_Day$APAR_Tree[i]/S$Met_c$PAR[i])
   S$Table_Day$Transmittance_Tree[i][is.nan(S$Table_Day$Transmittance_Tree[i])]=0
@@ -53,9 +53,9 @@ Shade.Tree= function(S,i){
     (bigleaf::air.density(S$Met_c$Tair[i],S$Met_c$Pressure[i]/10)*
        S$Parameters$Cp*
        G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
-              LAI= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+              LAI= S$Table_Day$LAI_Tree[previous_i(i,1)],
               extwind= S$Parameters$extwind,
-              Z_top= S$Table_Day$Height_Tree[i-S$Zero_then_One[i]]))
+              Z_top= S$Table_Day$Height_Tree[previous_i(i,1)]))
   # NB : using WindSpeed and not WindSpeed_Tree because wind extinction is already
   # computed in G_bulk (until top of canopy).
 
@@ -64,13 +64,13 @@ Shade.Tree= function(S,i){
     (bigleaf::air.density(S$Met_c$Tair[i],S$Met_c$Pressure[i]/10)*
        S$Parameters$Cp*
        1/(1/G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
-                   LAI= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                   LAI= S$Table_Day$LAI_Tree[previous_i(i,1)],
                    extwind= S$Parameters$extwind,
-                   Z_top= S$Table_Day$Height_Tree[i-S$Zero_then_One[i]])+
+                   Z_top= S$Table_Day$Height_Tree[previous_i(i,1)])+
             1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf_Tree,
-                   LAI_lay= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                   LAI_lay= S$Table_Day$LAI_Tree[previous_i(i,1)],
                    LAI_abv= 0,ZHT = S$Parameters$ZHT,
-                   Z_top = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                   Z_top = S$Table_Day$Height_Tree[previous_i(i,1)],
                    extwind= S$Parameters$extwind)
        ))
 
@@ -87,34 +87,34 @@ Shade.Tree= function(S,i){
 
   # Rm is computed at the beginning of the day on the drymass of the previous day.
   S$Table_Day$Rm_Leaf_Tree[i]=
-    S$Parameters$PaliveLeaf_Tree*S$Table_Day$DM_Leaf_Tree[i-S$Zero_then_One[i]]*
+    S$Parameters$PaliveLeaf_Tree*S$Table_Day$DM_Leaf_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NContentLeaf_Tree*S$Parameters$Q10Leaf_Tree^
     ((S$Met_c$Tair[i]-S$Parameters$TMR)/10)
 
   S$Table_Day$Rm_CR_Tree[i]=
     S$Parameters$PaliveCR_Tree*
-    S$Table_Day$DM_CR_Tree[i-S$Zero_then_One[i]]*
+    S$Table_Day$DM_CR_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NContentCR_Tree*
     S$Parameters$Q10CR_Tree^(
       (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
 
   S$Table_Day$Rm_Branch_Tree[i]=
     S$Parameters$PaliveBranch_Tree[S$Table_Day$Plot_Age[i],2]*
-    S$Table_Day$DM_Branch_Tree[i-S$Zero_then_One[i]]*
+    S$Table_Day$DM_Branch_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NContentBranch_Tree*
     S$Parameters$Q10Branch_Tree^(
       (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
 
   S$Table_Day$Rm_Stem_Tree[i]=
     S$Parameters$PaliveStem_Tree[S$Table_Day$Plot_Age[i],2]*
-    S$Table_Day$DM_Stem_Tree[i-S$Zero_then_One[i]]*
+    S$Table_Day$DM_Stem_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NContentStem_Tree*
     S$Parameters$Q10Stem_Tree^(
       (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
 
   S$Table_Day$Rm_FRoot_Tree[i]=
     S$Parameters$PaliveFRoot_Tree*
-    S$Table_Day$DM_FRoot_Tree[i-S$Zero_then_One[i]]*
+    S$Table_Day$DM_FRoot_Tree[previous_i(i,1)]*
     S$Parameters$MRN*S$Parameters$NContentFRoot_Tree*
     S$Parameters$Q10FRoot_Tree^(
       (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
@@ -167,7 +167,7 @@ Shade.Tree= function(S,i){
     S$Table_Day$Alloc_CR_Tree[i]
   # Natural mortality
   S$Table_Day$Mact_CR_Tree[i]=
-    S$Table_Day$CM_CR_Tree[i-S$Zero_then_One[i]]/S$Parameters$lifespanCR_Tree
+    S$Table_Day$CM_CR_Tree[previous_i(i,1)]/S$Parameters$lifespanCR_Tree
 
 
   #### Branches ####
@@ -182,7 +182,7 @@ Shade.Tree= function(S,i){
     (1-S$Parameters$epsilon_Branch_Tree)*S$Table_Day$Alloc_Branch_Tree[i]
   # Natural mortality:
   S$Table_Day$Mact_Branch_Tree[i]=
-    S$Table_Day$CM_Branch_Tree[i-S$Zero_then_One[i]]/S$Parameters$lifespanBranch_Tree
+    S$Table_Day$CM_Branch_Tree[previous_i(i,1)]/S$Parameters$lifespanBranch_Tree
 
 
   #### Leaves ####
@@ -202,11 +202,11 @@ Shade.Tree= function(S,i){
   if(S$Met_c$DOY[i]%in%S$Parameters$Fall_Period_Tree&S$Table_Day$Plot_Age[i]>1){
     # Phenology (leaf mortality increases in this period) if Leaf_Fall_Tree is TRUE
     S$Table_Day$Mact_Leaf_Tree[i]=
-      S$Table_Day$CM_Leaf_Tree[i-S$Zero_then_One[i]]*S$Parameters$Leaf_fall_rate_Tree
+      S$Table_Day$CM_Leaf_Tree[previous_i(i,1)]*S$Parameters$Leaf_fall_rate_Tree
   }else{
     # Or just natural litterfall assuming no diseases
     S$Table_Day$Mact_Leaf_Tree[i]=
-      S$Table_Day$CM_Leaf_Tree[i-S$Zero_then_One[i]]/S$Parameters$lifespanLeaf_Tree
+      S$Table_Day$CM_Leaf_Tree[previous_i(i,1)]/S$Parameters$lifespanLeaf_Tree
   }
 
   #### Fine roots ####
@@ -221,7 +221,7 @@ Shade.Tree= function(S,i){
     (1-S$Parameters$epsilon_FRoot_Tree)*S$Table_Day$Alloc_FRoot_Tree[i]
   # Natural mortality
   S$Table_Day$Mact_FRoot_Tree[i]=
-    S$Table_Day$CM_FRoot_Tree[i-S$Zero_then_One[i]]/S$Parameters$lifespanFRoot_Tree
+    S$Table_Day$CM_FRoot_Tree[previous_i(i,1)]/S$Parameters$lifespanFRoot_Tree
 
 
   #### Reserves ####
@@ -244,26 +244,26 @@ Shade.Tree= function(S,i){
   if(S$Table_Day$Plot_Age[i]%in%S$Parameters$Pruning_Age_Tree&&S$Met_c$DOY[i]%in%S$Parameters$date_pruning_Tree){
     # Leaves pruning :
     S$Table_Day$Mprun_Leaf_Tree[i]=
-      S$Table_Day$CM_Leaf_Tree[i-S$Zero_then_One[i]]*S$Parameters$pruningIntensity_Tree
+      S$Table_Day$CM_Leaf_Tree[previous_i(i,1)]*S$Parameters$pruningIntensity_Tree
     # Total mortality (cannot exceed total leaf dry mass):
     S$Table_Day$Mact_Leaf_Tree[i]=
       min(S$Table_Day$Mact_Leaf_Tree[i] + S$Table_Day$Mprun_Leaf_Tree[i],
-          S$Table_Day$CM_Leaf_Tree[i-S$Zero_then_One[i]])
+          S$Table_Day$CM_Leaf_Tree[previous_i(i,1)])
 
     # Branch pruning:
     S$Table_Day$Mprun_Branch_Tree[i]=
-      S$Table_Day$CM_Branch_Tree[i-S$Zero_then_One[i]]*S$Parameters$pruningIntensity_Tree
+      S$Table_Day$CM_Branch_Tree[previous_i(i,1)]*S$Parameters$pruningIntensity_Tree
     S$Table_Day$Mact_Branch_Tree[i]=
       min((S$Table_Day$Mact_Branch_Tree[i]+S$Table_Day$Mprun_Branch_Tree[i]),
-          S$Table_Day$CM_Branch_Tree[i-S$Zero_then_One[i]])
+          S$Table_Day$CM_Branch_Tree[previous_i(i,1)])
 
     # Effect of pruning on fine roots  (assumed half the leaves mortality, may be wrong):
     # S$Table_Day$Mprun_FRoot_Tree[i]= (S$Table_Day$Mprun_Leaf_Tree[i]*0.5)
     S$Table_Day$Mprun_FRoot_Tree[i]=
-      S$Table_Day$CM_FRoot_Tree[i-S$Zero_then_One[i]]*S$Parameters$pruningIntensity_Tree
+      S$Table_Day$CM_FRoot_Tree[previous_i(i,1)]*S$Parameters$pruningIntensity_Tree
     S$Table_Day$Mact_FRoot_Tree[i]=
       min(S$Table_Day$Mact_FRoot_Tree[i]+S$Table_Day$Mprun_FRoot_Tree[i],
-          S$Table_Day$CM_FRoot_Tree[i-S$Zero_then_One[i]])
+          S$Table_Day$CM_FRoot_Tree[previous_i(i,1)])
   }
 
 
@@ -275,43 +275,43 @@ Shade.Tree= function(S,i){
       S$Table_Day$Stocking_Tree[i-1]*(1-S$Parameters$RateThinning_Tree)
     # Then add mortality (removing) due to thining :
     S$Table_Day$MThinning_Stem_Tree[i]=
-      S$Table_Day$CM_Stem_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
+      S$Table_Day$CM_Stem_Tree[previous_i(i,1)]*S$Parameters$RateThinning_Tree
     S$Table_Day$MThinning_CR_Tree[i]=
-      S$Table_Day$CM_CR_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
+      S$Table_Day$CM_CR_Tree[previous_i(i,1)]*S$Parameters$RateThinning_Tree
     S$Table_Day$MThinning_Branch_Tree[i]=
-      S$Table_Day$CM_Branch_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
+      S$Table_Day$CM_Branch_Tree[previous_i(i,1)]*S$Parameters$RateThinning_Tree
     S$Table_Day$MThinning_Leaf_Tree[i]=
-      S$Table_Day$CM_Leaf_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
+      S$Table_Day$CM_Leaf_Tree[previous_i(i,1)]*S$Parameters$RateThinning_Tree
     S$Table_Day$MThinning_FRoot_Tree[i]=
-      S$Table_Day$CM_FRoot_Tree[i-S$Zero_then_One[i]]*S$Parameters$RateThinning_Tree
+      S$Table_Day$CM_FRoot_Tree[previous_i(i,1)]*S$Parameters$RateThinning_Tree
   }
 
   # Dry Mass update ---------------------------------------------------------
 
   S$Table_Day$CM_Leaf_Tree[i]=
-    S$Table_Day$CM_Leaf_Tree[i-S$Zero_then_One[i]]+S$Table_Day$NPP_Leaf_Tree[i]-
+    S$Table_Day$CM_Leaf_Tree[previous_i(i,1)]+S$Table_Day$NPP_Leaf_Tree[i]-
     S$Table_Day$Mact_Leaf_Tree[i]-S$Table_Day$MThinning_Leaf_Tree[i]
 
   S$Table_Day$CM_Branch_Tree[i]=
-    S$Table_Day$CM_Branch_Tree[i-S$Zero_then_One[i]]+S$Table_Day$NPP_Branch_Tree[i]-
+    S$Table_Day$CM_Branch_Tree[previous_i(i,1)]+S$Table_Day$NPP_Branch_Tree[i]-
     S$Table_Day$Mact_Branch_Tree[i]-S$Table_Day$MThinning_Branch_Tree[i]
 
   S$Table_Day$CM_Stem_Tree[i]=
-    S$Table_Day$CM_Stem_Tree[i-S$Zero_then_One[i]]+S$Table_Day$NPP_Stem_Tree[i]-
+    S$Table_Day$CM_Stem_Tree[previous_i(i,1)]+S$Table_Day$NPP_Stem_Tree[i]-
     S$Table_Day$Mact_Stem_Tree[i]-S$Table_Day$MThinning_Stem_Tree[i]
 
   S$Table_Day$CM_CR_Tree[i]=
-    S$Table_Day$CM_CR_Tree[i-S$Zero_then_One[i]]+
+    S$Table_Day$CM_CR_Tree[previous_i(i,1)]+
     S$Table_Day$NPP_CR_Tree[i]- S$Table_Day$Mact_CR_Tree[i]-
     S$Table_Day$MThinning_CR_Tree[i]
 
   S$Table_Day$CM_FRoot_Tree[i]=
-    S$Table_Day$CM_FRoot_Tree[i-S$Zero_then_One[i]]+
+    S$Table_Day$CM_FRoot_Tree[previous_i(i,1)]+
     S$Table_Day$NPP_FRoot_Tree[i]-S$Table_Day$Mact_FRoot_Tree[i]-
     S$Table_Day$MThinning_FRoot_Tree[i]
 
   S$Table_Day$CM_RE_Tree[i]=
-    S$Table_Day$CM_RE_Tree[i-S$Zero_then_One[i]]+
+    S$Table_Day$CM_RE_Tree[previous_i(i,1)]+
     S$Table_Day$NPP_Reserves_Tree[i]-S$Table_Day$Consumption_RE_Tree[i]
 
   ##########################################

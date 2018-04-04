@@ -52,8 +52,8 @@ Light_extinction_K= function(S,i){
   # See MAESPA_Validation project, script 4-Aquiares_Metamodels.R
   # Source for non-constant k: Sinoquet et al. 2007
   # DOI: 10.1111/j.1469-8137.2007.02088.x
-  S$Table_Day$K_Dif_Tree[i]= 0.6161 - 0.5354*S$Table_Day$LAD_Tree[i-S$Zero_then_One[i]]
-  S$Table_Day$K_Dir_Tree[i]= 0.4721 - 0.3973*S$Table_Day$LAD_Tree[i-S$Zero_then_One[i]]
+  S$Table_Day$K_Dif_Tree[i]= 0.6161 - 0.5354*S$Table_Day$LAD_Tree[previous_i(i,1)]
+  S$Table_Day$K_Dir_Tree[i]= 0.4721 - 0.3973*S$Table_Day$LAD_Tree[previous_i(i,1)]
 }
 
 

@@ -33,7 +33,7 @@ Soilfun= function(S,i){
   S$Table_Day$IntercMax[i]= S$Parameters$IntercSlope*S$Table_Day$LAIplot[i]
 
   S$Table_Day$CanopyHumect[i]=
-    max(0,S$Table_Day$CanopyHumect[i-S$Zero_then_One[i]]+S$Met_c$Rain[i])
+    max(0,S$Table_Day$CanopyHumect[previous_i(i,1)]+S$Met_c$Rain[i])
 
   Potential_LeafEvap=
     PENMON(Rn= S$Met_c$Rn[i], Wind= S$Met_c$WindSpeed[i], Tair = S$Met_c$Tair[i],
@@ -57,7 +57,7 @@ Soilfun= function(S,i){
   # 2.a Adding throughfall to superficial-box, calculation of surface runoff, updating of
   # stock in superficial-box
   S$Table_Day$WSurfaceRes[i]=
-    S$Table_Day$WSurfaceRes[i-S$Zero_then_One[i]] + S$Table_Day$Throughfall[i]
+    S$Table_Day$WSurfaceRes[previous_i(i,1)] + S$Table_Day$Throughfall[i]
 
   if(S$Table_Day$WSurfaceRes[i] > S$Parameters$WSurfResMax){
     S$Table_Day$ExcessRunoff[i] = S$Table_Day$WSurfaceRes[i]-S$Parameters$WSurfResMax
@@ -77,7 +77,7 @@ Soilfun= function(S,i){
       S$Table_Day$SuperficialRunoff[i]}
 
   # 2.b Computing the infiltration capacity as a function of soil water content in W_1
-  S$Table_Day$W_1[i]= S$Table_Day$W_1[i-S$Zero_then_One[i]]
+  S$Table_Day$W_1[i]= S$Table_Day$W_1[previous_i(i,1)]
 
   if(S$Table_Day$W_1[i] <= S$Parameters$Wm1){
     S$Table_Day$InfilCapa[i]= S$Parameters$fo # InfilCapa: infiltration capacity
@@ -103,8 +103,8 @@ Soilfun= function(S,i){
   #3/ Adding Infiltration to soil water content of the previous day, computing drainage,
   # source Gomez-Delgado et al. 2010
   # RV: same as CanopyHumect
-  # S$Table_Day$W_1[i]= S$Table_Day$W_1[i-S$Zero_then_One[i]]+S$Zero_then_One[i]*S$Table_Day$Infiltration[i]
-  S$Table_Day$W_1[i]= S$Table_Day$W_1[i-S$Zero_then_One[i]]+S$Table_Day$Infiltration[i]
+  # S$Table_Day$W_1[i]= S$Table_Day$W_1[previous_i(i,1)]+S$Zero_then_One[i]*S$Table_Day$Infiltration[i]
+  S$Table_Day$W_1[i]= S$Table_Day$W_1[previous_i(i,1)]+S$Table_Day$Infiltration[i]
 
   #Preventing W_1 to be larger than the soil storage at field capacity:
   if(S$Table_Day$W_1[i] > S$Parameters$Wf1){
@@ -113,8 +113,8 @@ Soilfun= function(S,i){
   }else{S$Table_Day$Drain_1[i]= 0}     # Water excess in the root-box that drains (m)
 
   # RV: same as CanopyHumect
-  # S$Table_Day$W_2[i]= S$Table_Day$W_2[i-S$Zero_then_One[i]]+S$Zero_then_One[i]*S$Table_Day$Drain_1[i]
-  S$Table_Day$W_2[i]= S$Table_Day$W_2[i-S$Zero_then_One[i]]+S$Table_Day$Drain_1[i]
+  # S$Table_Day$W_2[i]= S$Table_Day$W_2[previous_i(i,1)]+S$Zero_then_One[i]*S$Table_Day$Drain_1[i]
+  S$Table_Day$W_2[i]= S$Table_Day$W_2[previous_i(i,1)]+S$Table_Day$Drain_1[i]
 
   #Preventing W_2 to be larger than the soil storage at field capacity:
   if(S$Table_Day$W_2[i] > S$Parameters$Wf2){
@@ -123,8 +123,8 @@ Soilfun= function(S,i){
   }else{S$Table_Day$Drain_2[i]= 0}     # Water excess in the root-box that drains (m)
 
   # RV: same as CanopyHumect
-  # S$Table_Day$W_3[i]= S$Table_Day$W_3[i-S$Zero_then_One[i]]+S$Zero_then_One[i]*S$Table_Day$Drain_2[i]
-  S$Table_Day$W_3[i]= S$Table_Day$W_3[i-S$Zero_then_One[i]]+S$Table_Day$Drain_2[i]
+  # S$Table_Day$W_3[i]= S$Table_Day$W_3[previous_i(i,1)]+S$Zero_then_One[i]*S$Table_Day$Drain_2[i]
+  S$Table_Day$W_3[i]= S$Table_Day$W_3[previous_i(i,1)]+S$Table_Day$Drain_2[i]
 
   #Preventing W_3 to be larger than the soil storage at field capacity:
   if(S$Table_Day$W_3[i] > S$Parameters$Wf3){

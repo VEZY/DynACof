@@ -339,14 +339,14 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       S$Table_Day$APAR_Dif[i]=
         max(0,((S$Met_c$PAR[i]-S$Table_Day$APAR_Tree[i])*S$Met_c$FDiff[i])*
-              (1-exp(-S$Table_Day$K_Dif[i]*S$Table_Day$LAI[i-S$Zero_then_One[i]])))#MJ m-2 d-1
+              (1-exp(-S$Table_Day$K_Dif[i]*S$Table_Day$LAI[previous_i(i,1)])))#MJ m-2 d-1
       APAR_Dir= max(0,((S$Met_c$PAR[i]-S$Table_Day$APAR_Tree[i])*(1-S$Met_c$FDiff[i]))*
-                      (1-exp(-S$Table_Day$K_Dir[i]*S$Table_Day$LAI[i-S$Zero_then_One[i]])))#MJ m-2 d-1
+                      (1-exp(-S$Table_Day$K_Dir[i]*S$Table_Day$LAI[previous_i(i,1)])))#MJ m-2 d-1
       # APAR_Dir is not part of S$Table_Day because it can be easily computed by
       # S$Met_c$PARm2d1-S$Table_Day$APAR_Dif
       S$Table_Day$APAR[i]= APAR_Dir+S$Table_Day$APAR_Dif[i]
       # S$Table_Day$APAR[i]= max(0,(S$Met_c$PAR[i]-S$Table_Day$APAR_Tree[i])*(1-
-      # exp(-S$Table_Day$k[i]*S$Table_Day$LAI[i-S$Zero_then_One[i]])))#MJ m-2 d-1
+      # exp(-S$Table_Day$k[i]*S$Table_Day$LAI[previous_i(i,1)])))#MJ m-2 d-1
 
       # Metamodel Coffee Tcanopy, Paper 2
       S$Table_Day$Tcan_MAESPA_Coffee[i]=
@@ -397,7 +397,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # Thus NPP_RE_Tree must reset to zero for each time-step (day) begining and then
       S$Table_Day$NPP_RE[i]= 0
       S$Table_Day$Consumption_RE[i]=
-        S$Parameters$kres*S$Table_Day$CM_RE[i-S$Zero_then_One[i]]
+        S$Parameters$kres*S$Table_Day$CM_RE[previous_i(i,1)]
 
 
 
@@ -411,7 +411,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       #Maintenance Respiration Rm_RsWood
       S$Table_Day$Rm_RsWood[i]=
         S$Zero_then_One[i]*
-        (S$Parameters$PaliveRsWood*S$Table_Day$DM_RsWood[i-S$Zero_then_One[i]]*
+        (S$Parameters$PaliveRsWood*S$Table_Day$DM_RsWood[previous_i(i,1)]*
            S$Parameters$NContentRsWood*S$Parameters$MRN*
            S$Parameters$Q10RsWood^((S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
@@ -419,7 +419,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       S$Table_Day$Rm_SCR[i]=
         S$Zero_then_One[i]*
         (S$Parameters$PaliveSCR*
-           S$Table_Day$DM_SCR[i-S$Zero_then_One[i]]*
+           S$Table_Day$DM_SCR[previous_i(i,1)]*
            S$Parameters$NContentSCR*S$Parameters$MRN*
            S$Parameters$Q10SCR^(
              (S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
@@ -427,20 +427,20 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # Fruits
       S$Table_Day$Rm_Fruit[i]=
         S$Zero_then_One[i]*
-        (S$Parameters$PaliveFruit*S$Table_Day$DM_Fruit[i-S$Zero_then_One[i]]*
+        (S$Parameters$PaliveFruit*S$Table_Day$DM_Fruit[previous_i(i,1)]*
            S$Parameters$NContentFruit*S$Parameters$MRN*
            S$Parameters$Q10Fruit^((S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
       # Leaves
       S$Table_Day$Rm_Leaf[i]=
         S$Zero_then_One[i]*
-        (S$Parameters$PaliveLeaf*S$Table_Day$DM_Leaf[i-S$Zero_then_One[i]]*
+        (S$Parameters$PaliveLeaf*S$Table_Day$DM_Leaf[previous_i(i,1)]*
            S$Parameters$NContentLeaf*S$Parameters$MRN*
            S$Parameters$Q10Leaf^((S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
       # Fine roots
       S$Table_Day$Rm_FRoot[i]=
         S$Zero_then_One[i]*
-        (S$Parameters$PaliveFRoot*S$Table_Day$DM_FRoot[i-S$Zero_then_One[i]]*
+        (S$Parameters$PaliveFRoot*S$Table_Day$DM_FRoot[previous_i(i,1)]*
            S$Parameters$NContentFRoot*S$Parameters$MRN*
            S$Parameters$Q10FRoot^((S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
@@ -475,19 +475,19 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       S$Table_Day$Rc_RsWood[i]= (1-S$Parameters$epsilonRsWood)*S$Table_Day$Alloc_RsWood[i]
       # Natural Mortality
       S$Table_Day$Mnat_RsWood[i]=
-        S$Table_Day$CM_RsWood[i-S$Zero_then_One[i]]/S$Parameters$lifespanRsWood
+        S$Table_Day$CM_RsWood[previous_i(i,1)]/S$Parameters$lifespanRsWood
       # Pruning
       if(S$Table_Day$Plot_Age[i]>=S$Parameters$MeanAgePruning&
          S$Table_Day$Plot_Age[i]<=(S$Parameters$MeanAgePruning+2)&
          S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Table_Day$Mprun_RsWood[i]=S$Table_Day$CM_RsWood[i-S$Zero_then_One[i]]/3
+        S$Table_Day$Mprun_RsWood[i]=S$Table_Day$CM_RsWood[previous_i(i,1)]/3
       }else if(S$Table_Day$Plot_Age[i]>(S$Parameters$MeanAgePruning+2)&
                S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Table_Day$Mprun_RsWood[i]=S$Table_Day$CM_RsWood[i-S$Zero_then_One[i]]/2.5
+        S$Table_Day$Mprun_RsWood[i]=S$Table_Day$CM_RsWood[previous_i(i,1)]/2.5
       }
       S$Table_Day$Mortality_RsWood[i]=
         min((S$Table_Day$Mnat_RsWood[i]+S$Table_Day$Mprun_RsWood[i]),
-            S$Table_Day$CM_RsWood[i-S$Zero_then_One[i]])
+            S$Table_Day$CM_RsWood[previous_i(i,1)])
 
       # 2-Stump and coarse roots (perennial wood) ------------------------------
       # coef d'alloc is more important for old ages, see Defrenet et al., 2016
@@ -506,7 +506,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
         (1-S$Parameters$epsilonSCR)*S$Table_Day$Alloc_SCR[i]
       #Mortality
       S$Table_Day$Mnat_SCR[i]=
-        S$Table_Day$CM_SCR[i-S$Zero_then_One[i]]/S$Parameters$lifespanSCR
+        S$Table_Day$CM_SCR[previous_i(i,1)]/S$Parameters$lifespanSCR
       S$Table_Day$Mortality_SCR[i]= S$Table_Day$Mnat_SCR[i]
 
       # Ratio of number of new nodes per LAI unit as affected by canopy air temperature according to
@@ -594,7 +594,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       # (6) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
       S$Table_Day$p_budbreakperday[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
-                                               S$Table_Day$LeafWaterPotential[i-S$Zero_then_One[i]]))
+                                               S$Table_Day$LeafWaterPotential[previous_i(i,1)]))
       # (7) Compute the number of buds that effectively break dormancy in each cohort:
       S$Table_Day$BudBreak_cohort[DormancyBreakPeriod]=
         pmin(S$Table_Day$Bud_available[DormancyBreakPeriod],
@@ -666,8 +666,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # Harvest. Made one day only for now (TODO: make it a period of harvest)
       # Made as soon as the fruit dry mass is decreasing (overriping more important than fruit maturation):
       if(S$Table_Day$Plot_Age[i]>=S$Parameters$ageMaturity&
-         S$Table_Day$CM_Fruit[i-S$Zero_then_One[i]]<(S$Table_Day$CM_Fruit[previous_i(i,3)]+0.1)&
-         S$Table_Day$CM_Fruit[i-S$Zero_then_One[i]]>40){
+         S$Table_Day$CM_Fruit[previous_i(i,1)]<(S$Table_Day$CM_Fruit[previous_i(i,3)]+0.1)&
+         S$Table_Day$CM_Fruit[previous_i(i,1)]>40){
         # Save the date of harvest:
         S$Table_Day$Date_harvest[i]= S$Met_c$DOY[i]
         S$Table_Day$Harvest_Fruit[i]= S$Table_Day$CM_Fruit[i-1]
@@ -708,14 +708,14 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       #Mortality
       # By natural litterfall assuming no diseases
-      S$Table_Day$Mnat_Leaf[i]=S$Table_Day$CM_Leaf[i-S$Zero_then_One[i]]/S$Parameters$lifespanLeaf
+      S$Table_Day$Mnat_Leaf[i]=S$Table_Day$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespanLeaf
       # By American Leaf Spot # Litterfall by ALS is difference between 2 dates
       S$Table_Day$M_ALS[i]=
-        S$Zero_then_One[i]*max(0,S$Table_Day$CM_Leaf[i-S$Zero_then_One[i]]*S$Table_Day$ALS[i])
+        S$Zero_then_One[i]*max(0,S$Table_Day$CM_Leaf[previous_i(i,1)]*S$Table_Day$ALS[i])
 
       #By pruning
       if(S$Table_Day$Plot_Age[i]>=S$Parameters$MeanAgePruning&S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Table_Day$Mprun_Leaf[i]=S$Table_Day$CM_Leaf[i-S$Zero_then_One[i]]*
+        S$Table_Day$Mprun_Leaf[i]=S$Table_Day$CM_Leaf[previous_i(i,1)]*
           S$Parameters$LeafPruningRate}else{S$Table_Day$Mprun_Leaf[i]=0}
 
       S$Table_Day$Mortality_Leaf[i]= S$Table_Day$Mnat_Leaf[i] + S$Table_Day$Mprun_Leaf[i]+S$Table_Day$M_ALS[i]
@@ -741,7 +741,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       S$Table_Day$NPP_RE[i]= S$Table_Day$NPP_RE[i]+(S$Table_Day$Offer_FRoot[i]-S$Table_Day$Alloc_FRoot[i])
 
       #Mortality
-      S$Table_Day$Mnat_FRoot[i]=S$Table_Day$CM_FRoot[i-S$Zero_then_One[i]]/S$Parameters$lifespanFRoot
+      S$Table_Day$Mnat_FRoot[i]=S$Table_Day$CM_FRoot[previous_i(i,1)]/S$Parameters$lifespanFRoot
       S$Table_Day$Mprun_FRoot[i]=S$Parameters$M_RateFRootprun*S$Table_Day$Mprun_Leaf[i]
       S$Table_Day$Mortality_FRoot[i]=S$Table_Day$Mnat_FRoot[i]+S$Table_Day$Mprun_FRoot[i]
 
@@ -750,22 +750,22 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
 
 
-      S$Table_Day$CM_Leaf[i]=S$Table_Day$CM_Leaf[i-S$Zero_then_One[i]]+
+      S$Table_Day$CM_Leaf[i]=S$Table_Day$CM_Leaf[previous_i(i,1)]+
         S$Table_Day$NPP_Leaf[i]-S$Table_Day$Mortality_Leaf[i]-
         S$Table_Day$Carbon_Lack_Mortality[i]*0.25
-      S$Table_Day$CM_RsWood[i]= S$Table_Day$CM_RsWood[i-S$Zero_then_One[i]]+
+      S$Table_Day$CM_RsWood[i]= S$Table_Day$CM_RsWood[previous_i(i,1)]+
         S$Table_Day$NPP_RsWood[i]-S$Table_Day$Mortality_RsWood[i]-
         S$Table_Day$Carbon_Lack_Mortality[i]*0.25
-      S$Table_Day$CM_Fruit[i]=S$Table_Day$CM_Fruit[i-S$Zero_then_One[i]]+
+      S$Table_Day$CM_Fruit[i]=S$Table_Day$CM_Fruit[previous_i(i,1)]+
         S$Table_Day$NPP_Fruit[i]-S$Table_Day$Overriped_Fruit[i]
       # NB: S$Table_Day$Overriped_Fruit is negative (loss by falling if overriped)
-      S$Table_Day$CM_SCR[i]= S$Table_Day$CM_SCR[i-S$Zero_then_One[i]]+
+      S$Table_Day$CM_SCR[i]= S$Table_Day$CM_SCR[previous_i(i,1)]+
         S$Table_Day$NPP_SCR[i]-S$Table_Day$Mortality_SCR[i]-
         S$Table_Day$Carbon_Lack_Mortality[i]*0.25
-      S$Table_Day$CM_FRoot[i]= S$Table_Day$CM_FRoot[i-S$Zero_then_One[i]]+
+      S$Table_Day$CM_FRoot[i]= S$Table_Day$CM_FRoot[previous_i(i,1)]+
         S$Table_Day$NPP_FRoot[i]-S$Table_Day$Mortality_FRoot[i]-
         S$Table_Day$Carbon_Lack_Mortality[i]*0.25
-      S$Table_Day$CM_RE[i]=S$Table_Day$CM_RE[i-S$Zero_then_One[i]]+S$Table_Day$NPP_RE[i]-
+      S$Table_Day$CM_RE[i]=S$Table_Day$CM_RE[previous_i(i,1)]+S$Table_Day$NPP_RE[i]-
         S$Table_Day$Consumption_RE[i]
       S$Table_Day$Rc[i]= S$Table_Day$Rc_Fruit[i]+S$Table_Day$Rc_Leaf[i]+
         S$Table_Day$Rc_RsWood[i]+S$Table_Day$Rc_SCR[i]+
@@ -855,16 +855,16 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
 
       #11/ Tcanopy Coffee : using bulk conductance if no trees, interlayer conductance if trees
-      if(S$Table_Day$Height_Tree[i-S$Zero_then_One[i]]>S$Parameters$Height_Coffee){
+      if(S$Table_Day$Height_Tree[previous_i(i,1)]>S$Parameters$Height_Coffee){
 
         S$Table_Day$TairCanopy[i]=
           S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
           (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                        LAI_top= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
-                        LAI_bot= S$Table_Day$LAI[i-S$Zero_then_One[i]],
-                        Z_top= S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                        LAI_top= S$Table_Day$LAI_Tree[previous_i(i,1)],
+                        LAI_bot= S$Table_Day$LAI[previous_i(i,1)],
+                        Z_top= S$Table_Day$Height_Tree[previous_i(i,1)],
                         extwind = S$Parameters$extwind))
 
         S$Table_Day$Tleaf_Coffee[i]=
@@ -872,15 +872,15 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
           (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              1/(1/G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                             LAI_top= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
-                             LAI_bot= S$Table_Day$LAI[i-S$Zero_then_One[i]],
-                             Z_top= S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                             LAI_top= S$Table_Day$LAI_Tree[previous_i(i,1)],
+                             LAI_bot= S$Table_Day$LAI[previous_i(i,1)],
+                             Z_top= S$Table_Day$Height_Tree[previous_i(i,1)],
                              extwind = S$Parameters$extwind)+
                   1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
-                         LAI_lay=S$Table_Day$LAI[i-S$Zero_then_One[i]],
-                         LAI_abv=S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                         LAI_lay=S$Table_Day$LAI[previous_i(i,1)],
+                         LAI_abv=S$Table_Day$LAI_Tree[previous_i(i,1)],
                          ZHT = S$Parameters$ZHT,
-                         Z_top = S$Table_Day$Height_Tree[i-S$Zero_then_One[i]],
+                         Z_top = S$Table_Day$Height_Tree[previous_i(i,1)],
                          extwind= S$Parameters$extwind)))
 
 
@@ -891,7 +891,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
              S$Parameters$Cp*
              G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
                     Z_top = S$Parameters$Height_Coffee,
-                    LAI = S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                    LAI = S$Table_Day$LAI[previous_i(i,1)],
                     extwind = S$Parameters$extwind))
 
         S$Table_Day$Tleaf_Coffee[i]=
@@ -900,11 +900,11 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
              S$Parameters$Cp*
              1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
                          Z_top = S$Parameters$Height_Coffee,
-                         LAI = S$Table_Day$LAI[i-S$Zero_then_One[i]],
+                         LAI = S$Table_Day$LAI[previous_i(i,1)],
                          extwind = S$Parameters$extwind)+
                   1/Gb_h(Wind= S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
-                         LAI_lay= S$Table_Day$LAI[i-S$Zero_then_One[i]],
-                         LAI_abv= S$Table_Day$LAI_Tree[i-S$Zero_then_One[i]],
+                         LAI_lay= S$Table_Day$LAI[previous_i(i,1)],
+                         LAI_abv= S$Table_Day$LAI_Tree[previous_i(i,1)],
                          ZHT= S$Parameters$ZHT,
                          Z_top= S$Parameters$Height_Coffee,
                          extwind= S$Parameters$extwind)))
