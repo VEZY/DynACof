@@ -173,6 +173,12 @@
 #' if(interactive()){
 #'  Sys.setenv(TZ="UTC")
 #'  DynACof(WriteIt = T, Period= as.POSIXct(c("1979-01-01", "1982-01-01")),Outpath = "Results")
+#'
+#'  # Get the units of the input variables:
+#'  attr(S$Met_c,"unit")
+#'
+#'  # Get the units of the output variables:
+#'  attr(S$Table_Day,"unit")
 #'  }
 #' }
 #' @export
@@ -218,8 +224,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   # Variables are reinitialized so each cycle is independant from the others -> mandatory for
   # parallel processing
 
-  cat(paste("Starting a simulation from",min(Meteo$Date),"to",max(Meteo$Date)),"over",NCycles,
-      "plantation cycle(s)")
+  message(paste("Starting a simulation from",min(Meteo$Date),"to",max(Meteo$Date),"over",NCycles,
+          "plantation cycle(s)"))
 
   # Parallel loop over cycles:
   NbCores= parallel::detectCores()-1 # Set the maximum number of cores working on the model computation
@@ -261,14 +267,10 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
     # Day of vegetative growth end:
     VegetGrowthEndDay= which(S$Met_c$DOY==S$Parameters$VGS_Stop)
-    # Variable of interest declaration:
-    S$Table_Day$BudInitPeriod= FALSE
-    S$Table_Day$Cohort_Reset= FALSE
     # Temporary variables declaration:
     CumsumRelativeToVeget= CumsumRelativeToBudinit=
       matrix(data = NA, nrow = length(VegetGrowthEndDay), ncol = length(S$Met_c$Date))
     DateBudinit= DateFFlowering= NULL
-    Cohort= 1
     for (i in 1:length(VegetGrowthEndDay)){
       CumsumRelativeToVeget[i,]=
         CumulDegreeDays-CumulDegreeDays[VegetGrowthEndDay[i]-1]
@@ -290,7 +292,6 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # +100 because it takes 100dd to break dormancy until flowering (Rodriguez et al. 2011)
       # Effective dates between which buds can appear (from DateBudinit until first flowering)
       S$Table_Day$BudInitPeriod[DateBudinit[i]:DateFFlowering[i]]= TRUE
-      S$Table_Day$Cohort_Reset[DateBudinit[i]]= TRUE
     }
     S$Table_Day$BudInitPeriod[CumulDegreeDays<S$Parameters$VF_Flowering]= FALSE
 
@@ -508,7 +509,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
         S$Table_Day$CM_SCR[i-S$Zero_then_One[i]]/S$Parameters$lifespanSCR
       S$Table_Day$Mortality_SCR[i]= S$Table_Day$Mnat_SCR[i]
 
-      # Ratio of number of new nodes per LAI unit as affected by air temperature according to
+      # Ratio of number of new nodes per LAI unit as affected by canopy air temperature according to
       # Drinnan & Menzel, 1995
       #Source "0 Effect T on yield and vegetative growth.xlsx", sheet "Std20dComposWinterNodeperBr"
       # NB: computed at the end of the vegetatitve growth only to have Tcan of the
@@ -518,17 +519,10 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # are related to leaf area (new leaves appear on nodes) : GUTIERREZ et al. (1998)
       if(S$Met_c$DOY[i]==S$Parameters$VGS_Stop){
         S$Table_Day$ratioNodestoLAI[S$Met_c$year>=S$Met_c$year[i]]=
-          S$Table_Day[S$Met_c$year==S$Met_c$year[i]&
-                        S$Met_c$DOY>=S$Parameters$VGS_Start&
-                        S$Met_c$DOY <= S$Parameters$VGS_Stop,]%>%
-          summarise(AverTaVegGrowSeason_Year= mean(Tcan_MAESPA_Coffee))%>%
-          mutate(Perc_Nodes_compared_to_20deg_ref=
-                   0.0005455*AverTaVegGrowSeason_Year^3 - 0.0226364*
-                   AverTaVegGrowSeason_Year^2+0.2631364*
-                   AverTaVegGrowSeason_Year + 0.4194773)%>%
-          transmute(ratio_Nodes_to_LAI=
-                      S$Parameters$RNL_base*Perc_Nodes_compared_to_20deg_ref)%>%
-          as.matrix()%>%as.vector()
+          mean(S$Table_Day$Tcan_MAESPA_Coffee[S$Met_c$year==S$Met_c$year[i]&
+                                                S$Met_c$DOY>=S$Parameters$VGS_Start&
+                                                S$Met_c$DOY <= S$Parameters$VGS_Stop])%>%
+            {S$Parameters$RNL_base*(0.0005455*.^3 - 0.0226364*.^2+0.2631364*. + 0.4194773)}
       }
 
       ########## Flower Buds + Flower + Fruits (See Rodriguez et al. 2011)####
@@ -545,7 +539,6 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
           (S$Parameters$a_Budinit+S$Parameters$b_Budinit*2.017*PARcof)*
           S$Table_Day$LAI[i-1]*S$Table_Day$ratioNodestoLAI[i-1]*S$Table_Day$DegreeDays_Tcan[i]
         # Number of nodes: S$Table_Day$LAI[i-1]*S$Table_Day$ratioNodestoLAI[i-1]
-        if(S$Table_Day$Cohort_Reset[i]){Cohort=1}
         S$Table_Day$Bud_available[i]= S$Table_Day$Budinit[i]
       }
       # NB: 2.017 is conversion factor to estimate RAD above Coffea from PAR above Coffee
@@ -600,7 +593,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       }
 
       # (6) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
-      S$Table_Day$p_budbreakperday= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
+      S$Table_Day$p_budbreakperday[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
                                                S$Table_Day$LeafWaterPotential[i-S$Zero_then_One[i]]))
       # (7) Compute the number of buds that effectively break dormancy in each cohort:
       S$Table_Day$BudBreak_cohort[DormancyBreakPeriod]=
@@ -680,7 +673,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
         S$Table_Day$Harvest_Fruit[i]= S$Table_Day$CM_Fruit[i-1]
         S$Table_Day$Harvest_Maturity[S$Met_c$year==S$Met_c$year[i]]= S$Table_Day$Harvest_Maturity_Pot[i]
         S$Table_Day$CM_Fruit[i-1]= S$Table_Day$Alloc_Fruit[i]=
-          S$Table_Day$CM_Fruit_Cohort= S$Table_Day$Overriped_Fruit[i]= 0
+          S$Table_Day$Overriped_Fruit[i]= 0
+        S$Table_Day$CM_Fruit_Cohort= rep(0,length(S$Table_Day$CM_Fruit_Cohort))
         # RV: could harvest mature fruits only (To do).
       }else{
         S$Table_Day$Harvest_Fruit[i]= NA_real_
@@ -703,7 +697,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
            S$Table_Day$Alloc_RsWood[i]-S$Table_Day$Alloc_SCR[i])
       #Demand : the demand is actually S$Parameters$Demand_Leaf
       #Min(Demand, Offer)
-      S$Table_Day$Alloc_Leaf[i]=max(0,min(S$Parameters$Demand_Leaf, S$Table_Day$Offer_Leaf[i]))
+      S$Table_Day$Alloc_Leaf[i]=max(0,min(S$Parameters$Demand_Leaf*(S$Parameters$Stocking_Coffee/10000),
+                                          S$Table_Day$Offer_Leaf[i]))
       #NPP
       S$Table_Day$NPP_Leaf[i]= S$Parameters$epsilonLeaf*S$Table_Day$Alloc_Leaf[i]
       #Rc
@@ -917,11 +912,11 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # NB : if no trees, TairCanopy_Tree= Tair
 
     }
-    list(Table_Day= S$Table_Day)
+    CycleList=list(Table_Day= S$Table_Day%>%as.data.frame)
   }
   snow::stopCluster(cl)
   # Reordering the lists to make the results as previous versions of the model:
-  Table= data.frame(do.call(rbind, CycleList[c(1:NCycles)]))
+  Table= do.call(rbind, CycleList[c(1:NCycles)])
 
   # Force to keep interesting output variables only:
   UnwantedVarnames= c('.Fruit_Cohort',"Bud_available","BudBreak_cohort")
@@ -929,7 +924,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
   attr(Table,"unit")= data.frame(varnames)
 
-  cat("\n", "Simulation completed successfully", "\n")
+  message(paste("\n", "Simulation completed successfully", "\n"))
   FinalList= list(Table_Day= Table,Met_c= Meteo, Parameters= Parameters)
   if(WriteIt){
     write.results(FinalList,output_f,Simulation_Name,Outpath,...)

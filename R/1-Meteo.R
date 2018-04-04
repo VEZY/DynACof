@@ -63,7 +63,10 @@
 #' \dontrun{
 #' if(interactive()){
 #'  Sys.setenv(TZ="UTC")
-#'  Meteorology()
+#'  Met_c= Meteorology()
+#'
+#'  # Get the units of the output variables:
+#'  attr(Met_c,"unit")
 #'  }
 #' }
 #'
@@ -253,6 +256,6 @@ Meteorology= function(file=NULL, Period=NULL,
                       "m s-1","ppm","deg C","MJ m-2 d-1","Fraction","hPa","MJ m-2 d-1",
                       "deg C","deg C","day"))
 
-  cat("Meteo computation done\n")
+  message("Meteo computation done\n")
   return(MetData)
 }

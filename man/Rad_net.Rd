@@ -19,6 +19,8 @@ Rad_net(DOY, RAD, Tmax, Tmin, VPD, Rh = NULL, Latitude, Elevation, albedo,
 
 \item{VPD}{Mean daily Vapor Pressure Deficit (hPa), only needed if \code{Rh} is missing}
 
+\item{Rh}{Average daily relative humidity (\code{\%})}
+
 \item{Latitude}{Latitude (deg)}
 
 \item{Elevation}{Elevation (m)}

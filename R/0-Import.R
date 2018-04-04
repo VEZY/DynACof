@@ -34,7 +34,7 @@ Import_Parameters= function(path= NULL,
           warning(paste(names(Names[i]),"parameter file not found, taking default package values"))
           Filespath[names(Names[i])]= "Default from package function"
         }else{
-          print(paste(names(Names[i]),"parameters taken from",file.path(path,Names[i])))
+          message(paste(names(Names[i]),"parameters taken from",file.path(path,Names[i])))
           Filespath[names(Names[i])]= file.path(path,Names[[i]])
         }
       }

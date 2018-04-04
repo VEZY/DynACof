@@ -7,6 +7,7 @@ Tree= function(){
     StockingTree_treeha1 = 7.38,                      # density at planting (trees ha-1). Source: Taugourdeau et al. (2014)
     SLA_Tree             = 17.4,                      # Specific leaf area (m2 kg-1). Source: Van Oijen et al. (2010, I)
     wleaf_Tree           = 0.068,                     # Leaf width (m)
+    Demand_Leaf_Tree     = 1557,                      # Leaf carbon demand (gC tree d-1). Approximated from MAESPA_Validation work
     Leaf_fall_rate_Tree  = 0.09,                      # Mortality during leaf fall (fraction of the leaf mass)
     Fall_Period_Tree     = c(1:30),                   # Time period were leaves fall at high rate (DOY)
     ThinThresh           = 0,                         # Low transmittance threshold under wich thinning is triggered (0-1)
@@ -52,19 +53,12 @@ Tree= function(){
     Q10CR_Tree           = 2.1,                       # Coarse root Q10 (-)
     Q10Leaf_Tree         = 1.896,                     # Leaf Q10 (-), see 1-DATA/Erythrina/Respiration.docx
     Q10FRoot_Tree        = 1.4,                       # Fine root Q10 (-). Source: Van Oijen et al (2010,I)
-    PaliveBranch_Tree    = 1/3,                       # Branch living tissue (fraction)
+    PaliveBranch_Tree    = Paliv_dis(40,1,0.05,5),  # Branch living tissue (fraction). Not used (replaced by PaliveStem_Tree).
     PaliveStem_0_Tree    = 1,                         # Stem living tissue at age 0 (fraction)
     PaliveStem_End_Tree  = 0.05,                      # Stem living tissue at end of rotation (fraction)
     PaliveStem_rate_Tree = 5,                         # Rate of decreasing stem living tissue
     PaliveStem_AgeMax_Tree= 40,                       # Age at which PaliveStem_End_Tree refers (age)
-    PaliveStem_Tree      =                            # Computation of living tissue at each age (do not modify)
-      data.frame(Age= 1:40,PaliveStem_Tree=round(0.05+((1-0.05)*exp(seq(0,-5,length.out = 40))),3)),
-    # data.frame(Age= 1:PaliveStem_AgeMax_Tree,
-    #            PaliveStem_Tree=
-    #              PaliveStem_End_Tree+
-    #              ((PaliveStem_0_Tree-PaliveStem_End_Tree)*
-    #                 exp(seq(0,-PaliveStem_rate_Tree,
-    #                         length.out = PaliveStem_AgeMax_Tree)))),
+    PaliveStem_Tree      = Paliv_dis(40,1,0.05,5),  # Computation of living tissue at each age (do not modify)
     PaliveCR_Tree        = 0.21,                       # Coarse roots living tissue (fraction)
     PaliveLeaf_Tree      = 1,                          # Leaf living tissue (fraction)
     PaliveFRoot_Tree     = 1,                          # Fine root living tissue (fraction)

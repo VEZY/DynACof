@@ -69,7 +69,10 @@ The imported file is expected to be at daily time-step.
 \dontrun{
 if(interactive()){
  Sys.setenv(TZ="UTC")
- Meteorology()
+ Met_c= Meteorology()
+
+ # Get the units of the output variables:
+ attr(Met_c,"unit")
  }
 }
 

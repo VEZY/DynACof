@@ -99,7 +99,7 @@ Shade.Tree= function(S,i){
       (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
 
   S$Table_Day$Rm_Branch_Tree[i]=
-    S$Parameters$PaliveBranch_Tree*
+    S$Parameters$PaliveBranch_Tree[S$Table_Day$Plot_Age[i],2]*
     S$Table_Day$DM_Branch_Tree[i-S$Zero_then_One[i]]*
     S$Parameters$MRN_Tree*S$Parameters$NContentBranch_Tree*
     S$Parameters$Q10Branch_Tree^(
@@ -132,7 +132,7 @@ Shade.Tree= function(S,i){
   # there is C in the reserves
   if(S$Table_Day$GPP_Tree[i]<(1.2*S$Table_Day$Rm_Tree[i])){
     S$Table_Day$Consumption_RE_Tree[i]=
-      max(0,min(S$Table_Day$CM_Reserves_Tree[previous_i(i,1)],S$Parameters$kres_max_Tree*S$Table_Day$Rm_Tree[i]))
+      max(0,min(S$Table_Day$CM_RE_Tree[previous_i(i,1)],S$Parameters$kres_max_Tree*S$Table_Day$Rm_Tree[i]))
   }
 
   ### Offer Function: NB, Rm is used from the previous i, assumed not very different but could
@@ -188,7 +188,8 @@ Shade.Tree= function(S,i){
   #### Leaves ####
   # Offer:
   S$Table_Day$Alloc_Leaf_Tree[i]=
-    S$Parameters$lambda_Leaf_Tree*S$Table_Day$Offer_Total_Tree[i]
+    min(S$Parameters$Demand_Leaf_Tree*S$Table_Day$Stocking_Tree[i],
+        S$Parameters$lambda_Leaf_Tree*S$Table_Day$Offer_Total_Tree[i])
   #NPP
   S$Table_Day$NPP_Leaf_Tree[i]=
     S$Parameters$epsilon_Leaf_Tree*S$Table_Day$Alloc_Leaf_Tree[i]
@@ -309,8 +310,8 @@ Shade.Tree= function(S,i){
     S$Table_Day$NPP_FRoot_Tree[i]-S$Table_Day$Mact_FRoot_Tree[i]-
     S$Table_Day$MThinning_FRoot_Tree[i]
 
-  S$Table_Day$CM_Reserves_Tree[i]=
-    S$Table_Day$CM_Reserves_Tree[i-S$Zero_then_One[i]]+
+  S$Table_Day$CM_RE_Tree[i]=
+    S$Table_Day$CM_RE_Tree[i-S$Zero_then_One[i]]+
     S$Table_Day$NPP_Reserves_Tree[i]-S$Table_Day$Consumption_RE_Tree[i]
 
   ##########################################
@@ -354,4 +355,69 @@ Shade.Tree= function(S,i){
 #' @export
 No_Shade= function(...){
 
+}
+
+
+
+
+#' Shade tree allometries (optional)
+#'
+#' @description Compute shade tree allometries, which are optional in the model.
+#'              This function is made available to the user to easily change or add equations,
+#'              not to be called directly.
+#'
+#'
+#' @param S  The global list used within the DynACof model.
+#' @param i  The day of interest.
+#' @details  This function is called from the \code{\link{Tree}} parameter functions, and then by the model.
+#'           In-depth details are available in \href{https://goo.gl/NVxcVp}{Vezy (2017)}
+#' @return   Any variable that is computed in the function. Default: DM_Stem_Tree, Height_Tree, CrownProj_Tree,
+#'           CrownRad_Tree, Crown_H_Tree, Trunk_H_Tree, LA_Tree and LAD_Tree.
+#'
+#' @references Vezy, R., Simulation de pratiques de gestion alternatives pour l’adaptation des plantations pérennes
+#'             aux changements globaux, in École doctorale science de l'environnement, spécialité physique de
+#'             l'environnement. 2017, UNIVERSITÉ DE BORDEAUX: Bordeaux. p. 270.\href{https://goo.gl/NVxcVp}{Link}
+#'
+#' @export
+Allometries= function(S,i){
+  S$Table_Day$DBH_Tree[i]=
+    ((S$Table_Day$DM_Stem_Tree[i]/
+        (S$Parameters$CContent_wood_Tree*1000*S$Table_Day$Stocking_Tree[i])/0.5)^0.625)/100
+  # Source: Rojas-García et al. (2015) DOI: 10.1007/s13595-015-0456-y
+  # /!\ DBH is an average DBH among trees.
+  #Tree Height. Source:  CAF2007 used in Van Oijen et al. (2011). With no pruning :
+  S$Table_Day$Height_Tree[i]=
+    round(S$Parameters$Kh*(((S$Table_Day$DM_Stem_Tree[i]/1000)/
+                              S$Table_Day$Stocking_Tree[i])^S$Parameters$KhExp),2)
+
+  # Crown projected area:
+  S$Table_Day$CrownProj_Tree[i]=
+    round(S$Parameters$Kc*(((S$Table_Day$DM_Branch_Tree[i]/1000)/
+                              S$Table_Day$Stocking_Tree[i])^S$Parameters$KcExp),2)
+  # Source: Van Oijen et al. (2010, I).
+  S$Table_Day$CrownRad_Tree[i]= sqrt(S$Table_Day$CrownProj_Tree[i]/pi)
+  S$Table_Day$Crown_H_Tree[i]= S$Table_Day$CrownRad_Tree[i] # See Charbonnier et al. 2013, Table 2.
+  S$Table_Day$Trunk_H_Tree[i]= S$Table_Day$Height_Tree[i]-S$Table_Day$Crown_H_Tree[i]
+
+  # If there is a pruning management, change the allometries (mostly derived from Vezy et al. 2018) :
+  if(S$Table_Day$Plot_Age[i]%in%S$Parameters$Pruning_Age_Tree){
+    # Pruning : trunk height does not depend on trunk dry mass anymore (pruning effect)
+    S$Table_Day$Trunk_H_Tree[i]= round(3*(1-exp(-0.2-S$Table_Day$Plot_Age_num[i])),2)
+    S$Table_Day$Height_Tree[i]= S$Table_Day$Crown_H_Tree[i]+S$Table_Day$Trunk_H_Tree[i]
+    # The equation make it grow fast at the early stages and reach a plateau at the
+    # maximum height after ca. few months.
+  }else if(any(S$Table_Day$Plot_Age[i]>S$Parameters$Pruning_Age_Tree)){
+    # if there were any pruning before, add the trunk
+    Lastheight_Trunk=
+      round(3*(1-exp(-0.2-S$Parameters$Pruning_Age_Tree[
+        tail(which(S$Table_Day$Plot_Age[i]>S$Parameters$Pruning_Age_Tree),1)]+1)),2)
+    S$Table_Day$Height_Tree[i]=
+      S$Parameters$Kh*(((S$Table_Day$DM_Stem_Tree[i]/1000)/
+                          S$Table_Day$Stocking_Tree[i])^S$Parameters$KhExp)+Lastheight_Trunk
+    S$Table_Day$Trunk_H_Tree[i]= S$Table_Day$Height_Tree[i]-S$Table_Day$Crown_H_Tree[i]
+  }
+  S$Table_Day$LA_Tree[i]= S$Table_Day$LAI_Tree[i]/S$Table_Day$Stocking_Tree[i]
+  S$Table_Day$LAD_Tree[i]=
+    S$Table_Day$LA_Tree[i]/((S$Table_Day$CrownRad_Tree[i]^2)*
+                              (0.5*S$Table_Day$Crown_H_Tree[i])*pi*(4/3))
 }

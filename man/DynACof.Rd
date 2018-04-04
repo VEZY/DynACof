@@ -195,6 +195,12 @@ Almost all variables for coffee exist also for shade trees with a suffix
 if(interactive()){
  Sys.setenv(TZ="UTC")
  DynACof(WriteIt = T, Period= as.POSIXct(c("1979-01-01", "1982-01-01")),Outpath = "Results")
+
+ # Get the units of the input variables:
+ attr(S$Met_c,"unit")
+
+ # Get the units of the output variables:
+ attr(S$Table_Day,"unit")
  }
 }
 }

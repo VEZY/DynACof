@@ -13,7 +13,11 @@ ALS(Elevation, SlopeAzimut = 0, Slope = 0, RowDistance = 1.5, Shade = 0,
 
 \item{SlopeAzimut}{Slope azimuth        (degree)}
 
+\item{Slope}{Slope percentage     (\eqn{\%})}
+
 \item{RowDistance}{Coffee rows distance (m)}
+
+\item{Shade}{Shade percentage     (\eqn{\%})}
 
 \item{CanopyHeight.Coffee}{Coffee Height        (m)}
 
@@ -27,6 +31,9 @@ forest tree only ; 5= no shade}
 Values: tree, row, block or NULL.}
 
 \item{df_rain}{Data frame with DOY, year and Rain (mm) values}
+}
+\value{
+\item{ALS}{Percentage of dead leaves by ALS by day (\eqn{\%  day-1})}
 }
 \description{
 Compute the percentage of leaves on coffee dying from

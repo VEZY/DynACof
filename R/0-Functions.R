@@ -66,7 +66,7 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
     save(S,file = paste0(Outpath,"/",Simulation_Name,".RData"))
   }
 
-  cat("Simulation results saved in ", file.path(getwd(),Outpath,Simulation_Name), "\n")
+  message("Simulation results saved in ", file.path(getwd(),Outpath,Simulation_Name), "\n")
 }
 
 
@@ -225,7 +225,7 @@ GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
 #'
 #'
 #'
-#' @return \item{\eqn{Hd/H}}{Daily diffuse fraction (%)}
+#' @return \item{\eqn{Hd/H}}{Daily diffuse fraction (\%)}
 #'
 #' @references Duffie, J.A. and W.A. Beckman, Solar engineering of thermal processes. 2013: John Wiley & Sons.
 #'             Gopinathan, K. and A. Soler, Diffuse radiation models and monthly-average, daily, diffuse data for
@@ -322,7 +322,7 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 #' @param RAD         Incident daily total radiation (MJ m-2 d-1)
 #' @param Tmax        Maximum daily air temperature (celsius degree)
 #' @param Tmin        Minimum daily air temperature (celsius degree)
-#' @param Rh          Average daily relative humidity (\code{%})
+#' @param Rh          Average daily relative humidity (\code{\%})
 #' @param VPD         Mean daily Vapor Pressure Deficit (hPa), only needed if \code{Rh} is missing
 #' @param RAD         Incident total radiation (MJ m-2 d-1)
 #' @param Latitude    Latitude (deg)
@@ -590,7 +590,10 @@ rH.to.VPD <- function(rH,Tair){
 GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
                   ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                   vonkarman=Constants()$vonkarman){
-
+  if(ZHT<Z_top){
+    warning("Measurement height lower than canopy height (ZHT < Z_top), forcing ZHT > Z_top")
+    ZHT= 1.01*Z_top
+  }
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   # Wind at the top of the canopy:
   Uh= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)-(Ustar/vonkarman)*(1-((Z_top-ZPD)/(ZW-ZPD)))
@@ -905,7 +908,6 @@ Gb_h_Forced= function(Wind,wleaf= 0.068){
   return(GBHFORCED)
 }
 
-
 #' @rdname Gb_h_Forced
 #' @export
 Gb_h_Free= function(Tair,Tleaf,wleaf= 0.068,Dheat=Constants()$Dheat){
@@ -918,6 +920,101 @@ Gb_h_Free= function(Tair,Tleaf,wleaf= 0.068,Dheat=Constants()$Dheat){
 
 
 
+
+#' Logistic function helpers
+#'
+#' @description Compute the distribution, density and delta of the
+#'              logistic function
+#'
+#' @param xi     X vector
+#' @param u_log  Inflexion point (x-value of the sigmoid's midpoint)
+#' @param s_log  Steepness of the curve
+#' @param index  Index at which to compute the delta between x's
+#'
+#' @aliases F_densite F_Integ_Dens
+#'
+#' @details
+#'
+#' @return \item{F_repartition}{Logistic function distibution}
+#'         \item{F_densite}{Logistic function density}
+#'         \item{F_Integ_Dens}{Delta between logistic function x's}
+#'
+#' @seealso More informations can be found in \href{https://en.wikipedia.org/wiki/Logistic_function}{
+#'             the wikipedia page}
+#'
+#' @keywords internal
+#'
+#' @examples
+#' F_repartition(1:10,5,0.1)
+#' F_densite(1:10,5,0.1)
+#' F_Integ_Dens(1:10,10,5,0.1)
+#'
+#' @export
+F_repartition= function(xi,u_log,s_log){1/(1+exp(-((xi-u_log)/s_log)))}
+
+#' @rdname F_repartition
+#' @export
+F_densite= function(xi,u_log,s_log){
+  exp(-((xi-u_log)/s_log))/(s_log*(1+exp(-((xi-u_log)/s_log)))^2)
+}
+
+#' @rdname F_repartition
+#' @export
+F_Integ_Dens= function(x,index,u_log,s_log){
+  F_repartition(x[seq_along(index)+1],u_log,s_log)-
+    F_repartition(x[seq_along(index)],u_log,s_log)
+}
+
+
+#' Fruit sucrose accumulation
+#'
+#' @description Logistic sucrose accumulation into coffee fruits through time
+#'
+#' @param x      Cumulated degree days
+#' @param a      Parameters
+#' @param b      Parameters
+#' @param x0     Mid-maturation (logistic function inflexion point)
+#' @param y0     Sucrose content at the beginning (in \%, 1-100)
+#'
+#' @return \item{Sucrose content}{(In \% of fruit total dry mass)}
+#'
+#' @references Pezzopane et al. (2012) :
+#' Pezzopane, J., et al., Agrometeorological parameters for prediction of the maturation period
+#' of Arabica coffee cultivars. International Journal of Biometeorology, 2012. 56(5): p. 843-851.
+#'
+#' @examples
+#' Sucrose_cont_perc(1:10,5.3207,-28.5561,191,3.5)
+#'
+#' @export
+Sucrose_cont_perc= function(x,a,b,x0,y0){
+  (y0+a/(1+(x/x0)^b))/100
+}
+
+
+
+
+#' Continuous percentage of living tissue distribution
+#'
+#' @description Help compute the percentage of living tissue in organs according to age
+#'
+#' @param Age_Max Maximum age of the organ (year)
+#' @param P_Start Percentage of living tissue at first age (\% of dry mass)
+#' @param P_End   Percentage of living tissue at last age (\% of dry mass)
+#' @param k       Rate between P_Start and P_End
+#'
+#' @return \item{Living tissue at each age}{(In \% of organ dry mass)}
+#'
+#' @details The percentage of living tissue is computed as follows:
+#'  \deqn{P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max)))}
+#'
+#' @examples
+#' Paliv_dis(40,1,0.05,5)
+#'
+#' @export
+Paliv_dis= function(Age_Max,P_Start,P_End,k){
+  data.frame(Age= 1:Age_Max,
+             PaliveStem_Tree= round(P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max))),3))
+}
 
 plot.stacked <- function(
   x, y,
@@ -1035,21 +1132,6 @@ check_C_balance= function(S){
   invisible(Cbalance_Cof)
 }
 
-F_repartition= function(xi,u_log,s_log){1/(1+exp(-((xi-u_log)/s_log)))}
-F_densite= function(xi,u_log,s_log){
-  exp(-((xi-u_log)/s_log))/(s_log*(1+exp(-((xi-u_log)/s_log)))^2)
-}
-F_Integ_Dens= function(x,index,u_log,s_log){
-  # Compute integrated density (for not continuous xi)
-  F_repartition(x[seq_along(index)+1],u_log,s_log)-
-    F_repartition(x[seq_along(index)],u_log,s_log)
-}
-Sucrose_cont_perc= function(x,a,b,x0,y0){
-  # Sucrose accumulates with a logistic increase on fruit throught time
-  # Source : Pezzopane et al. (2012)
-  # Return : Sucrose content (% total dry mass)
-  (y0+a/(1+(x/x0)^b))/100
-}
 
 
 Convert.Var= function(Var, Conv,KHRS=48){

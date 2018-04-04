@@ -13,6 +13,7 @@ BugReports: https://gitlab.com/VEZY/GoPlus_R/issues
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
+ByteCompile: true
 Imports: 
     data.table,
     magrittr,

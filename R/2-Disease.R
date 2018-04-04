@@ -5,9 +5,9 @@
 #'
 #' @param Elevation           Site elevation       (m.a.s.l)
 #' @param SlopeAzimut         Slope azimuth        (degree)
-#' @param Slope               Slope percentage     (\eqn{%})
+#' @param Slope               Slope percentage     (\eqn{\%})
 #' @param RowDistance         Coffee rows distance (m)
-#' @param Shade               Shade percentage     (\eqn{%})
+#' @param Shade               Shade percentage     (\eqn{\%})
 #' @param CanopyHeight.Coffee Coffee Height        (m)
 #' @param Fertilization       N fertilization per year
 #' @param ShadeType           Shade type:  1= Legume only ; 2= bananas and legume ;
@@ -21,7 +21,7 @@
 #'          (\eqn{Shade= 1-Transmittance}).
 #'
 #'
-#' @return \item{ALS}{Percentage of dead leaves by ALS by day (\eqn{%  day-1})}
+#' @return \item{ALS}{Percentage of dead leaves by ALS by day (\eqn{\%  day-1})}
 #'
 #' @references Avelino et al. (2007) Topography and Crop Management Are Key Factors
 #' for the Development of American Leaf Spot Epidemics on Coffee in Costa Rica

@@ -16,6 +16,9 @@ Diffuse_d(DOY, RAD, Latitude = 35, type = c("Spitters", "Page",
 
 \item{type}{Model type, one of Spitters, Page or Gopinathan (default to Spitters)}
 }
+\value{
+\item{\eqn{Hd/H}}{Daily diffuse fraction (\%)}
+}
 \description{
 Compute the daily diffuse fraction from the total daily incident radiation
 }

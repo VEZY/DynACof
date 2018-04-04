@@ -15,7 +15,7 @@
 #' @keywords internal
 #'
 #' @export
-SimulationClass <- setRefClass("Simulation",
+SimulationClass= setRefClass("Simulation",
                                fields = list(Table_Day = "list",
                                              Met_c= "list",
                                              Parameters= "list",
@@ -61,6 +61,7 @@ Init_Table_Day= function(S){
     S$Table_Day$Mnat_SCR=
   S$Table_Day$Mprun_RsWood=
   S$Table_Day$DegreeDays_Tcan=
+    S$Table_Day$p_budbreakperday=
     S$Table_Day$Budinit=
     S$Table_Day$BudBreak=
     S$Table_Day$Bud_available=
@@ -126,7 +127,7 @@ Init_Table_Day= function(S){
     S$Table_Day$Ra=
     S$Table_Day$NPP=
     S$Table_Day$Cbalance=rep_len(0,length(S$Table_Day$Cycle))
-
+  S$Table_Day$BudInitPeriod= rep(FALSE,length(S$Table_Day$Cycle))
   S$Table_Day$Rn_tot=
   S$Table_Day$Date_harvest= rep_len(NA_real_,length(S$Table_Day$Cycle))
 
@@ -226,7 +227,7 @@ Tree.init= function(S){
     S$Table_Day$CM_Branch_Tree=
     S$Table_Day$CM_FRoot_Tree=
     S$Table_Day$CM_CR_Tree= rep_len(0.01,length(S$Table_Day$Cycle))
-  S$Table_Day$CM_Reserves_Tree= rep_len(0.15,length(S$Table_Day$Cycle))
+  S$Table_Day$CM_RE_Tree= rep_len(0.15,length(S$Table_Day$Cycle))
 
   S$Table_Day$LAI_Tree=
     S$Table_Day$CM_Leaf_Tree*(S$Parameters$SLA_Tree/1000)/
@@ -310,9 +311,8 @@ Tree.init= function(S){
     S$Table_Day$Rn_Tree=
     rep_len(0,length(S$Table_Day$Cycle))
 
-
-  S$Table_Day$Stocking_Tree= S$Parameters$StockingTree_treeha1/10000
-
+  S$Table_Day$Stocking_Tree= rep_len(S$Parameters$StockingTree_treeha1/10000,
+                                     length(S$Table_Day$Cycle))
 
   S$Table_Day$WindSpeed_Tree= S$Met_c$WindSpeed
   S$Table_Day$TairCanopy_Tree= S$Met_c$Tair
