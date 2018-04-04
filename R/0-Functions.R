@@ -59,7 +59,7 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
     data.table::fwrite(FinalList$Met_c,
            paste0(Outpath,"/",Simulation_Name,"_Meteorology.csv"),
            sep=";",row.names = F, col.names = TRUE, ...)
-    capture.output(FinalList$Parameters,
+    utils::capture.output(FinalList$Parameters,
                    file =  paste0(Outpath,"/",Simulation_Name,"_Parameters",".txt"))
   }else{
     S= FinalList
@@ -324,7 +324,6 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 #' @param Tmin        Minimum daily air temperature (celsius degree)
 #' @param Rh          Average daily relative humidity (\code{\%})
 #' @param VPD         Mean daily Vapor Pressure Deficit (hPa), only needed if \code{Rh} is missing
-#' @param RAD         Incident total radiation (MJ m-2 d-1)
 #' @param Latitude    Latitude (deg)
 #' @param Elevation   Elevation (m)
 #' @param albedo      Shortwave surface albedo (-)
@@ -353,7 +352,7 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 #'         Latitude=9,Elevation=1000,albedo=0.146)
 #'
 #' @export
-Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,type_ea=c("VPD","Temp"),
+Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
                   sigma= Constants()$sigma,Gsc= Constants()$Gsc){
   Rsa= Rad_ext(DOY = DOY,Latitude = Latitude, Gsc = Gsc)
   Rso= (0.75+0.00002*Elevation)*Rsa
@@ -390,9 +389,9 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,type_e
 #' @param Tair        Air temperature (Celsius degree)
 #' @param ZHT         Wind measurement height (m)
 #' @param TREEH       Average tree height (m)
-#' @param P_Pa        Atmospheric pressure (kPa)
 #' @param Gs          Stomatal conductance (mol m-2 s-1)
 #' @param VPD         Vapor pressure deficit (kPa)
+#' @param Pressure    Atmospheric pressure (hPa)
 #' @param Parameters  Constant parameters, default to Constants(), if different values are needed:
 #'                    Cp - specific heat of air for constant pressure (J K-1 kg-1) \cr
 #'                    Rgas - universal gas constant (J mol-1 K-1) \cr
@@ -421,7 +420,7 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,type_e
 #' PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, TREEH= 25, Pressure= 900, Gs = 1E09, VPD= 2.41)
 #'
 #' @export
-PENMON= function(Rn,Wind,Tair,ZHT,TREEH,Parameters= Constants(),Pressure,Gs,VPD){
+PENMON= function(Rn,Wind,Tair,ZHT,TREEH,Pressure,Gs,VPD,Parameters= Constants()){
 
   CMOLAR = (Pressure*100) / (Parameters$Rgas * (Tair+Parameters$Kelvin))
   GB = GBCANMS(WIND = Wind, ZHT = ZHT, TREEH = TREEH)$Canopy*CMOLAR    # in mol m-2 s-1
@@ -887,8 +886,6 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
 #'
 #' @aliases Gb_h_Forced Gb_h_Free
 #'
-#' @details
-#'
 #' @return \item{\eqn{Gb_h_Forced}}{Leaf boundary layer conductance for heat under forced convection (m s-1)}
 #'         \item{\eqn{Gb_h_Free}}{Leaf boundary layer conductance for heat under free convection (m s-1)}
 #' @references Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration: scaling from
@@ -932,8 +929,6 @@ Gb_h_Free= function(Tair,Tleaf,wleaf= 0.068,Dheat=Constants()$Dheat){
 #' @param index  Index at which to compute the delta between x's
 #'
 #' @aliases F_densite F_Integ_Dens
-#'
-#' @details
 #'
 #' @return \item{F_repartition}{Logistic function distibution}
 #'         \item{F_densite}{Logistic function density}

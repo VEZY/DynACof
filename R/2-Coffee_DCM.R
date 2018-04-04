@@ -183,10 +183,10 @@
 #' }
 #' @export
 #' @rdname DynACof
-#' @seealso \code{\link[bigleaf]{aerodynamic.conductance}}
-#' \code{\link{Meteorology}} \code{\link{site}}
+#' @seealso \code{\link{Meteorology}} \code{\link{site}}
 #' @importFrom bigleaf aerodynamic.conductance
 #' @importFrom foreach %dopar%
+#' @importFrom methods is new
 #'
 DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
                   output_f=".RData",Inpath=NULL,Outpath=Inpath,Simulation_Name="DynACof",
@@ -230,7 +230,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   # Parallel loop over cycles:
   NbCores= parallel::detectCores()-1 # Set the maximum number of cores working on the model computation
   cl= parallel::makeCluster(min(NbCores,NCycles))
-  doSNOW::registerDoSNOW(cl)
+  registerDoParallel(cl)
+
   CycleList= foreach::foreach(cy= 1:NCycles,.combine=rbind,
                               .packages = c("dplyr","zoo")) %dopar% {
   # pb <- txtProgressBar(max=100, style=3)
@@ -914,7 +915,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
     }
     CycleList=list(Sim= S$Sim%>%as.data.frame)
   }
-  snow::stopCluster(cl)
+  parallel::stopCluster(cl)
   # Reordering the lists to make the results as previous versions of the model:
   Table= do.call(rbind, CycleList[c(1:NCycles)])
 

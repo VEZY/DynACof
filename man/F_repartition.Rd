@@ -32,9 +32,6 @@ F_Integ_Dens(x, index, u_log, s_log)
 Compute the distribution, density and delta of the
              logistic function
 }
-\details{
-
-}
 \examples{
 F_repartition(1:10,5,0.1)
 F_densite(1:10,5,0.1)

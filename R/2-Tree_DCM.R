@@ -18,6 +18,8 @@
 #'
 #' @keywords internal
 #'
+#' @importFrom utils tail
+#'
 #' @seealso \code{\link{DynACof}}
 #'
 #' @export

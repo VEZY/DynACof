@@ -7,7 +7,6 @@
 #'                    A filename input is passed through path.expand for convenience and may be a URL starting http:// or file://.
 #'                    Default to \code{data/Meteorology.RData}, which is the package example data.
 #' @param Period      The desired time period to be returned in the form of a vector of two POSIX dates (min and max).
-#' @param WriteIt     If TRUE, will write the output of the function in the same path.
 #' @param ...         Additional parameters to pass to the \code{\link[data.table]{fwrite}} function (sep is fixed to \code{;}
 #'                    and colnames to \code{T}).
 #' @param Parameters  A list of parameters:
@@ -56,8 +55,9 @@
 #'
 #' @author R. Vezy; O. Roupsard
 #'
-#' @importFrom magrittr "%>%"
+#' @importFrom magrittr "%>%" "%<>%"
 #' @importFrom dplyr group_by summarise mutate ungroup transmute
+#' @importFrom utils data tail
 #'
 #' @examples
 #' \dontrun{

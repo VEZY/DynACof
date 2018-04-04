@@ -53,7 +53,7 @@ The purpose of using metamodels in DynACof is to make this two-layer dynamic cro
 }
 \examples{
 # Creating a dummy list for use:
-S= list(Table_Day= data.frame(K_Dif_Tree= rep(NA_real_,10),
+S= list(Sim= data.frame(K_Dif_Tree= rep(NA_real_,10),
         K_Dir_Tree= rep(NA_real_,10),LAD_Tree= rnorm(10,3,0.5)))
 # Calling the function:
 Light_extinction_K(S,1:10)

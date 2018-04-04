@@ -1,20 +1,8 @@
-#' Generator for class Simulation
-#'
-#' @description Set the reference class for the simulation object, which hold the Meteorology, the simulation outputs and the
-#'              parameters.
-#'
-#' @details This function is internal and shouldn't be called by users.
-#'
-#' @return The generator for the simulation class.
-#'
-#' @examples
-#' # Create an object of class "Simulation":
-#' S= SimulationClass$new()
-#' # Fill in the parameters:
-#' S$Parameters= Parameters
-#' @keywords internal
-#'
-#' @export
+#' Generator for class Simulation (simulation object)
+#' @field Sim            A list, this is the simulation output list
+#' @field Met_c          A list, this is the input meteorology
+#' @field Parameters     A list, this is the parameters list
+#' @field Zero_then_One  A vector, this is a helper vector (will be depreciated soon)
 SimulationClass= setRefClass("Simulation",
                                fields = list(Sim = "list",
                                              Met_c= "list",

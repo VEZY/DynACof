@@ -5,8 +5,7 @@
 \title{Daily net radiation}
 \usage{
 Rad_net(DOY, RAD, Tmax, Tmin, VPD, Rh = NULL, Latitude, Elevation, albedo,
-  type_ea = c("VPD", "Temp"), sigma = Constants()$sigma,
-  Gsc = Constants()$Gsc)
+  sigma = Constants()$sigma, Gsc = Constants()$Gsc)
 }
 \arguments{
 \item{DOY}{Day Of Year from 1st January (day)}
@@ -30,8 +29,6 @@ Rad_net(DOY, RAD, Tmax, Tmin, VPD, Rh = NULL, Latitude, Elevation, albedo,
 \item{sigma}{Stefan-Boltzmann constant (W m-2 K-4), default to \code{Constants()$sigma}.}
 
 \item{Gsc}{Solar constant (W m-2), default to \code{Constants()$Gsc} (=1367).}
-
-\item{RAD}{Incident total radiation (MJ m-2 d-1)}
 }
 \value{
 \item{\eqn{Rn}}{Daily net radiation (MJ m-2 d-1)}

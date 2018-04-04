@@ -29,9 +29,6 @@ Gb_h_Free(Tair, Tleaf, wleaf = 0.068, Dheat = Constants()$Dheat)
 Compute the boundary layer conductance for heat - single sided, forced or
              free convection using the Leuning et al. (1995) equations.
 }
-\details{
-
-}
 \examples{
 Gb_h_Forced(Wind=3)
 Gb_h_Free(Tair= 25,Tleaf= 26)

@@ -1,9 +1,9 @@
 Package: DynACof
 Type: Package
-Title: Dynamic Crop Model To Simulate Coffee Crop Ecophysiology For Monospecific Stands Or Agroforestry
+Title: Dynamic Crop Model to Simulate Coffee Crop Ecophysiology for Monospecific Stands or Agroforestry
 Version: 0.1.1
 Date: 2018-03-13
-Authors@R: c(person("Rémi", "Vezy",, "vezy.remi@gmail.com", c("aut", "cre", "cph")),
+Authors@R: c(person("Remi", "Vezy",, "vezy.remi@gmail.com", c("aut", "cre", "cph")),
     person("Olivier", "Roupsard",, "olivier.roupsard@cirad.fr", c("aut", "cph")),
     person("Guerric", "le Maire", role = c("aut", "cph")))
 Description: The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield,
@@ -23,12 +23,9 @@ Imports:
     zoo,
     dplyr,
     tidyverse,
-    doSNOW,
     foreach,
     parallel,
     magrittr,
-    methods,
-    snow,
     lubridate,
     bigleaf
 RoxygenNote: 6.0.1

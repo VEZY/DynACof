@@ -4,22 +4,20 @@
 \name{Simulation-class}
 \alias{Simulation-class}
 \alias{SimulationClass}
-\title{Generator for class Simulation}
-\value{
-The generator for the simulation class.
-}
+\title{Generator for class Simulation (simulation object)}
 \description{
-Set the reference class for the simulation object, which hold the Meteorology, the simulation outputs and the
-             parameters.
+Generator for class Simulation (simulation object)
 }
-\details{
-This function is internal and shouldn't be called by users.
-}
+\section{Fields}{
 
-\examples{
-# Create an object of class "Simulation":
-S= SimulationClass$new()
-# Fill in the parameters:
-S$Parameters= Parameters
-}
-\keyword{internal}
+\describe{
+\item{\code{Sim}}{A list, this is the simulation output list}
+
+\item{\code{Met_c}}{A list, this is the input meteorology}
+
+\item{\code{Parameters}}{A list, this is the parameters list}
+
+\item{\code{Zero_then_One}}{A vector, this is a helper vector (will be depreciated soon)}
+}}
+
+

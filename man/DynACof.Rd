@@ -200,12 +200,11 @@ if(interactive()){
  attr(S$Met_c,"unit")
 
  # Get the units of the output variables:
- attr(S$Table_Day,"unit")
+ attr(S$Sim,"unit")
  }
 }
 }
 \seealso{
-\code{\link[bigleaf]{aerodynamic.conductance}}
 \code{\link{Meteorology}} \code{\link{site}}
 }
 \author{

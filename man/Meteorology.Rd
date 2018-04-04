@@ -27,8 +27,6 @@ Default to \code{data/Meteorology.RData}, which is the package example data.}
   \item albedo    : site shortwave surface albedo, only needed if net radiation is missing, see \code{\link{Rad_net}}
 }}
 
-\item{WriteIt}{If TRUE, will write the output of the function in the same path.}
-
 \item{...}{Additional parameters to pass to the \code{\link[data.table]{fwrite}} function (sep is fixed to \code{;}
 and colnames to \code{T}).}
 }

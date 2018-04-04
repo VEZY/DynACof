@@ -4,8 +4,8 @@
 \alias{PENMON}
 \title{Evapotranspiration}
 \usage{
-PENMON(Rn, Wind, Tair, ZHT, TREEH, Parameters = Constants(), Pressure, Gs,
-  VPD)
+PENMON(Rn, Wind, Tair, ZHT, TREEH, Pressure, Gs, VPD,
+  Parameters = Constants())
 }
 \arguments{
 \item{Rn}{Net radiation (MJ m-2 d-1)}
@@ -18,17 +18,17 @@ PENMON(Rn, Wind, Tair, ZHT, TREEH, Parameters = Constants(), Pressure, Gs,
 
 \item{TREEH}{Average tree height (m)}
 
-\item{Parameters}{Constant parameters, default to Constants(), if different values are needed:
-Cp - specific heat of air for constant pressure (J K-1 kg-1) \cr
-Rgas - universal gas constant (J mol-1 K-1) \cr
-Kelvin - conversion degree Celsius to Kelvin \cr
-H2OMW - conversion from kg to mol for H2O (kg mol-1)}
+\item{Pressure}{Atmospheric pressure (hPa)}
 
 \item{Gs}{Stomatal conductance (mol m-2 s-1)}
 
 \item{VPD}{Vapor pressure deficit (kPa)}
 
-\item{P_Pa}{Atmospheric pressure (kPa)}
+\item{Parameters}{Constant parameters, default to Constants(), if different values are needed:
+Cp - specific heat of air for constant pressure (J K-1 kg-1) \cr
+Rgas - universal gas constant (J mol-1 K-1) \cr
+Kelvin - conversion degree Celsius to Kelvin \cr
+H2OMW - conversion from kg to mol for H2O (kg mol-1)}
 }
 \value{
 \item{\eqn{ET}}{Daily evapotranspiration (mm d-1)}
