@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' # Creating a dummy list for use:
-#' S= list(Table_Day= data.frame(K_Dif_Tree= rep(NA_real_,10),
+#' S= list(Sim= data.frame(K_Dif_Tree= rep(NA_real_,10),
 #'         K_Dir_Tree= rep(NA_real_,10),LAD_Tree= rnorm(10,3,0.5)))
 #' # Calling the function:
 #' Light_extinction_K(S,1:10)
@@ -52,26 +52,26 @@ Light_extinction_K= function(S,i){
   # See MAESPA_Validation project, script 4-Aquiares_Metamodels.R
   # Source for non-constant k: Sinoquet et al. 2007
   # DOI: 10.1111/j.1469-8137.2007.02088.x
-  S$Table_Day$K_Dif_Tree[i]= 0.6161 - 0.5354*S$Table_Day$LAD_Tree[previous_i(i,1)]
-  S$Table_Day$K_Dir_Tree[i]= 0.4721 - 0.3973*S$Table_Day$LAD_Tree[previous_i(i,1)]
+  S$Sim$K_Dif_Tree[i]= 0.6161 - 0.5354*S$Sim$LAD_Tree[previous_i(i,1)]
+  S$Sim$K_Dir_Tree[i]= 0.4721 - 0.3973*S$Sim$LAD_Tree[previous_i(i,1)]
 }
 
 
 #' @rdname Light_extinction_K
 #' @export
 Metamodels= function(S,i){
-  S$Table_Day$lue_Tree[i]= 2.59906 + 0.10707*S$Met_c$Tair[i] -
+  S$Sim$lue_Tree[i]= 2.59906 + 0.10707*S$Met_c$Tair[i] -
     0.02552*S$Met_c$VPD[i] + 3.86372*(1-S$Met_c$FDiff[i]) -
     0.34895*S$Met_c$PAR[i]
 
-  S$Table_Day$T_Tree[i]=
-    0.021820*S$Met_c$VPD[i] - 0.016112*S$Met_c$Tair[i] + 0.942021*S$Table_Day$APAR_Tree[i]-
-    1.397349*(1-S$Met_c$FDiff[i]) + 0.004328*S$Table_Day$LAI_Tree[i]
-  S$Table_Day$T_Tree[i][S$Table_Day$T_Tree[i]<0]= 0 #to discard negative values
+  S$Sim$T_Tree[i]=
+    0.021820*S$Met_c$VPD[i] - 0.016112*S$Met_c$Tair[i] + 0.942021*S$Sim$APAR_Tree[i]-
+    1.397349*(1-S$Met_c$FDiff[i]) + 0.004328*S$Sim$LAI_Tree[i]
+  S$Sim$T_Tree[i][S$Sim$T_Tree[i]<0]= 0 #to discard negative values
 
-  S$Table_Day$H_Tree[i]=
-    0.34975 + 0.81448*S$Table_Day$APAR_Dir_Tree[i] + 0.29321*S$Table_Day$APAR_Dif_Tree[i]-
-    0.75987*S$Table_Day$LAI_Tree[i] - 0.55724*S$Table_Day$T_Tree[i] -
+  S$Sim$H_Tree[i]=
+    0.34975 + 0.81448*S$Sim$APAR_Dir_Tree[i] + 0.29321*S$Sim$APAR_Dif_Tree[i]-
+    0.75987*S$Sim$LAI_Tree[i] - 0.55724*S$Sim$T_Tree[i] -
     0.02898*S$Met_c$VPD[i]
 }
 

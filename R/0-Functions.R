@@ -53,7 +53,7 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
   }
   if(is.null(Outpath)){Outpath="."}
   if(output!=".RData"){
-    data.table::fwrite(FinalList$Table_Day,
+    data.table::fwrite(FinalList$Sim,
            paste0(Outpath,"/",Simulation_Name,".csv"),
            sep=";",row.names = F, col.names = TRUE, ...)
     data.table::fwrite(FinalList$Met_c,

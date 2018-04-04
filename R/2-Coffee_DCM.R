@@ -178,7 +178,7 @@
 #'  attr(S$Met_c,"unit")
 #'
 #'  # Get the units of the output variables:
-#'  attr(S$Table_Day,"unit")
+#'  attr(S$Sim,"unit")
 #'  }
 #' }
 #' @export
@@ -243,14 +243,14 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
     S$Parameters= Parameters
 
     # Initializing the table:
-    S$Table_Day= as.list(Direction[Direction$Cycle==cy,])
+    S$Sim= as.list(Direction[Direction$Cycle==cy,])
     S$Met_c= as.list(Meteo[Direction$Cycle==cy,])
-    Init_Table_Day(S)
+    Init_Sim(S)
     # Compute cumulative degree-days based on previous daily DD from semi-hourly data:
     CumulDegreeDays= cumsum(S$Met_c$DegreeDays)
     # Trick to avoid all the ifelse conditions because of the first time-step (evaluated at each
     # time step so increasing computing time):
-    S$Zero_then_One= c(0,rep(1, length(S$Table_Day$LAI)-1))
+    S$Zero_then_One= c(0,rep(1, length(S$Sim$LAI)-1))
     # S$Zero_then_One takes the value 0 at the first time step and then 1. It is used for two
     # different techniques:
     # 1- for taking the first value (i) instead of i-1, so avoid computation errors.
@@ -291,9 +291,9 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
         tail(which(CumsumRelativeToBudinit[i,]<CumsumRelativeToBudinit[i,BudDormancyBreakDay]+100),1)
       # +100 because it takes 100dd to break dormancy until flowering (Rodriguez et al. 2011)
       # Effective dates between which buds can appear (from DateBudinit until first flowering)
-      S$Table_Day$BudInitPeriod[DateBudinit[i]:DateFFlowering[i]]= TRUE
+      S$Sim$BudInitPeriod[DateBudinit[i]:DateFFlowering[i]]= TRUE
     }
-    S$Table_Day$BudInitPeriod[CumulDegreeDays<S$Parameters$VF_Flowering]= FALSE
+    S$Sim$BudInitPeriod[CumulDegreeDays<S$Parameters$VF_Flowering]= FALSE
 
     # Search for the species specific tree function:
     if(S$Parameters$Tree_Species=="No_Shade"){
@@ -303,7 +303,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
     }
 
     # American Leaf Spot:
-    S$Table_Day$ALS=
+    S$Sim$ALS=
       suppressMessages(ALS(Elevation= S$Parameters$Elevation, SlopeAzimut= S$Parameters$SlopeAzimut,
                            Slope= S$Parameters$Slope, RowDistance= S$Parameters$RowDistance,
                            Shade= S$Parameters$Shade, CanopyHeight.Coffee= S$Parameters$Height_Coffee,
@@ -314,7 +314,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
     # Main Loop -----------------------------------------------------------------------------------
 
-    for (i in 1:length(S$Table_Day$LAI)){
+    for (i in 1:length(S$Sim$LAI)){
 
 
       # Shade Tree computation if any
@@ -327,38 +327,38 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # Coffee computation:
 
       # Metamodels for K, Paper 2, trained on 2011 only :
-      S$Table_Day$K_Dif[i]= 0.39
-      S$Table_Day$K_Dir[i]= 0.34
+      S$Sim$K_Dif[i]= 0.39
+      S$Sim$K_Dir[i]= 0.34
 
       # # Metamodels for K, Paper 3, trained on all ages and structure :
-      # S$Table_Day$K_Dif[i]= 0.40
-      # S$Table_Day$K_Dir[i]= 0.35
+      # S$Sim$K_Dif[i]= 0.40
+      # S$Sim$K_Dir[i]= 0.35
 
       #APAR coffee
-      PARcof= S$Met_c$PAR[i]-S$Table_Day$APAR_Tree[i] # PAR above coffee layer
+      PARcof= S$Met_c$PAR[i]-S$Sim$APAR_Tree[i] # PAR above coffee layer
 
-      S$Table_Day$APAR_Dif[i]=
-        max(0,((S$Met_c$PAR[i]-S$Table_Day$APAR_Tree[i])*S$Met_c$FDiff[i])*
-              (1-exp(-S$Table_Day$K_Dif[i]*S$Table_Day$LAI[previous_i(i,1)])))#MJ m-2 d-1
-      APAR_Dir= max(0,((S$Met_c$PAR[i]-S$Table_Day$APAR_Tree[i])*(1-S$Met_c$FDiff[i]))*
-                      (1-exp(-S$Table_Day$K_Dir[i]*S$Table_Day$LAI[previous_i(i,1)])))#MJ m-2 d-1
-      # APAR_Dir is not part of S$Table_Day because it can be easily computed by
-      # S$Met_c$PARm2d1-S$Table_Day$APAR_Dif
-      S$Table_Day$APAR[i]= APAR_Dir+S$Table_Day$APAR_Dif[i]
-      # S$Table_Day$APAR[i]= max(0,(S$Met_c$PAR[i]-S$Table_Day$APAR_Tree[i])*(1-
-      # exp(-S$Table_Day$k[i]*S$Table_Day$LAI[previous_i(i,1)])))#MJ m-2 d-1
+      S$Sim$APAR_Dif[i]=
+        max(0,((S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*S$Met_c$FDiff[i])*
+              (1-exp(-S$Sim$K_Dif[i]*S$Sim$LAI[previous_i(i,1)])))#MJ m-2 d-1
+      APAR_Dir= max(0,((S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*(1-S$Met_c$FDiff[i]))*
+                      (1-exp(-S$Sim$K_Dir[i]*S$Sim$LAI[previous_i(i,1)])))#MJ m-2 d-1
+      # APAR_Dir is not part of S$Sim because it can be easily computed by
+      # S$Met_c$PARm2d1-S$Sim$APAR_Dif
+      S$Sim$APAR[i]= APAR_Dir+S$Sim$APAR_Dif[i]
+      # S$Sim$APAR[i]= max(0,(S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*(1-
+      # exp(-S$Sim$k[i]*S$Sim$LAI[previous_i(i,1)])))#MJ m-2 d-1
 
       # Metamodel Coffee Tcanopy, Paper 2
-      S$Table_Day$Tcan_MAESPA_Coffee[i]=
+      S$Sim$Tcan_MAESPA_Coffee[i]=
         -0.07741 + 0.99456*S$Met_c$Tair[i] - 0.06948*S$Met_c$VPD[i] -
         1.87975*(1-S$Met_c$FDiff[i]) + 0.19615*PARcof
-      S$Table_Day$DegreeDays_Tcan[i]=
-        GDD(Tmean = S$Table_Day$Tcan_MAESPA_Coffee[i],MinTT = S$Parameters$MinTT,
+      S$Sim$DegreeDays_Tcan[i]=
+        GDD(Tmean = S$Sim$Tcan_MAESPA_Coffee[i],MinTT = S$Parameters$MinTT,
             MaxTT = S$Parameters$MaxTT)
 
-      # S$Table_Day$Tcan_Diurnal_Cof[i]=
+      # S$Sim$Tcan_Diurnal_Cof[i]=
       #     0.90479 + 0.97384*S$Met_c$Diurnal_TAIR[i] + 0.24677*PARcof + 0.01163*S$Met_c$VPD[i] -
-      #     2.53554*(1-S$Met_c$FDiff[i]) - 0.04597*S$Table_Day$LAI_Tree[i]
+      #     2.53554*(1-S$Met_c$FDiff[i]) - 0.04597*S$Sim$LAI_Tree[i]
       # NB 1: MAESPA simulates a Coffee canopy temperature (= average leaf temperature) very similar
       # to the air temperature within the canopy, so we can use it interchangeably.
       # NB 2: could use sqrt of FBEAM and PARCof for a better fit (little less rmse) but we keep the
@@ -366,38 +366,38 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
 
       # Metamodel Coffee Tcanopy, Paper 3
-      # S$Table_Day$Tcan_MAESPA_Coffee[i]=
+      # S$Sim$Tcan_MAESPA_Coffee[i]=
       #     0.92921 + 0.95568*S$Met_c$Tair[i] + 0.01241*S$Met_c$VPD[i] -
       #     0.47802*(1-S$Met_c$FDiff[i]) + 0.10599*PARcof-
-      #     0.04573*S$Table_Day$LAI_Tree[i]
-      # S$Table_Day$Tcan_Diurnal_Cof[i]=
+      #     0.04573*S$Sim$LAI_Tree[i]
+      # S$Sim$Tcan_Diurnal_Cof[i]=
       #     0.90479 + 0.97384*S$Met_c$Diurnal_TAIR[i] + 0.24677*PARcof + 0.01163*S$Met_c$VPD[i] -
-      #     2.53554*(1-S$Met_c$FDiff[i]) - 0.04597*S$Table_Day$LAI_Tree[i]
+      #     2.53554*(1-S$Met_c$FDiff[i]) - 0.04597*S$Sim$LAI_Tree[i]
       # NB 1: MAESPA simulates a Coffee canopy temperature (= average leaf temperature) very similar
       # to the air temperature within the canopy, so we can use it interchangeably.
       # NB 2: could use sqrt of FBEAM and PARCof for a better fit (little less rmse) but we keep the
       # metamodel without it to decrease the risk of any overfitting or issue on extrapolation.
 
       # Metamodel LUE coffee, Paper 2:
-      S$Table_Day$lue[i]=
+      S$Sim$lue[i]=
         2.174236 + 0.012514*S$Met_c$Tair[i] + 0.007653*S$Met_c$VPD[i] -
         1.861276*sqrt(1-S$Met_c$FDiff[i]) - 0.254475*sqrt(PARcof)
 
       # Metamodel LUE coffee, Paper 3:
-      # S$Table_Day$lue[i]=
+      # S$Sim$lue[i]=
       #     1.968619 - 0.128587*PARcof - 1.140032*(1-S$Met_c$FDiff[i]) +
-      #     0.001167*S$Met_c$CO2_ppm[i] - 0.012697*S$Table_Day$Tcan_MAESPA_Coffee[i]
-      # S$Table_Day$lue[i][S$Table_Day$lue[i]<0.578]= 0.578
+      #     0.001167*S$Met_c$CO2_ppm[i] - 0.012697*S$Sim$Tcan_MAESPA_Coffee[i]
+      # S$Sim$lue[i][S$Sim$lue[i]<0.578]= 0.578
 
       #GPP Coffee
-      S$Table_Day$GPP[i]= S$Table_Day$lue[i]*S$Table_Day$APAR[i] # gC m-2 d-1 With coffee lue Metamodel
+      S$Sim$GPP[i]= S$Sim$lue[i]*S$Sim$APAR[i] # gC m-2 d-1 With coffee lue Metamodel
 
       ########## Potential use of reserves####
       # NPP_RE_Tree is filled in sequence by leaves and by roots at end of day
       # Thus NPP_RE_Tree must reset to zero for each time-step (day) begining and then
-      S$Table_Day$NPP_RE[i]= 0
-      S$Table_Day$Consumption_RE[i]=
-        S$Parameters$kres*S$Table_Day$CM_RE[previous_i(i,1)]
+      S$Sim$NPP_RE[i]= 0
+      S$Sim$Consumption_RE[i]=
+        S$Parameters$kres*S$Sim$CM_RE[previous_i(i,1)]
 
 
 
@@ -409,105 +409,105 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # This is considered as the highest priority for the plant (to maintain its dry mass)
 
       #Maintenance Respiration Rm_RsWood
-      S$Table_Day$Rm_RsWood[i]=
+      S$Sim$Rm_RsWood[i]=
         S$Zero_then_One[i]*
-        (S$Parameters$PaliveRsWood*S$Table_Day$DM_RsWood[previous_i(i,1)]*
+        (S$Parameters$PaliveRsWood*S$Sim$DM_RsWood[previous_i(i,1)]*
            S$Parameters$NContentRsWood*S$Parameters$MRN*
-           S$Parameters$Q10RsWood^((S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+           S$Parameters$Q10RsWood^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
       # Stump and Coarse roots (perennial wood)
-      S$Table_Day$Rm_SCR[i]=
+      S$Sim$Rm_SCR[i]=
         S$Zero_then_One[i]*
         (S$Parameters$PaliveSCR*
-           S$Table_Day$DM_SCR[previous_i(i,1)]*
+           S$Sim$DM_SCR[previous_i(i,1)]*
            S$Parameters$NContentSCR*S$Parameters$MRN*
            S$Parameters$Q10SCR^(
-             (S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+             (S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
       # Fruits
-      S$Table_Day$Rm_Fruit[i]=
+      S$Sim$Rm_Fruit[i]=
         S$Zero_then_One[i]*
-        (S$Parameters$PaliveFruit*S$Table_Day$DM_Fruit[previous_i(i,1)]*
+        (S$Parameters$PaliveFruit*S$Sim$DM_Fruit[previous_i(i,1)]*
            S$Parameters$NContentFruit*S$Parameters$MRN*
-           S$Parameters$Q10Fruit^((S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+           S$Parameters$Q10Fruit^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
       # Leaves
-      S$Table_Day$Rm_Leaf[i]=
+      S$Sim$Rm_Leaf[i]=
         S$Zero_then_One[i]*
-        (S$Parameters$PaliveLeaf*S$Table_Day$DM_Leaf[previous_i(i,1)]*
+        (S$Parameters$PaliveLeaf*S$Sim$DM_Leaf[previous_i(i,1)]*
            S$Parameters$NContentLeaf*S$Parameters$MRN*
-           S$Parameters$Q10Leaf^((S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+           S$Parameters$Q10Leaf^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
       # Fine roots
-      S$Table_Day$Rm_FRoot[i]=
+      S$Sim$Rm_FRoot[i]=
         S$Zero_then_One[i]*
-        (S$Parameters$PaliveFRoot*S$Table_Day$DM_FRoot[previous_i(i,1)]*
+        (S$Parameters$PaliveFRoot*S$Sim$DM_FRoot[previous_i(i,1)]*
            S$Parameters$NContentFRoot*S$Parameters$MRN*
-           S$Parameters$Q10FRoot^((S$Table_Day$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+           S$Parameters$Q10FRoot^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
       # Total plant maintenance respiration
-      S$Table_Day$Rm[i]=
-        S$Table_Day$Rm_Fruit[i]+S$Table_Day$Rm_Leaf[i]+
-        S$Table_Day$Rm_RsWood[i]+S$Table_Day$Rm_SCR[i]+
-        S$Table_Day$Rm_FRoot[i]
+      S$Sim$Rm[i]=
+        S$Sim$Rm_Fruit[i]+S$Sim$Rm_Leaf[i]+
+        S$Sim$Rm_RsWood[i]+S$Sim$Rm_SCR[i]+
+        S$Sim$Rm_FRoot[i]
 
 
       ##############################----- Coffee Allocation ----##############################
 
 
       # Offer function ----------------------------------------------------------
-      S$Table_Day$Offer[i]=
-        max(S$Table_Day$GPP[i]-S$Table_Day$Rm[i]+S$Table_Day$Consumption_RE[i],0)
+      S$Sim$Offer[i]=
+        max(S$Sim$GPP[i]-S$Sim$Rm[i]+S$Sim$Consumption_RE[i],0)
 
       # If the respiration is greater than the GPP + reserves use, then take this carbon
       # from mortality of each compartments' biomass equally (not for fruits or reserves):
-      S$Table_Day$Carbon_Lack_Mortality[i]=
-        -min(0,S$Table_Day$GPP[i]-S$Table_Day$Rm[i]+S$Table_Day$Consumption_RE[i])
+      S$Sim$Carbon_Lack_Mortality[i]=
+        -min(0,S$Sim$GPP[i]-S$Sim$Rm[i]+S$Sim$Consumption_RE[i])
 
 
       # 1-Resprout wood ---------------------------------------------------------
       # Allocation priority 1, see Charbonnier 2012.
 
       # Offer
-      S$Table_Day$Alloc_RsWood[i]= S$Parameters$lambdaRsWood*S$Table_Day$Offer[i]
+      S$Sim$Alloc_RsWood[i]= S$Parameters$lambdaRsWood*S$Sim$Offer[i]
       # NPP (Offer-Rc)
-      S$Table_Day$NPP_RsWood[i]= S$Parameters$epsilonRsWood*S$Table_Day$Alloc_RsWood[i]
+      S$Sim$NPP_RsWood[i]= S$Parameters$epsilonRsWood*S$Sim$Alloc_RsWood[i]
       # Rc (growth respiration
-      S$Table_Day$Rc_RsWood[i]= (1-S$Parameters$epsilonRsWood)*S$Table_Day$Alloc_RsWood[i]
+      S$Sim$Rc_RsWood[i]= (1-S$Parameters$epsilonRsWood)*S$Sim$Alloc_RsWood[i]
       # Natural Mortality
-      S$Table_Day$Mnat_RsWood[i]=
-        S$Table_Day$CM_RsWood[previous_i(i,1)]/S$Parameters$lifespanRsWood
+      S$Sim$Mnat_RsWood[i]=
+        S$Sim$CM_RsWood[previous_i(i,1)]/S$Parameters$lifespanRsWood
       # Pruning
-      if(S$Table_Day$Plot_Age[i]>=S$Parameters$MeanAgePruning&
-         S$Table_Day$Plot_Age[i]<=(S$Parameters$MeanAgePruning+2)&
+      if(S$Sim$Plot_Age[i]>=S$Parameters$MeanAgePruning&
+         S$Sim$Plot_Age[i]<=(S$Parameters$MeanAgePruning+2)&
          S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Table_Day$Mprun_RsWood[i]=S$Table_Day$CM_RsWood[previous_i(i,1)]/3
-      }else if(S$Table_Day$Plot_Age[i]>(S$Parameters$MeanAgePruning+2)&
+        S$Sim$Mprun_RsWood[i]=S$Sim$CM_RsWood[previous_i(i,1)]/3
+      }else if(S$Sim$Plot_Age[i]>(S$Parameters$MeanAgePruning+2)&
                S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Table_Day$Mprun_RsWood[i]=S$Table_Day$CM_RsWood[previous_i(i,1)]/2.5
+        S$Sim$Mprun_RsWood[i]=S$Sim$CM_RsWood[previous_i(i,1)]/2.5
       }
-      S$Table_Day$Mortality_RsWood[i]=
-        min((S$Table_Day$Mnat_RsWood[i]+S$Table_Day$Mprun_RsWood[i]),
-            S$Table_Day$CM_RsWood[previous_i(i,1)])
+      S$Sim$Mortality_RsWood[i]=
+        min((S$Sim$Mnat_RsWood[i]+S$Sim$Mprun_RsWood[i]),
+            S$Sim$CM_RsWood[previous_i(i,1)])
 
       # 2-Stump and coarse roots (perennial wood) ------------------------------
       # coef d'alloc is more important for old ages, see Defrenet et al., 2016
-      S$Table_Day$lambdaSCRage[i]=
+      S$Sim$lambdaSCRage[i]=
         S$Parameters$lambdaSCR0-
-        S$Table_Day$Plot_Age[i]/40*
+        S$Sim$Plot_Age[i]/40*
         (S$Parameters$lambdaSCR0-S$Parameters$lambdaSCR40)
       #Offer
-      S$Table_Day$Alloc_SCR[i]=
-        S$Table_Day$lambdaSCRage[i]*S$Table_Day$Offer[i]
+      S$Sim$Alloc_SCR[i]=
+        S$Sim$lambdaSCRage[i]*S$Sim$Offer[i]
       #NPP
-      S$Table_Day$NPP_SCR[i]=
-        S$Parameters$epsilonSCR*S$Table_Day$Alloc_SCR[i]
+      S$Sim$NPP_SCR[i]=
+        S$Parameters$epsilonSCR*S$Sim$Alloc_SCR[i]
       #Rc
-      S$Table_Day$Rc_SCR[i]=
-        (1-S$Parameters$epsilonSCR)*S$Table_Day$Alloc_SCR[i]
+      S$Sim$Rc_SCR[i]=
+        (1-S$Parameters$epsilonSCR)*S$Sim$Alloc_SCR[i]
       #Mortality
-      S$Table_Day$Mnat_SCR[i]=
-        S$Table_Day$CM_SCR[previous_i(i,1)]/S$Parameters$lifespanSCR
-      S$Table_Day$Mortality_SCR[i]= S$Table_Day$Mnat_SCR[i]
+      S$Sim$Mnat_SCR[i]=
+        S$Sim$CM_SCR[previous_i(i,1)]/S$Parameters$lifespanSCR
+      S$Sim$Mortality_SCR[i]= S$Sim$Mnat_SCR[i]
 
       # Ratio of number of new nodes per LAI unit as affected by canopy air temperature according to
       # Drinnan & Menzel, 1995
@@ -518,8 +518,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # green wood nodes that potentially carry flower buds. Green wood mass (and so number of nodes)
       # are related to leaf area (new leaves appear on nodes) : GUTIERREZ et al. (1998)
       if(S$Met_c$DOY[i]==S$Parameters$VGS_Stop){
-        S$Table_Day$ratioNodestoLAI[S$Met_c$year>=S$Met_c$year[i]]=
-          mean(S$Table_Day$Tcan_MAESPA_Coffee[S$Met_c$year==S$Met_c$year[i]&
+        S$Sim$ratioNodestoLAI[S$Met_c$year>=S$Met_c$year[i]]=
+          mean(S$Sim$Tcan_MAESPA_Coffee[S$Met_c$year==S$Met_c$year[i]&
                                                 S$Met_c$DOY>=S$Parameters$VGS_Start&
                                                 S$Met_c$DOY <= S$Parameters$VGS_Stop])%>%
             {S$Parameters$RNL_base*(0.0005455*.^3 - 0.0226364*.^2+0.2631364*. + 0.4194773)}
@@ -534,20 +534,20 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # (1) Buds induction
       # Buds start appearing for the very first time from 5500 dd. After that,
       # they appear every "S$Parameters$Tffb" degree days until flowering starts
-      if(S$Table_Day$BudInitPeriod[i]){
-        S$Table_Day$Budinit[i]=
+      if(S$Sim$BudInitPeriod[i]){
+        S$Sim$Budinit[i]=
           (S$Parameters$a_Budinit+S$Parameters$b_Budinit*2.017*PARcof)*
-          S$Table_Day$LAI[i-1]*S$Table_Day$ratioNodestoLAI[i-1]*S$Table_Day$DegreeDays_Tcan[i]
-        # Number of nodes: S$Table_Day$LAI[i-1]*S$Table_Day$ratioNodestoLAI[i-1]
-        S$Table_Day$Bud_available[i]= S$Table_Day$Budinit[i]
+          S$Sim$LAI[i-1]*S$Sim$ratioNodestoLAI[i-1]*S$Sim$DegreeDays_Tcan[i]
+        # Number of nodes: S$Sim$LAI[i-1]*S$Sim$ratioNodestoLAI[i-1]
+        S$Sim$Bud_available[i]= S$Sim$Budinit[i]
       }
       # NB: 2.017 is conversion factor to estimate RAD above Coffea from PAR above Coffee
       # NB : number of fruits ~1200 / year / coffee tree, source : Castro-Tanzi et al. (2014)
-      # S$Table_Day%>%group_by(Plot_Age)%>%summarise(N_Flowers= sum(BudBreak))
+      # S$Sim%>%group_by(Plot_Age)%>%summarise(N_Flowers= sum(BudBreak))
 
 
       # (2) Cumulative degree days experienced by each bud cohort :
-      DegreeDay_i= round(cumsum(S$Table_Day$DegreeDays_Tcan[i:previous_i(i,1000)]),2)
+      DegreeDay_i= round(cumsum(S$Sim$DegreeDays_Tcan[i:previous_i(i,1000)]),2)
 
       # (3) Find the window where buds are under dormancy (find the dormant cohorts)
       # Bud develops during Budstage1 (840) degree days after initiation, so they cannot be dormant
@@ -577,9 +577,9 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # Data_Buds= Data_Buds[-1,]
       # Data_Buds$Buds_per_Node_cor= Data_Buds$Buds_per_Node/Data_Buds$Buds_per_Node[1]
       # lmbuds= lm(Buds_per_Node_cor~Daily_Air_T,data=Data_Buds)
-      # if(mean(S$Table_Day$Tcan_Diurnal_Cof[DormancyBreakPeriod])>23){
-      #     S$Table_Day$Temp_cor_Bud[DormancyBreakPeriod]=
-      #         (3.29 - 0.1*mean(S$Table_Day$Tcan_Diurnal_Cof[DormancyBreakPeriod]))
+      # if(mean(S$Sim$Tcan_Diurnal_Cof[DormancyBreakPeriod])>23){
+      #     S$Sim$Temp_cor_Bud[DormancyBreakPeriod]=
+      #         (3.29 - 0.1*mean(S$Sim$Tcan_Diurnal_Cof[DormancyBreakPeriod]))
       # }
       # (7.2) Using daily temperature (simpler):
       # Data_Buds_day= data.frame(Air_T=c(15.5,20.5,25.5,30.5),
@@ -587,29 +587,29 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # Data_Buds_day= Data_Buds_day[-1,]
       # Data_Buds_day$Buds_per_Node_cor= Data_Buds_day$Buds_per_Node/Data_Buds_day$Buds_per_Node[1]
       # lmbuds_day= lm(Buds_per_Node_cor~Air_T,data=Data_Buds_day)
-      if(mean(S$Table_Day$Tcan_MAESPA_Coffee[DormancyBreakPeriod])>23){
-        S$Table_Day$Temp_cor_Bud[DormancyBreakPeriod]=
-          (3.04 - 0.1*mean(S$Table_Day$Tcan_MAESPA_Coffee[DormancyBreakPeriod]))
+      if(mean(S$Sim$Tcan_MAESPA_Coffee[DormancyBreakPeriod])>23){
+        S$Sim$Temp_cor_Bud[DormancyBreakPeriod]=
+          (3.04 - 0.1*mean(S$Sim$Tcan_MAESPA_Coffee[DormancyBreakPeriod]))
       }
 
       # (6) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
-      S$Table_Day$p_budbreakperday[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
-                                               S$Table_Day$LeafWaterPotential[previous_i(i,1)]))
+      S$Sim$p_budbreakperday[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
+                                               S$Sim$LeafWaterPotential[previous_i(i,1)]))
       # (7) Compute the number of buds that effectively break dormancy in each cohort:
-      S$Table_Day$BudBreak_cohort[DormancyBreakPeriod]=
-        pmin(S$Table_Day$Bud_available[DormancyBreakPeriod],
-             S$Table_Day$Budinit[DormancyBreakPeriod]*S$Table_Day$p_budbreakperday[i]*
-               S$Table_Day$Temp_cor_Bud[DormancyBreakPeriod])
+      S$Sim$BudBreak_cohort[DormancyBreakPeriod]=
+        pmin(S$Sim$Bud_available[DormancyBreakPeriod],
+             S$Sim$Budinit[DormancyBreakPeriod]*S$Sim$p_budbreakperday[i]*
+               S$Sim$Temp_cor_Bud[DormancyBreakPeriod])
       # NB 1: cannot exceed the number of buds of each cohort
       # NB 2: using Budinit and not Bud_available because p_budbreakperday is fitted on total bud cohort
 
       # (8) Remove buds that did break dormancy from the pool of dormant buds
-      S$Table_Day$Bud_available[DormancyBreakPeriod]=
-        S$Table_Day$Bud_available[DormancyBreakPeriod]-S$Table_Day$BudBreak_cohort[DormancyBreakPeriod]
+      S$Sim$Bud_available[DormancyBreakPeriod]=
+        S$Sim$Bud_available[DormancyBreakPeriod]-S$Sim$BudBreak_cohort[DormancyBreakPeriod]
 
       # (9) Sum the buds that break dormancy from each cohort to compute the total number of buds
       # that break dormancy on day i :
-      S$Table_Day$BudBreak[i]= min(sum(S$Table_Day$BudBreak_cohort[DormancyBreakPeriod]),12)
+      S$Sim$BudBreak[i]= min(sum(S$Sim$BudBreak_cohort[DormancyBreakPeriod]),12)
       # Rodriguez et al. state that the maximum number of buds that may break dormancy
       # during each dormancy-terminating episode was set to 12 (see Table 1).
 
@@ -619,69 +619,69 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       # Demand from each fruits cohort present on the coffee tree (not overriped), same as Demand_Fruit but keeping each value :
       Demand_Fruit_Cohort_Period=
-        S$Table_Day$BudBreak[FruitingPeriod]*S$Parameters$Opti_C_DemandFruit*
+        S$Sim$BudBreak[FruitingPeriod]*S$Parameters$Opti_C_DemandFruit*
         F_Integ_Dens(DegreeDay_i,FruitingPeriod,S$Parameters$u_log,S$Parameters$s_log)
       Demand_Fruit_Cohort_Period[is.na(Demand_Fruit_Cohort_Period)]= 0
       # Total C demand of the fruits :
-      S$Table_Day$Demand_Fruit[i]= sum(Demand_Fruit_Cohort_Period)
+      S$Sim$Demand_Fruit[i]= sum(Demand_Fruit_Cohort_Period)
       # C offer to Fruits (i.e. what is left from Offer after removing the consumption by previous compartments and Rm):
-      S$Table_Day$Offer_Fruit[i]=
-        S$Table_Day$Offer[i]-S$Table_Day$Alloc_RsWood[i]-
-        S$Table_Day$Alloc_SCR[i]
+      S$Sim$Offer_Fruit[i]=
+        S$Sim$Offer[i]-S$Sim$Alloc_RsWood[i]-
+        S$Sim$Alloc_SCR[i]
 
       # Total C allocation to all fruits on day i :
-      S$Table_Day$Alloc_Fruit[i]= min(S$Table_Day$Demand_Fruit[i],S$Table_Day$Offer_Fruit[i])
+      S$Sim$Alloc_Fruit[i]= min(S$Sim$Demand_Fruit[i],S$Sim$Offer_Fruit[i])
       # Allocation to each cohort, relative to each cohort demand :
-      S$Table_Day$Alloc_Fruit_Cohort[FruitingPeriod]=
-        S$Table_Day$Alloc_Fruit[i]*(Demand_Fruit_Cohort_Period/S$Table_Day$Demand_Fruit[i])
-      S$Table_Day$Alloc_Fruit_Cohort[FruitingPeriod][is.nan(S$Table_Day$Alloc_Fruit_Cohort[FruitingPeriod])]= 0
-      S$Table_Day$NPP_Fruit_Cohort[FruitingPeriod]=
-        S$Parameters$epsilonFruit*S$Table_Day$Alloc_Fruit_Cohort[FruitingPeriod]
-      S$Table_Day$CM_Fruit_Cohort[FruitingPeriod]= S$Table_Day$CM_Fruit_Cohort[FruitingPeriod]+
-        S$Table_Day$NPP_Fruit_Cohort[FruitingPeriod]
-      S$Table_Day$DM_Fruit_Cohort[FruitingPeriod]= S$Table_Day$CM_Fruit_Cohort[FruitingPeriod]/S$Parameters$CContent_Fruit
+      S$Sim$Alloc_Fruit_Cohort[FruitingPeriod]=
+        S$Sim$Alloc_Fruit[i]*(Demand_Fruit_Cohort_Period/S$Sim$Demand_Fruit[i])
+      S$Sim$Alloc_Fruit_Cohort[FruitingPeriod][is.nan(S$Sim$Alloc_Fruit_Cohort[FruitingPeriod])]= 0
+      S$Sim$NPP_Fruit_Cohort[FruitingPeriod]=
+        S$Parameters$epsilonFruit*S$Sim$Alloc_Fruit_Cohort[FruitingPeriod]
+      S$Sim$CM_Fruit_Cohort[FruitingPeriod]= S$Sim$CM_Fruit_Cohort[FruitingPeriod]+
+        S$Sim$NPP_Fruit_Cohort[FruitingPeriod]
+      S$Sim$DM_Fruit_Cohort[FruitingPeriod]= S$Sim$CM_Fruit_Cohort[FruitingPeriod]/S$Parameters$CContent_Fruit
       # Overriped fruits that fall onto the ground (= to mass of the cohort that overripe) :
-      S$Table_Day$Overriped_Fruit[i]= S$Table_Day$CM_Fruit_Cohort[max(min(FruitingPeriod)-1,1)]
-      # S$Table_Day$Overriped_Fruit[i]= S$Table_Day$CM_Fruit_Cohort[min(FruitingPeriod)-1]*S$Parameters$epsilonFruit
+      S$Sim$Overriped_Fruit[i]= S$Sim$CM_Fruit_Cohort[max(min(FruitingPeriod)-1,1)]
+      # S$Sim$Overriped_Fruit[i]= S$Sim$CM_Fruit_Cohort[min(FruitingPeriod)-1]*S$Parameters$epsilonFruit
 
       # Duration of the maturation of each cohort born in the ith day (in days):
-      S$Table_Day$Maturation_duration[FruitingPeriod]=
+      S$Sim$Maturation_duration[FruitingPeriod]=
         seq_along(FruitingPeriod)
       # Sucrose content of each cohort:
-      S$Table_Day$Sucrose_Content[FruitingPeriod]=
-        Sucrose_cont_perc(S$Table_Day$Maturation_duration[FruitingPeriod],
+      S$Sim$Sucrose_Content[FruitingPeriod]=
+        Sucrose_cont_perc(S$Sim$Maturation_duration[FruitingPeriod],
                           a= S$Parameters$S_a, b= S$Parameters$S_b,
                           x0= S$Parameters$S_x0, y0=S$Parameters$S_y0)
       # Sucrose mass of each cohort
-      S$Table_Day$Sucrose_Mass[FruitingPeriod]=
-        S$Table_Day$DM_Fruit_Cohort[FruitingPeriod]*S$Table_Day$Sucrose_Content[FruitingPeriod]
+      S$Sim$Sucrose_Mass[FruitingPeriod]=
+        S$Sim$DM_Fruit_Cohort[FruitingPeriod]*S$Sim$Sucrose_Content[FruitingPeriod]
       # Harvest maturity:
-      S$Table_Day$Harvest_Maturity_Pot[i]=
-        round(sum(S$Table_Day$Sucrose_Mass[FruitingPeriod])/
-                sum(S$Table_Day$DM_Fruit_Cohort[FruitingPeriod]*((S$Parameters$S_y0 + S$Parameters$S_a)/100)),3)
+      S$Sim$Harvest_Maturity_Pot[i]=
+        round(sum(S$Sim$Sucrose_Mass[FruitingPeriod])/
+                sum(S$Sim$DM_Fruit_Cohort[FruitingPeriod]*((S$Parameters$S_y0 + S$Parameters$S_a)/100)),3)
       # NB : here harvest maturity is computed as the average maturity of the cohorts. It could be computed
       # as the percentage of cohorts that are fully mature (Pezzopane et al. 2012 say at 221 days after flowering)
       # Optimal sucrose concentration around 8.8% of the dry mass
 
       # Harvest. Made one day only for now (TODO: make it a period of harvest)
       # Made as soon as the fruit dry mass is decreasing (overriping more important than fruit maturation):
-      if(S$Table_Day$Plot_Age[i]>=S$Parameters$ageMaturity&
-         S$Table_Day$CM_Fruit[previous_i(i,1)]<(S$Table_Day$CM_Fruit[previous_i(i,3)]+0.1)&
-         S$Table_Day$CM_Fruit[previous_i(i,1)]>40){
+      if(S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity&
+         S$Sim$CM_Fruit[previous_i(i,1)]<(S$Sim$CM_Fruit[previous_i(i,3)]+0.1)&
+         S$Sim$CM_Fruit[previous_i(i,1)]>40){
         # Save the date of harvest:
-        S$Table_Day$Date_harvest[i]= S$Met_c$DOY[i]
-        S$Table_Day$Harvest_Fruit[i]= S$Table_Day$CM_Fruit[i-1]
-        S$Table_Day$Harvest_Maturity[S$Met_c$year==S$Met_c$year[i]]= S$Table_Day$Harvest_Maturity_Pot[i]
-        S$Table_Day$CM_Fruit[i-1]= S$Table_Day$Alloc_Fruit[i]=
-          S$Table_Day$Overriped_Fruit[i]= 0
-        S$Table_Day$CM_Fruit_Cohort= rep(0,length(S$Table_Day$CM_Fruit_Cohort))
+        S$Sim$Date_harvest[i]= S$Met_c$DOY[i]
+        S$Sim$Harvest_Fruit[i]= S$Sim$CM_Fruit[i-1]
+        S$Sim$Harvest_Maturity[S$Met_c$year==S$Met_c$year[i]]= S$Sim$Harvest_Maturity_Pot[i]
+        S$Sim$CM_Fruit[i-1]= S$Sim$Alloc_Fruit[i]=
+          S$Sim$Overriped_Fruit[i]= 0
+        S$Sim$CM_Fruit_Cohort= rep(0,length(S$Sim$CM_Fruit_Cohort))
         # RV: could harvest mature fruits only (To do).
       }else{
-        S$Table_Day$Harvest_Fruit[i]= NA_real_
+        S$Sim$Harvest_Fruit[i]= NA_real_
       }
 
-      S$Table_Day$NPP_Fruit[i]= S$Parameters$epsilonFruit*S$Table_Day$Alloc_Fruit[i]
-      S$Table_Day$Rc_Fruit[i]= (1-S$Parameters$epsilonFruit)*S$Table_Day$Alloc_Fruit[i]
+      S$Sim$NPP_Fruit[i]= S$Parameters$epsilonFruit*S$Sim$Alloc_Fruit[i]
+      S$Sim$Rc_Fruit[i]= (1-S$Parameters$epsilonFruit)*S$Sim$Alloc_Fruit[i]
 
 
 
@@ -691,220 +691,220 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       #offre)est repartis entre racine et feuilles selon la meme proportion
       #que la repartition de la NPP entre Racines et feuilles. Les lambdas ne
       #peuvent etre utilises que sur NPP totale
-      S$Table_Day$Offer_Leaf[i]=
+      S$Sim$Offer_Leaf[i]=
         S$Parameters$lambdaLeaf_remain*
-        (S$Table_Day$Offer[i]-S$Table_Day$Alloc_Fruit[i]-
-           S$Table_Day$Alloc_RsWood[i]-S$Table_Day$Alloc_SCR[i])
+        (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
+           S$Sim$Alloc_RsWood[i]-S$Sim$Alloc_SCR[i])
       #Demand : the demand is actually S$Parameters$Demand_Leaf
       #Min(Demand, Offer)
-      S$Table_Day$Alloc_Leaf[i]=max(0,min(S$Parameters$Demand_Leaf*(S$Parameters$Stocking_Coffee/10000),
-                                          S$Table_Day$Offer_Leaf[i]))
+      S$Sim$Alloc_Leaf[i]=max(0,min(S$Parameters$Demand_Leaf*(S$Parameters$Stocking_Coffee/10000),
+                                          S$Sim$Offer_Leaf[i]))
       #NPP
-      S$Table_Day$NPP_Leaf[i]= S$Parameters$epsilonLeaf*S$Table_Day$Alloc_Leaf[i]
+      S$Sim$NPP_Leaf[i]= S$Parameters$epsilonLeaf*S$Sim$Alloc_Leaf[i]
       #Rc
-      S$Table_Day$Rc_Leaf[i]= (1-S$Parameters$epsilonLeaf)*S$Table_Day$Alloc_Leaf[i]
+      S$Sim$Rc_Leaf[i]= (1-S$Parameters$epsilonLeaf)*S$Sim$Alloc_Leaf[i]
       #Excess into Reserves
-      S$Table_Day$NPP_RE[i]= S$Table_Day$NPP_RE[i]+(S$Table_Day$Offer_Leaf[i]-S$Table_Day$Alloc_Leaf[i])
+      S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_Leaf[i]-S$Sim$Alloc_Leaf[i])
 
       #Mortality
       # By natural litterfall assuming no diseases
-      S$Table_Day$Mnat_Leaf[i]=S$Table_Day$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespanLeaf
+      S$Sim$Mnat_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespanLeaf
       # By American Leaf Spot # Litterfall by ALS is difference between 2 dates
-      S$Table_Day$M_ALS[i]=
-        S$Zero_then_One[i]*max(0,S$Table_Day$CM_Leaf[previous_i(i,1)]*S$Table_Day$ALS[i])
+      S$Sim$M_ALS[i]=
+        S$Zero_then_One[i]*max(0,S$Sim$CM_Leaf[previous_i(i,1)]*S$Sim$ALS[i])
 
       #By pruning
-      if(S$Table_Day$Plot_Age[i]>=S$Parameters$MeanAgePruning&S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Table_Day$Mprun_Leaf[i]=S$Table_Day$CM_Leaf[previous_i(i,1)]*
-          S$Parameters$LeafPruningRate}else{S$Table_Day$Mprun_Leaf[i]=0}
+      if(S$Sim$Plot_Age[i]>=S$Parameters$MeanAgePruning&S$Met_c$DOY[i]==S$Parameters$date_pruning){
+        S$Sim$Mprun_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]*
+          S$Parameters$LeafPruningRate}else{S$Sim$Mprun_Leaf[i]=0}
 
-      S$Table_Day$Mortality_Leaf[i]= S$Table_Day$Mnat_Leaf[i] + S$Table_Day$Mprun_Leaf[i]+S$Table_Day$M_ALS[i]
+      S$Sim$Mortality_Leaf[i]= S$Sim$Mnat_Leaf[i] + S$Sim$Mprun_Leaf[i]+S$Sim$M_ALS[i]
 
 
       ############# Fine Roots #####
       #Demand : the demand is actually S$Parameters$Demand_Leaf
-      #S$Table_Day$Demand_FRoot[i]= S$Table_Day$Alloc_Leaf[i]
-      S$Table_Day$Demand_FRoot[i]= S$Parameters$Demand_Leaf
+      #S$Sim$Demand_FRoot[i]= S$Sim$Alloc_Leaf[i]
+      S$Sim$Demand_FRoot[i]= S$Parameters$Demand_Leaf
       # f(T,SW     D,...)#suppose egalite entre feuilles et racines fines pour demande
       #Offer
-      S$Table_Day$Offer_FRoot[i]=
+      S$Sim$Offer_FRoot[i]=
         S$Parameters$lambdaFRoot_remain*
-        (S$Table_Day$Offer[i]-S$Table_Day$Alloc_Fruit[i]-
-           S$Table_Day$Alloc_RsWood[i]-S$Table_Day$Alloc_SCR[i])
+        (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
+           S$Sim$Alloc_RsWood[i]-S$Sim$Alloc_SCR[i])
 
-      S$Table_Day$Alloc_FRoot[i]=max(0,min(S$Table_Day$Demand_FRoot[i],S$Table_Day$Offer_FRoot[i]))
+      S$Sim$Alloc_FRoot[i]=max(0,min(S$Sim$Demand_FRoot[i],S$Sim$Offer_FRoot[i]))
 
-      S$Table_Day$NPP_FRoot[i]=S$Parameters$epsilonFRoot*S$Table_Day$Alloc_FRoot[i]
+      S$Sim$NPP_FRoot[i]=S$Parameters$epsilonFRoot*S$Sim$Alloc_FRoot[i]
       #Rc
-      S$Table_Day$Rc_FRoot[i]=(1-S$Parameters$epsilonFRoot)*S$Table_Day$Alloc_FRoot[i]
+      S$Sim$Rc_FRoot[i]=(1-S$Parameters$epsilonFRoot)*S$Sim$Alloc_FRoot[i]
       #Excess into reserves
-      S$Table_Day$NPP_RE[i]= S$Table_Day$NPP_RE[i]+(S$Table_Day$Offer_FRoot[i]-S$Table_Day$Alloc_FRoot[i])
+      S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_FRoot[i]-S$Sim$Alloc_FRoot[i])
 
       #Mortality
-      S$Table_Day$Mnat_FRoot[i]=S$Table_Day$CM_FRoot[previous_i(i,1)]/S$Parameters$lifespanFRoot
-      S$Table_Day$Mprun_FRoot[i]=S$Parameters$M_RateFRootprun*S$Table_Day$Mprun_Leaf[i]
-      S$Table_Day$Mortality_FRoot[i]=S$Table_Day$Mnat_FRoot[i]+S$Table_Day$Mprun_FRoot[i]
+      S$Sim$Mnat_FRoot[i]=S$Sim$CM_FRoot[previous_i(i,1)]/S$Parameters$lifespanFRoot
+      S$Sim$Mprun_FRoot[i]=S$Parameters$M_RateFRootprun*S$Sim$Mprun_Leaf[i]
+      S$Sim$Mortality_FRoot[i]=S$Sim$Mnat_FRoot[i]+S$Sim$Mprun_FRoot[i]
 
 
       ############# Update of Biomass & Rm, Rc, Ra & LAI & & Buds ####
 
 
 
-      S$Table_Day$CM_Leaf[i]=S$Table_Day$CM_Leaf[previous_i(i,1)]+
-        S$Table_Day$NPP_Leaf[i]-S$Table_Day$Mortality_Leaf[i]-
-        S$Table_Day$Carbon_Lack_Mortality[i]*0.25
-      S$Table_Day$CM_RsWood[i]= S$Table_Day$CM_RsWood[previous_i(i,1)]+
-        S$Table_Day$NPP_RsWood[i]-S$Table_Day$Mortality_RsWood[i]-
-        S$Table_Day$Carbon_Lack_Mortality[i]*0.25
-      S$Table_Day$CM_Fruit[i]=S$Table_Day$CM_Fruit[previous_i(i,1)]+
-        S$Table_Day$NPP_Fruit[i]-S$Table_Day$Overriped_Fruit[i]
-      # NB: S$Table_Day$Overriped_Fruit is negative (loss by falling if overriped)
-      S$Table_Day$CM_SCR[i]= S$Table_Day$CM_SCR[previous_i(i,1)]+
-        S$Table_Day$NPP_SCR[i]-S$Table_Day$Mortality_SCR[i]-
-        S$Table_Day$Carbon_Lack_Mortality[i]*0.25
-      S$Table_Day$CM_FRoot[i]= S$Table_Day$CM_FRoot[previous_i(i,1)]+
-        S$Table_Day$NPP_FRoot[i]-S$Table_Day$Mortality_FRoot[i]-
-        S$Table_Day$Carbon_Lack_Mortality[i]*0.25
-      S$Table_Day$CM_RE[i]=S$Table_Day$CM_RE[previous_i(i,1)]+S$Table_Day$NPP_RE[i]-
-        S$Table_Day$Consumption_RE[i]
-      S$Table_Day$Rc[i]= S$Table_Day$Rc_Fruit[i]+S$Table_Day$Rc_Leaf[i]+
-        S$Table_Day$Rc_RsWood[i]+S$Table_Day$Rc_SCR[i]+
-        S$Table_Day$Rc_FRoot[i]
-      S$Table_Day$Ra[i]=S$Table_Day$Rm[i]+S$Table_Day$Rc[i]
+      S$Sim$CM_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]+
+        S$Sim$NPP_Leaf[i]-S$Sim$Mortality_Leaf[i]-
+        S$Sim$Carbon_Lack_Mortality[i]*0.25
+      S$Sim$CM_RsWood[i]= S$Sim$CM_RsWood[previous_i(i,1)]+
+        S$Sim$NPP_RsWood[i]-S$Sim$Mortality_RsWood[i]-
+        S$Sim$Carbon_Lack_Mortality[i]*0.25
+      S$Sim$CM_Fruit[i]=S$Sim$CM_Fruit[previous_i(i,1)]+
+        S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
+      # NB: S$Sim$Overriped_Fruit is negative (loss by falling if overriped)
+      S$Sim$CM_SCR[i]= S$Sim$CM_SCR[previous_i(i,1)]+
+        S$Sim$NPP_SCR[i]-S$Sim$Mortality_SCR[i]-
+        S$Sim$Carbon_Lack_Mortality[i]*0.25
+      S$Sim$CM_FRoot[i]= S$Sim$CM_FRoot[previous_i(i,1)]+
+        S$Sim$NPP_FRoot[i]-S$Sim$Mortality_FRoot[i]-
+        S$Sim$Carbon_Lack_Mortality[i]*0.25
+      S$Sim$CM_RE[i]=S$Sim$CM_RE[previous_i(i,1)]+S$Sim$NPP_RE[i]-
+        S$Sim$Consumption_RE[i]
+      S$Sim$Rc[i]= S$Sim$Rc_Fruit[i]+S$Sim$Rc_Leaf[i]+
+        S$Sim$Rc_RsWood[i]+S$Sim$Rc_SCR[i]+
+        S$Sim$Rc_FRoot[i]
+      S$Sim$Ra[i]=S$Sim$Rm[i]+S$Sim$Rc[i]
 
-      S$Table_Day$NPP[i]=S$Table_Day$NPP_RsWood[i]+S$Table_Day$NPP_SCR[i]+
-        S$Table_Day$NPP_Fruit[i]+S$Table_Day$NPP_Leaf[i]+S$Table_Day$NPP_FRoot[i]
+      S$Sim$NPP[i]=S$Sim$NPP_RsWood[i]+S$Sim$NPP_SCR[i]+
+        S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
 
       #Update LAI m2leaf m-2soil, caution, CM is in gC m-2soil, so use C content to transform in dry mass
-      S$Table_Day$LAI[i]= S$Table_Day$CM_Leaf[i]*S$Parameters$SLA/1000/S$Parameters$CContent_Leaf
+      S$Sim$LAI[i]= S$Sim$CM_Leaf[i]*S$Parameters$SLA/1000/S$Parameters$CContent_Leaf
 
       # Dry mass computation:
-      S$Table_Day$DM_Leaf[i]= S$Table_Day$CM_Leaf[i]/S$Parameters$CContent_Leaf
-      S$Table_Day$DM_RsWood[i]= S$Table_Day$CM_RsWood[i]/S$Parameters$CContent_RsWood
-      S$Table_Day$DM_Fruit[i]=S$Table_Day$CM_Fruit[i]/S$Parameters$CContent_Fruit
-      S$Table_Day$DM_SCR[i]= S$Table_Day$CM_SCR[i]/
+      S$Sim$DM_Leaf[i]= S$Sim$CM_Leaf[i]/S$Parameters$CContent_Leaf
+      S$Sim$DM_RsWood[i]= S$Sim$CM_RsWood[i]/S$Parameters$CContent_RsWood
+      S$Sim$DM_Fruit[i]=S$Sim$CM_Fruit[i]/S$Parameters$CContent_Fruit
+      S$Sim$DM_SCR[i]= S$Sim$CM_SCR[i]/
         S$Parameters$CContent_SCR
-      S$Table_Day$DM_FRoot[i]= S$Table_Day$CM_FRoot[i]/S$Parameters$CContent_FRoots
-      S$Table_Day$DM_RE[i]=S$Table_Day$CM_RE[i]/S$Parameters$CContent_SCR
+      S$Sim$DM_FRoot[i]= S$Sim$CM_FRoot[i]/S$Parameters$CContent_FRoots
+      S$Sim$DM_RE[i]=S$Sim$CM_RE[i]/S$Parameters$CContent_SCR
 
       ######################## Water balance (from BILJOU model) #############################
 
 
       # Metamodel Coffee leaf water potential
-      S$Table_Day$LeafWaterPotential[i]=
-        0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*PARcof + 2.676284*S$Table_Day$SoilWaterPot[i]
+      S$Sim$LeafWaterPotential[i]=
+        0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*PARcof + 2.676284*S$Sim$SoilWaterPot[i]
 
-      # S$Table_Day$LeafWaterPotential[i]=
+      # S$Sim$LeafWaterPotential[i]=
       #     -0.096845 - 0.080517*S$Met_c$PARm2d1 +
       #     0.481117*(1-S$Met_c$FDiff) - 0.001692*S$Met_c$DaysWithoutRain
 
       # LAI plot is the sum of the LAI of the Tree + coffee LAI
       # (LAIplot[i] is first equal to 0, then added LAI of tree, and here adding LAI of coffee)
-      S$Table_Day$LAIplot[i]= S$Table_Day$LAIplot[i]+S$Table_Day$LAI[i]
+      S$Sim$LAIplot[i]= S$Sim$LAIplot[i]+S$Sim$LAI[i]
 
       # Compute soil (+canopy evap) water balance
       Soilfun(S,i)
 
       # Metamodel Transpiration Coffee, and filter out for negative values
-      S$Table_Day$T_Cof[i]=
-        -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Table_Day$LAI[i] +
+      S$Sim$T_Cof[i]=
+        -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] +
         0.11510*PARcof
-      S$Table_Day$T_Cof[i][S$Table_Day$T_Cof[i]<0]= 0
+      S$Sim$T_Cof[i][S$Sim$T_Cof[i]<0]= 0
       #Plot transpiration
-      S$Table_Day$T_tot[i]= S$Table_Day$T_Tree[i]+S$Table_Day$T_Cof[i]
+      S$Sim$T_tot[i]= S$Sim$T_Tree[i]+S$Sim$T_Cof[i]
 
       #7/ Evapo-Transpiration ETR
-      S$Table_Day$ETR[i]=
-        S$Table_Day$T_tot[i]+S$Table_Day$E_Soil[i]+S$Table_Day$IntercRevapor[i]
+      S$Sim$ETR[i]=
+        S$Sim$T_tot[i]+S$Sim$E_Soil[i]+S$Sim$IntercRevapor[i]
 
       #10/ Latent (LEmod) and Sensible (Hmod) heat fluxes, In kgH2O m-2 d-1 * MJ kgH2O-1 = MJ m-2 d-1
-      S$Table_Day$LE_Plot[i]= S$Table_Day$ETR[i]*S$Parameters$lambda#kgH2O m-2 d-1 * MJ kgH2O-1
+      S$Sim$LE_Plot[i]= S$Sim$ETR[i]*S$Parameters$lambda#kgH2O m-2 d-1 * MJ kgH2O-1
 
-      S$Table_Day$LE_Coffee[i]=
-        (S$Table_Day$T_Cof[i]+S$Table_Day$IntercRevapor[i]*
-           (S$Table_Day$LAI[i]/S$Table_Day$LAIplot[i]))*S$Parameters$lambda
-      # S$Table_Day$H_Coffee[i]= S$Table_Day$Rn_Coffee[i]-S$Table_Day$LE_Coffee[i]
+      S$Sim$LE_Coffee[i]=
+        (S$Sim$T_Cof[i]+S$Sim$IntercRevapor[i]*
+           (S$Sim$LAI[i]/S$Sim$LAIplot[i]))*S$Parameters$lambda
+      # S$Sim$H_Coffee[i]= S$Sim$Rn_Coffee[i]-S$Sim$LE_Coffee[i]
 
       # Metamodel for H :
-      S$Table_Day$H_Coffee[i]=
+      S$Sim$H_Coffee[i]=
         -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
         1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+
-        0.25838*S$Table_Day$LAI[i]
+        0.25838*S$Sim$LAI[i]
 
 
-      S$Table_Day$Rn_Coffee[i]=
-        S$Table_Day$H_Coffee[i] + S$Table_Day$LE_Coffee[i]
+      S$Sim$Rn_Coffee[i]=
+        S$Sim$H_Coffee[i] + S$Sim$LE_Coffee[i]
 
       # Tree LE and Rn (can not compute them in the Tree function because we need IntercRevapor)
-      S$Table_Day$LE_Tree[i]=
-        (S$Table_Day$T_Tree[i]+S$Table_Day$IntercRevapor[i]*
-           (S$Table_Day$LAI_Tree[i]/S$Table_Day$LAIplot[i]))*S$Parameters$lambda
-      S$Table_Day$Rn_Tree[i]= S$Table_Day$H_Tree[i] + S$Table_Day$LE_Tree[i]
+      S$Sim$LE_Tree[i]=
+        (S$Sim$T_Tree[i]+S$Sim$IntercRevapor[i]*
+           (S$Sim$LAI_Tree[i]/S$Sim$LAIplot[i]))*S$Parameters$lambda
+      S$Sim$Rn_Tree[i]= S$Sim$H_Tree[i] + S$Sim$LE_Tree[i]
 
       # Total plot heat flux:
-      S$Table_Day$H_tot[i]= S$Table_Day$H_Coffee[i]+S$Table_Day$H_Tree[i]+
-        S$Table_Day$H_Soil[i]
+      S$Sim$H_tot[i]= S$Sim$H_Coffee[i]+S$Sim$H_Tree[i]+
+        S$Sim$H_Soil[i]
       # Total plot latent flux:
-      S$Table_Day$LE_tot[i]=
-        S$Table_Day$LE_Coffee[i]+S$Table_Day$LE_Tree[i]+
-        S$Table_Day$LE_Soil[i]
+      S$Sim$LE_tot[i]=
+        S$Sim$LE_Coffee[i]+S$Sim$LE_Tree[i]+
+        S$Sim$LE_Soil[i]
 
       # Total plot net radiation:
-      S$Table_Day$Rn_tot[i]= S$Table_Day$Rn_Coffee[i]+S$Table_Day$Rn_Tree[i]+
-        S$Table_Day$Rn_Soil[i]
+      S$Sim$Rn_tot[i]= S$Sim$Rn_Coffee[i]+S$Sim$Rn_Tree[i]+
+        S$Sim$Rn_Soil[i]
 
 
       #11/ Tcanopy Coffee : using bulk conductance if no trees, interlayer conductance if trees
-      if(S$Table_Day$Height_Tree[previous_i(i,1)]>S$Parameters$Height_Coffee){
+      if(S$Sim$Height_Tree[previous_i(i,1)]>S$Parameters$Height_Coffee){
 
-        S$Table_Day$TairCanopy[i]=
-          S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+        S$Sim$TairCanopy[i]=
+          S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                        LAI_top= S$Table_Day$LAI_Tree[previous_i(i,1)],
-                        LAI_bot= S$Table_Day$LAI[previous_i(i,1)],
-                        Z_top= S$Table_Day$Height_Tree[previous_i(i,1)],
+                        LAI_top= S$Sim$LAI_Tree[previous_i(i,1)],
+                        LAI_bot= S$Sim$LAI[previous_i(i,1)],
+                        Z_top= S$Sim$Height_Tree[previous_i(i,1)],
                         extwind = S$Parameters$extwind))
 
-        S$Table_Day$Tleaf_Coffee[i]=
-          S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+        S$Sim$Tleaf_Coffee[i]=
+          S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              1/(1/G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                             LAI_top= S$Table_Day$LAI_Tree[previous_i(i,1)],
-                             LAI_bot= S$Table_Day$LAI[previous_i(i,1)],
-                             Z_top= S$Table_Day$Height_Tree[previous_i(i,1)],
+                             LAI_top= S$Sim$LAI_Tree[previous_i(i,1)],
+                             LAI_bot= S$Sim$LAI[previous_i(i,1)],
+                             Z_top= S$Sim$Height_Tree[previous_i(i,1)],
                              extwind = S$Parameters$extwind)+
                   1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
-                         LAI_lay=S$Table_Day$LAI[previous_i(i,1)],
-                         LAI_abv=S$Table_Day$LAI_Tree[previous_i(i,1)],
+                         LAI_lay=S$Sim$LAI[previous_i(i,1)],
+                         LAI_abv=S$Sim$LAI_Tree[previous_i(i,1)],
                          ZHT = S$Parameters$ZHT,
-                         Z_top = S$Table_Day$Height_Tree[previous_i(i,1)],
+                         Z_top = S$Sim$Height_Tree[previous_i(i,1)],
                          extwind= S$Parameters$extwind)))
 
 
       }else{
-        S$Table_Day$TairCanopy[i]=
-          S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+        S$Sim$TairCanopy[i]=
+          S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
                     Z_top = S$Parameters$Height_Coffee,
-                    LAI = S$Table_Day$LAI[previous_i(i,1)],
+                    LAI = S$Sim$LAI[previous_i(i,1)],
                     extwind = S$Parameters$extwind))
 
-        S$Table_Day$Tleaf_Coffee[i]=
-          S$Table_Day$TairCanopy_Tree[i]+(S$Table_Day$H_Coffee[i]*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Table_Day$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+        S$Sim$Tleaf_Coffee[i]=
+          S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
                          Z_top = S$Parameters$Height_Coffee,
-                         LAI = S$Table_Day$LAI[previous_i(i,1)],
+                         LAI = S$Sim$LAI[previous_i(i,1)],
                          extwind = S$Parameters$extwind)+
                   1/Gb_h(Wind= S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
-                         LAI_lay= S$Table_Day$LAI[previous_i(i,1)],
-                         LAI_abv= S$Table_Day$LAI_Tree[previous_i(i,1)],
+                         LAI_lay= S$Sim$LAI[previous_i(i,1)],
+                         LAI_abv= S$Sim$LAI_Tree[previous_i(i,1)],
                          ZHT= S$Parameters$ZHT,
                          Z_top= S$Parameters$Height_Coffee,
                          extwind= S$Parameters$extwind)))
@@ -912,7 +912,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       # NB : if no trees, TairCanopy_Tree= Tair
 
     }
-    CycleList=list(Table_Day= S$Table_Day%>%as.data.frame)
+    CycleList=list(Sim= S$Sim%>%as.data.frame)
   }
   snow::stopCluster(cl)
   # Reordering the lists to make the results as previous versions of the model:
@@ -925,7 +925,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   attr(Table,"unit")= data.frame(varnames)
 
   message(paste("\n", "Simulation completed successfully", "\n"))
-  FinalList= list(Table_Day= Table,Met_c= Meteo, Parameters= Parameters)
+  FinalList= list(Sim= Table,Met_c= Meteo, Parameters= Parameters)
   if(WriteIt){
     write.results(FinalList,output_f,Simulation_Name,Outpath,...)
   }
