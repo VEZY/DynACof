@@ -1,23 +1,27 @@
 Package: DynACof
 Type: Package
-Title: Dynamic crop model to simulate coffee crop ecophysiology for monospecific stands or agroforestry
-Version: 0.1.0
+Title: Dynamic Crop Model To Simulate Coffee Crop Ecophysiology For Monospecific Stands Or Agroforestry
+Version: 0.1.1
 Date: 2018-03-13
 Authors@R: c(person("Rémi", "Vezy",, "vezy.remi@gmail.com", c("aut", "cre", "cph")),
     person("Olivier", "Roupsard",, "olivier.roupsard@cirad.fr", c("aut", "cph")),
     person("Guerric", "le Maire", role = c("aut", "cph")))
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-URL: https://gitlab.com/VEZY/GoPlus_R
-BugReports: https://gitlab.com/VEZY/GoPlus_R/issues
+Description: The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield,
+ energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
+ metamodels from the 3D process-based MAESPA. The model also uses coffee bud and fruit cohorts for reproductive
+ development to better represent fruit carbon demand distribution along the year.
+URL: https://github.com/VEZY/DynACof
+BugReports: https://github.com/VEZY/DynACof/issues
+Depends: R (>= 2.10)
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
 Imports: 
+    methods,
     data.table,
-    magrittr,
     zoo,
+    dplyr,
     tidyverse,
     doSNOW,
     foreach,

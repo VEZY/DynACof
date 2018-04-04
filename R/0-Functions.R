@@ -754,7 +754,7 @@ G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD
 #'
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
-#' @param Z_top        Average canopy height of the taller crop (m)
+#' @param Z_top     Average canopy height of the taller crop (m)
 #' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
 #' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
 #' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
@@ -783,8 +783,7 @@ G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD
 #'
 #' @examples
 #' # G_a0 for a coffee plantation managed in agroforestry system:
-#' G_soilcan(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z_top=24,
-#'  LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
+#' G_soilcan(Wind=1,ZHT=25,Z_top=24,LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
 #'
 #' @export
 G_soilcan= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
@@ -1176,7 +1175,7 @@ add.alpha <- function(col, alpha=1){
 
 Import_Aquiares_data= function(S=NULL){
   # is S is provided, merge the two data.frames
-  Aquiares_df= fread("1-DATA/OutDF.MeteoHydroCFluxes2009to2016.csv", data.table = F)
+  Aquiares_df= data.table::fread("1-DATA/OutDF.MeteoHydroCFluxes2009to2016.csv", data.table = F)
   Aquiares_df%<>%
     select(DateSemih, DOY, Year, PARtot, PPT= Rain, Tair, Tair3m_GF, VPD,
            GPPLasslop_GF, SEGPPLasslop_GF, LE_GF, Rn.Wm2,

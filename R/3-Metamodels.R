@@ -38,7 +38,8 @@
 #'
 #' @examples
 #' # Creating a dummy list for use:
-#' S= list(Table_Day= data.frame(K_Dif_Tree= rep(NA_real_,10),K_Dir_Tree= rep(NA_real_,10),LAD_Tree= rnorm(10,3,0.5)))
+#' S= list(Table_Day= data.frame(K_Dif_Tree= rep(NA_real_,10),
+#'         K_Dir_Tree= rep(NA_real_,10),LAD_Tree= rnorm(10,3,0.5)))
 #' # Calling the function:
 #' Light_extinction_K(S,1:10)
 #'

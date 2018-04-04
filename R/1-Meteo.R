@@ -74,7 +74,7 @@
 Meteorology= function(file=NULL, Period=NULL,
                       Parameters= Import_Parameters()){
   if(is.null(file)){
-    data(Aquiares)
+    data("Aquiares", envir = environment())
     MetData= Aquiares
   }else{
     MetData= data.table::fread(file,data.table = F)
@@ -118,16 +118,16 @@ Meteorology= function(file=NULL, Period=NULL,
   if(is.null(MetData$RAD)){
     if(!is.null(MetData$PAR)){
       MetData$RAD= MetData$PAR/Parameters$FPAR
-      warn.var(Var= "RAD", replace= "PAR",type='warn')
+      warn.var(Var= "RAD", replacement= "PAR",type='warn')
     }else{
-      warn.var(Var= "RAD", replace= "PAR",type='error')
+      warn.var(Var= "RAD", replacement= "PAR",type='error')
     }
   }
 
   # Missing PAR:
   if(is.null(MetData$PAR)){
     MetData$PAR= MetData$RAD*Parameters$FPAR
-    warn.var(Var= "PAR",replace= "RAD",type='warn')
+    warn.var(Var= "PAR",replacement= "RAD",type='warn')
   }
 
 
@@ -139,7 +139,7 @@ Meteorology= function(file=NULL, Period=NULL,
   # Missing air temperature:
   if(is.null(MetData$Tair)){
     MetData$Tair= (MetData$Tmax-MetData$Tmin)/2
-    warn.var(Var= "Tair",replace= "the equation (MetData$Tmax-MetData$Tmin)/2",type='warn')
+    warn.var(Var= "Tair",replacement= "the equation (MetData$Tmax-MetData$Tmin)/2",type='warn')
   }
 
   # Missing VPD:
@@ -149,7 +149,7 @@ Meteorology= function(file=NULL, Period=NULL,
       # NB : add "bigleaf::" as soon as the issue is
       warn.var(Var= "VPD","RH and Tair using bigleaf::rH.to.VPD",type='warn')
     }else{
-      warn.var(Var= "VPD", replace= "RH",type='error')
+      warn.var(Var= "VPD", replacement= "RH",type='error')
     }
   }
 
@@ -160,14 +160,14 @@ Meteorology= function(file=NULL, Period=NULL,
                                        Tair = MetData$Tair,
                                        VPD = MetData$VPD)
       warn.var(Var= "Pressure",
-               replace=paste("Elevation, Tair and VPD",
+               replacement=paste("Elevation, Tair and VPD",
                              "using bigleaf::pressure.from.elevation"),
                type='warn')
     }else{
       bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
                                        Tair = MetData$Tair)
       warn.var(Var= "Pressure",
-               replace=paste("Elevation and Tair",
+               replacement=paste("Elevation and Tair",
                              "using bigleaf::pressure.from.elevation"),
                type='warn')
     }
@@ -185,7 +185,7 @@ Meteorology= function(file=NULL, Period=NULL,
       MetData$WindSpeed= Parameters$WindSpeed # assume constant windspeed
       warn.var(Var= "WindSpeed","constant (= Parameters$WindSpeed)",type='warn')
     }else{
-      warn.var(Var= "WindSpeed", replace= "Parameters$WindSpeed (constant value)",type='error')
+      warn.var(Var= "WindSpeed", replacement= "Parameters$WindSpeed (constant value)",type='error')
     }
   }
 
@@ -195,7 +195,7 @@ Meteorology= function(file=NULL, Period=NULL,
       MetData$CO2= Parameters$CO2 # assume constant windspeed
       warn.var(Var= "CO2","constant (= Parameters$CO2)",type='warn')
     }else{
-      warn.var(Var= "CO2", replace= "Parameters$CO2 (constant value)",type='error')
+      warn.var(Var= "CO2", replacement= "Parameters$CO2 (constant value)",type='error')
     }
   }
 

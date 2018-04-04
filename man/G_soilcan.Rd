@@ -52,8 +52,7 @@ Compute the aerodynamic conductance for sensible and
 }
 \examples{
 # G_a0 for a coffee plantation managed in agroforestry system:
-G_soilcan(Wind=1,ZHT=25,Z1= site()$Height_Coffee,Z_top=24,
- LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
+G_soilcan(Wind=1,ZHT=25,Z_top=24,LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
 
 }
 \references{
