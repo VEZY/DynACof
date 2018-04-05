@@ -10,7 +10,8 @@
   
 # DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" align="right" />
 
-[![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?branch=master)](https://travis-ci.org/VEZY/DynACof)  
+<!-- [![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?branch=master)](https://travis-ci.org/VEZY/DynACof)   -->
+[![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?token=oehDDxBpmrzeWX8AdyPo&branch=master)](https://travis-ci.com/VEZY/DynACof)
 
 ## Overview
 
