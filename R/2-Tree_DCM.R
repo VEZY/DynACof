@@ -231,10 +231,13 @@ Shade.Tree= function(S,i){
 
   #### Reserves ####
 
-  # Offer
+  # Allocation to reserves (Offer - all other allocations)
   S$Sim$Alloc_Reserves_Tree[i]=
-    S$Parameters$lambda_Reserves_Tree*S$Sim$Offer_Total_Tree[i]
-  # Allocation
+    S$Sim$Offer_Total_Tree[i]-
+    (S$Sim$Alloc_FRoot_Tree[i]+S$Sim$Alloc_Leaf_Tree[i]+
+       S$Sim$Alloc_Branch_Tree[i]+S$Sim$Alloc_CR_Tree[i]+
+       S$Sim$Alloc_Stem_Tree[i])
+
   S$Sim$NPP_Reserves_Tree[i]=
     S$Parameters$epsilon_Reserves_Tree*S$Sim$Alloc_Reserves_Tree[i]
   # Cost of allocating to reserves
