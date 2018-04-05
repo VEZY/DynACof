@@ -1,7 +1,7 @@
 ---
-  output:
-  github_document:
-  html_preview: false
+output:
+  md_document:
+    variant: markdown_github
 ---
 
   <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -15,14 +15,11 @@ knitr::opts_chunk$set(
 options(tibble.print_min = 5, tibble.print_max = 5)
 ```
   
-<style type="text/css">
-    #logo {width: 30%;height: auto;}
-</style>
 
-# DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" alt="logo" id="logo" align="right" />
+# DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" alt="logo" style="width:30%;height:auto;" align="right" />
+
 <!-- [![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?branch=master)](https://travis-ci.org/VEZY/DynACof)   -->
 [![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?token=oehDDxBpmrzeWX8AdyPo&branch=master)](https://travis-ci.com/VEZY/DynACof)
-
 
 
 ## Overview
@@ -48,7 +45,7 @@ devtools::install_github("VEZY/DynACof")
 ```
 ## Example
 
-This is a basic example using all defaults (parameters and meteoroloy) over 2 years :
+This is a basic example using all defaults (parameters and meteorology) over 2 years :
 
 ```{r example1, eval=FALSE}
 rm(list = ls())
