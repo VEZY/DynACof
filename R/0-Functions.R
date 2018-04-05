@@ -864,8 +864,8 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
     Gb= 0.01*sqrt(U_z/wleaf)
     # Gb= (0.02/extwind)*sqrt(U_h/wleaf)*(1-exp(-extwind/2)) # integrated over the profile
   }else{
-    Gb= 1/(1/Gb_h_Free(Tair= Tair, Tleaf= Tleaf, wleaf= wleaf, Dheat= Dheat))+
-      (1/Gb_h_Forced(Wind = Wind, wleaf = wleaf))
+    Gb= 1/(1/Gb_hFree(Tair= Tair, Tleaf= Tleaf, wleaf= wleaf, Dheat= Dheat))+
+      (1/Gb_hForced(Wind = Wind, wleaf = wleaf))
   }
 
   return(Gb)
@@ -884,10 +884,10 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
 #' @param wleaf  Leaf width (m)
 #' @param Dheat  Molecular diffusivity for heat (m2 s-1). Default to: \code{Constants()$Dheat}.
 #'
-#' @aliases Gb_h_Forced Gb_h_Free
+#' @aliases Gb_hForced Gb_hFree
 #'
-#' @return \item{\eqn{Gb_h_Forced}}{Leaf boundary layer conductance for heat under forced convection (m s-1)}
-#'         \item{\eqn{Gb_h_Free}}{Leaf boundary layer conductance for heat under free convection (m s-1)}
+#' @return \item{\eqn{Gb_hForced}}{Leaf boundary layer conductance for heat under forced convection (m s-1)}
+#'         \item{\eqn{Gb_hFree}}{Leaf boundary layer conductance for heat under free convection (m s-1)}
 #' @references Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration: scaling from
 #'             leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
 #'
@@ -895,19 +895,19 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
 #'          The function from which both are usually called internally: \code{\link{Gb_h}}
 #'
 #' @examples
-#' Gb_h_Forced(Wind=3)
-#' Gb_h_Free(Tair= 25,Tleaf= 26)
+#' Gb_hForced(Wind=3)
+#' Gb_hFree(Tair= 25,Tleaf= 26)
 #'
 #' @export
-Gb_h_Forced= function(Wind,wleaf= 0.068){
+Gb_hForced= function(Wind,wleaf= 0.068){
   GBHFORCED = 0.003 * sqrt(Wind/wleaf)
 
   return(GBHFORCED)
 }
 
-#' @rdname Gb_h_Forced
+#' @rdname Gb_hForced
 #' @export
-Gb_h_Free= function(Tair,Tleaf,wleaf= 0.068,Dheat=Constants()$Dheat){
+Gb_hFree= function(Tair,Tleaf,wleaf= 0.068,Dheat=Constants()$Dheat){
   GRASHOF= 1.6E8 * abs(Tleaf-Tair) * (wleaf**3.)
   GBHFREE= 0.5*Dheat*(GRASHOF**0.25)/wleaf
   GBHFREE[(Tleaf-Tair)==0]=0
