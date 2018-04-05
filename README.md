@@ -4,14 +4,19 @@
   html_preview: false
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+  <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
   
-# DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" align="right" />
+<style type="text/css">
+    #logo {width: 30%;height: auto;}
+</style>
 
+# DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" alt="logo" id="logo" align="right" />
 <!-- [![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?branch=master)](https://travis-ci.org/VEZY/DynACof)   -->
 [![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?token=oehDDxBpmrzeWX8AdyPo&branch=master)](https://travis-ci.com/VEZY/DynACof)
+
+
 
 ## Overview
 
