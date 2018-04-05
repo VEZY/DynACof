@@ -214,10 +214,6 @@ Shade.Tree= function(S,i){
       S$Sim$CM_Leaf_Tree[previous_i(i,1)]/S$Parameters$lifespanLeaf_Tree
   }
 
-  if(DOY%in%unlist(Fall_Period_Tree)){
-    Leaf_fall_rate_Tree[[which(lapply(Fall_Period_Tree, function(x){match(DOY,x,nomatch = FALSE)})>0)]]
-  }
-
   #### Fine roots ####
   # Offer
   S$Sim$Alloc_FRoot_Tree[i]=

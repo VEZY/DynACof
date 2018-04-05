@@ -9,7 +9,7 @@ Tree= function(){
     wleaf_Tree           = 0.068,                     # Leaf width (m)
     Demand_Leaf_Tree     = 1557,                      # Leaf carbon demand (gC tree d-1). Approximated from MAESPA_Validation work
     Leaf_fall_rate_Tree  = list(0.09),                # Mortality during leaf fall (fraction of the leaf mass). List.
-    Fall_Period_Tree     = list(1:30),                # Time period were leaves fall at high rate (DOY). List
+    Fall_Period_Tree     = list(1:30),                # Time period were leaves fall at high rate (DOY). List of length= Leaf_fall_rate_Tree
     ThinThresh           = 0,                         # Low transmittance threshold under wich thinning is triggered (0-1)
     RateThinning_Tree    = 0,                         # How many trees are thinned per thinning event
     date_pruning_Tree    = 213,                       # Date(s) of pruning each year (DOY)
