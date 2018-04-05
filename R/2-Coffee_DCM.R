@@ -187,6 +187,7 @@
 #' @importFrom bigleaf aerodynamic.conductance
 #' @importFrom foreach %dopar%
 #' @importFrom methods is new
+#' @importFrom doParallel registerDoParallel
 #'
 DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
                   output_f=".RData",Inpath=NULL,Outpath=Inpath,Simulation_Name="DynACof",
@@ -230,7 +231,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   # Parallel loop over cycles:
   NbCores= parallel::detectCores()-1 # Set the maximum number of cores working on the model computation
   cl= parallel::makeCluster(min(NbCores,NCycles))
-  registerDoParallel(cl)
+  doParallel::registerDoParallel(cl)
 
   CycleList= foreach::foreach(cy= 1:NCycles,.combine=rbind,
                               .packages = c("dplyr","zoo")) %dopar% {

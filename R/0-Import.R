@@ -36,6 +36,7 @@ Import_Parameters= function(path= NULL,
         }else{
           message(paste(names(Names[i]),"parameters taken from",file.path(path,Names[i])))
           Filespath[names(Names[i])]= file.path(path,Names[[i]])
+          source(file.path(path,Names[[i]]),local = TRUE)
         }
       }
     }

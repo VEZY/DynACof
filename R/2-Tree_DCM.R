@@ -201,14 +201,21 @@ Shade.Tree= function(S,i){
 
   # Leaf Fall ---------------------------------------------------------------
 
-  if(S$Met_c$DOY[i]%in%S$Parameters$Fall_Period_Tree&S$Sim$Plot_Age[i]>1){
+  if(S$Met_c$DOY[i]%in%unlist(S$Parameters$Fall_Period_Tree)&S$Sim$Plot_Age[i]>1){
     # Phenology (leaf mortality increases in this period) if Leaf_Fall_Tree is TRUE
     S$Sim$Mact_Leaf_Tree[i]=
-      S$Sim$CM_Leaf_Tree[previous_i(i,1)]*S$Parameters$Leaf_fall_rate_Tree
+      S$Sim$CM_Leaf_Tree[previous_i(i,1)]*
+      S$Parameters$Leaf_fall_rate_Tree[[
+        which(lapply(S$Parameters$Fall_Period_Tree,
+                     function(x){match(S$Met_c$DOY[i],x,nomatch = 0)})>0)]]
   }else{
     # Or just natural litterfall assuming no diseases
     S$Sim$Mact_Leaf_Tree[i]=
       S$Sim$CM_Leaf_Tree[previous_i(i,1)]/S$Parameters$lifespanLeaf_Tree
+  }
+
+  if(DOY%in%unlist(Fall_Period_Tree)){
+    Leaf_fall_rate_Tree[[which(lapply(Fall_Period_Tree, function(x){match(DOY,x,nomatch = FALSE)})>0)]]
   }
 
   #### Fine roots ####

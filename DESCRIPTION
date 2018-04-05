@@ -25,6 +25,7 @@ Imports:
     tidyverse,
     foreach,
     parallel,
+    doParallel,
     magrittr,
     lubridate,
     bigleaf
