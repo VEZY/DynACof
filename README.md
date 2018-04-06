@@ -59,4 +59,4 @@ Enjoy !!
 
 ------------------------------------------------------------------------
 
-The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a>
+<sub>The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> </sub>
