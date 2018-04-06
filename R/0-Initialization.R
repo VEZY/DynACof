@@ -2,12 +2,10 @@
 #' @field Sim            A list, this is the simulation output list
 #' @field Met_c          A list, this is the input meteorology
 #' @field Parameters     A list, this is the parameters list
-#' @field Zero_then_One  A vector, this is a helper vector (will be depreciated soon)
 SimulationClass= setRefClass("Simulation",
                                fields = list(Sim = "list",
                                              Met_c= "list",
-                                             Parameters= "list",
-                                             Zero_then_One="vector"))
+                                             Parameters= "list"))
 
 #' Initialise model variables.
 #'

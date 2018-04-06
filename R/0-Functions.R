@@ -26,6 +26,32 @@ previous_i= function(x,n_prev){
   return(x)
 }
 
+#' Is index after reference ?
+#'
+#' @description Test if the x index falls before or after the reference index. If it is after, return 1,
+#'              if before, return 0.
+#'
+#' @param x      Current index
+#' @param ref    Reference index used to test if x is before or after
+#'
+#' @keywords internal
+#'
+#' @examples
+#' # Is 5 before 2 ?
+#' after(2,5)
+#' # Set result to 0 if the i index is before 5:
+#' a= rep(0,10)
+#' for(i in 1:10){
+#'   a[i]= sqrt(i)*after(i,5)
+#' }
+#'
+#' @export
+after= function(x,ref){
+  index= x-ref
+  index[index<=0]= 0
+  index[index>0]=1
+  return(index)
+}
 
 #' Write output results to disk
 #'

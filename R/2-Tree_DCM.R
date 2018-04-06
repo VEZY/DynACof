@@ -153,7 +153,7 @@ Shade.Tree= function(S,i){
     S$Sim$M_Rm_CR_Tree[i]=
       S$Parameters$lambda_CR_Tree*S$Sim$Offer_Total_Tree[i]
     S$Sim$M_Rm_Branch_Tree[i]=
-      S$Parameters$lambda_BranchWood_Tree*S$Sim$Offer_Total_Tree[i]
+      S$Parameters$lambda_Branch_Tree*S$Sim$Offer_Total_Tree[i]
     S$Sim$M_Rm_Leaf_Tree[i]=
       min(S$Parameters$Demand_Leaf_max_Tree*S$Sim$Stocking_Tree[i]*
             (1-(S$Sim$LAI_Tree[i]/S$Parameters$LAI_max)^4),
@@ -182,7 +182,7 @@ Shade.Tree= function(S,i){
   S$Sim$Alloc_CR_Tree[i]=
     S$Parameters$lambda_CR_Tree*S$Sim$Offer_Total_Tree[i]
   S$Sim$Alloc_Branch_Tree[i]=
-    S$Parameters$lambda_BranchWood_Tree*S$Sim$Offer_Total_Tree[i]
+    S$Parameters$lambda_Branch_Tree*S$Sim$Offer_Total_Tree[i]
   S$Sim$Alloc_Leaf_Tree[i]=
     min(S$Parameters$Demand_Leaf_max_Tree*S$Sim$Stocking_Tree[i]*
           (1-(S$Sim$LAI_Tree[i]/S$Parameters$LAI_max)^4),

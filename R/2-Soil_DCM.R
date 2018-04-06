@@ -102,8 +102,6 @@ Soilfun= function(S,i){
 
   #3/ Adding Infiltration to soil water content of the previous day, computing drainage,
   # source Gomez-Delgado et al. 2010
-  # RV: same as CanopyHumect
-  # S$Sim$W_1[i]= S$Sim$W_1[previous_i(i,1)]+S$Zero_then_One[i]*S$Sim$Infiltration[i]
   S$Sim$W_1[i]= S$Sim$W_1[previous_i(i,1)]+S$Sim$Infiltration[i]
 
   #Preventing W_1 to be larger than the soil storage at field capacity:
@@ -113,7 +111,6 @@ Soilfun= function(S,i){
   }else{S$Sim$Drain_1[i]= 0}     # Water excess in the root-box that drains (m)
 
   # RV: same as CanopyHumect
-  # S$Sim$W_2[i]= S$Sim$W_2[previous_i(i,1)]+S$Zero_then_One[i]*S$Sim$Drain_1[i]
   S$Sim$W_2[i]= S$Sim$W_2[previous_i(i,1)]+S$Sim$Drain_1[i]
 
   #Preventing W_2 to be larger than the soil storage at field capacity:
@@ -122,8 +119,6 @@ Soilfun= function(S,i){
     S$Sim$W_2[i] = S$Parameters$Wf2
   }else{S$Sim$Drain_2[i]= 0}     # Water excess in the root-box that drains (m)
 
-  # RV: same as CanopyHumect
-  # S$Sim$W_3[i]= S$Sim$W_3[previous_i(i,1)]+S$Zero_then_One[i]*S$Sim$Drain_2[i]
   S$Sim$W_3[i]= S$Sim$W_3[previous_i(i,1)]+S$Sim$Drain_2[i]
 
   #Preventing W_3 to be larger than the soil storage at field capacity:

@@ -252,12 +252,6 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
     CumulDegreeDays= cumsum(S$Met_c$DegreeDays)
     # Trick to avoid all the ifelse conditions because of the first time-step (evaluated at each
     # time step so increasing computing time):
-    S$Zero_then_One= c(0,rep(1, length(S$Sim$LAI)-1))
-    # S$Zero_then_One takes the value 0 at the first time step and then 1. It is used for two
-    # different techniques:
-    # 1- for taking the first value (i) instead of i-1, so avoid computation errors.
-    # 2- for seting some variable value to 0 the first step instead of doing the computation (as
-    # it was before with ifelse conditions). It makes the code less readable but much more efficient.
 
     ########### Bud induction window computation ####
     # Bud induction can start only at S$Parameters$Tffb degree-days after vegetative growth stops.
@@ -412,14 +406,14 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       #Maintenance Respiration Rm_RsWood
       S$Sim$Rm_RsWood[i]=
-        S$Zero_then_One[i]*
+        after(i,2)*
         (S$Parameters$PaliveRsWood*S$Sim$DM_RsWood[previous_i(i,1)]*
            S$Parameters$NContentRsWood*S$Parameters$MRN*
            S$Parameters$Q10RsWood^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
       # Stump and Coarse roots (perennial wood)
       S$Sim$Rm_SCR[i]=
-        S$Zero_then_One[i]*
+        after(i,2)*
         (S$Parameters$PaliveSCR*
            S$Sim$DM_SCR[previous_i(i,1)]*
            S$Parameters$NContentSCR*S$Parameters$MRN*
@@ -428,20 +422,20 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       # Fruits
       S$Sim$Rm_Fruit[i]=
-        S$Zero_then_One[i]*
+        after(i,2)*
         (S$Parameters$PaliveFruit*S$Sim$DM_Fruit[previous_i(i,1)]*
            S$Parameters$NContentFruit*S$Parameters$MRN*
            S$Parameters$Q10Fruit^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
       # Leaves
       S$Sim$Rm_Leaf[i]=
-        S$Zero_then_One[i]*
+        after(i,2)*
         (S$Parameters$PaliveLeaf*S$Sim$DM_Leaf[previous_i(i,1)]*
            S$Parameters$NContentLeaf*S$Parameters$MRN*
            S$Parameters$Q10Leaf^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
 
       # Fine roots
       S$Sim$Rm_FRoot[i]=
-        S$Zero_then_One[i]*
+        after(i,2)*
         (S$Parameters$PaliveFRoot*S$Sim$DM_FRoot[previous_i(i,1)]*
            S$Parameters$NContentFRoot*S$Parameters$MRN*
            S$Parameters$Q10FRoot^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
@@ -713,7 +707,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
       S$Sim$Mnat_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespanLeaf
       # By American Leaf Spot # Litterfall by ALS is difference between 2 dates
       S$Sim$M_ALS[i]=
-        S$Zero_then_One[i]*max(0,S$Sim$CM_Leaf[previous_i(i,1)]*S$Sim$ALS[i])
+        after(i,2)*max(0,S$Sim$CM_Leaf[previous_i(i,1)]*S$Sim$ALS[i])
 
       #By pruning
       if(S$Sim$Plot_Age[i]>=S$Parameters$MeanAgePruning&S$Met_c$DOY[i]==S$Parameters$date_pruning){
