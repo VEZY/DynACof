@@ -16,8 +16,6 @@ Generator for class Simulation (simulation object)
 \item{\code{Met_c}}{A list, this is the input meteorology}
 
 \item{\code{Parameters}}{A list, this is the parameters list}
-
-\item{\code{Zero_then_One}}{A vector, this is a helper vector (will be depreciated soon)}
 }}
 
 
