@@ -80,10 +80,10 @@ Shade.Tree= function(S,i){
 
   #GPP
   S$Sim$GPP_Tree[i]= S$Sim$lue_Tree[i]*S$Sim$APAR_Tree[i]
-  #Tree Thinning threshold when Transmittance <=S$Parameters$ThinThresh, then
-  if(S$Sim$Transmittance_Tree[i]<S$Parameters$ThinThresh){
-    S$Sim$TimetoThin_Tree[i]=1
-  }
+
+  #Tree Thinning threshold when Transmittance <=S$Parameters$ThinThresh:
+  S$Sim$TimetoThin_Tree[i][
+    S$Sim$Transmittance_Tree[i]<S$Parameters$ThinThresh]= TRUE
 
   # Maintenance respiration -------------------------------------------------
 
@@ -137,8 +137,6 @@ Shade.Tree= function(S,i){
       max(0,min(S$Sim$CM_RE_Tree[previous_i(i,1)],S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i]))
   }
 
-  ### Offer Function: NB, Rm is used from the previous i, assumed not very different but could
-  # also be computed first, actually
   S$Sim$Offer_Total_Tree[i]=
     S$Sim$GPP_Tree[i]-S$Sim$Rm_Tree[i]+S$Sim$Consumption_RE_Tree[i]
   # If the offer is negative (Rm>GPP+RE), there is mortality. This mortality is shared between
@@ -246,7 +244,7 @@ Shade.Tree= function(S,i){
 
   # Leaf Fall ---------------------------------------------------------------
 
-  if(S$Met_c$DOY[i]%in%unlist(S$Parameters$Fall_Period_Tree)&S$Sim$Plot_Age[i]>1){
+  if(S$Sim$TimetoFall_Tree[i]){
     # Phenology (leaf mortality increases in this period) if Leaf_Fall_Tree is TRUE
     S$Sim$Mact_Leaf_Tree[i]=
       S$Sim$CM_Leaf_Tree[previous_i(i,1)]*
@@ -283,7 +281,7 @@ Shade.Tree= function(S,i){
   # Pruning -----------------------------------------------------------------
 
   # NB: several dates of pruning are allowed
-  if(S$Sim$Plot_Age[i]%in%S$Parameters$Pruning_Age_Tree&&S$Met_c$DOY[i]%in%S$Parameters$date_pruning_Tree){
+  if(S$Sim$TimetoPrun_Tree[i]){
     # Leaves pruning :
     S$Sim$Mprun_Leaf_Tree[i]=
       S$Sim$CM_Leaf_Tree[previous_i(i,1)]*S$Parameters$pruningIntensity_Tree
@@ -311,7 +309,7 @@ Shade.Tree= function(S,i){
 
   # Thinning ----------------------------------------------------------------
 
-  if(S$Sim$TimetoThin_Tree[i]==1){
+  if(S$Sim$TimetoThin_Tree[i]){
     # First, reduce stocking by the predefined rate of thining:
     S$Sim$Stocking_Tree[i:length(S$Sim$LAI)]=
       S$Sim$Stocking_Tree[i-1]*(1-S$Parameters$RateThinning_Tree)

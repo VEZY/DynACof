@@ -296,7 +296,6 @@ Tree.init= function(S){
     S$Sim$CrownRad_Tree=
     S$Sim$NPP_Reserves_Tree=
     S$Sim$Consumption_RE_Tree=
-    S$Sim$TimetoThin_Tree=
     S$Sim$MThinning_Stem_Tree=
     S$Sim$MThinning_CR_Tree=
     S$Sim$MThinning_Branch_Tree=
@@ -314,6 +313,18 @@ Tree.init= function(S){
   S$Parameters$Wood_alloc=
     (S$Parameters$lambda_Stem_Tree+S$Parameters$lambda_CR_Tree+
        S$Parameters$lambda_Branch_Tree)
+
+  S$Sim$TimetoFall_Tree= rep_len(FALSE,length(S$Sim$Cycle))
+  S$Sim$TimetoFall_Tree[S$Met_c$DOY%in%unlist(S$Parameters$Fall_Period_Tree)&
+                          S$Sim$Plot_Age>1]= TRUE
+
+  S$Sim$TimetoThin_Tree= rep_len(FALSE,length(S$Sim$Cycle))
+  S$Sim$TimetoThin_Tree[S$Sim$Plot_Age%in%S$Parameters$Thin_Age_Tree&
+                          S$Met_c$DOY%in%S$Parameters$date_Thin_Tree]= TRUE
+
+  S$Sim$TimetoPrun_Tree= rep_len(FALSE,length(S$Sim$Cycle))
+  S$Sim$TimetoPrun_Tree[S$Sim$Plot_Age%in%S$Parameters$Pruning_Age_Tree&
+                          S$Met_c$DOY%in%S$Parameters$date_pruning_Tree]= TRUE
 
   S$Sim$WindSpeed_Tree= S$Met_c$WindSpeed
   S$Sim$TairCanopy_Tree= S$Met_c$Tair
