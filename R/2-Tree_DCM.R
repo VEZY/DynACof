@@ -167,9 +167,14 @@ Shade.Tree= function(S,i){
          S$Sim$M_Rm_Stem_Tree[i])
 
     if(S$Sim$M_Rm_Reserves_Tree[i]>(S$Sim$CM_RE_Tree[previous_i(i,1)]-S$Sim$Consumption_RE_Tree[i])){
-      # If reserves cannot provide the C deficit, take it from stem mortality:
+      # If reserves cannot provide the C deficit, take it from wood mortality:
       C_overdeficit_RE= S$Sim$M_Rm_Reserves_Tree[i]-(S$Sim$CM_RE_Tree[previous_i(i,1)]-S$Sim$Consumption_RE_Tree[i])
-      S$Sim$M_Rm_Stem_Tree[i]=S$Sim$M_Rm_Stem_Tree[i]+C_overdeficit_RE
+      S$Sim$M_Rm_CR_Tree[i]=
+        S$Sim$M_Rm_CR_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_CR_Tree/S$Parameters$Wood_alloc)
+      S$Sim$M_Rm_Branch_Tree[i]=
+        S$Sim$M_Rm_Branch_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_Branch_Tree/S$Parameters$Wood_alloc)
+      S$Sim$M_Rm_Stem_Tree[i]=
+        S$Sim$M_Rm_Stem_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_Stem_Tree/S$Parameters$Wood_alloc)
       S$Sim$M_Rm_Reserves_Tree[i]= S$Sim$M_Rm_Reserves_Tree[i]-C_overdeficit_RE
     }
     # NB : M_Rm_Reserves_Tree is regarded as an extra reserve consumption as offer is not met.

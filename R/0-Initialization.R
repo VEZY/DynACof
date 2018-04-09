@@ -308,8 +308,12 @@ Tree.init= function(S){
     S$Sim$Rn_Tree=
     rep_len(0,length(S$Sim$Cycle))
 
+  # Pre-computation of some variables / parameters:
   S$Sim$Stocking_Tree= rep_len(S$Parameters$StockingTree_treeha1/10000,
                                      length(S$Sim$Cycle))
+  S$Parameters$Wood_alloc=
+    (S$Parameters$lambda_Stem_Tree+S$Parameters$lambda_CR_Tree+
+       S$Parameters$lambda_Branch_Tree)
 
   S$Sim$WindSpeed_Tree= S$Met_c$WindSpeed
   S$Sim$TairCanopy_Tree= S$Met_c$Tair
