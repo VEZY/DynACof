@@ -57,6 +57,19 @@ Note that the Meteo file can be of any regular format because the model uses the
 
 Enjoy !!
 
+Acknowledgments
+---------------
+
+The DynACof model was mainly developed thanks to the MACCAC project[1], which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by CIRAD[2] and INRA[3]. The authors are grateful for the support of CATIE[4] for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure [ANAEE-F](http://www.anaee-france.fr/fr/); the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.
+
 ------------------------------------------------------------------------
 
 <sub>The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> </sub>
+
+[1] **MACACC project ANR-13-AGRO-0005**, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux AGROBIOSPHERE 2013 program
+
+[2] Centre de Coopération Internationale en Recherche Agronomique pour le Développement
+
+[3] Institut National de la Recherche Agronomique
+
+[4] Centro Agronómico Tropical de Investigación y Enseñanza
