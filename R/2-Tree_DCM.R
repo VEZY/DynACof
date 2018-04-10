@@ -52,8 +52,7 @@ Shade.Tree= function(S,i){
 
   S$Sim$TairCanopy_Tree[i]=
     S$Met_c$Tair[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
-    (bigleaf::air.density(S$Met_c$Tair[i],S$Met_c$Pressure[i]/10)*
-       S$Parameters$Cp*
+    (S$Met_c$Air_Density[i]*S$Parameters$Cp*
        G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
               LAI= S$Sim$LAI_Tree[previous_i(i,1)],
               extwind= S$Parameters$extwind,
@@ -63,8 +62,7 @@ Shade.Tree= function(S,i){
 
   S$Sim$Tleaf_Tree[i]=
     S$Met_c$Tair[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
-    (bigleaf::air.density(S$Met_c$Tair[i],S$Met_c$Pressure[i]/10)*
-       S$Parameters$Cp*
+    (S$Met_c$Air_Density[i]*S$Parameters$Cp*
        1/(1/G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
                    LAI= S$Sim$LAI_Tree[previous_i(i,1)],
                    extwind= S$Parameters$extwind,

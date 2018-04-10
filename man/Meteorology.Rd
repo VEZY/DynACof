@@ -59,7 +59,8 @@ The imported file is expected to be at daily time-step.
                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
-                    DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall}
+                    DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \cr
+                    Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy}
          It is highly recommended to set the system environment timezone to the one from the meteorology file.
          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
 }

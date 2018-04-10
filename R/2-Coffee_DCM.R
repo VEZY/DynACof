@@ -22,7 +22,7 @@
 #' }
 #' Default input filenames are provided with the package so the model can run with no input parameter files at all.
 #'
-#' @return A list containing three objects :
+#' @return A list containing three objects (Parameters, Meteo and Sim):
 #' \itemize{
 #'   \item A data.frame of the simulation outputs at daily time-step:  #' \tabular{llll}{
 #' \strong{Type} \tab \strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
@@ -152,19 +152,21 @@
 #'                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
 #'                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
 #'                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
-#'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall
+#'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \cr
+#'                     Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy}
 #' }
 #'   \item A list of the input parameters (see \code{\link{site}})
 #' }
 #'
 #' @author R. Vezy; O. Roupsard
-#' @details Almost all variables for coffee exist also for shade trees with a suffix
+#' @details Almost all variables for coffee exist also for shade trees with the suffix
 #'          \code{_Tree} after the name of the variable, e.g. : LAI = coffee LAI,
 #'          LAI_Tree = shade tree LAI.
 #'          Special shade tree variables (see return section) are only optional,
-#'          and may be longer upon parameterization because variables can be added in
+#'          and it may have more variables upon parameterization because variables can be added in
 #'          the metamodels parameter file in \strong{\code{\link{Metamodels}}} or
 #'          \strong{\code{\link{Allometries}}}.
+#'          Important :
 #'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
 #'          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
 #'
@@ -172,7 +174,7 @@
 #' \dontrun{
 #' if(interactive()){
 #'  Sys.setenv(TZ="UTC")
-#'  DynACof(WriteIt = T, Period= as.POSIXct(c("1979-01-01", "1982-01-01")),Outpath = "Results")
+#'  DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")),returnIt=T)
 #'
 #'  # Get the units of the input variables:
 #'  attr(S$Met_c,"unit")
@@ -184,7 +186,7 @@
 #' @export
 #' @rdname DynACof
 #' @seealso \code{\link{Meteorology}} \code{\link{site}}
-#' @importFrom bigleaf aerodynamic.conductance
+#' @importFrom bigleaf air.density
 #' @importFrom foreach %dopar%
 #' @importFrom methods is new
 #' @importFrom doParallel registerDoParallel
@@ -711,8 +713,10 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       #By pruning
       if(S$Sim$Plot_Age[i]>=S$Parameters$MeanAgePruning&S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Sim$Mprun_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]*
-          S$Parameters$LeafPruningRate}else{S$Sim$Mprun_Leaf[i]=0}
+        S$Sim$Mprun_Leaf[i]= S$Sim$CM_Leaf[previous_i(i,1)]*S$Parameters$LeafPruningRate
+      }else{
+        S$Sim$Mprun_Leaf[i]= 0
+      }
 
       S$Sim$Mortality_Leaf[i]= S$Sim$Mnat_Leaf[i] + S$Sim$Mprun_Leaf[i]+S$Sim$M_ALS[i]
 
@@ -746,7 +750,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
 
 
-      S$Sim$CM_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]+
+      S$Sim$CM_Leaf[i]= S$Sim$CM_Leaf[previous_i(i,1)]+
         S$Sim$NPP_Leaf[i]-S$Sim$Mortality_Leaf[i]-
         S$Sim$Carbon_Lack_Mortality[i]*0.25
       S$Sim$CM_RsWood[i]= S$Sim$CM_RsWood[previous_i(i,1)]+
@@ -921,7 +925,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   attr(Table,"unit")= data.frame(varnames)
 
   message(paste("\n", "Simulation completed successfully", "\n"))
-  FinalList= list(Sim= Table,Met_c= Meteo, Parameters= Parameters)
+  FinalList= list(Sim= Table,Meteo= Meteo, Parameters= Parameters)
   if(WriteIt){
     write.results(FinalList,output_f,Simulation_Name,Outpath,...)
   }

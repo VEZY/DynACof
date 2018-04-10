@@ -45,7 +45,8 @@
 #'                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
 #'                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
 #'                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
-#'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall}
+#'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \cr
+#'                     Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy}
 #'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
 #'          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
 #'
@@ -58,6 +59,7 @@
 #' @importFrom magrittr "%>%" "%<>%"
 #' @importFrom dplyr group_by summarise mutate ungroup transmute
 #' @importFrom utils data tail
+#' @importFrom bigleaf air.density
 #'
 #' @examples
 #' \dontrun{
@@ -243,10 +245,12 @@ Meteorology= function(file=NULL, Period=NULL,
     summarise(DaysWithoutRain= n())
   MetData$DaysWithoutRain= sequence(daysnorain$DaysWithoutRain)-1
 
+  MetData$Air_Density= bigleaf::air.density(MetData$Tair,MetData$Pressure/10)
+
   # Force to keep only the input variable the model need to avoid any issues:
   Varnames= c('year','DOY','Date','Rain','Tair','RH','RAD','Pressure',
               'WindSpeed','CO2','DegreeDays','PAR','FDiff',
-              'VPD','Rn','Tmax','Tmin','DaysWithoutRain')
+              'VPD','Rn','Tmax','Tmin','DaysWithoutRain','Air_Density')
   MetData= MetData[colnames(MetData)%in%Varnames]
   MetData[,-c(1:3)]= round(MetData[,-c(1:3)],3)
 
@@ -254,7 +258,7 @@ Meteorology= function(file=NULL, Period=NULL,
     data.frame(Var= Varnames,
                unit=c("year","day","POSIXct date","mm","deg C","%","MJ m-2 d-1","hPa",
                       "m s-1","ppm","deg C","MJ m-2 d-1","Fraction","hPa","MJ m-2 d-1",
-                      "deg C","deg C","day"))
+                      "deg C","deg C","day","kg m-3"))
 
   message("Meteo computation done\n")
   return(MetData)
