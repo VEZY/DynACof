@@ -24,7 +24,7 @@
 #'
 #' @return A list containing three objects (Parameters, Meteo and Sim):
 #' \itemize{
-#'   \item A data.frame of the simulation outputs at daily time-step:  #' \tabular{llll}{
+#'   \item A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
 #' \strong{Type} \tab \strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
 #' General                      \tab Cycle                    \tab -                   \tab Plantation cycle ID                                                                \cr
 #'                              \tab Plot_Age                 \tab year                \tab Plantation age                                                                     \cr
@@ -134,27 +134,26 @@
 #'                              \tab MThinning_*_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 #'}
 #'
-#'   \item A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{lll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
-#'                     year            \tab year        \tab Year of the simulation                       \cr
-#'                     DOY             \tab day         \tab day of the year                              \cr
-#'                     Date            \tab POSIXct date\tab Date in POSICct format                       \cr
-#'                     Rain            \tab mm          \tab Rainfall                                     \cr
-#'                     Tair            \tab deg C       \tab Air temperature (above canopy)               \cr
-#'                     RH              \tab \%          \tab Relative humidity                            \cr
-#'                     RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \cr
-#'                     Pressure        \tab hPa         \tab Atmospheic pressure                          \cr
-#'                     WindSpeed       \tab m s-1       \tab Wind speed                                   \cr
-#'                     CO2             \tab ppm         \tab Atmospheric CO2 concentration                \cr
-#'                     DegreeDays      \tab deg C       \tab Growing degrre days                          \cr
-#'                     PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \cr
-#'                     FDiff           \tab Fraction    \tab Diffuse light fraction                       \cr
-#'                     VPD             \tab hPa         \tab Vapor pressure deficit                       \cr
-#'                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
-#'                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
-#'                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
-#'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \cr
-#'                     Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy}
-#' }
+#'   \item A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
+#' Date            \tab POSIXct date\tab Date in POSICct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
+#' year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
+#' DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
+#' Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr
+#' Tair            \tab deg C       \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
+#' Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \tab Required (error) \cr
+#' Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \tab Required (error) \cr
+#' RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
+#' RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
+#' Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Try to compute from VPD, Tair and Elevation, or Tair and Elevation. \cr
+#' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Try to set it to constant: \code{Parameters$WindSpeed} \cr
+#' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Try to set it to constant: \code{Parameters$CO2}\cr
+#' DegreeDays      \tab deg C       \tab Growing degrre days                          \tab Computed using \code{\link{GDD}} \cr
+#' PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
+#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} usinf Spitters formula \cr
+#' VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
+#' Rn              \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
+#' DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
+#' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf]{air.density}}}
 #'   \item A list of the input parameters (see \code{\link{site}})
 #' }
 #'

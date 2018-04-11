@@ -5,10 +5,9 @@
 #' @param file        Either the file name to read, a shell command that preprocesses the file (e.g. fread("grep blah filename"))
 #'                    or the input itself as a string, see \code{\link[data.table]{fread}}. In both cases, a length 1 character string.
 #'                    A filename input is passed through path.expand for convenience and may be a URL starting http:// or file://.
-#'                    Default to \code{data/Meteorology.RData}, which is the package example data.
+#'                    Default to \code{NULL}, which make the function return the \code{Aquiares} package example data.
 #' @param Period      The desired time period to be returned in the form of a vector of two POSIX dates (min and max).
-#' @param ...         Additional parameters to pass to the \code{\link[data.table]{fwrite}} function (sep is fixed to \code{;}
-#'                    and colnames to \code{T}).
+#'
 #' @param Parameters  A list of parameters:
 #' \itemize{
 #'   \item Start_Date: optional, the date of the first meteo file record. Only needed if the Date column is missing (Posixct).
@@ -27,26 +26,26 @@
 #'          The albedo is used to compute the system net radiation that is then used to compute the soil net radiation using an
 #'          extinction coefficient with the plot LAI following the Shuttleworth & Wallace (1985) formulation. This computation is
 #'          likely to change in the near future to add a more uniform process-based formulation (such as Choudhury & Monteith 1988).
-#'         \tabular{lll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
-#'                     year            \tab year        \tab Year of the simulation                       \cr
-#'                     DOY             \tab day         \tab day of the year                              \cr
-#'                     Date            \tab POSIXct date\tab Date in POSICct format                       \cr
-#'                     Rain            \tab mm          \tab Rainfall                                     \cr
-#'                     Tair            \tab deg C       \tab Air temperature (above canopy)               \cr
-#'                     RH              \tab \%          \tab Relative humidity                            \cr
-#'                     RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \cr
-#'                     Pressure        \tab hPa         \tab Atmospheic pressure                          \cr
-#'                     WindSpeed       \tab m s-1       \tab Wind speed                                   \cr
-#'                     CO2             \tab ppm         \tab Atmospheric CO2 concentration                \cr
-#'                     DegreeDays      \tab deg C       \tab Growing degrre days                          \cr
-#'                     PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \cr
-#'                     FDiff           \tab Fraction    \tab Diffuse light fraction                       \cr
-#'                     VPD             \tab hPa         \tab Vapor pressure deficit                       \cr
-#'                     Rn              \tab MJ m-2 d-1  \tab Net radiation (will be removed further)      \cr
-#'                     Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \cr
-#'                     Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \cr
-#'                     DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \cr
-#'                     Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy}
+#' \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
+#' Date            \tab POSIXct date\tab Date in POSICct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
+#' year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
+#' DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
+#' Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr
+#' Tair            \tab deg C       \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
+#' Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \tab Required (error) \cr
+#' Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \tab Required (error) \cr
+#' RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
+#' RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
+#' Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Try to compute from VPD, Tair and Elevation, or Tair and Elevation. \cr
+#' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Try to set it to constant: \code{Parameters$WindSpeed} \cr
+#' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Try to set it to constant: \code{Parameters$CO2}\cr
+#' DegreeDays      \tab deg C       \tab Growing degrre days                          \tab Computed using \code{\link{GDD}} \cr
+#' PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
+#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} usinf Spitters formula \cr
+#' VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
+#' Rn              \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
+#' DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
+#' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf]{air.density}}}
 #'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
 #'          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
 #'
@@ -73,8 +72,7 @@
 #' }
 #'
 #' @export
-Meteorology= function(file=NULL, Period=NULL,
-                      Parameters= Import_Parameters()){
+Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
   if(is.null(file)){
     data("Aquiares", envir = environment())
     MetData= Aquiares
@@ -157,21 +155,25 @@ Meteorology= function(file=NULL, Period=NULL,
 
   # Missing air pressure:
   if(is.null(MetData$Pressure)){
-    if(!is.null(MetData$VPD)){
-      bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
-                                       Tair = MetData$Tair,
-                                       VPD = MetData$VPD)
-      warn.var(Var= "Pressure",
-               replacement=paste("Elevation, Tair and VPD",
-                             "using bigleaf::pressure.from.elevation"),
-               type='warn')
+    if(!is.null(Parameters$Elevation)){
+      if(!is.null(MetData$VPD)){
+        bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
+                                         Tair = MetData$Tair,
+                                         VPD = MetData$VPD)
+        warn.var(Var= "Pressure",
+                 replacement=paste("Elevation, Tair and VPD",
+                                   "using bigleaf::pressure.from.elevation"),
+                 type='warn')
+      }else{
+        bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
+                                         Tair = MetData$Tair)
+        warn.var(Var= "Pressure",
+                 replacement=paste("Elevation and Tair",
+                                   "using bigleaf::pressure.from.elevation"),
+                 type='warn')
+      }
     }else{
-      bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
-                                       Tair = MetData$Tair)
-      warn.var(Var= "Pressure",
-               replacement=paste("Elevation and Tair",
-                             "using bigleaf::pressure.from.elevation"),
-               type='warn')
+      warn.var(Var= "Pressure",replacement="Elevation",type='error')
     }
   }
 
