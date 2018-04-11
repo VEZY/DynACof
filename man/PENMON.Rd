@@ -4,8 +4,8 @@
 \alias{PENMON}
 \title{Evapotranspiration}
 \usage{
-PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind, wleaf,
-  Parameters = Constants())
+PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind = 0,
+  wleaf = 0.068, Parameters = Constants())
 }
 \arguments{
 \item{Rn}{Net radiation (MJ m-2 d-1)}
@@ -55,7 +55,8 @@ The daily evapotranspiration is computed using the Penman-Monteith equation, and
 }
 \examples{
 # leaf evaporation of a forest :
-PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, Z_top= 25, Pressure= 900, Gs = 1E09, VPD= 2.41)
+PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, Z_top= 25, Pressure= 900, Gs = 1E09, VPD= 2.41,
+       LAI=3, extwind= 0.58, wleaf=0.068)
 
 }
 \references{
