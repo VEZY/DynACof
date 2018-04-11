@@ -4,7 +4,7 @@
 \alias{PENMON}
 \title{Evapotranspiration}
 \usage{
-PENMON(Rn, Wind, Tair, ZHT, TREEH, Pressure, Gs, VPD,
+PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind, wleaf,
   Parameters = Constants())
 }
 \arguments{
@@ -16,13 +16,19 @@ PENMON(Rn, Wind, Tair, ZHT, TREEH, Pressure, Gs, VPD,
 
 \item{ZHT}{Wind measurement height (m)}
 
-\item{TREEH}{Average tree height (m)}
+\item{Z_top}{Canopy top height (m)}
 
 \item{Pressure}{Atmospheric pressure (hPa)}
 
 \item{Gs}{Stomatal conductance (mol m-2 s-1)}
 
 \item{VPD}{Vapor pressure deficit (kPa)}
+
+\item{LAI}{Leaf area index of the upper layer (m2 leaf m-2 soil)}
+
+\item{extwind}{Extinction coefficient. Default: \code{0}, no extinction.}
+
+\item{wleaf}{Average leaf width (m)}
 
 \item{Parameters}{Constant parameters, default to Constants(), if different values are needed:
 Cp - specific heat of air for constant pressure (J K-1 kg-1) \cr
@@ -49,7 +55,7 @@ The daily evapotranspiration is computed using the Penman-Monteith equation, and
 }
 \examples{
 # leaf evaporation of a forest :
-PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, TREEH= 25, Pressure= 900, Gs = 1E09, VPD= 2.41)
+PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, Z_top= 25, Pressure= 900, Gs = 1E09, VPD= 2.41)
 
 }
 \references{
