@@ -37,9 +37,9 @@ Soilfun= function(S,i){
 
   Potential_LeafEvap=
     PENMON(Rn= S$Met_c$Rn[i], Wind= S$Met_c$WindSpeed[i], Tair = S$Met_c$Tair[i],
-           ZHT = S$Parameters$ZHT,TREEH = max(S$Sim$Height_Tree[i],S$Parameters$Height_Coffee),
-           Pressure = S$Met_c$Pressure[i],
-           Gs = 1E09, VPD = S$Met_c$VPD[i])
+           ZHT = S$Parameters$ZHT,Z_top = max(S$Sim$Height_Tree[i],S$Parameters$Height_Coffee),
+           Pressure = S$Met_c$Pressure[i],Gs = 1E09, VPD = S$Met_c$VPD[i],LAI= S$Sim$LAIplot[i],
+           extwind = S$Parameters$extwind, wleaf= S$Parameters$wleaf)
 
   if(S$Sim$CanopyHumect[i]<=S$Sim$IntercMax[i]){
     S$Sim$Throughfall[i]= 0
@@ -193,8 +193,8 @@ Soilfun= function(S,i){
   # Soil Water potential, Campbell (1974) equation
   S$Sim$SoilWaterPot[i]=
     S$Parameters$PSIE*(((S$Sim$W_1[i]+S$Sim$W_2[i]+
-                           S$Sim$W_3[i])/3750)/S$Parameters$PoreFrac)^(-S$Parameters$B)
-
+                           S$Sim$W_3[i])/(S$Parameters$TotalDepth*1000))/
+                         S$Parameters$PoreFrac)^(-S$Parameters$B)
 
   S$Sim$LE_Soil[i]= S$Sim$E_Soil[i]*S$Parameters$lambda
 

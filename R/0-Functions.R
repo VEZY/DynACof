@@ -414,10 +414,13 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 #' @param Wind        Wind speed (m s-1)
 #' @param Tair        Air temperature (Celsius degree)
 #' @param ZHT         Wind measurement height (m)
-#' @param TREEH       Average tree height (m)
+#' @param Z_top       Canopy top height (m)
+#' @param Pressure    Atmospheric pressure (hPa)
 #' @param Gs          Stomatal conductance (mol m-2 s-1)
 #' @param VPD         Vapor pressure deficit (kPa)
-#' @param Pressure    Atmospheric pressure (hPa)
+#' @param LAI         Leaf area index of the upper layer (m2 leaf m-2 soil)
+#' @param extwind     Extinction coefficient. Default: \code{0}, no extinction.
+#' @param wleaf       Average leaf width (m)
 #' @param Parameters  Constant parameters, default to Constants(), if different values are needed:
 #'                    Cp - specific heat of air for constant pressure (J K-1 kg-1) \cr
 #'                    Rgas - universal gas constant (J mol-1 K-1) \cr
@@ -443,13 +446,17 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 #'
 #' @examples
 #' # leaf evaporation of a forest :
-#' PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, TREEH= 25, Pressure= 900, Gs = 1E09, VPD= 2.41)
+#' PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, Z_top= 25, Pressure= 900, Gs = 1E09, VPD= 2.41)
 #'
 #' @export
-PENMON= function(Rn,Wind,Tair,ZHT,TREEH,Pressure,Gs,VPD,Parameters= Constants()){
+PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind,wleaf,
+                 Parameters= Constants()){
 
   CMOLAR = (Pressure*100) / (Parameters$Rgas * (Tair+Parameters$Kelvin))
-  GB = GBCANMS(WIND = Wind, ZHT = ZHT, TREEH = TREEH)$Canopy*CMOLAR    # in mol m-2 s-1
+
+  GB = (1/(1/G_bulk(Wind= Wind, ZHT= ZHT, Z_top= Z_top, LAI= LAI, extwind= extwind)+
+             1/Gb_h(Wind= Wind, wleaf= wleaf,LAI_lay= LAI, LAI_abv= 0, ZHT= ZHT,
+                    Z_top= Z_top, extwind= extwind)))*CMOLAR    # in mol m-2 s-1
 
   # Latent heat of water vapour at air temperature (J mol-1)
   LHV = bigleaf::latent.heat.vaporization(Tair = Tair)*Parameters$H2OMW
@@ -616,9 +623,11 @@ rH.to.VPD <- function(rH,Tair){
 GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
                   ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                   vonkarman=Constants()$vonkarman){
-  if(ZHT<Z_top){
+  if(any(ZHT<Z_top)){
     warning("Measurement height lower than canopy height (ZHT < Z_top), forcing ZHT > Z_top")
-    ZHT= 1.01*Z_top
+    ZHT2= 1.01*Z_top
+    ZHT2[ZHT>Z_top]=ZHT
+    ZHT= ZHT2
   }
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   # Wind at the top of the canopy:

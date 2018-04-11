@@ -854,10 +854,11 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
 
       #11/ Tcanopy Coffee : using bulk conductance if no trees, interlayer conductance if trees
+      # Source: Van de Griend and Van Boxel 1989.
       if(S$Sim$Height_Tree[previous_i(i,1)]>S$Parameters$Height_Coffee){
 
         S$Sim$TairCanopy[i]=
-          S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          S$Sim$TairCanopy_Tree[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
           (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
@@ -867,8 +868,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
                         extwind = S$Parameters$extwind))
 
         S$Sim$Tleaf_Coffee[i]=
-          S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+          S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              1/(1/G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
                              LAI_top= S$Sim$LAI_Tree[previous_i(i,1)],
@@ -885,7 +886,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       }else{
         S$Sim$TairCanopy[i]=
-          S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          S$Sim$TairCanopy_Tree[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
           (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
@@ -894,8 +895,8 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
                     extwind = S$Parameters$extwind))
 
         S$Sim$Tleaf_Coffee[i]=
-          S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+          S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
                          Z_top = S$Parameters$Height_Coffee,
