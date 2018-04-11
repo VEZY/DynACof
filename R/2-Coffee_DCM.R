@@ -886,7 +886,7 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
 
       }else{
         S$Sim$TairCanopy[i]=
-          S$Sim$TairCanopy_Tree[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
+          S$Met_c$Tair[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
           (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
              S$Parameters$Cp*
              G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
