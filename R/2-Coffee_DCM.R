@@ -5,7 +5,6 @@
 #'                development to better represent fruit carbon demand distribution along the year.
 #' @param Period   Period of time to be simulated, see details. Default: \code{NULL}
 #' @param WriteIt  If \code{TRUE}, write the resulting list, see details. Default: \code{FALSE}
-#' @param returnIt Are the results to be returned by the function ? Default: \code{FALSE}
 #' @param ...      PARAM_DESCRIPTION
 #' @param output_f Output format, if '.RData', the output list will be saved as a unique \code{.RData} file, if it is different from
 #'                 \code{.RData}, the output list will be writen in several \code{.csv} and \code{.txt} format. Default: \code{.RData}
@@ -22,7 +21,7 @@
 #' }
 #' Default input filenames are provided with the package so the model can run with no input parameter files at all.
 #'
-#' @return A list containing three objects (Parameters, Meteo and Sim):
+#' @return Return invisibly a list containing three objects (Parameters, Meteo and Sim):
 #' \itemize{
 #'   \item A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
 #' \strong{Type} \tab \strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
@@ -173,7 +172,7 @@
 #' \dontrun{
 #' if(interactive()){
 #'  Sys.setenv(TZ="UTC")
-#'  DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")),returnIt=T)
+#'  DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 #'
 #'  # Get the units of the input variables:
 #'  attr(S$Met_c,"unit")
@@ -929,7 +928,5 @@ DynACof= function(Period=NULL, WriteIt= F,returnIt=F,...,
   if(WriteIt){
     write.results(FinalList,output_f,Simulation_Name,Outpath,...)
   }
-  if(returnIt){
-    return(FinalList)
-  }
+  invisible(FinalList)
 }

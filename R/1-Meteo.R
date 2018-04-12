@@ -49,7 +49,7 @@
 #'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
 #'          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
 #'
-#' @return A daily timestep meteorology data.frame with different columns
+#' @return A daily timestep meteorology data.frame (invisibly) with either the data read above or computed.
 #'
 #' @seealso \code{\link{DynACof}}
 #'
@@ -263,5 +263,5 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
                       "deg C","deg C","day","kg m-3"))
 
   message("Meteo computation done\n")
-  return(MetData)
+  invisible(MetData)
 }

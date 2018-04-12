@@ -14,8 +14,6 @@ DynACof(Period = NULL, WriteIt = F, returnIt = F, ...,
 
 \item{WriteIt}{If \code{TRUE}, write the resulting list, see details. Default: \code{FALSE}}
 
-\item{returnIt}{Are the results to be returned by the function ? Default: \code{FALSE}}
-
 \item{...}{PARAM_DESCRIPTION}
 
 \item{output_f}{Output format, if '.RData', the output list will be saved as a unique \code{.RData} file, if it is different from
@@ -38,7 +36,7 @@ DynACof(Period = NULL, WriteIt = F, returnIt = F, ...,
 Default input filenames are provided with the package so the model can run with no input parameter files at all.}
 }
 \value{
-A list containing three objects (Parameters, Meteo and Sim):
+Return invisibly a list containing three objects (Parameters, Meteo and Sim):
 \itemize{
   \item A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
 \strong{Type} \tab \strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
@@ -195,7 +193,7 @@ Almost all variables for coffee exist also for shade trees with the suffix
 \dontrun{
 if(interactive()){
  Sys.setenv(TZ="UTC")
- DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")),returnIt=T)
+ DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 
  # Get the units of the input variables:
  attr(S$Met_c,"unit")

@@ -28,7 +28,7 @@ Default to \code{NULL}, which make the function return the \code{Aquiares} packa
 }}
 }
 \value{
-A daily timestep meteorology data.frame with different columns
+A daily timestep meteorology data.frame (invisibly) with either the data read above or computed.
 }
 \description{
 This function aims to import the meteorology data, check it, and compute missing variables.

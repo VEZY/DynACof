@@ -6,7 +6,7 @@ DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.p
 
 <!-- <img src="man/figures/logo.png" alt="logo" style="width:30%;height:auto;" align="right" /> -->
 <!-- [![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?branch=master)](https://travis-ci.org/VEZY/DynACof)   -->
-[![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?token=oehDDxBpmrzeWX8AdyPo&branch=master)](https://travis-ci.com/VEZY/DynACof) [![Join the chat at https://gitter.im/DynACof/Lobby\#](https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&branch=master)](https://gitter.im/DynACof/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip) [![Travis build status](https://travis-ci.com/VEZY/DynACof.svg?token=oehDDxBpmrzeWX8AdyPo&branch=master)](https://travis-ci.com/VEZY/DynACof) [![Join the chat at https://gitter.im/DynACof/Lobby\#](https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&branch=master)](https://gitter.im/DynACof/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Overview
 --------
@@ -16,17 +16,24 @@ The DynACof process-based model computes plot-scale Net Primary Productivity, ca
 Installation
 ------------
 
-You can install the released version of DynACof (soon) from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("DynACof")
-```
-
-And the development version (only version for now) from [GitHub](https://github.com/) with:
+The development version from [GitHub](https://github.com/) can be installed with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("VEZY/DynACof")
+```
+
+Or using the lightweight [remotes](https://github.com/r-lib/remotes#readme) package:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("VEZY/DynACof")
+```
+
+For the moment, there is no [CRAN](https://CRAN.R-project.org) released version of DynACof, but we work on that. You will soon be able to run this command to install the package:
+
+``` r
+install.packages("DynACof")
 ```
 
 Example
