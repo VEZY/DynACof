@@ -4,10 +4,10 @@
 \alias{DynACof}
 \title{Dynamic Agroforestry Coffee Crop Model}
 \usage{
-DynACof(Period = NULL, WriteIt = F, returnIt = F, ...,
-  output_f = ".RData", Inpath = NULL, Outpath = Inpath,
-  Simulation_Name = "DynACof", FileName = list(Site = "1-Site.R", Meteo =
-  "2-Meteorology.txt", Soil = "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
+DynACof(Period = NULL, WriteIt = F, ..., output_f = ".RData",
+  Inpath = NULL, Outpath = Inpath, Simulation_Name = "DynACof",
+  FileName = list(Site = "1-Site.R", Meteo = "2-Meteorology.txt", Soil =
+  "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}
@@ -149,7 +149,7 @@ Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1
 }
 
   \item A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
-Date            \tab POSIXct date\tab Date in POSICct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
+Date            \tab POSIXct date\tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
 year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
 DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
 Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr

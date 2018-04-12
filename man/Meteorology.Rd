@@ -39,7 +39,7 @@ The imported file is expected to be at daily time-step.
          extinction coefficient with the plot LAI following the Shuttleworth & Wallace (1985) formulation. This computation is
          likely to change in the near future to add a more uniform process-based formulation (such as Choudhury & Monteith 1988).
 \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
-Date            \tab POSIXct date\tab Date in POSICct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
+Date            \tab POSIXct date\tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
 year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
 DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
 Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr
