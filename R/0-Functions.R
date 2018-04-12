@@ -249,9 +249,9 @@ GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
 #'         of 36S to 60N.
 #' }
 #'
+#' @note This function force \eqn{S_0= S_g} when \eqn{S_0= 0} to avoid the production of \code{NA}'s.
 #'
-#'
-#' @return \item{\eqn{Hd/H}}{Daily diffuse fraction (\%)}
+#' @return \item{\eqn{Hd/H}}{Daily diffuse fraction of light (\%)}
 #'
 #' @references Duffie, J.A. and W.A. Beckman, Solar engineering of thermal processes. 2013: John Wiley & Sons.
 #'             Gopinathan, K. and A. Soler, Diffuse radiation models and monthly-average, daily, diffuse data for
@@ -280,7 +280,8 @@ Diffuse_d= function(DOY, RAD, Latitude= 35, type=c("Spitters","Page","Gopinathan
   type= match.arg(type)
 
   TRANS = RAD/Rad_ext(DOY = DOY,Latitude = Latitude)
-
+  TRANS[TRANS<0]= 0
+  TRANS[is.infinite(TRANS)]= 0.85
   if(type=="Spitters"){
     FDIF= rep(0.23,length(TRANS))
     FDIF[TRANS<0.07]= 1.
