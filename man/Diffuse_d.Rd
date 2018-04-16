@@ -17,7 +17,7 @@ Diffuse_d(DOY, RAD, Latitude = 35, type = c("Spitters", "Page",
 \item{type}{Model type, one of Spitters, Page or Gopinathan (default to Spitters)}
 }
 \value{
-\item{\eqn{Hd/H}}{Daily diffuse fraction (\%)}
+\item{\eqn{Hd/H}}{Daily diffuse fraction of light (\%)}
 }
 \description{
 Compute the daily diffuse fraction from the total daily incident radiation
@@ -34,6 +34,9 @@ The daily extra-terrestrial radiation at a plane parallel to the earth surface
   \item Gopinathan and Soler (1995) from 40 widely distributed locations in the latitude range
         of 36S to 60N.
 }
+}
+\note{
+This function force \eqn{S_0= S_g} when \eqn{S_0= 0} to avoid the production of \code{NA}'s.
 }
 \examples{
 # Daily diffuse fraction of january 1st at latitude 35 N, with a RAD of 25 MJ m-2 day-1 :

@@ -31,6 +31,9 @@
 #' df_rain= data.frame(DOY= 1:365, year= rep(2018,365), Rain= rnorm(n = 365,mean = 5, sd = 1))
 #' ALS(Elevation = 1000, df_rain= df_rain)
 #'
+#' @importFrom magrittr "%>%"
+#' @importFrom dplyr transmute group_by
+#'
 #' @export
 ALS= function(Elevation, SlopeAzimut= 0, Slope=0, RowDistance= 1.5,
               Shade= 0, CanopyHeight.Coffee=2,Fertilization= 3,
@@ -71,7 +74,7 @@ ALS= function(Elevation, SlopeAzimut= 0, Slope=0, RowDistance= 1.5,
         if(is.null(CoffeePruning)){0.65}}}}
 
   # American Leaf Spot :
-
+  DOY= .= year= Rain= mid_june_to_mid_august= NULL # to avoid check notes
   ShortDrought15JuneAugust_mm=
     df_rain%>%
     transmute(year, Rain, mid_june_to_mid_august= ifelse(DOY>=166&DOY<=227,T,F))%>%

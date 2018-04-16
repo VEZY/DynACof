@@ -185,6 +185,7 @@
 #' @rdname DynACof
 #' @seealso \code{\link{Meteorology}} \code{\link{site}}
 #' @importFrom bigleaf air.density
+#' @importFrom dplyr n
 #' @importFrom foreach %dopar%
 #' @importFrom methods is new
 #' @importFrom doParallel registerDoParallel
@@ -219,6 +220,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
                    times= ndaysYear),
     Plot_Age= rep.int(rep_len(seq(Parameters$AgeCoffeeMin,Parameters$AgeCoffeeMax),
                               length.out= length(unique(Meteo$year))),times= ndaysYear))
+  Cycle= Plot_Age= cy= .= varnames= NULL # to avoid check notes
   Direction%<>%
     group_by(Cycle,Plot_Age)%>%
     mutate(Plot_Age_num= seq(min(Plot_Age),min(Plot_Age)+1, length.out= n()))%>%ungroup()

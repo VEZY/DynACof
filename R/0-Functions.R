@@ -568,17 +568,6 @@ GBCANMS= function(WIND,ZHT,TREEH,Z0=TREEH*0.1,ZPD=TREEH*0.75,GBCANMS1MIN = 0.012
 }
 
 
-# Overwrite bigleaf function to make it vectorized :
-rH.to.VPD <- function(rH,Tair){
-  if(any(rH > 1)){
-    warning("relative humidity (rH) has to be between 0 and 1.")
-  }
-  esat <- Esat.slope(Tair)[,"Esat"]
-  VPD  <- esat - rH*esat
-  return(VPD)
-}
-
-
 #' Get the average wind speed at center of canopy layer
 #'
 #' @description Calculate the wind speed decrease in two steps:

@@ -59,6 +59,7 @@
 #' @importFrom dplyr group_by summarise mutate ungroup transmute
 #' @importFrom utils data tail
 #' @importFrom bigleaf air.density
+#' @importFrom data.table as.data.table ":=" ".N"
 #'
 #' @examples
 #' \dontrun{
@@ -74,6 +75,7 @@
 #' @export
 Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
   if(is.null(file)){
+    Aquiares= NULL
     data("Aquiares", envir = environment())
     MetData= Aquiares
   }else{
@@ -145,8 +147,7 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
   # Missing VPD:
   if(is.null(MetData$VPD)){
     if(!is.null(MetData$RH)){
-      MetData$VPD= rH.to.VPD(rH = MetData$RH/100, Tair = MetData$Tair)*10 # hPa
-      # NB : add "bigleaf::" as soon as the issue is
+      MetData$VPD= bigleaf::rH.to.VPD(rH = MetData$RH/100, Tair = MetData$Tair)*10 # hPa
       warn.var(Var= "VPD","RH and Tair using bigleaf::rH.to.VPD",type='warn')
     }else{
       warn.var(Var= "VPD", replacement= "RH",type='error')
@@ -237,15 +238,11 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
                         albedo = Parameters$albedo)
   }
 
-  MetData$DaysWithoutRain= MetData$Rain
-  MetData$DaysWithoutRain[MetData$Rain>0]= 1
-  MetData$DaysWithoutRain[MetData$Rain==0]= 0
-
-  daysnorain=
-    MetData%>%
-    group_by(cumsum(MetData$DaysWithoutRain))%>%
-    summarise(DaysWithoutRain= n())
-  MetData$DaysWithoutRain= sequence(daysnorain$DaysWithoutRain)-1
+  DaysWithoutRain= Rain= NULL # To avoid notes by check
+  MetData= as.data.table(MetData)
+  MetData[, DaysWithoutRain := 0]; MetData[Rain > 0, DaysWithoutRain := 1]
+  MetData$DaysWithoutRain= sequence(MetData[,.N,cumsum(DaysWithoutRain)]$N)-1
+  MetData= as.data.frame(MetData)
 
   MetData$Air_Density= bigleaf::air.density(MetData$Tair,MetData$Pressure/10)
 
