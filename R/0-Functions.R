@@ -79,14 +79,12 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
   }
   if(is.null(Outpath)){Outpath="."}
   if(output!=".RData"){
-    data.table::fwrite(FinalList$Sim,
-           paste0(Outpath,"/",Simulation_Name,".csv"),
-           sep=";",row.names = F, col.names = TRUE, ...)
-    data.table::fwrite(FinalList$Met_c,
-           paste0(Outpath,"/",Simulation_Name,"_Meteorology.csv"),
-           sep=";",row.names = F, col.names = TRUE, ...)
+    data.table::fwrite(FinalList$Sim,file.path(Outpath,paste0(Simulation_Name,".csv")),
+                       sep=";",row.names = F, col.names = TRUE, ...)
+    data.table::fwrite(FinalList$Met_c,file.path(Outpath,paste0(Simulation_Name,"_Meteorology.csv")),
+                       sep=";",row.names = F, col.names = TRUE, ...)
     utils::capture.output(FinalList$Parameters,
-                   file =  paste0(Outpath,"/",Simulation_Name,"_Parameters",".txt"))
+                          file =  file.path(Outpath,paste0(Simulation_Name,"_Parameters.csv")))
   }else{
     S= FinalList
     save(S,file = paste0(Outpath,"/",Simulation_Name,".RData"))

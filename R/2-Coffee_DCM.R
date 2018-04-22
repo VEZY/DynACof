@@ -523,11 +523,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
             {S$Parameters$RNL_base*(0.0005455*.^3 - 0.0226364*.^2+0.2631364*. + 0.4194773)}
       }
 
-      ########## Flower Buds + Flower + Fruits (See Rodriguez et al. 2011)####
-
-
-      # BudInit in number of buds per day: depends on radiation and number
-      # of nodes in the plant (more nodes with higher temperature).
+      # Flower Buds + Flower + Fruits -------------------------------------------
 
       # (1) Buds induction
       # Buds start appearing for the very first time from 5500 dd. After that,
@@ -542,7 +538,6 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # NB: 2.017 is conversion factor to estimate RAD above Coffea from PAR above Coffee
       # NB : number of fruits ~1200 / year / coffee tree, source : Castro-Tanzi et al. (2014)
       # S$Sim%>%group_by(Plot_Age)%>%summarise(N_Flowers= sum(BudBreak))
-
 
       # (2) Cumulative degree days experienced by each bud cohort :
       DegreeDay_i= round(cumsum(S$Sim$DegreeDays_Tcan[i:previous_i(i,1000)]),2)
@@ -561,7 +556,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # (5) Compute the period were all cohorts have encountered all conditions to break dormancy :
       DormancyBreakPeriod= OldestDormancy:(YoungestDormancy-sum(CumRain<S$Parameters$RainForBudBreak))
 
-      # (7) As temperature increases, the number of nodes on coffee increases due to increased vegetative
+      # (6) As temperature increases, the number of nodes on coffee increases due to increased vegetative
       # growth, but the number of buds per nodes decreases. This is computed by using a temperature correction
       # factor that decrease with increasing mean temperature during bud development (0-1, and =1 if mean T < 23).
       # This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
@@ -569,7 +564,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # Source: Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
       # Journal of Horticultural Science, 1995. 70(1): p. 25-34. The correction is fitted like this :
 
-      # (7.1) Using daytime temperature only (more variability):
+      # (6.1) Using daytime temperature only (more variability):
       # Data_Buds= data.frame(Daily_Air_T=c(18,23,28,33), # diurnal data only
       #                       Buds_per_Node=c(2.6,3.2,1.5,0))
       # Data_Buds= Data_Buds[-1,]
@@ -579,7 +574,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       #     S$Sim$Temp_cor_Bud[DormancyBreakPeriod]=
       #         (3.29 - 0.1*mean(S$Sim$Tcan_Diurnal_Cof[DormancyBreakPeriod]))
       # }
-      # (7.2) Using daily temperature (simpler):
+      # (6.2) Using daily temperature (simpler):
       # Data_Buds_day= data.frame(Air_T=c(15.5,20.5,25.5,30.5),
       #                           Buds_per_Node=c(2.6,3.2,1.5,0))
       # Data_Buds_day= Data_Buds_day[-1,]
@@ -590,10 +585,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,
           (3.04 - 0.1*mean(S$Sim$Tcan_MAESPA_Coffee[DormancyBreakPeriod]))
       }
 
-      # (6) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
+      # (7) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
       S$Sim$p_budbreakperday[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
                                                S$Sim$LeafWaterPotential[previous_i(i,1)]))
-      # (7) Compute the number of buds that effectively break dormancy in each cohort:
+      # (8) Compute the number of buds that effectively break dormancy in each cohort:
       S$Sim$BudBreak_cohort[DormancyBreakPeriod]=
         pmin(S$Sim$Bud_available[DormancyBreakPeriod],
              S$Sim$Budinit[DormancyBreakPeriod]*S$Sim$p_budbreakperday[i]*
@@ -601,11 +596,11 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # NB 1: cannot exceed the number of buds of each cohort
       # NB 2: using Budinit and not Bud_available because p_budbreakperday is fitted on total bud cohort
 
-      # (8) Remove buds that did break dormancy from the pool of dormant buds
+      # (9) Remove buds that did break dormancy from the pool of dormant buds
       S$Sim$Bud_available[DormancyBreakPeriod]=
         S$Sim$Bud_available[DormancyBreakPeriod]-S$Sim$BudBreak_cohort[DormancyBreakPeriod]
 
-      # (9) Sum the buds that break dormancy from each cohort to compute the total number of buds
+      # (10) Sum the buds that break dormancy from each cohort to compute the total number of buds
       # that break dormancy on day i :
       S$Sim$BudBreak[i]= min(sum(S$Sim$BudBreak_cohort[DormancyBreakPeriod]),12)
       # Rodriguez et al. state that the maximum number of buds that may break dormancy
@@ -683,35 +678,27 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
 
 
-      ############# Leaves ####
-      #offer : what is left after deduction of the previous compartments
-      #GlM: ce qui reste apres production de bois, grains et CepsRacine(=
-      #offre)est repartis entre racine et feuilles selon la meme proportion
-      #que la repartition de la NPP entre Racines et feuilles. Les lambdas ne
-      #peuvent etre utilises que sur NPP totale
+      # Leaves ------------------------------------------------------------------
+
       S$Sim$Offer_Leaf[i]=
         S$Parameters$lambdaLeaf_remain*
         (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
            S$Sim$Alloc_RsWood[i]-S$Sim$Alloc_SCR[i])
-      #Demand : the demand is actually S$Parameters$Demand_Leaf
-      #Min(Demand, Offer)
+
       S$Sim$Alloc_Leaf[i]=max(0,min(S$Parameters$Demand_Leaf*(S$Parameters$Stocking_Coffee/10000),
                                           S$Sim$Offer_Leaf[i]))
-      #NPP
+
       S$Sim$NPP_Leaf[i]= S$Parameters$epsilonLeaf*S$Sim$Alloc_Leaf[i]
-      #Rc
+
       S$Sim$Rc_Leaf[i]= (1-S$Parameters$epsilonLeaf)*S$Sim$Alloc_Leaf[i]
-      #Excess into Reserves
+
       S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_Leaf[i]-S$Sim$Alloc_Leaf[i])
 
-      #Mortality
-      # By natural litterfall assuming no diseases
       S$Sim$Mnat_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespanLeaf
-      # By American Leaf Spot # Litterfall by ALS is difference between 2 dates
+
       S$Sim$M_ALS[i]=
         after(i,2)*max(0,S$Sim$CM_Leaf[previous_i(i,1)]*S$Sim$ALS[i])
 
-      #By pruning
       if(S$Sim$Plot_Age[i]>=S$Parameters$MeanAgePruning&S$Met_c$DOY[i]==S$Parameters$date_pruning){
         S$Sim$Mprun_Leaf[i]= S$Sim$CM_Leaf[previous_i(i,1)]*S$Parameters$LeafPruningRate
       }else{
@@ -721,12 +708,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$Mortality_Leaf[i]= S$Sim$Mnat_Leaf[i] + S$Sim$Mprun_Leaf[i]+S$Sim$M_ALS[i]
 
 
-      ############# Fine Roots #####
-      #Demand : the demand is actually S$Parameters$Demand_Leaf
-      #S$Sim$Demand_FRoot[i]= S$Sim$Alloc_Leaf[i]
+      # Fine Roots --------------------------------------------------------------
+
       S$Sim$Demand_FRoot[i]= S$Parameters$Demand_Leaf
-      # f(T,SW     D,...)#suppose egalite entre feuilles et racines fines pour demande
-      #Offer
+
       S$Sim$Offer_FRoot[i]=
         S$Parameters$lambdaFRoot_remain*
         (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
@@ -735,20 +720,17 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$Alloc_FRoot[i]=max(0,min(S$Sim$Demand_FRoot[i],S$Sim$Offer_FRoot[i]))
 
       S$Sim$NPP_FRoot[i]=S$Parameters$epsilonFRoot*S$Sim$Alloc_FRoot[i]
-      #Rc
+
       S$Sim$Rc_FRoot[i]=(1-S$Parameters$epsilonFRoot)*S$Sim$Alloc_FRoot[i]
-      #Excess into reserves
+
       S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_FRoot[i]-S$Sim$Alloc_FRoot[i])
 
-      #Mortality
       S$Sim$Mnat_FRoot[i]=S$Sim$CM_FRoot[previous_i(i,1)]/S$Parameters$lifespanFRoot
       S$Sim$Mprun_FRoot[i]=S$Parameters$M_RateFRootprun*S$Sim$Mprun_Leaf[i]
       S$Sim$Mortality_FRoot[i]=S$Sim$Mnat_FRoot[i]+S$Sim$Mprun_FRoot[i]
 
 
-      ############# Update of Biomass & Rm, Rc, Ra & LAI & & Buds ####
-
-
+      # Biomass -----------------------------------------------------------------
 
       S$Sim$CM_Leaf[i]= S$Sim$CM_Leaf[previous_i(i,1)]+
         S$Sim$NPP_Leaf[i]-S$Sim$Mortality_Leaf[i]-
@@ -758,7 +740,6 @@ DynACof= function(Period=NULL, WriteIt= F,...,
         S$Sim$Carbon_Lack_Mortality[i]*0.25
       S$Sim$CM_Fruit[i]=S$Sim$CM_Fruit[previous_i(i,1)]+
         S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
-      # NB: S$Sim$Overriped_Fruit is negative (loss by falling if overriped)
       S$Sim$CM_SCR[i]= S$Sim$CM_SCR[previous_i(i,1)]+
         S$Sim$NPP_SCR[i]-S$Sim$Mortality_SCR[i]-
         S$Sim$Carbon_Lack_Mortality[i]*0.25
@@ -767,18 +748,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
         S$Sim$Carbon_Lack_Mortality[i]*0.25
       S$Sim$CM_RE[i]=S$Sim$CM_RE[previous_i(i,1)]+S$Sim$NPP_RE[i]-
         S$Sim$Consumption_RE[i]
-      S$Sim$Rc[i]= S$Sim$Rc_Fruit[i]+S$Sim$Rc_Leaf[i]+
-        S$Sim$Rc_RsWood[i]+S$Sim$Rc_SCR[i]+
-        S$Sim$Rc_FRoot[i]
-      S$Sim$Ra[i]=S$Sim$Rm[i]+S$Sim$Rc[i]
 
-      S$Sim$NPP[i]=S$Sim$NPP_RsWood[i]+S$Sim$NPP_SCR[i]+
-        S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
-
-      #Update LAI m2leaf m-2soil, caution, CM is in gC m-2soil, so use C content to transform in dry mass
-      S$Sim$LAI[i]= S$Sim$CM_Leaf[i]*S$Parameters$SLA/1000/S$Parameters$CContent_Leaf
-
-      # Dry mass computation:
       S$Sim$DM_Leaf[i]= S$Sim$CM_Leaf[i]/S$Parameters$CContent_Leaf
       S$Sim$DM_RsWood[i]= S$Sim$CM_RsWood[i]/S$Parameters$CContent_RsWood
       S$Sim$DM_Fruit[i]=S$Sim$CM_Fruit[i]/S$Parameters$CContent_Fruit
@@ -787,8 +757,21 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$DM_FRoot[i]= S$Sim$CM_FRoot[i]/S$Parameters$CContent_FRoots
       S$Sim$DM_RE[i]=S$Sim$CM_RE[i]/S$Parameters$CContent_SCR
 
-      ######################## Water balance (from BILJOU model) #############################
 
+      # Total Respiration and NPP -----------------------------------------------
+
+      S$Sim$Rc[i]= S$Sim$Rc_Fruit[i]+S$Sim$Rc_Leaf[i]+
+        S$Sim$Rc_RsWood[i]+S$Sim$Rc_SCR[i]+
+        S$Sim$Rc_FRoot[i]
+      S$Sim$Ra[i]=S$Sim$Rm[i]+S$Sim$Rc[i]
+      S$Sim$NPP[i]=S$Sim$NPP_RsWood[i]+S$Sim$NPP_SCR[i]+
+        S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
+
+      # LAI ---------------------------------------------------------------------
+
+      # Caution: CM is in gC m-2soil, so use C content to transform in dry mass
+      S$Sim$LAI[i]= S$Sim$CM_Leaf[i]*S$Parameters$SLA/1000/S$Parameters$CContent_Leaf
+      S$Sim$LAIplot[i]= S$Sim$LAIplot[i]+S$Sim$LAI[i]
 
       # Metamodel Coffee leaf water potential
       S$Sim$LeafWaterPotential[i]=
@@ -798,11 +781,9 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       #     -0.096845 - 0.080517*S$Met_c$PARm2d1 +
       #     0.481117*(1-S$Met_c$FDiff) - 0.001692*S$Met_c$DaysWithoutRain
 
-      # LAI plot is the sum of the LAI of the Tree + coffee LAI
-      # (LAIplot[i] is first equal to 0, then added LAI of tree, and here adding LAI of coffee)
-      S$Sim$LAIplot[i]= S$Sim$LAIplot[i]+S$Sim$LAI[i]
 
-      # Compute soil (+canopy evap) water balance
+      # soil (+canopy evap) water balance ---------------------------------------
+
       Soilfun(S,i)
 
       # Metamodel Transpiration Coffee, and filter out for negative values
@@ -817,20 +798,17 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$ETR[i]=
         S$Sim$T_tot[i]+S$Sim$E_Soil[i]+S$Sim$IntercRevapor[i]
 
-      #10/ Latent (LEmod) and Sensible (Hmod) heat fluxes, In kgH2O m-2 d-1 * MJ kgH2O-1 = MJ m-2 d-1
-      S$Sim$LE_Plot[i]= S$Sim$ETR[i]*S$Parameters$lambda#kgH2O m-2 d-1 * MJ kgH2O-1
+      #10/ Latent (LEmod) and Sensible (Hmod) heat fluxes, in kgH2O m-2 d-1 * MJ kgH2O-1 = MJ m-2 d-1
+      S$Sim$LE_Plot[i]= S$Sim$ETR[i]*S$Parameters$lambda
 
       S$Sim$LE_Coffee[i]=
         (S$Sim$T_Cof[i]+S$Sim$IntercRevapor[i]*
            (S$Sim$LAI[i]/S$Sim$LAIplot[i]))*S$Parameters$lambda
-      # S$Sim$H_Coffee[i]= S$Sim$Rn_Coffee[i]-S$Sim$LE_Coffee[i]
 
       # Metamodel for H :
       S$Sim$H_Coffee[i]=
         -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
-        1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+
-        0.25838*S$Sim$LAI[i]
-
+        1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+0.25838*S$Sim$LAI[i]
 
       S$Sim$Rn_Coffee[i]=
         S$Sim$H_Coffee[i] + S$Sim$LE_Coffee[i]
@@ -842,17 +820,14 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$Rn_Tree[i]= S$Sim$H_Tree[i] + S$Sim$LE_Tree[i]
 
       # Total plot heat flux:
-      S$Sim$H_tot[i]= S$Sim$H_Coffee[i]+S$Sim$H_Tree[i]+
-        S$Sim$H_Soil[i]
+      S$Sim$H_tot[i]= S$Sim$H_Coffee[i]+S$Sim$H_Tree[i]+S$Sim$H_Soil[i]
       # Total plot latent flux:
       S$Sim$LE_tot[i]=
-        S$Sim$LE_Coffee[i]+S$Sim$LE_Tree[i]+
-        S$Sim$LE_Soil[i]
+        S$Sim$LE_Coffee[i]+S$Sim$LE_Tree[i]+S$Sim$LE_Soil[i]
 
       # Total plot net radiation:
-      S$Sim$Rn_tot[i]= S$Sim$Rn_Coffee[i]+S$Sim$Rn_Tree[i]+
-        S$Sim$Rn_Soil[i]
-
+      S$Sim$Rn_tot[i]=
+        S$Sim$Rn_Coffee[i]+S$Sim$Rn_Tree[i]+S$Sim$Rn_Soil[i]
 
       #11/ Tcanopy Coffee : using bulk conductance if no trees, interlayer conductance if trees
       # Source: Van de Griend and Van Boxel 1989.
@@ -911,7 +886,6 @@ DynACof= function(Period=NULL, WriteIt= F,...,
                          extwind= S$Parameters$extwind)))
       }
       # NB : if no trees, TairCanopy_Tree= Tair
-
     }
     CycleList=list(Sim= S$Sim%>%as.data.frame)
   }
