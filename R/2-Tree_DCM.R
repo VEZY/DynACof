@@ -469,4 +469,6 @@ Allometries= function(S,i){
   S$Sim$LAD_Tree[i]=
     S$Sim$LA_Tree[i]/((S$Sim$CrownRad_Tree[i]^2)*
                               (0.5*S$Sim$Crown_H_Tree[i])*pi*(4/3))
+  S$Sim$LAD_Tree[i][S$Sim$LAD_Tree[i]<0.21]= 0.21
+  S$Sim$LAD_Tree[i][S$Sim$LAD_Tree[i]>0.76]= 0.76
 }

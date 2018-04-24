@@ -60,9 +60,8 @@ Light_extinction_K= function(S,i){
 #' @rdname Light_extinction_K
 #' @export
 Metamodels= function(S,i){
-  S$Sim$lue_Tree[i]= 2.59906 + 0.10707*S$Met_c$Tair[i] -
-    0.02552*S$Met_c$VPD[i] + 3.86372*(1-S$Met_c$FDiff[i]) -
-    0.34895*S$Met_c$PAR[i]
+  S$Sim$lue_Tree[i]= 2.87743 + 0.07595*S$Met_c$Tair[i] -
+    0.03390*S$Met_c$VPD[i] - 0.24565*S$Met_c$PAR[i]
 
   S$Sim$T_Tree[i]=
     0.021820*S$Met_c$VPD[i] - 0.016112*S$Met_c$Tair[i] + 0.942021*S$Sim$APAR_Tree[i]-
