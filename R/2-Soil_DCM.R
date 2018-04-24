@@ -35,14 +35,15 @@ Soilfun= function(S,i){
   S$Sim$CanopyHumect[i]=
     max(0,S$Sim$CanopyHumect[previous_i(i,1)]+S$Met_c$Rain[i])
 
+  Potential_LeafEvap=
+    PENMON(Rn= S$Met_c$Rn[i], Wind= S$Met_c$WindSpeed[i], Tair = S$Met_c$Tair[i],
+           ZHT = S$Parameters$ZHT,Z_top = max(S$Sim$Height_Tree[i],S$Parameters$Height_Coffee),
+           Pressure = S$Met_c$Pressure[i],Gs = 1E09, VPD = S$Met_c$VPD[i],LAI= S$Sim$LAIplot[i],
+           extwind = S$Parameters$extwind, wleaf= S$Parameters$wleaf)
+
   if(S$Sim$CanopyHumect[i]<=S$Sim$IntercMax[i]){
     S$Sim$Throughfall[i]= 0
-    S$Sim$IntercRevapor[i]=
-      min(S$Sim$CanopyHumect[i],
-          PENMON(Rn= S$Met_c$Rn[i], Wind= S$Met_c$WindSpeed[i], Tair = S$Met_c$Tair[i],
-                 ZHT = S$Parameters$ZHT,Z_top = max(S$Sim$Height_Tree[i],S$Parameters$Height_Coffee),
-                 Pressure = S$Met_c$Pressure[i],Gs = 1E09, VPD = S$Met_c$VPD[i],LAI= S$Sim$LAIplot[i],
-                 extwind = S$Parameters$extwind, wleaf= S$Parameters$wleaf))
+    S$Sim$IntercRevapor[i]= min(S$Sim$CanopyHumect[i], Potential_LeafEvap)
     S$Sim$CanopyHumect[i]= max(0,S$Sim$CanopyHumect[i]-S$Sim$IntercRevapor[i])
   }else{
     S$Sim$Throughfall[i]=S$Sim$CanopyHumect[i]-S$Sim$IntercMax[i]
