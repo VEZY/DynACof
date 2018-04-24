@@ -33,7 +33,8 @@ Init_Sim= function(S){
   S$Sim$Sucrose_Mass=
   S$Sim$Harvest_Maturity=
     S$Sim$CM_FRoot=
-  S$Sim$CM_RsWood= rep_len(0,length(S$Sim$Cycle))
+    S$Sim$CM_RsWood=
+    rep_len(0,length(S$Sim$Cycle))
   S$Sim$CM_Leaf= rep_len(1,length(S$Sim$Cycle))
 
   S$Sim$DM_Leaf=

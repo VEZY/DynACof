@@ -378,8 +378,8 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Metamodel LUE coffee, Paper 2:
       S$Sim$lue[i]=
-        2.174236 + 0.012514*S$Met_c$Tair[i] + 0.007653*S$Met_c$VPD[i] -
-        1.861276*sqrt(1-S$Met_c$FDiff[i]) - 0.254475*sqrt(PARcof)
+        2.454942 + 0.004456*S$Met_c$Tair[i] + 0.010570*S$Met_c$VPD[i] -
+        0.450478*sqrt(S$Met_c$FDiff[i]) - 0.649651*sqrt(PARcof)
 
       # Metamodel LUE coffee, Paper 3:
       # S$Sim$lue[i]=
@@ -389,17 +389,6 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       #GPP Coffee
       S$Sim$GPP[i]= S$Sim$lue[i]*S$Sim$APAR[i] # gC m-2 d-1 With coffee lue Metamodel
-
-      ########## Potential use of reserves####
-      # NPP_RE_Tree is filled in sequence by leaves and by roots at end of day
-      # Thus NPP_RE_Tree must reset to zero for each time-step (day) begining and then
-      S$Sim$NPP_RE[i]= 0
-      S$Sim$Consumption_RE[i]=
-        S$Parameters$kres*S$Sim$CM_RE[previous_i(i,1)]
-
-
-
-
 
       # Maintenance respiration -------------------------------------------------
 
@@ -451,6 +440,11 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       ##############################----- Coffee Allocation ----##############################
 
+
+      # Potential use of reserves -----------------------------------------------
+
+      S$Sim$Consumption_RE[i]=
+        S$Parameters$kres*S$Sim$CM_RE[previous_i(i,1)]
 
       # Offer function ----------------------------------------------------------
       S$Sim$Offer[i]=

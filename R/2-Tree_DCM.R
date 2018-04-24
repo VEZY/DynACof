@@ -130,7 +130,7 @@ Shade.Tree= function(S,i){
   # Reserves are used only if GPP doesn't meet the maintenance respiration + 10% need.
   # Thus, if GPP is < to Rm*1.1, then we take the needed C to meet the Rm (Rm*1.1-GPP), but not more than
   # there is C in the reserves
-  if(S$Sim$GPP_Tree[i]<(1.2*S$Sim$Rm_Tree[i])){
+  if(S$Sim$GPP_Tree[i]<(S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i])){
     S$Sim$Consumption_RE_Tree[i]=
       max(0,min(S$Sim$CM_RE_Tree[previous_i(i,1)],S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i]))
   }

@@ -74,7 +74,7 @@ after= function(x,ref){
 #' @export
 write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath= "Outputs",...){
 
-  if(!is.null(Outpath)&&!dir.exists(file.path(Outpath))){
+  if(!is.null(Outpath)&!dir.exists(file.path(Outpath))){
     dir.create(file.path(Outpath))
   }
   if(is.null(Outpath)){Outpath="."}
@@ -215,7 +215,7 @@ atan_deg= function(x){
 #'
 #' @export
 GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
-  if(!is.null(Tmax)&&!is.null(Tmin)){
+  if(!is.null(Tmax)&!is.null(Tmin)){
     DD= (Tmax+Tmin)/2-MinTT
     DD[((Tmax+Tmin)/2)>MaxTT]= 0
   }else if(!is.null(Tmean)){
@@ -435,6 +435,8 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 #'          \eqn{\gamma} the psychrometric constant (kPa K-1) and \eqn{GV} the boundary + stomatal
 #'          conductance to water vapour (m s-1). To simulate evaporation, \eqn{Gs} can be set
 #'          to nearly infinite (e.g. \eqn{Gs= 1E09}).
+#'
+#' @note If \code{wind=0} it is replaced by a low value of \code{0.01}
 #' @return \item{\eqn{ET}}{Daily evapotranspiration (mm d-1)}
 #'
 #' @references Allen R.G., Pereira L.S., Raes D., Smith M., 1998: Crop evapotranspiration -
@@ -452,6 +454,7 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind=0,wleaf=0.068,
                  Parameters= Constants()){
 
+  if(Wind<1E-9){Wind= 0.01}
   CMOLAR = (Pressure*100) / (Parameters$Rgas * (Tair+Parameters$Kelvin))
 
   GB = (1/(1/G_bulk(Wind= Wind, ZHT= ZHT, Z_top= Z_top, LAI= LAI, extwind= extwind)+

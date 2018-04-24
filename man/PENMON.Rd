@@ -53,6 +53,9 @@ The daily evapotranspiration is computed using the Penman-Monteith equation, and
          conductance to water vapour (m s-1). To simulate evaporation, \eqn{Gs} can be set
          to nearly infinite (e.g. \eqn{Gs= 1E09}).
 }
+\note{
+If \code{wind=0} it is replaced by a low value of \code{0.01}
+}
 \examples{
 # leaf evaporation of a forest :
 PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, Z_top= 25, Pressure= 900, Gs = 1E09, VPD= 2.41,
