@@ -679,8 +679,12 @@ DynACof= function(Period=NULL, WriteIt= F,...,
         (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
            S$Sim$Alloc_RsWood[i]-S$Sim$Alloc_SCR[i])
 
-      S$Sim$Alloc_Leaf[i]=max(0,min(S$Parameters$Demand_Leaf*(S$Parameters$Stocking_Coffee/10000),
-                                          S$Sim$Offer_Leaf[i]))
+      S$Sim$Alloc_Leaf[i]=
+        min(S$Parameters$Demand_Leaf_max*(S$Parameters$Stocking_Coffee/10000)*
+              ((S$Parameters$LAI_max-S$Sim$LAI[previous_i(i,1)])/
+                 (S$Sim$LAI[previous_i(i,1)]+S$Parameters$LAI_max)),
+            S$Sim$Offer_Leaf[i])
+
 
       S$Sim$NPP_Leaf[i]= S$Parameters$epsilonLeaf*S$Sim$Alloc_Leaf[i]
 
@@ -704,7 +708,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Fine Roots --------------------------------------------------------------
 
-      S$Sim$Demand_FRoot[i]= S$Parameters$Demand_Leaf
+      S$Sim$Demand_FRoot[i]= S$Parameters$Demand_Leaf_max
 
       S$Sim$Offer_FRoot[i]=
         S$Parameters$lambdaFRoot_remain*

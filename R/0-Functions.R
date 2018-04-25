@@ -689,6 +689,7 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
 G_bulk= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                  LAI,extwind=0,vonkarman=Constants()$vonkarman){
 
+  if((ZHT-ZPD)/Z0<1){ZPD= (ZHT-Z0)*0.9}
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   Kh= alpha*vonkarman*Ustar*(Z_top-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)

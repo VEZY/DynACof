@@ -9,7 +9,7 @@ Tree= function(){
     SLA_Tree             = 17.4,                      # Specific leaf area (m2 kg-1). Source: Van Oijen et al. (2010, I)
     wleaf_Tree           = 0.068,                     # Leaf width (m)
     Demand_Leaf_max_Tree = 778.5,                     # Max Leaf carbon demand (gC tree d-1).
-    LAI_max              = 0.6,                       # Max measured LAI to compute leaf demand. Should be ~1.5*higher than measured.
+    LAI_max_Tree         = 0.6,                       # Max measured LAI to compute leaf demand. Should be ~1.5*higher than measured.
     Leaf_fall_rate_Tree  = list(0.09,0.02),           # Mortality during leaf fall (fraction of the leaf mass).
     Fall_Period_Tree     = list(1:30,143:200),        # Time period were leaves fall at high rate (DOY). List of length= Leaf_fall_rate_Tree
     Thin_Age_Tree        = 20,                        # Ages at which thinning is made (age). Set to NULL if no thinning
