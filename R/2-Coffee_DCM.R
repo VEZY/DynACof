@@ -469,11 +469,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
         S$Sim$CM_RsWood[previous_i(i,1)]/S$Parameters$lifespanRsWood
       # Pruning
       if(S$Sim$Plot_Age[i]>=S$Parameters$MeanAgePruning&
-         S$Sim$Plot_Age[i]<=(S$Parameters$MeanAgePruning+2)&
          S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Sim$Mprun_RsWood[i]=S$Sim$CM_RsWood[previous_i(i,1)]/3
-      }else if(S$Sim$Plot_Age[i]>(S$Parameters$MeanAgePruning+2)&
-               S$Met_c$DOY[i]==S$Parameters$date_pruning){
         S$Sim$Mprun_RsWood[i]=S$Sim$CM_RsWood[previous_i(i,1)]/3
       }
       S$Sim$Mortality_RsWood[i]=
