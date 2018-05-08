@@ -378,8 +378,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Metamodel LUE coffee, Paper 2:
       S$Sim$lue[i]=
-        2.454942 + 0.004456*S$Met_c$Tair[i] + 0.010570*S$Met_c$VPD[i] -
-        0.450478*sqrt(S$Met_c$FDiff[i]) - 0.649651*sqrt(PARcof)
+        2.784288 + 0.009667*S$Met_c$Tair[i] + 0.010561*S$Met_c$VPD[i] - 0.710361*sqrt(PARcof)
 
       # Metamodel LUE coffee, Paper 3:
       # S$Sim$lue[i]=
@@ -524,12 +523,11 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # they appear every "S$Parameters$Tffb" degree days until flowering starts
       if(S$Sim$BudInitPeriod[i]){
         S$Sim$Budinit[i]=
-          (S$Parameters$a_Budinit+S$Parameters$b_Budinit*2.017*PARcof)*
+          (S$Parameters$a_Budinit+S$Parameters$b_Budinit*(PARcof/S$Parameters$FPAR))*
           S$Sim$LAI[i-1]*S$Sim$ratioNodestoLAI[i-1]*S$Sim$DegreeDays_Tcan[i]
         # Number of nodes: S$Sim$LAI[i-1]*S$Sim$ratioNodestoLAI[i-1]
         S$Sim$Bud_available[i]= S$Sim$Budinit[i]
       }
-      # NB: 2.017 is conversion factor to estimate RAD above Coffea from PAR above Coffee
       # NB : number of fruits ~1200 / year / coffee tree, source : Castro-Tanzi et al. (2014)
       # S$Sim%>%group_by(Plot_Age)%>%summarise(N_Flowers= sum(BudBreak))
 
@@ -596,7 +594,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # (10) Sum the buds that break dormancy from each cohort to compute the total number of buds
       # that break dormancy on day i :
-      S$Sim$BudBreak[i]= min(sum(S$Sim$BudBreak_cohort[DormancyBreakPeriod]),12)
+      S$Sim$BudBreak[i]= min(sum(S$Sim$BudBreak_cohort[DormancyBreakPeriod]),S$Parameters$Max_Bud_Break)
       # Rodriguez et al. state that the maximum number of buds that may break dormancy
       # during each dormancy-terminating episode was set to 12 (see Table 1).
 
@@ -786,8 +784,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Metamodel Transpiration Coffee, and filter out for negative values
       S$Sim$T_Cof[i]=
-        -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] +
-        0.11510*PARcof
+        -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] + 0.11510*PARcof
       S$Sim$T_Cof[i][S$Sim$T_Cof[i]<0]= 0
       #Plot transpiration
       S$Sim$T_tot[i]= S$Sim$T_Tree[i]+S$Sim$T_Cof[i]
