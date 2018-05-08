@@ -32,6 +32,7 @@ coffee= function(){
     RainForBudBreak   = 10,         # Amount of cumulative rainfall to break bud dormancy (mm). Source: Zacharias et al. (2008)
     Max_Bud_Break     = 12,         # Max number of nodes that can break dormancy daily (buds node-1). Source : Rodriguez et al. (2011)
     ageMaturity       = 3,          # Coffee maturity age (Years)
+    FruitPin          = 1254,        # Fruit end of stage 1 (pinhead) from bud break dormancy (dd). Source: Rodriguez et al. (2011) Table 1.
     FruitMaturation   = 2836,       # Fruit maturation duration until stage 5, ripe (dd). Source: Rodriguez et al. (2011) Table 1.
     FruitOverripe     = 3304,       # Duration until fruit stage 5, overripe, in  the  soil (dd). Source: Rodriguez 2011 Table 1
     u_log             = 1418,       # Parameters for the logistic fruit growth pattern (FruitMaturation/2)

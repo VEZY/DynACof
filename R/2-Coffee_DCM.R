@@ -286,9 +286,9 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       BudDormancyBreakDay= BudDevelEnd + sum(CumRain<S$Parameters$RainForBudBreak)-1
       # Effective day of first flowers:
       DateFFlowering[i]=
-        tail(which(CumsumRelativeToBudinit[i,]<CumsumRelativeToBudinit[i,BudDormancyBreakDay]+100),1)
-      # +100 because it takes 100dd to break dormancy until flowering (Rodriguez et al. 2011)
-      # Effective dates between which buds can appear (from DateBudinit until first flowering)
+        tail(which(CumsumRelativeToBudinit[i,]<
+                     CumsumRelativeToBudinit[i,BudDormancyBreakDay]+S$Parameters$FruitPin),1)
+      # Effective dates between which buds can appear (from DateBudinit until end of stage 1 fruit)
       S$Sim$BudInitPeriod[DateBudinit[i]:DateFFlowering[i]]= TRUE
     }
     S$Sim$BudInitPeriod[CumulDegreeDays<S$Parameters$VF_Flowering]= FALSE
