@@ -474,21 +474,17 @@ DynACof= function(Period=NULL, WriteIt= F,...,
         S$Sim$Mprun_RsWood[i]=S$Sim$CM_RsWood[previous_i(i,1)]/3
       }else if(S$Sim$Plot_Age[i]>(S$Parameters$MeanAgePruning+2)&
                S$Met_c$DOY[i]==S$Parameters$date_pruning){
-        S$Sim$Mprun_RsWood[i]=S$Sim$CM_RsWood[previous_i(i,1)]/2.5
+        S$Sim$Mprun_RsWood[i]=S$Sim$CM_RsWood[previous_i(i,1)]/3
       }
       S$Sim$Mortality_RsWood[i]=
         min((S$Sim$Mnat_RsWood[i]+S$Sim$Mprun_RsWood[i]),
             S$Sim$CM_RsWood[previous_i(i,1)])
 
       # 2-Stump and coarse roots (perennial wood) ------------------------------
-      # coef d'alloc is more important for old ages, see Defrenet et al., 2016
-      S$Sim$lambdaSCRage[i]=
-        S$Parameters$lambdaSCR0-
-        S$Sim$Plot_Age[i]/40*
-        (S$Parameters$lambdaSCR0-S$Parameters$lambdaSCR40)
+
       #Offer
       S$Sim$Alloc_SCR[i]=
-        S$Sim$lambdaSCRage[i]*S$Sim$Offer[i]
+        S$Parameters$lambdaSCR*S$Sim$Offer[i]
       #NPP
       S$Sim$NPP_SCR[i]=
         S$Parameters$epsilonSCR*S$Sim$Alloc_SCR[i]
@@ -685,12 +681,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
 
       S$Sim$NPP_Leaf[i]= S$Parameters$epsilonLeaf*S$Sim$Alloc_Leaf[i]
-
       S$Sim$Rc_Leaf[i]= (1-S$Parameters$epsilonLeaf)*S$Sim$Alloc_Leaf[i]
+      S$Sim$Mnat_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespanLeaf
 
       S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_Leaf[i]-S$Sim$Alloc_Leaf[i])
-
-      S$Sim$Mnat_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespanLeaf
 
       S$Sim$M_ALS[i]=
         after(i,2)*max(0,S$Sim$CM_Leaf[previous_i(i,1)]*S$Sim$ALS[i])
