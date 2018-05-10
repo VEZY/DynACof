@@ -640,26 +640,23 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # as the percentage of cohorts that are fully mature (Pezzopane et al. 2012 say at 221 days after flowering)
       # Optimal sucrose concentration around 8.8% of the dry mass
 
+      S$Sim$NPP_Fruit[i]= S$Parameters$epsilonFruit*S$Sim$Alloc_Fruit[i]
+      S$Sim$Rc_Fruit[i]= (1-S$Parameters$epsilonFruit)*S$Sim$Alloc_Fruit[i]
+
       # Harvest. Made one day only for now (TODO: make it a period of harvest)
-      # Made as soon as the fruit dry mass is decreasing (overriping more important than fruit maturation):
-      if(S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity&
-         S$Sim$CM_Fruit[previous_i(i,1)]<(S$Sim$CM_Fruit[previous_i(i,3)]+0.1)&
-         S$Sim$CM_Fruit[previous_i(i,1)]>40){
+      # Made as soon as the fruit dry mass is decreasing for 20 consecutive days. This condition is met
+      # when fruit overriping is more important than fruit NPP for 20 days:
+      if(all(S$Sim$NPP_Fruit[previous_i(100,0:20)]<S$Sim$Overriped_Fruit[previous_i(100,0:20)])){
         # Save the date of harvest:
         S$Sim$Date_harvest[i]= S$Met_c$DOY[i]
-        S$Sim$Harvest_Fruit[i]= S$Sim$CM_Fruit[i-1]
-        S$Sim$Harvest_Maturity[S$Met_c$year==S$Met_c$year[i]]= S$Sim$Harvest_Maturity_Pot[i]
-        S$Sim$CM_Fruit[i-1]= S$Sim$Alloc_Fruit[i]=
-          S$Sim$Overriped_Fruit[i]= 0
+        S$Sim$Harvest_Fruit[i]= S$Sim$CM_Fruit[i-1]+S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
+        S$Sim$Harvest_Maturity[i]= S$Sim$Harvest_Maturity_Pot[i]
+        S$Sim$CM_Fruit[i-1]= S$Sim$NPP_Fruit[i]= S$Sim$Overriped_Fruit[i]= 0
         S$Sim$CM_Fruit_Cohort= rep(0,length(S$Sim$CM_Fruit_Cohort))
         # RV: could harvest mature fruits only (To do).
       }else{
         S$Sim$Harvest_Fruit[i]= NA_real_
       }
-
-      S$Sim$NPP_Fruit[i]= S$Parameters$epsilonFruit*S$Sim$Alloc_Fruit[i]
-      S$Sim$Rc_Fruit[i]= (1-S$Parameters$epsilonFruit)*S$Sim$Alloc_Fruit[i]
-
 
 
       # Leaves ------------------------------------------------------------------
