@@ -644,9 +644,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$Rc_Fruit[i]= (1-S$Parameters$epsilonFruit)*S$Sim$Alloc_Fruit[i]
 
       # Harvest. Made one day only for now (TODO: make it a period of harvest)
-      # Made as soon as the fruit dry mass is decreasing for 20 consecutive days. This condition is met
-      # when fruit overriping is more important than fruit NPP for 20 days:
-      if(all(S$Sim$NPP_Fruit[previous_i(100,0:20)]<S$Sim$Overriped_Fruit[previous_i(100,0:20)])){
+      # Made as soon as the fruit dry mass is decreasing for 10 consecutive days. This condition is met
+      # when fruit overriping is more important than fruit NPP for 10 days:
+      if(S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity&
+         all(S$Sim$NPP_Fruit[previous_i(i,0:10)]<S$Sim$Overriped_Fruit[previous_i(i,0:10)])){
         # Save the date of harvest:
         S$Sim$Date_harvest[i]= S$Met_c$DOY[i]
         S$Sim$Harvest_Fruit[i]= S$Sim$CM_Fruit[i-1]+S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
