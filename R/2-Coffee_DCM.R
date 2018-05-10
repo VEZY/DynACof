@@ -696,14 +696,12 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Fine Roots --------------------------------------------------------------
 
-      S$Sim$Demand_FRoot[i]= S$Parameters$Demand_Leaf_max
-
       S$Sim$Offer_FRoot[i]=
         S$Parameters$lambdaFRoot_remain*
         (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
            S$Sim$Alloc_RsWood[i]-S$Sim$Alloc_SCR[i])
 
-      S$Sim$Alloc_FRoot[i]=max(0,min(S$Sim$Demand_FRoot[i],S$Sim$Offer_FRoot[i]))
+      S$Sim$Alloc_FRoot[i]=max(0,min(S$Sim$Alloc_Leaf[i],S$Sim$Offer_FRoot[i]))
 
       S$Sim$NPP_FRoot[i]=S$Parameters$epsilonFRoot*S$Sim$Alloc_FRoot[i]
 
