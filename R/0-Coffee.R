@@ -87,6 +87,21 @@ coffee= function(){
     Opti_C_DemandFruit= 0.164,      # optimum demand in total carbon for each berry (including growth respiration)
     # = Optimum_Berry_DM*CContent_Fruit+Optimum_Berry_DM*CContent_Fruit*(1-epsilonFruit),
 
+    # As temperature increases, the number of nodes on coffee increases due to increased vegetative
+    # growth, but the number of buds per nodes decreases. This is computed by using a temperature correction
+    # factor that decrease with increasing mean temperature during bud development (0-1, and =1 if mean T < 23).
+    # This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
+    # increasing T).
+    # Source: Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
+    # Journal of Horticultural Science, 1995. 70(1): p. 25-34. The correction is fitted like this :
+    Bud_T_correction= function(){
+      Data_Buds_day= data.frame(Air_T=c(10,15.5,20.5,25.5,30.5),
+                                Buds_per_Node=c(0,2.6,3.2,1.5,0))
+      Data_Buds_day$Buds_per_Node_cor= Data_Buds_day$Buds_per_Node/max(Data_Buds_day$Buds_per_Node)
+      spl= splinefun(Data_Buds_day$Buds_per_Node_cor~Data_Buds_day$Air_T,
+                     method = "monoH.FC")
+      return(spl)
+    },
     # Parameters for American Leaf Spot
     SlopeAzimut       = 180,        # site slope azimuth (deg)
     Slope             = 5,          # Percentage slope (%)

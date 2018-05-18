@@ -540,33 +540,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # (5) Compute the period were all cohorts have encountered all conditions to break dormancy :
       DormancyBreakPeriod= OldestDormancy:(YoungestDormancy-sum(CumRain<S$Parameters$RainForBudBreak))
 
-      # (6) As temperature increases, the number of nodes on coffee increases due to increased vegetative
-      # growth, but the number of buds per nodes decreases. This is computed by using a temperature correction
-      # factor that decrease with increasing mean temperature during bud development (0-1, and =1 if mean T < 23).
-      # This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
-      # increasing T).
-      # Source: Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
-      # Journal of Horticultural Science, 1995. 70(1): p. 25-34. The correction is fitted like this :
-
-      # (6.1) Using daytime temperature only (more variability):
-      # Data_Buds= data.frame(Daily_Air_T=c(18,23,28,33), # diurnal data only
-      #                       Buds_per_Node=c(2.6,3.2,1.5,0))
-      # Data_Buds= Data_Buds[-1,]
-      # Data_Buds$Buds_per_Node_cor= Data_Buds$Buds_per_Node/Data_Buds$Buds_per_Node[1]
-      # lmbuds= lm(Buds_per_Node_cor~Daily_Air_T,data=Data_Buds)
-      # if(mean(S$Sim$Tcan_Diurnal_Cof[DormancyBreakPeriod])>23){
-      #     S$Sim$Temp_cor_Bud[DormancyBreakPeriod]=
-      #         (3.29 - 0.1*mean(S$Sim$Tcan_Diurnal_Cof[DormancyBreakPeriod]))
-      # }
-      # (6.2) Using daily temperature (simpler):
-      # Data_Buds_day= data.frame(Air_T=c(15.5,20.5,25.5,30.5),
-      #                           Buds_per_Node=c(2.6,3.2,1.5,0))
-      # Data_Buds_day= Data_Buds_day[-1,]
-      # Data_Buds_day$Buds_per_Node_cor= Data_Buds_day$Buds_per_Node/Data_Buds_day$Buds_per_Node[1]
-      # lmbuds_day= lm(Buds_per_Node_cor~Air_T,data=Data_Buds_day)
+      # (6) Temperature effect on bud phenology
       if(mean(S$Sim$Tcan_MAESPA_Coffee[DormancyBreakPeriod])>23){
         S$Sim$Temp_cor_Bud[DormancyBreakPeriod]=
-          (3.04 - 0.1*mean(S$Sim$Tcan_MAESPA_Coffee[DormancyBreakPeriod]))
+          Bud_T_correction()(mean(S$Sim$Tcan_MAESPA_Coffee[DormancyBreakPeriod]))
       }
 
       # (7) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
