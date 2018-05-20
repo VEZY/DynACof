@@ -193,7 +193,7 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
       warn.var(Var= "WindSpeed", replacement= "Parameters$WindSpeed (constant value)",type='error')
     }
   }
-
+  MetData$WindSpeed[MetData$WindSpeed<0.01]= 0.01
   # Missing atmospheric CO2 concentration:
   if(is.null(MetData$CO2)){
     if(!is.null(Parameters$CO2)){

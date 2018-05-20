@@ -55,7 +55,7 @@
 #'                              \tab APAR_Dif                 \tab MJ m-2 d-1          \tab Absorbed diffuse PAR (Direct is APAR-APAR_Dif)                                     \cr
 #'                              \tab lue                      \tab gC MJ               \tab Light use efficiency                                                               \cr
 #'                              \tab Tcan_MAESPA_Coffee       \tab deg C               \tab Coffee canopy temperature computed using MAESPA metamodel                          \cr
-#'                              \tab Tcan_Coffee              \tab deg C               \tab Coffee canopy temperature computed by DynACof                                      \cr
+#'                              \tab Tleaf_Coffee             \tab deg C               \tab Coffee canopy temperature computed by DynACof                                      \cr
 #'                              \tab WindSpeed_*              \tab m s-1               \tab Wind speed at the center of the layer                                              \cr
 #'                              \tab TairCanopy_*             \tab deg C               \tab Air tempetature at the center of the layer                                         \cr
 #'                              \tab DegreeDays_Tcan          \tab deg C               \tab Growing degree days computed using Coffee Canopy Temperature                       \cr
@@ -324,6 +324,16 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Coffee computation:
 
+      # LAI from last day or initialisation dry mass ----------------------------
+
+      # Caution: CM is in gC m-2soil, so use C content to transform in dry mass
+      S$Sim$LAI[i]= S$Sim$CM_Leaf[previous_i(i,1)]*S$Parameters$SLA/1000/
+        S$Parameters$CContent_Leaf
+      S$Sim$LAIplot[i]= S$Sim$LAIplot[i]+S$Sim$LAI[i]
+
+
+      # Light interception ------------------------------------------------------
+
       # Metamodels for K, Paper 2, trained on 2011 only :
       S$Sim$K_Dif[i]= 0.39
       S$Sim$K_Dir[i]= 0.34
@@ -345,6 +355,114 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$APAR[i]= APAR_Dir+S$Sim$APAR_Dif[i]
       # S$Sim$APAR[i]= max(0,(S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*(1-
       # exp(-S$Sim$k[i]*S$Sim$LAI[previous_i(i,1)])))#MJ m-2 d-1
+
+
+      # soil (+canopy evap) water balance ---------------------------------------
+
+      Soilfun(S,i)
+
+      # Energy balance
+
+      # Metamodel Transpiration Coffee, and filter out for negative values
+      S$Sim$T_Cof[i]=
+        -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] + 0.11510*PARcof
+      S$Sim$T_Cof[i][S$Sim$T_Cof[i]<0]= 0
+      #Plot transpiration
+      S$Sim$T_tot[i]= S$Sim$T_Tree[i]+S$Sim$T_Cof[i]
+
+      #7/ Evapo-Transpiration ETR
+      S$Sim$ETR[i]=
+        S$Sim$T_tot[i]+S$Sim$E_Soil[i]+S$Sim$IntercRevapor[i]
+
+      #10/ Latent (LEmod) and Sensible (Hmod) heat fluxes, in kgH2O m-2 d-1 * MJ kgH2O-1 = MJ m-2 d-1
+      S$Sim$LE_Plot[i]= S$Sim$ETR[i]*S$Parameters$lambda
+
+      S$Sim$LE_Coffee[i]=
+        (S$Sim$T_Cof[i]+S$Sim$IntercRevapor[i]*
+           (S$Sim$LAI[i]/S$Sim$LAIplot[i]))*S$Parameters$lambda
+
+      # Metamodel for H :
+      S$Sim$H_Coffee[i]=
+        -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
+        1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+0.25838*S$Sim$LAI[i]
+
+      S$Sim$Rn_Coffee[i]=
+        S$Sim$H_Coffee[i] + S$Sim$LE_Coffee[i]
+
+      # Tree LE and Rn (can not compute them in the Tree function because we need IntercRevapor)
+      S$Sim$LE_Tree[i]=
+        (S$Sim$T_Tree[i]+S$Sim$IntercRevapor[i]*
+           (S$Sim$LAI_Tree[i]/S$Sim$LAIplot[i]))*S$Parameters$lambda
+      S$Sim$Rn_Tree[i]= S$Sim$H_Tree[i] + S$Sim$LE_Tree[i]
+
+      # Total plot heat flux:
+      S$Sim$H_tot[i]= S$Sim$H_Coffee[i]+S$Sim$H_Tree[i]+S$Sim$H_Soil[i]
+      # Total plot latent flux:
+      S$Sim$LE_tot[i]=
+        S$Sim$LE_Coffee[i]+S$Sim$LE_Tree[i]+S$Sim$LE_Soil[i]
+
+      # Total plot net radiation:
+      S$Sim$Rn_tot[i]=
+        S$Sim$Rn_Coffee[i]+S$Sim$Rn_Tree[i]+S$Sim$Rn_Soil[i]
+
+      #11/ Tcanopy Coffee : using bulk conductance if no trees, interlayer conductance if trees
+      # Source: Van de Griend and Van Boxel 1989.
+      if(S$Sim$Height_Tree[i]>S$Parameters$Height_Coffee){
+
+        S$Sim$TairCanopy[i]=
+          S$Sim$TairCanopy_Tree[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+             S$Parameters$Cp*
+             G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                        LAI_top= S$Sim$LAI_Tree[i],
+                        LAI_bot= S$Sim$LAI[i],
+                        Z_top= S$Sim$Height_Tree[i],
+                        extwind = S$Parameters$extwind))
+
+        S$Sim$Tleaf_Coffee[i]=
+          S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
+             S$Parameters$Cp*
+             1/(1/G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                             LAI_top= S$Sim$LAI_Tree[i],
+                             LAI_bot= S$Sim$LAI[i],
+                             Z_top= S$Sim$Height_Tree[i],
+                             extwind = S$Parameters$extwind)+
+                  1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
+                         LAI_lay=S$Sim$LAI[i],
+                         LAI_abv=S$Sim$LAI_Tree[i],
+                         ZHT = S$Parameters$ZHT,
+                         Z_top = S$Sim$Height_Tree[i],
+                         extwind= S$Parameters$extwind)))
+
+
+      }else{
+        S$Sim$TairCanopy[i]=
+          S$Met_c$Tair[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
+             S$Parameters$Cp*
+             G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                    Z_top = S$Parameters$Height_Coffee,
+                    LAI = S$Sim$LAI[i],
+                    extwind = S$Parameters$extwind))
+
+        S$Sim$Tleaf_Coffee[i]=
+          S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+          (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
+             S$Parameters$Cp*
+             1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
+                         Z_top = S$Parameters$Height_Coffee,
+                         LAI = S$Sim$LAI[i],
+                         extwind = S$Parameters$extwind)+
+                  1/Gb_h(Wind= S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
+                         LAI_lay= S$Sim$LAI[i],
+                         LAI_abv= S$Sim$LAI_Tree[i],
+                         ZHT= S$Parameters$ZHT,
+                         Z_top= S$Parameters$Height_Coffee,
+                         extwind= S$Parameters$extwind)))
+      }
+      # NB : if no trees, TairCanopy_Tree= Tair
+
 
       # Metamodel Coffee Tcanopy, Paper 2
       S$Sim$Tcan_MAESPA_Coffee[i]=
@@ -399,7 +517,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
         after(i,2)*
         (S$Parameters$PaliveRsWood*S$Sim$DM_RsWood[previous_i(i,1)]*
            S$Parameters$NContentRsWood*S$Parameters$MRN*
-           S$Parameters$Q10RsWood^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+           S$Parameters$Q10RsWood^((S$Sim$Tleaf_Coffee[i]-S$Parameters$TMR)/10))
 
       # Stump and Coarse roots (perennial wood)
       S$Sim$Rm_SCR[i]=
@@ -408,27 +526,27 @@ DynACof= function(Period=NULL, WriteIt= F,...,
            S$Sim$DM_SCR[previous_i(i,1)]*
            S$Parameters$NContentSCR*S$Parameters$MRN*
            S$Parameters$Q10SCR^(
-             (S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+             (S$Sim$Tleaf_Coffee[i]-S$Parameters$TMR)/10))
 
       # Fruits
       S$Sim$Rm_Fruit[i]=
         after(i,2)*
         (S$Parameters$PaliveFruit*S$Sim$DM_Fruit[previous_i(i,1)]*
            S$Parameters$NContentFruit*S$Parameters$MRN*
-           S$Parameters$Q10Fruit^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+           S$Parameters$Q10Fruit^((S$Sim$Tleaf_Coffee[i]-S$Parameters$TMR)/10))
       # Leaves
       S$Sim$Rm_Leaf[i]=
         after(i,2)*
         (S$Parameters$PaliveLeaf*S$Sim$DM_Leaf[previous_i(i,1)]*
            S$Parameters$NContentLeaf*S$Parameters$MRN*
-           S$Parameters$Q10Leaf^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+           S$Parameters$Q10Leaf^((S$Sim$Tleaf_Coffee[i]-S$Parameters$TMR)/10))
 
       # Fine roots
       S$Sim$Rm_FRoot[i]=
         after(i,2)*
         (S$Parameters$PaliveFRoot*S$Sim$DM_FRoot[previous_i(i,1)]*
            S$Parameters$NContentFRoot*S$Parameters$MRN*
-           S$Parameters$Q10FRoot^((S$Sim$Tcan_MAESPA_Coffee[i]-S$Parameters$TMR)/10))
+           S$Parameters$Q10FRoot^((S$Sim$Tleaf_Coffee[i]-S$Parameters$TMR)/10))
 
       # Total plant maintenance respiration
       S$Sim$Rm[i]=
@@ -502,7 +620,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # are related to leaf area (new leaves appear on nodes) : GUTIERREZ et al. (1998)
       if(S$Met_c$DOY[i]==S$Parameters$VGS_Stop){
         S$Sim$ratioNodestoLAI[S$Met_c$year>=S$Met_c$year[i]]=
-          mean(S$Sim$Tcan_MAESPA_Coffee[S$Met_c$year==S$Met_c$year[i]&
+          mean(S$Sim$Tleaf_Coffee[S$Met_c$year==S$Met_c$year[i]&
                                                 S$Met_c$DOY>=S$Parameters$VGS_Start&
                                                 S$Met_c$DOY <= S$Parameters$VGS_Stop])%>%
             {S$Parameters$RNL_base*(0.0005455*.^3 - 0.0226364*.^2+0.2631364*. + 0.4194773)}
@@ -541,10 +659,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       DormancyBreakPeriod= OldestDormancy:(YoungestDormancy-sum(CumRain<S$Parameters$RainForBudBreak))
 
       # (6) Temperature effect on bud phenology
-      if(mean(S$Sim$Tcan_MAESPA_Coffee[DormancyBreakPeriod])>23){
-        S$Sim$Temp_cor_Bud[DormancyBreakPeriod]=
-          Bud_T_correction()(mean(S$Sim$Tcan_MAESPA_Coffee[DormancyBreakPeriod]))
-      }
+      S$Sim$Temp_cor_Bud[i]=
+        S$Parameters$Bud_T_correction()(S$Sim$Tleaf_Coffee[i])
+      S$Sim$Temp_cor_Bud[i][S$Sim$Temp_cor_Bud[i]<0]= 0
+      S$Sim$Temp_cor_Bud[i][S$Sim$Temp_cor_Bud[i]>1]= 1
 
       # (7) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
       S$Sim$p_budbreakperday[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
@@ -726,11 +844,6 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$NPP[i]=S$Sim$NPP_RsWood[i]+S$Sim$NPP_SCR[i]+
         S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
 
-      # LAI ---------------------------------------------------------------------
-
-      # Caution: CM is in gC m-2soil, so use C content to transform in dry mass
-      S$Sim$LAI[i]= S$Sim$CM_Leaf[i]*S$Parameters$SLA/1000/S$Parameters$CContent_Leaf
-      S$Sim$LAIplot[i]= S$Sim$LAIplot[i]+S$Sim$LAI[i]
 
       # Metamodel Coffee leaf water potential
       S$Sim$LeafWaterPotential[i]=
@@ -739,111 +852,6 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # S$Sim$LeafWaterPotential[i]=
       #     -0.096845 - 0.080517*S$Met_c$PARm2d1 +
       #     0.481117*(1-S$Met_c$FDiff) - 0.001692*S$Met_c$DaysWithoutRain
-
-
-      # soil (+canopy evap) water balance ---------------------------------------
-
-      Soilfun(S,i)
-
-      # Metamodel Transpiration Coffee, and filter out for negative values
-      S$Sim$T_Cof[i]=
-        -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] + 0.11510*PARcof
-      S$Sim$T_Cof[i][S$Sim$T_Cof[i]<0]= 0
-      #Plot transpiration
-      S$Sim$T_tot[i]= S$Sim$T_Tree[i]+S$Sim$T_Cof[i]
-
-      #7/ Evapo-Transpiration ETR
-      S$Sim$ETR[i]=
-        S$Sim$T_tot[i]+S$Sim$E_Soil[i]+S$Sim$IntercRevapor[i]
-
-      #10/ Latent (LEmod) and Sensible (Hmod) heat fluxes, in kgH2O m-2 d-1 * MJ kgH2O-1 = MJ m-2 d-1
-      S$Sim$LE_Plot[i]= S$Sim$ETR[i]*S$Parameters$lambda
-
-      S$Sim$LE_Coffee[i]=
-        (S$Sim$T_Cof[i]+S$Sim$IntercRevapor[i]*
-           (S$Sim$LAI[i]/S$Sim$LAIplot[i]))*S$Parameters$lambda
-
-      # Metamodel for H :
-      S$Sim$H_Coffee[i]=
-        -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
-        1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+0.25838*S$Sim$LAI[i]
-
-      S$Sim$Rn_Coffee[i]=
-        S$Sim$H_Coffee[i] + S$Sim$LE_Coffee[i]
-
-      # Tree LE and Rn (can not compute them in the Tree function because we need IntercRevapor)
-      S$Sim$LE_Tree[i]=
-        (S$Sim$T_Tree[i]+S$Sim$IntercRevapor[i]*
-           (S$Sim$LAI_Tree[i]/S$Sim$LAIplot[i]))*S$Parameters$lambda
-      S$Sim$Rn_Tree[i]= S$Sim$H_Tree[i] + S$Sim$LE_Tree[i]
-
-      # Total plot heat flux:
-      S$Sim$H_tot[i]= S$Sim$H_Coffee[i]+S$Sim$H_Tree[i]+S$Sim$H_Soil[i]
-      # Total plot latent flux:
-      S$Sim$LE_tot[i]=
-        S$Sim$LE_Coffee[i]+S$Sim$LE_Tree[i]+S$Sim$LE_Soil[i]
-
-      # Total plot net radiation:
-      S$Sim$Rn_tot[i]=
-        S$Sim$Rn_Coffee[i]+S$Sim$Rn_Tree[i]+S$Sim$Rn_Soil[i]
-
-      #11/ Tcanopy Coffee : using bulk conductance if no trees, interlayer conductance if trees
-      # Source: Van de Griend and Van Boxel 1989.
-      if(S$Sim$Height_Tree[previous_i(i,1)]>S$Parameters$Height_Coffee){
-
-        S$Sim$TairCanopy[i]=
-          S$Sim$TairCanopy_Tree[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
-             S$Parameters$Cp*
-             G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                        LAI_top= S$Sim$LAI_Tree[previous_i(i,1)],
-                        LAI_bot= S$Sim$LAI[previous_i(i,1)],
-                        Z_top= S$Sim$Height_Tree[previous_i(i,1)],
-                        extwind = S$Parameters$extwind))
-
-        S$Sim$Tleaf_Coffee[i]=
-          S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
-             S$Parameters$Cp*
-             1/(1/G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                             LAI_top= S$Sim$LAI_Tree[previous_i(i,1)],
-                             LAI_bot= S$Sim$LAI[previous_i(i,1)],
-                             Z_top= S$Sim$Height_Tree[previous_i(i,1)],
-                             extwind = S$Parameters$extwind)+
-                  1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
-                         LAI_lay=S$Sim$LAI[previous_i(i,1)],
-                         LAI_abv=S$Sim$LAI_Tree[previous_i(i,1)],
-                         ZHT = S$Parameters$ZHT,
-                         Z_top = S$Sim$Height_Tree[previous_i(i,1)],
-                         extwind= S$Parameters$extwind)))
-
-
-      }else{
-        S$Sim$TairCanopy[i]=
-          S$Met_c$Tair[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
-             S$Parameters$Cp*
-             G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                    Z_top = S$Parameters$Height_Coffee,
-                    LAI = S$Sim$LAI[previous_i(i,1)],
-                    extwind = S$Parameters$extwind))
-
-        S$Sim$Tleaf_Coffee[i]=
-          S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
-          (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
-             S$Parameters$Cp*
-             1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                         Z_top = S$Parameters$Height_Coffee,
-                         LAI = S$Sim$LAI[previous_i(i,1)],
-                         extwind = S$Parameters$extwind)+
-                  1/Gb_h(Wind= S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
-                         LAI_lay= S$Sim$LAI[previous_i(i,1)],
-                         LAI_abv= S$Sim$LAI_Tree[previous_i(i,1)],
-                         ZHT= S$Parameters$ZHT,
-                         Z_top= S$Parameters$Height_Coffee,
-                         extwind= S$Parameters$extwind)))
-      }
-      # NB : if no trees, TairCanopy_Tree= Tair
     }
     CycleList=list(Sim= S$Sim%>%as.data.frame)
   }
