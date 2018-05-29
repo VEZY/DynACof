@@ -477,7 +477,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
         -0.07741 + 0.99456*S$Met_c$Tair[i] - 0.06948*S$Met_c$VPD[i] -
         1.87975*(1-S$Met_c$FDiff[i]) + 0.19615*PARcof
       S$Sim$DegreeDays_Tcan[i]=
-        GDD(Tmean = S$Sim$Tcan_MAESPA_Coffee[i],MinTT = S$Parameters$MinTT,
+        GDD(Tmean = S$Sim$Tleaf_Coffee[i],MinTT = S$Parameters$MinTT,
             MaxTT = S$Parameters$MaxTT)
 
       # S$Sim$Tcan_Diurnal_Cof[i]=
@@ -674,7 +674,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # (7) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
       S$Sim$p_budbreakperday[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
-                                               S$Sim$LeafWaterPotential[previous_i(i,1)]))
+                                               S$Sim$LeafWaterPotential[i]))
       # (8) Compute the number of buds that effectively break dormancy in each cohort:
       S$Sim$BudBreak_cohort[DormancyBreakPeriod]=
         pmin(S$Sim$Bud_available[DormancyBreakPeriod],
