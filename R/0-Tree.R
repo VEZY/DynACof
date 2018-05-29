@@ -4,18 +4,19 @@ Tree= function(){
   list(
     Tree_Species         = "Erythrina poeppigiana",   # Names of the shade Tree species
     Species_ID           = "Erythrina_Aquiares",      # Optionnal species ID
-    StockingTree_treeha1 = 7.38,                      # density at planting (trees ha-1). Source: Taugourdeau et al. (2014)
-    # StockingTree_treeha1 = 5.2,
+    StockingTree_treeha1 = 250,                       # density at planting (trees ha-1). Source: Taugourdeau et al. (2014)
     SLA_Tree             = 17.4,                      # Specific leaf area (m2 kg-1). Source: Van Oijen et al. (2010, I)
     wleaf_Tree           = 0.068,                     # Leaf width (m)
     Demand_Leaf_max_Tree = 778.5,                     # Max Leaf carbon demand (gC tree d-1).
-    LAI_max_Tree         = 0.6,                       # Max measured LAI to compute leaf demand. Should be ~1.5*higher than measured.
-    Leaf_fall_rate_Tree  = list(0.09,0.02),           # Mortality during leaf fall (fraction of the leaf mass).
-    Fall_Period_Tree     = list(1:30,143:200),        # Time period were leaves fall at high rate (DOY). List of length= Leaf_fall_rate_Tree
+    LAI_max_Tree         = 1,                         # Max measured LAI to compute leaf demand. Should be ~1.5*higher than measured.
+    Leaf_fall_rate_Tree  = list(0.07,0.02,            # Mortality during leaf fall (fraction of the leaf mass).
+                                0.015,0.04),
+    Fall_Period_Tree     = list(1:55,175:240,         # Time period were leaves fall at high rate (DOY). List of length= Leaf_fall_rate_Tree
+                                300:354,355:365),
     Thin_Age_Tree        = 20,                        # Ages at which thinning is made (age). Set to NULL if no thinning
     ThinThresh           = 0,                         # (option) Lowest transmittance threshold under wich thinning is triggered (0-1)
     RateThinning_Tree    = 0.97072,                   # How many trees are thinned per thinning event, in percentage.
-    date_Thin_Tree       = 1,                         # Date(s) of thinning (DOY)
+    date_Thin_Tree       = 100,                       # Date(s) of thinning (DOY)
     date_pruning_Tree    = 213,                       # Date(s) of pruning each year (DOY)
     pruningIntensity_Tree= 0.7,                       # Pruning intensity (% dry mass)
     Pruning_Age_Tree     = 1:19,                      # Ages at which pruning is made (age). Set to NULL if no prunning.
@@ -23,17 +24,12 @@ Tree= function(){
     # k_Dir_Tree           = 0.304,                     # Light extionction coefficient for direct light. Now computed by metamodels
     # lue_Tree             = 1.1375,                    # Light-use efficiency (gc MJ-1). Now computed by metamodels
     WoodDensity_kgDMm3   = 250,                       # Wood density. Source: Van Oijen et al (2010, I) + Nygren (1995)
-    lambda_Stem_Tree     = 0.08,                      # Allocation coefficient to the stem. Source: Litton (2007)
+    lambda_Stem_Tree     = 0.15,                      # Allocation coefficient to the stem. Source: Litton (2007)
     lambda_Branch_Tree   = 0.25,                      # Allocation coefficient to the branches wood. Source: Litton (2007)
-    lambda_CR_Tree       = 0.05,                      # Allocation coefficient to the coarse roots. Source: Litton (2007)
+    lambda_CR_Tree       = 0.10,                      # Allocation coefficient to the coarse roots. Source: Litton (2007)
     lambda_Leaf_Tree     = 0.24,                      # Allocation coefficient to the Leaves. Source: Litton (2007)
     lambda_FRoot_Tree    = 0.05,                      # Allocation coefficient to the fine roots. Source: Litton (2007)
-    # lambda_Stem_Tree     = 0.18,                      # Allocation coefficient to the stem. Source: Litton (2007)
-    # lambda_Branch_Tree   = 0.25,                      # Allocation coefficient to the branches wood. Source: Litton (2007)
-    # lambda_CR_Tree       = 0.05,                      # Allocation coefficient to the coarse roots. Source: Litton (2007)
-    # lambda_Leaf_Tree     = 0.24,                      # Allocation coefficient to the Leaves. Source: Litton (2007)
-    # lambda_FRoot_Tree    = 0.08,                      # Allocation coefficient to the fine roots. Source: Litton (2007)
-    kres_max_Tree        = 1.2,                       # Maximum carbon extracted from reserves compared to maintenance respiration (fraction of Rm)
+    kres_max_Tree        = 1.2,                       # Maximum carbon extracted from reserves compared to maintenance respiration
     CContent_Leaf_Tree   = 0.47,                      # Leaf carbon content in gC gDM-1. Source: Masera et al. (2003)
     CContent_wood_Tree   = 0.47,                      # Wood carbon content in gC gDM-1. Source: Masera et al. (2003)
     epsilon_Branch_Tree  = 0.75,                      # Branch growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)

@@ -347,19 +347,27 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       S$Sim$APAR_Dif[i]=
         max(0,((S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*S$Met_c$FDiff[i])*
-              (1-exp(-S$Sim$K_Dif[i]*S$Sim$LAI[previous_i(i,1)])))#MJ m-2 d-1
+              (1-exp(-S$Sim$K_Dif[i]*S$Sim$LAI[i])))#MJ m-2 d-1
       APAR_Dir= max(0,((S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*(1-S$Met_c$FDiff[i]))*
-                      (1-exp(-S$Sim$K_Dir[i]*S$Sim$LAI[previous_i(i,1)])))#MJ m-2 d-1
+                      (1-exp(-S$Sim$K_Dir[i]*S$Sim$LAI[i])))#MJ m-2 d-1
       # APAR_Dir is not part of S$Sim because it can be easily computed by
       # S$Met_c$PARm2d1-S$Sim$APAR_Dif
       S$Sim$APAR[i]= APAR_Dir+S$Sim$APAR_Dif[i]
       # S$Sim$APAR[i]= max(0,(S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*(1-
-      # exp(-S$Sim$k[i]*S$Sim$LAI[previous_i(i,1)])))#MJ m-2 d-1
+      # exp(-S$Sim$k[i]*S$Sim$LAI[i])))#MJ m-2 d-1
 
 
       # soil (+canopy evap) water balance ---------------------------------------
 
       Soilfun(S,i)
+      # Metamodel Coffee leaf water potential
+      S$Sim$LeafWaterPotential[i]=
+        0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*PARcof +
+        2.676284*S$Sim$SoilWaterPot[i]
+
+      # S$Sim$LeafWaterPotential[i]=
+      #     -0.096845 - 0.080517*S$Met_c$PARm2d1 +
+      #     0.481117*(1-S$Met_c$FDiff) - 0.001692*S$Met_c$DaysWithoutRain
 
       # Energy balance
 
@@ -764,8 +772,8 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       S$Sim$Alloc_Leaf[i]=
         min(S$Parameters$Demand_Leaf_max*(S$Parameters$Stocking_Coffee/10000)*
-              ((S$Parameters$LAI_max-S$Sim$LAI[previous_i(i,1)])/
-                 (S$Sim$LAI[previous_i(i,1)]+S$Parameters$LAI_max)),
+              ((S$Parameters$LAI_max-S$Sim$LAI[i])/
+                 (S$Sim$LAI[i]+S$Parameters$LAI_max)),
             S$Sim$Offer_Leaf[i])
 
 
@@ -844,14 +852,6 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$NPP[i]=S$Sim$NPP_RsWood[i]+S$Sim$NPP_SCR[i]+
         S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
 
-
-      # Metamodel Coffee leaf water potential
-      S$Sim$LeafWaterPotential[i]=
-        0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*PARcof + 2.676284*S$Sim$SoilWaterPot[i]
-
-      # S$Sim$LeafWaterPotential[i]=
-      #     -0.096845 - 0.080517*S$Met_c$PARm2d1 +
-      #     0.481117*(1-S$Met_c$FDiff) - 0.001692*S$Met_c$DaysWithoutRain
     }
     CycleList=list(Sim= S$Sim%>%as.data.frame)
   }
