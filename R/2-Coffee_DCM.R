@@ -811,9 +811,9 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_FRoot[i]-S$Sim$Alloc_FRoot[i])
 
-      S$Sim$Mnat_FRoot[i]=S$Sim$CM_FRoot[previous_i(i,1)]/S$Parameters$lifespanFRoot
-      S$Sim$Mprun_FRoot[i]=S$Parameters$M_RateFRootprun*S$Sim$Mprun_Leaf[i]
-      S$Sim$Mortality_FRoot[i]=S$Sim$Mnat_FRoot[i]+S$Sim$Mprun_FRoot[i]
+      S$Sim$Mnat_FRoot[i]= S$Sim$CM_FRoot[previous_i(i,1)]/S$Parameters$lifespanFRoot
+      S$Sim$Mprun_FRoot[i]= S$Parameters$M_RateFRootprun*S$Sim$Mprun_Leaf[i]
+      S$Sim$Mortality_FRoot[i]= S$Sim$Mnat_FRoot[i]+S$Sim$Mprun_FRoot[i]
 
 
       # Biomass -----------------------------------------------------------------

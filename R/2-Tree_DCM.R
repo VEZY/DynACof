@@ -296,11 +296,8 @@ Shade.Tree= function(S,i){
     S$Sim$Mact_Branch_Tree[i]=
       min((S$Sim$Mact_Branch_Tree[i]+S$Sim$Mprun_Branch_Tree[i]),
           S$Sim$CM_Branch_Tree[previous_i(i,1)])
-
-    # Effect of pruning on fine roots  (assumed half the leaves mortality, may be wrong):
-    # S$Sim$Mprun_FRoot_Tree[i]= (S$Sim$Mprun_Leaf_Tree[i]*0.5)
     S$Sim$Mprun_FRoot_Tree[i]=
-      S$Sim$CM_FRoot_Tree[previous_i(i,1)]*S$Parameters$pruningIntensity_Tree
+      S$Parameters$M_RateFRootprun_Tree*S$Sim$Mprun_Leaf_Tree[i]
     S$Sim$Mact_FRoot_Tree[i]=
       min(S$Sim$Mact_FRoot_Tree[i]+S$Sim$Mprun_FRoot_Tree[i],
           S$Sim$CM_FRoot_Tree[previous_i(i,1)])
