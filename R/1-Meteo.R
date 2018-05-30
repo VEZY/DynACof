@@ -131,7 +131,7 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
     MetData$PAR= MetData$RAD*Parameters$FPAR
     warn.var(Var= "PAR",replacement= "RAD",type='warn')
   }
-
+  MetData$PAR[MetData$PAR<0.1]= 0.1
 
   # Missing Tmax and/or Tmin Temperature:
   if(is.null(MetData$Tmin)|is.null(MetData$Tmax)){

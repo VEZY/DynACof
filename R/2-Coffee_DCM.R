@@ -287,8 +287,8 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # Effective day of first flowers:
       DateFFlowering[i]=
         tail(which(CumsumRelativeToBudinit[i,]<
-                     CumsumRelativeToBudinit[i,BudDormancyBreakDay]+S$Parameters$FruitPin),1)
-      # Effective dates between which buds can appear (from DateBudinit until end of stage 1 fruit)
+                     CumsumRelativeToBudinit[i,BudDormancyBreakDay]+S$Parameters$BudInitEnd),1)
+      # Effective dates between which buds can appear
       S$Sim$BudInitPeriod[DateBudinit[i]:DateFFlowering[i]]= TRUE
     }
     S$Sim$BudInitPeriod[CumulDegreeDays<S$Parameters$VF_Flowering]= FALSE
@@ -750,7 +750,8 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # Made as soon as the fruit dry mass is decreasing for 10 consecutive days. This condition is met
       # when fruit overriping is more important than fruit NPP for 10 days:
       if(S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity&
-         all(S$Sim$NPP_Fruit[previous_i(i,0:10)]<S$Sim$Overriped_Fruit[previous_i(i,0:10)])){
+         all(S$Sim$NPP_Fruit[previous_i(i,0:10)]<S$Sim$Overriped_Fruit[previous_i(i,0:10)])&
+         S$Sim$CM_Fruit[previous_i(i,1)]>S$Parameters$Min_Fruit_CM){
         # Save the date of harvest:
         S$Sim$Date_harvest[i]= S$Met_c$DOY[i]
         S$Sim$Harvest_Fruit[i]= S$Sim$CM_Fruit[i-1]+S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
