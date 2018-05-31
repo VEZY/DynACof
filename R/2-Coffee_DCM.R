@@ -373,7 +373,9 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Metamodel Transpiration Coffee, and filter out for negative values
       S$Sim$T_Cof[i]=
-        -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] + 0.11510*PARcof
+        # -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] + 0.11510*PARcof
+        -0.72080 + 0.07319*S$Met_c$VPD[i] -0.76984*(1-S$Met_c$FDiff[i]) +
+        0.13646*S$Sim$LAI[i] + 0.12910*PARcof
       S$Sim$T_Cof[i][S$Sim$T_Cof[i]<0]= 0
       #Plot transpiration
       S$Sim$T_tot[i]= S$Sim$T_Tree[i]+S$Sim$T_Cof[i]
@@ -391,8 +393,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Metamodel for H :
       S$Sim$H_Coffee[i]=
-        -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
-        1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+0.25838*S$Sim$LAI[i]
+        -0.82010 - 0.04864*S$Met_c$Tair[i] - 0.12400*S$Met_c$VPD[i]+
+        0.72856*(1-S$Met_c$FDiff[i]) + 0.84231*PARcof[i]+0.10764*S$Sim$LAI[i]
+        # -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
+        # 1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+0.25838*S$Sim$LAI[i]
 
       S$Sim$Rn_Coffee[i]=
         S$Sim$H_Coffee[i] + S$Sim$LE_Coffee[i]

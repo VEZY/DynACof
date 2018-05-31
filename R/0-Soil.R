@@ -17,7 +17,7 @@ soil= function(){
     fo              = 1360.917, # Maximum infiltration capacity (mmd-1), = fc*alpha
     kB              = 0.038079, # Discharge coefficient for surface runoff from surface reservoir (d-1)
     k_Rn            = 0.283,    # Radiation extinction coefficient. Source: Shuttleworth and wallace, 1985, p. 851
-    Soil_LE_p       = 0.66,     # Partitioning of the available energy between LE and H for the soil
+    Soil_LE_p       = 0.70,     # Partitioning of the available energy between LE and H for the soil. Source: MAESPA simulation
     PSIE            = -0.0002580542, # Average PSIE, used for soil water potential through Campbell (1974) equation, (MPa).
     PoreFrac        = 0.4,      # Average pore fraction of the soil, IDEM
     B               = 4.71,     # Average b of the soil, IDEM

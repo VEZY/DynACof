@@ -64,13 +64,18 @@ Metamodels= function(S,i){
     0.03390*S$Met_c$VPD[i] - 0.24565*S$Met_c$PAR[i]
 
   S$Sim$T_Tree[i]=
-    0.021820*S$Met_c$VPD[i] - 0.016112*S$Met_c$Tair[i] + 0.942021*S$Sim$APAR_Tree[i]-
-    1.397349*(1-S$Met_c$FDiff[i]) + 0.004328*S$Sim$LAI_Tree[i]
+    -0.50236 +  0.02240*S$Met_c$VPD[i] + 0.01321*S$Met_c$Tair[i] +
+    0.72191*S$Sim$APAR_Tree[i] - 0.86182*(1-S$Met_c$FDiff[i]) + 0.07139*S$Sim$LAI_Tree[i]
+  # 0.021820*S$Met_c$VPD[i] - 0.016112*S$Met_c$Tair[i] + 0.942021*S$Sim$APAR_Tree[i]-
+  # 1.397349*(1-S$Met_c$FDiff[i]) + 0.004328*S$Sim$LAI_Tree[i]
   S$Sim$T_Tree[i][S$Sim$T_Tree[i]<0]= 0 #to discard negative values
 
   S$Sim$H_Tree[i]=
-    0.34975 + 0.81448*S$Sim$APAR_Dir_Tree[i] + 0.29321*S$Sim$APAR_Dif_Tree[i]-
-    0.75987*S$Sim$LAI_Tree[i] - 0.55724*S$Sim$T_Tree[i] -
-    0.02898*S$Met_c$VPD[i]
+    0.34062 + 0.82001*S$Sim$APAR_Dir_Tree[i] + 0.32883*S$Sim$APAR_Dif_Tree[i]-
+    0.75801*S$Sim$LAI_Tree[i] - 0.57135*S$Sim$T_Tree[i] -
+    0.03033*S$Met_c$VPD[i]
+    # 0.34975 + 0.81448*S$Sim$APAR_Dir_Tree[i] + 0.29321*S$Sim$APAR_Dif_Tree[i]-
+    # 0.75987*S$Sim$LAI_Tree[i] - 0.55724*S$Sim$T_Tree[i] -
+    # 0.02898*S$Met_c$VPD[i]
 }
 
