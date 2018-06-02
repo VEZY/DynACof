@@ -60,11 +60,11 @@ coffee= function(){
     CContent_RsWood   = 0.463,      # Resprout wood carbon content (gC g-1 dry mass)
     CContent_SCR      = 0.475,      # Stump and coarse root carbon content (gC g-1 dry mass)
     CContent_FRoots   = 0.463,      # Fine root carbon content (gC g-1 dry mass)
-    epsilonFruit      = 0.625,      # Fruit growth respiration coefficient (g g-1), computed using : http://www.science.poorter.eu/1994_Poorter_C&Nrelations.pdf :
-    epsilonLeaf       = 0.782,      # Leaf growth respiration coefficient (g g-1)
-    epsilonRsWood     = 0.83,       # Resprout wood growth respiration coefficient (g g-1). Source: Dufrêne et al. (2005)
-    epsilonSCR        = 0.762,      # Stump and coarse root growth respiration coefficient (g g-1).
-    epsilonFRoot      = 0.782,      # Fine root growth respiration coefficient (g g-1).
+    epsilonFruit      = 1.6,      # Fruit growth respiration coefficient (g g-1), computed using : http://www.science.poorter.eu/1994_Poorter_C&Nrelations.pdf :
+    epsilonLeaf       = 1.279,      # Leaf growth respiration coefficient (g g-1)
+    epsilonRsWood     = 1.20,       # Resprout wood growth respiration coefficient (g g-1). Source: Dufrêne et al. (2005)
+    epsilonSCR        = 1.31,      # Stump and coarse root growth respiration coefficient (g g-1).
+    epsilonFRoot      = 1.279,      # Fine root growth respiration coefficient (g g-1).
     NContentFruit     = 0.011,      # Fruit nitrogen content (gN gDM-1). Source: Van Oijen et al. (2010) (1.1% of DM)
     NContentLeaf      = 0.0296,     # Leaf nitrogen content (gN gDM-1). Source: Ghini et al. (2015), 28.2 to 30.9 g kg−1 DW
     NContentRsWood    = 0.0041,     # Resprout wood nitrogen content (gN gDM-1). Source: Ghini et al. (2015), 28.2 to 30.9 g kg−1 DW
@@ -87,7 +87,7 @@ coffee= function(){
     PaliveSCR         = 0.21,       # Stump and coarse root living tissue (fraction)
     PaliveFRoot       = 1,          # Fine root living tissue (fraction)
     Opti_C_DemandFruit= 0.164,      # optimum demand in total carbon for each berry (including growth respiration)
-    # = Optimum_Berry_DM*CContent_Fruit+Optimum_Berry_DM*CContent_Fruit*(1-epsilonFruit),
+    # = Optimum_Berry_DM*CContent_Fruit+(Optimum_Berry_DM*CContent_Fruit)/(1-epsilonFruit),
 
     # As temperature increases, the number of nodes on coffee increases due to increased vegetative
     # growth, but the number of buds per nodes decreases. This is computed by using a temperature correction

@@ -33,11 +33,11 @@ Tree= function(){
     kres_max_Tree        = 1.2,                       # Maximum carbon extracted from reserves compared to maintenance respiration
     CContent_Leaf_Tree   = 0.47,                      # Leaf carbon content in gC gDM-1. Source: Masera et al. (2003)
     CContent_wood_Tree   = 0.47,                      # Wood carbon content in gC gDM-1. Source: Masera et al. (2003)
-    epsilon_Branch_Tree  = 0.75,                      # Branch growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
-    epsilon_Stem_Tree    = 0.75,                      # Stem growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
-    epsilon_CR_Tree      = 0.75,                      # Coarse root growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
-    epsilon_Leaf_Tree    = 1/1.392,                   # Leaf growth cost coefficient (gC.gC-1). Source: Erythrina excelsa Villar and Merino (2001),
-    epsilon_FRoot_Tree   = 1/1.392,                   # Leaf growth cost coefficient (gC.gC-1). Considered = to leaves
+    epsilon_Branch_Tree  = 1.33,                      # Branch growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
+    epsilon_Stem_Tree    = 1.33,                      # Stem growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
+    epsilon_CR_Tree      = 1.33,                      # Coarse root growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
+    epsilon_Leaf_Tree    = 1.392,                   # Leaf growth cost coefficient (gC.gC-1). Source: Erythrina excelsa Villar and Merino (2001),
+    epsilon_FRoot_Tree   = 1.392,                   # Leaf growth cost coefficient (gC.gC-1). Considered = to leaves
     epsilon_Reserves_Tree= 1,                         # Reserves growth cost coefficient (gC.gC-1). No cost, unknown.
     lifespanBranch_Tree  = 7300,                      # Branch lifespan, natural mortality (d)
     lifespanLeaf_Tree    = 10^5,                      # Leaf lifespan (d). Taken infinite because regulated by leaf fall phenology.
