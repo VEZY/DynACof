@@ -283,7 +283,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # Cumulative rainfall within the period of potential dormancy:
       CumRain= cumsum(S$Met_c$Rain[BudDevelEnd:MaxDormancy])
       # Effective (real) day of first buds breaking dormancy:
-      BudDormancyBreakDay= BudDevelEnd + sum(CumRain<S$Parameters$RainForBudBreak)-1
+      BudDormancyBreakDay= BudDevelEnd + sum(CumRain<S$Parameters$R_break)-1
       # Effective day of first flowers:
       DateFFlowering[i]=
         tail(which(CumsumRelativeToBudinit[i,]<
@@ -665,7 +665,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # first met the condition (starting from younger to older cohorts):
       CumRain= cumsum(S$Met_c$Rain[YoungestDormancy:OldestDormancy])
       # (5) Compute the period were all cohorts have encountered all conditions to break dormancy :
-      DormancyBreakPeriod= OldestDormancy:(YoungestDormancy-sum(CumRain<S$Parameters$RainForBudBreak))
+      DormancyBreakPeriod= OldestDormancy:(YoungestDormancy-sum(CumRain<S$Parameters$R_break))
 
       # (6) Temperature effect on bud phenology
       S$Sim$Temp_cor_Bud[i]=
