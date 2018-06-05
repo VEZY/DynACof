@@ -7,7 +7,7 @@ coffee= function(){
     AgeCoffeeMax      = 41,         # maximum coffee stand age (start a new rotation after)
     SLA               = 10.97,      # Specific Leaf Area (m-2 kg-1 dry mass)
     wleaf             = 0.068,      # Leaf width (m)
-    Demand_Leaf_max   = 7,          # Leaf carbon demand (gC m-2 d-1)
+    Demand_Leaf_max   = 7,          # Max leaf carbon demand (gC m-2 d-1)
     LAI_max           = 6,          # Max measured LAI to compute leaf demand. (measured= 5.56)
     Height_Coffee     = 2,          # Average coffee canopy height (m), used for aerodynamic conductance.
     date_pruning      = 74,         # day of year of pruning

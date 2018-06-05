@@ -50,7 +50,7 @@ site= function(){
     TimezoneCF    = 6,              # Time Zone
     Elevation     = 1040,           # Elevation (m)
     ZHT           = 25,             # Measurment height (m)
-    extwind       = 0.58,           # Wind extinction coefficient (-), used to compute the wind speed in the considered layer
+    extwind       = 0.58,           # Wind extinction coefficient (-), used to compute the wind speed in the considered layer. Measured on site.
     albedo        = 0.144           # Site albedo, computed using MAESPA.
   )
 }
