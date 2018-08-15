@@ -60,10 +60,13 @@ Energy                       \tab Rn_tot                   \tab MJ m-2 d-1      
                              \tab Rn_Tree                  \tab MJ m-2 d-1          \tab Shade tree net radiation                                                           \cr
                              \tab Rn_Coffee                \tab MJ m-2 d-1          \tab Coffee net radiation                                                               \cr
                              \tab Rn_Soil                  \tab MJ m-2 d-1          \tab Soil net radiation                                                                 \cr
+                             \tab Rn_Soil_SW               \tab MJ m-2 d-1          \tab Soil net radiation computed using Shuttleworth & Wallace (1985) for reference     \cr
                              \tab LE_*                     \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil latent heat                                                \cr
                              \tab H_*                      \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil sensible heat                                              \cr
                              \tab Q_Soil                   \tab MJ m-2 d-1          \tab Soil heat transport                                                                \cr
-                             \tab Transmittance_Tree       \tab fraction            \tab Light transmitted under the shade trees canopy                                     \cr
+                             \tab Transmittance_Tree       \tab fraction            \tab Fraction of light transmitted under the shade trees canopy                         \cr
+                             \tab PAR_Trans_Tree           \tab MJ m-2 d-1          \tab Light transmitted under the shade trees canopy                                     \cr
+                             \tab PAR_Trans                \tab MJ m-2 d-1          \tab Light transmitted under the Coffea canopy                                          \cr
                              \tab K_Dir                    \tab -                   \tab Direct light extinction coefficient                                                \cr
                              \tab K_Dif                    \tab -                   \tab Diffuse light extinction coefficient                                               \cr
                              \tab APAR                     \tab MJ m-2 d-1          \tab Absorbed PAR by the plant                                                          \cr

@@ -4,11 +4,14 @@
 \alias{Light_extinction_K}
 \alias{Metamodels}
 \alias{Metamodels}
+\alias{Metamodels_soil}
 \title{MAESPA metamodels}
 \usage{
 Light_extinction_K(S, i)
 
 Metamodels(S, i)
+
+Metamodels_soil(S, i)
 }
 \arguments{
 \item{S}{The global list used within the DynACof model.}

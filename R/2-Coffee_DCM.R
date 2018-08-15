@@ -45,10 +45,13 @@
 #'                              \tab Rn_Tree                  \tab MJ m-2 d-1          \tab Shade tree net radiation                                                           \cr
 #'                              \tab Rn_Coffee                \tab MJ m-2 d-1          \tab Coffee net radiation                                                               \cr
 #'                              \tab Rn_Soil                  \tab MJ m-2 d-1          \tab Soil net radiation                                                                 \cr
+#'                              \tab Rn_Soil_SW               \tab MJ m-2 d-1          \tab Soil net radiation computed using Shuttleworth & Wallace (1985) for reference     \cr
 #'                              \tab LE_*                     \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil latent heat                                                \cr
 #'                              \tab H_*                      \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil sensible heat                                              \cr
 #'                              \tab Q_Soil                   \tab MJ m-2 d-1          \tab Soil heat transport                                                                \cr
-#'                              \tab Transmittance_Tree       \tab fraction            \tab Light transmitted under the shade trees canopy                                     \cr
+#'                              \tab Transmittance_Tree       \tab fraction            \tab Fraction of light transmitted under the shade trees canopy                         \cr
+#'                              \tab PAR_Trans_Tree           \tab MJ m-2 d-1          \tab Light transmitted under the shade trees canopy                                     \cr
+#'                              \tab PAR_Trans                \tab MJ m-2 d-1          \tab Light transmitted under the Coffea canopy                                          \cr
 #'                              \tab K_Dir                    \tab -                   \tab Direct light extinction coefficient                                                \cr
 #'                              \tab K_Dif                    \tab -                   \tab Diffuse light extinction coefficient                                               \cr
 #'                              \tab APAR                     \tab MJ m-2 d-1          \tab Absorbed PAR by the plant                                                          \cr
@@ -343,26 +346,25 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # S$Sim$K_Dir[i]= 0.35
 
       #APAR coffee
-      PARcof= S$Met_c$PAR[i]-S$Sim$APAR_Tree[i] # PAR above coffee layer
-
+      S$Sim$PAR_Trans_Tree[i]= S$Met_c$PAR[i]-S$Sim$APAR_Tree[i] # PAR above coffee layer
       S$Sim$APAR_Dif[i]=
-        max(0,((S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*S$Met_c$FDiff[i])*
+        max(0,(S$Sim$PAR_Trans_Tree[i]*S$Met_c$FDiff[i])*
               (1-exp(-S$Sim$K_Dif[i]*S$Sim$LAI[i])))#MJ m-2 d-1
-      APAR_Dir= max(0,((S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*(1-S$Met_c$FDiff[i]))*
+      APAR_Dir= max(0,(S$Sim$PAR_Trans_Tree[i]*(1-S$Met_c$FDiff[i]))*
                       (1-exp(-S$Sim$K_Dir[i]*S$Sim$LAI[i])))#MJ m-2 d-1
       # APAR_Dir is not part of S$Sim because it can be easily computed by
       # S$Met_c$PARm2d1-S$Sim$APAR_Dif
       S$Sim$APAR[i]= APAR_Dir+S$Sim$APAR_Dif[i]
       # S$Sim$APAR[i]= max(0,(S$Met_c$PAR[i]-S$Sim$APAR_Tree[i])*(1-
       # exp(-S$Sim$k[i]*S$Sim$LAI[i])))#MJ m-2 d-1
-
+      S$Sim$PAR_Trans[i]= S$Sim$PAR_Trans_Tree[i]-S$Sim$APAR[i] # PAR above soil layer
 
       # soil (+canopy evap) water balance ---------------------------------------
 
       Soilfun(S,i)
       # Metamodel Coffee leaf water potential
       S$Sim$LeafWaterPotential[i]=
-        0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*PARcof +
+        0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*S$Sim$PAR_Trans_Tree[i] +
         2.676284*S$Sim$SoilWaterPot[i]
 
       # S$Sim$LeafWaterPotential[i]=
@@ -373,9 +375,9 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       # Metamodel Transpiration Coffee, and filter out for negative values
       S$Sim$T_Cof[i]=
-        # -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] + 0.11510*PARcof
+        # -0.42164 + 0.03467*S$Met_c$VPD[i] + 0.10559*S$Sim$LAI[i] + 0.11510*S$Sim$PAR_Trans_Tree[i]
         -0.72080 + 0.07319*S$Met_c$VPD[i] -0.76984*(1-S$Met_c$FDiff[i]) +
-        0.13646*S$Sim$LAI[i] + 0.12910*PARcof
+        0.13646*S$Sim$LAI[i] + 0.12910*S$Sim$PAR_Trans_Tree[i]
       S$Sim$T_Cof[i][S$Sim$T_Cof[i]<0]= 0
       #Plot transpiration
       S$Sim$T_tot[i]= S$Sim$T_Tree[i]+S$Sim$T_Cof[i]
@@ -394,9 +396,9 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # Metamodel for H :
       S$Sim$H_Coffee[i]=
         1.2560 - 0.2886*S$Met_c$VPD[i] - 3.6280*S$Met_c$FDiff[i] +
-        2.6480*S$Sim$T_Cof[i] + 0.4389*PARcof
+        2.6480*S$Sim$T_Cof[i] + 0.4389*S$Sim$PAR_Trans_Tree[i]
         # -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
-        # 1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+0.25838*S$Sim$LAI[i]
+        # 1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*S$Sim$PAR_Trans_Tree[i]+0.25838*S$Sim$LAI[i]
 
       S$Sim$Rn_Coffee[i]=
         S$Sim$H_Coffee[i] + S$Sim$LE_Coffee[i]
@@ -479,40 +481,40 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # Metamodel Coffee Tcanopy, Paper 2
       S$Sim$Tcan_MAESPA_Coffee[i]=
         -0.07741 + 0.99456*S$Met_c$Tair[i] - 0.06948*S$Met_c$VPD[i] -
-        1.87975*(1-S$Met_c$FDiff[i]) + 0.19615*PARcof
+        1.87975*(1-S$Met_c$FDiff[i]) + 0.19615*S$Sim$PAR_Trans_Tree[i]
       S$Sim$DegreeDays_Tcan[i]=
         GDD(Tmean = S$Sim$Tleaf_Coffee[i],MinTT = S$Parameters$MinTT,
             MaxTT = S$Parameters$MaxTT)
 
       # S$Sim$Tcan_Diurnal_Cof[i]=
-      #     0.90479 + 0.97384*S$Met_c$Diurnal_TAIR[i] + 0.24677*PARcof + 0.01163*S$Met_c$VPD[i] -
+      #     0.90479 + 0.97384*S$Met_c$Diurnal_TAIR[i] + 0.24677*S$Sim$PAR_Trans_Tree[i] + 0.01163*S$Met_c$VPD[i] -
       #     2.53554*(1-S$Met_c$FDiff[i]) - 0.04597*S$Sim$LAI_Tree[i]
       # NB 1: MAESPA simulates a Coffee canopy temperature (= average leaf temperature) very similar
       # to the air temperature within the canopy, so we can use it interchangeably.
-      # NB 2: could use sqrt of FBEAM and PARCof for a better fit (little less rmse) but we keep the
+      # NB 2: could use sqrt of FBEAM and S$Sim$PAR_Trans_Tree[i] for a better fit (little less rmse) but we keep the
       # metamodel without it to decrease the risk of any overfitting or issue on extrapolation.
 
 
       # Metamodel Coffee Tcanopy, Paper 3
       # S$Sim$Tcan_MAESPA_Coffee[i]=
       #     0.92921 + 0.95568*S$Met_c$Tair[i] + 0.01241*S$Met_c$VPD[i] -
-      #     0.47802*(1-S$Met_c$FDiff[i]) + 0.10599*PARcof-
+      #     0.47802*(1-S$Met_c$FDiff[i]) + 0.10599*S$Sim$PAR_Trans_Tree[i]-
       #     0.04573*S$Sim$LAI_Tree[i]
       # S$Sim$Tcan_Diurnal_Cof[i]=
-      #     0.90479 + 0.97384*S$Met_c$Diurnal_TAIR[i] + 0.24677*PARcof + 0.01163*S$Met_c$VPD[i] -
+      #     0.90479 + 0.97384*S$Met_c$Diurnal_TAIR[i] + 0.24677*S$Sim$PAR_Trans_Tree[i] + 0.01163*S$Met_c$VPD[i] -
       #     2.53554*(1-S$Met_c$FDiff[i]) - 0.04597*S$Sim$LAI_Tree[i]
       # NB 1: MAESPA simulates a Coffee canopy temperature (= average leaf temperature) very similar
       # to the air temperature within the canopy, so we can use it interchangeably.
-      # NB 2: could use sqrt of FBEAM and PARCof for a better fit (little less rmse) but we keep the
+      # NB 2: could use sqrt of FBEAM and S$Sim$PAR_Trans_Tree[i] for a better fit (little less rmse) but we keep the
       # metamodel without it to decrease the risk of any overfitting or issue on extrapolation.
 
       # Metamodel LUE coffee, Paper 2:
       S$Sim$lue[i]=
-        2.784288 + 0.009667*S$Met_c$Tair[i] + 0.010561*S$Met_c$VPD[i] - 0.710361*sqrt(PARcof)
+        2.784288 + 0.009667*S$Met_c$Tair[i] + 0.010561*S$Met_c$VPD[i] - 0.710361*sqrt(S$Sim$PAR_Trans_Tree[i])
 
       # Metamodel LUE coffee, Paper 3:
       # S$Sim$lue[i]=
-      #     1.968619 - 0.128587*PARcof - 1.140032*(1-S$Met_c$FDiff[i]) +
+      #     1.968619 - 0.128587*S$Sim$PAR_Trans_Tree[i] - 1.140032*(1-S$Met_c$FDiff[i]) +
       #     0.001167*S$Met_c$CO2_ppm[i] - 0.012697*S$Sim$Tcan_MAESPA_Coffee[i]
       # S$Sim$lue[i][S$Sim$lue[i]<0.578]= 0.578
 
@@ -642,7 +644,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # they appear every "S$Parameters$Tffb" degree days until flowering starts
       if(S$Sim$BudInitPeriod[i]){
         S$Sim$Budinit[i]=
-          (S$Parameters$a_Budinit+S$Parameters$b_Budinit*(PARcof/S$Parameters$FPAR))*
+          (S$Parameters$a_Budinit+S$Parameters$b_Budinit*(S$Sim$PAR_Trans_Tree[i]/S$Parameters$FPAR))*
           S$Sim$LAI[i-1]*S$Sim$ratioNodestoLAI[i-1]*S$Sim$DegreeDays_Tcan[i]
         # Number of nodes: S$Sim$LAI[i-1]*S$Sim$ratioNodestoLAI[i-1]
         S$Sim$Bud_available[i]= S$Sim$Budinit[i]

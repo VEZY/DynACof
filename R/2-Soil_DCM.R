@@ -20,14 +20,15 @@
 #' @export
 Soilfun= function(S,i){
 
-  #Rn or AE per layer (radiation reaching every layer, valid only during dailight hours,
+  # Rn or AE per layer (radiation reaching every layer, valid only during dailight hours,
   # not during night hours)
-  # Rn understorey, source Shuttleworth & Wallace, 1985, eq. 21
-  S$Sim$Rn_Soil[i]=
+  # 1- Rn understorey using Shuttleworth & Wallace, 1985, eq. 21 for reference
+  S$Sim$Rn_Soil_SW[i]=
     S$Met_c$Rn[i]*exp(-S$Parameters$k_Rn*S$Sim$LAIplot[i])
-  # source: Shuttleworth & Wallace, 1985, eq. 2.
-  # NB: soil heat storage is negligible at daily time-step (or will equilibrate soon),
-  # removing it
+
+  # 1- Rn understorey using metamodels
+  S$Parameters$Metamodels_soil(S,i)
+  # NB: soil heat storage is negligible at daily time-step (or equilibrate rapidly)
 
   #1/ Rainfall interception, source Gomez-Delgado et al.2011, Box A: IntercMax=AX;
   S$Sim$IntercMax[i]= S$Parameters$IntercSlope*S$Sim$LAIplot[i]

@@ -79,6 +79,12 @@ Metamodels= function(S,i){
     # 0.02898*S$Met_c$VPD[i]
 }
 
+#' @rdname Light_extinction_K
+#' @export
+Metamodels_soil= function(S,i){
+  S$Sim$Rn_Soil[i]= -1.102 + 1.597*S$Sim$PAR_Trans[i] + 1.391*sqrt(1-S$Met_c$FDiff[i])
+}
+
 
 #' Shade tree allometries (optional)
 #'

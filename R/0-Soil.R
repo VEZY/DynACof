@@ -24,6 +24,8 @@ soil= function(){
     RootFraction1   = 0.87,     # Root fraction in the first layer (compared to total root biomass)
     RootFraction2   = 0.069,    # Root fraction in the second layer
     RootFraction3   = 0.061,    # Root fraction in the third layer
-    REWc            = 0.40      # Constant critical relative extractable water. Source Granier et al., 1999 Biljou
+    REWc            = 0.40,     # Constant critical relative extractable water. Source Granier et al., 1999 Biljou
+    Metamodels_soil = Metamodels_soil
+    # Default metamodels from the package. If you want to update them, you can write the function here
   )
 }
