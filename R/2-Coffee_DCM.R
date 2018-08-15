@@ -335,8 +335,8 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # Light interception ------------------------------------------------------
 
       # Metamodels for K, Paper 2, trained on 2011 only :
-      S$Sim$K_Dif[i]= 0.39
-      S$Sim$K_Dir[i]= 0.34
+      S$Sim$K_Dif[i]= S$Parameters$k_Dif
+      S$Sim$K_Dir[i]= S$Parameters$k_Dir
 
       # # Metamodels for K, Paper 3, trained on all ages and structure :
       # S$Sim$K_Dif[i]= 0.40
@@ -395,8 +395,8 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       S$Sim$H_Coffee[i]=
         1.2560 - 0.2886*S$Met_c$VPD[i] - 3.6280*S$Met_c$FDiff[i] +
         2.6480*S$Sim$T_Cof[i] + 0.4389*PARcof
-      # -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
-      # 1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+0.25838*S$Sim$LAI[i]
+        # -1.80160 + 0.03139*S$Met_c$Tair[i] - 0.06046*S$Met_c$VPD[i]+
+        # 1.93064*(1-S$Met_c$FDiff[i]) + 0.58368*PARcof+0.25838*S$Sim$LAI[i]
 
       S$Sim$Rn_Coffee[i]=
         S$Sim$H_Coffee[i] + S$Sim$LE_Coffee[i]

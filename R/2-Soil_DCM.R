@@ -74,7 +74,8 @@ Soilfun= function(S,i){
     S$Sim$SuperficialRunoff[i] = S$Parameters$kB * S$Sim$WSurfaceRes[i]
     S$Sim$TotSuperficialRunoff[i] = S$Sim$SuperficialRunoff[i]
     S$Sim$WSurfaceRes[i] = S$Sim$WSurfaceRes[i] -
-      S$Sim$SuperficialRunoff[i]}
+      S$Sim$SuperficialRunoff[i]
+  }
 
   # 2.b Computing the infiltration capacity as a function of soil water content in W_1
   S$Sim$W_1[i]= S$Sim$W_1[previous_i(i,1)]
