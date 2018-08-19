@@ -36,9 +36,8 @@ Tree= function(){
     epsilon_Branch_Tree  = 1.33,                      # Branch growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
     epsilon_Stem_Tree    = 1.33,                      # Stem growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
     epsilon_CR_Tree      = 1.33,                      # Coarse root growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
-    epsilon_Leaf_Tree    = 1.392,                   # Leaf growth cost coefficient (gC.gC-1). Source: Erythrina excelsa Villar and Merino (2001),
-    epsilon_FRoot_Tree   = 1.392,                   # Leaf growth cost coefficient (gC.gC-1). Considered = to leaves
-    epsilon_Reserves_Tree= 1,                         # Reserves growth cost coefficient (gC.gC-1). No cost, unknown.
+    epsilon_Leaf_Tree    = 1.392,                     # Leaf growth cost coefficient (gC.gC-1). Source: Erythrina excelsa Villar and Merino (2001),
+    epsilon_Reserves_Tree= 1.000001,                  # Reserves growth cost coefficient (gC.gC-1). No cost, unknown.
     lifespanBranch_Tree  = 7300,                      # Branch lifespan, natural mortality (d)
     lifespanLeaf_Tree    = 10^5,                      # Leaf lifespan (d). Taken infinite because regulated by leaf fall phenology.
     lifespanFRoot_Tree   = 90,                        # Fine roots lifespan (d).
