@@ -19,11 +19,11 @@ Metamodels_soil(S, i)
 \item{i}{The day of interest.}
 }
 \value{
-\item{\eqn{K_dif_Tree}}{Shade tree diffuse light coefficient}
-        \item{\eqn{K_dir_Tree}}{Shade tree direct light coefficient}
-        \item{\eqn{lue_Tree}}{Light use efficiency (gC MJ-1)}
-        \item{\eqn{T_Tree}}{Transpiration (mm d-1)}
-        \item{\eqn{H_Tree}}{Sensible heat (MJ m-2 d-1)}
+\item{\eqn{K_{dif_{Tree}}}}{Shade tree diffuse light coefficient}
+        \item{\eqn{K_{dif_{Tree}}}}{Shade tree direct light coefficient}
+        \item{\eqn{lue_{Tree}}}{Light use efficiency (gC MJ-1)}
+        \item{\eqn{T_{Tree}}}{Transpiration (mm d-1)}
+        \item{\eqn{H_{Tree}}}{Sensible heat (MJ m-2 d-1)}
 }
 \description{
 Several variables can be highly impacted by the canopy structure. Hence, some variables are
