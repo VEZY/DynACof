@@ -362,7 +362,7 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 #'          And is derived from the equation :
 #'          \deqn{Rn= (1-albedo)*RAD-Rln}
 #'          where \eqn{Rln} is the net upward longwave radiation flux.
-#'          The actual vapor pressure \deqn{ea} can be computed using either VPD or the relative
+#'          The actual vapor pressure \eqn{ea} can be computed using either VPD or the relative
 #'          humidity and the maximum and minimum daily temperature. If both are provided, Rh will
 #'          be used.
 #' @return \item{\eqn{Rn}}{Daily net radiation (MJ m-2 d-1)}
