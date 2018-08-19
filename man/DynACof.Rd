@@ -186,7 +186,7 @@ Almost all variables for coffee exist also for shade trees with the suffix
          LAI_Tree = shade tree LAI.
          Special shade tree variables (see return section) are only optional,
          and it may have more variables upon parameterization because variables can be added in
-         the metamodels parameter file in \strong{\code{\link{Metamodels}}} or
+         the metamodels parameter file in \strong{\code{\link[=Light_extinction_K]{Metamodels}}} or
          \strong{\code{\link{Allometries}}}.
          Important :
          It is highly recommended to set the system environment timezone to the one from the meteorology file.

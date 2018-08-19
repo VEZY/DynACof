@@ -28,11 +28,11 @@
 #'            and the partitioning parameter between soil sensible and latent flux was also adjusted using MAESPA outputs.
 #'            MAESPA is a 3D explicit model for energy, carbon and water fluxes simulation, for further details, see:
 #'            \href{https://goo.gl/Z4ehi8}{Vezy et al. (2018)}, or the \href{https://maespa.github.io/}{MAESPA website}
-#' @return \item{\eqn{K_dif_Tree}}{Shade tree diffuse light coefficient}
-#'         \item{\eqn{K_dir_Tree}}{Shade tree direct light coefficient}
-#'         \item{\eqn{lue_Tree}}{Light use efficiency (gC MJ-1)}
-#'         \item{\eqn{T_Tree}}{Transpiration (mm d-1)}
-#'         \item{\eqn{H_Tree}}{Sensible heat (MJ m-2 d-1)}
+#' @return \item{\eqn{K_{dif_{Tree}}}}{Shade tree diffuse light coefficient}
+#'         \item{\eqn{K_{dif_{Tree}}}}{Shade tree direct light coefficient}
+#'         \item{\eqn{lue_{Tree}}}{Light use efficiency (gC MJ-1)}
+#'         \item{\eqn{T_{Tree}}}{Transpiration (mm d-1)}
+#'         \item{\eqn{H_{Tree}}}{Sensible heat (MJ m-2 d-1)}
 #'
 #' @references See \href{https://goo.gl/NVxcVp}{Vezy (2017)}
 #'

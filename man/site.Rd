@@ -40,7 +40,7 @@ the one from the default parameter files. Other parameters can be added to the f
 
 The default site is a stand from the Aquiares farm, located in Costa Rica. It is a \emph{Coffea arabica}
 plantation in agroforestry management under \emph{Erythrina poeppigiana} shade trees. The plot is visible
-at this \href{https://goo.gl/7FRNXg}{adress}, and a full desciption is available
+at this \href{https://goo.gl/7FRNXg}{address}, and a full desciption is available
 \href{https://www.researchgate.net/publication/323398728_Measuring_and_modelling_energy_partitioning_in_canopies_of_varying_complexity_using_MAESPA_model}{here}
 and \href{https://www.researchgate.net/publication/323469257_Simulation_de_pratiques_de_gestion_alternatives_pour_l'adaptation_des_plantations_perennes_aux_changements_globaux}{here}.
 }
@@ -60,7 +60,7 @@ The default coffee parameters. It is essentially a high density plantation (6666
 \section{Tree}{
 
 The default shade tree parameters. The shade trees in Aquiares are  \emph{Erythrina poeppigiana}
-planted at a low density of ~7.4 trees ha-1. These tree make a relatively large crown and have an
+planted at a low density of ~7.4 trees ha-1. These trees make a relatively large crown and have an
 average height of 26 m in 2018 on this site. NB: the Tree parameter file is optional, and not needed
 for monospecific coffee plantations.
 }

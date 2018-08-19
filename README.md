@@ -61,7 +61,10 @@ DynACof(WriteIt = T, Period= as.POSIXct(c("1979-01-01", "1980-12-31")),Inpath = 
 
 Note that the Meteo file can be of any regular format because the model uses the `data.table::fread` function internally.
 
-Enjoy !!
+Code of conduct
+---------------
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 Acknowledgments
 ---------------
