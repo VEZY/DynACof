@@ -204,7 +204,7 @@ Shade.Tree= function(S,i){
   S$Sim$NPP_Stem_Tree[i]= S$Sim$Alloc_Stem_Tree[i]/S$Parameters$epsilon_Stem_Tree
   # Growth respiration = Offer * (1-growth cost coefficient):
   S$Sim$Rc_Stem_Tree[i]=
-    S$Sim$Alloc_Stem_Tree[i]/(1-S$Parameters$epsilon_Stem_Tree)
+    S$Sim$Alloc_Stem_Tree[i]-S$Sim$NPP_Stem_Tree[i]
   # Mortality: No mortality yet for this compartment.
   # If stem mortality has to be set, write it here.
 
@@ -213,7 +213,7 @@ Shade.Tree= function(S,i){
   #NPP
   S$Sim$NPP_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]/S$Parameters$epsilon_CR_Tree
   # Growth respiration:
-  S$Sim$Rc_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]/(1-S$Parameters$epsilon_CR_Tree)
+  S$Sim$Rc_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]-S$Sim$NPP_CR_Tree[i]
   # Natural mortality
   S$Sim$Mact_CR_Tree[i]=
     S$Sim$CM_CR_Tree[previous_i(i,1)]/S$Parameters$lifespanCR_Tree
@@ -225,7 +225,7 @@ Shade.Tree= function(S,i){
     S$Sim$Alloc_Branch_Tree[i]/S$Parameters$epsilon_Branch_Tree
   # Growth respiration:
   S$Sim$Rc_Branch_Tree[i]=
-    S$Sim$Alloc_Branch_Tree[i]/(1-S$Parameters$epsilon_Branch_Tree)
+    S$Sim$Alloc_Branch_Tree[i]-S$Sim$NPP_Branch_Tree[i]
   # Natural mortality:
   S$Sim$Mact_Branch_Tree[i]=
     S$Sim$CM_Branch_Tree[previous_i(i,1)]/S$Parameters$lifespanBranch_Tree
@@ -237,7 +237,7 @@ Shade.Tree= function(S,i){
     S$Sim$Alloc_Leaf_Tree[i]/S$Parameters$epsilon_Leaf_Tree
   # Growth respiration:
   S$Sim$Rc_Leaf_Tree[i]=
-    S$Sim$Alloc_Leaf_Tree[i]/(1-S$Parameters$epsilon_Leaf_Tree)
+    S$Sim$Alloc_Leaf_Tree[i]-S$Sim$Rc_Leaf_Tree[i]
 
   # Leaf Fall ---------------------------------------------------------------
 
@@ -260,7 +260,7 @@ Shade.Tree= function(S,i){
     S$Sim$Alloc_FRoot_Tree[i]/S$Parameters$epsilon_FRoot_Tree
   # Growth respiration
   S$Sim$Rc_FRoot_Tree[i]=
-    S$Sim$Alloc_FRoot_Tree[i]/(1-S$Parameters$epsilon_FRoot_Tree)
+    S$Sim$Alloc_FRoot_Tree[i]-S$Sim$NPP_FRoot_Tree[i]
   # Natural mortality
   S$Sim$Mact_FRoot_Tree[i]=
     S$Sim$CM_FRoot_Tree[previous_i(i,1)]/S$Parameters$lifespanFRoot_Tree
@@ -271,7 +271,7 @@ Shade.Tree= function(S,i){
     S$Sim$Alloc_Reserves_Tree[i]/S$Parameters$epsilon_Reserves_Tree
   # Cost of allocating to reserves
   S$Sim$Rc_Reserves_Tree[i]=
-    S$Sim$Alloc_Reserves_Tree[i]/(1-S$Parameters$epsilon_Reserves_Tree)
+    S$Sim$Alloc_Reserves_Tree[i]-S$Sim$NPP_Reserves_Tree[i]
 
 
 

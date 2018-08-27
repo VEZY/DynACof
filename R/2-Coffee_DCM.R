@@ -595,7 +595,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # NPP (Offer-Rc)
       S$Sim$NPP_RsWood[i]= S$Sim$Alloc_RsWood[i]/S$Parameters$epsilonRsWood
       # Rc (growth respiration
-      S$Sim$Rc_RsWood[i]= S$Sim$Alloc_RsWood[i]/(1-S$Parameters$epsilonRsWood)
+      S$Sim$Rc_RsWood[i]= S$Sim$Alloc_RsWood[i]-S$Sim$NPP_RsWood[i]
       # Natural Mortality
       S$Sim$Mnat_RsWood[i]=
         S$Sim$CM_RsWood[previous_i(i,1)]/S$Parameters$lifespanRsWood
@@ -615,7 +615,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       #NPP
       S$Sim$NPP_SCR[i]= S$Sim$Alloc_SCR[i]/S$Parameters$epsilonSCR
       #Rc
-      S$Sim$Rc_SCR[i]= S$Sim$Alloc_SCR[i]/(1-S$Parameters$epsilonSCR)
+      S$Sim$Rc_SCR[i]= S$Sim$Alloc_SCR[i]-S$Sim$NPP_SCR[i]
       #Mortality
       S$Sim$Mnat_SCR[i]=
         S$Sim$CM_SCR[previous_i(i,1)]/S$Parameters$lifespanSCR
@@ -747,7 +747,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
       # Optimal sucrose concentration around 8.8% of the dry mass
 
       S$Sim$NPP_Fruit[i]= S$Sim$Alloc_Fruit[i]/S$Parameters$epsilonFruit
-      S$Sim$Rc_Fruit[i]= S$Sim$Alloc_Fruit[i]/(1-S$Parameters$epsilonFruit)
+      S$Sim$Rc_Fruit[i]= S$Sim$Alloc_Fruit[i]-S$Sim$NPP_Fruit[i]
 
       # Harvest. Made one day only for now (TODO: make it a period of harvest)
       # Made as soon as the fruit dry mass is decreasing for 10 consecutive days. This condition is met
@@ -782,7 +782,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
 
       S$Sim$NPP_Leaf[i]= S$Sim$Alloc_Leaf[i]/S$Parameters$epsilonLeaf
-      S$Sim$Rc_Leaf[i]= S$Sim$Alloc_Leaf[i]/(1-S$Parameters$epsilonLeaf)
+      S$Sim$Rc_Leaf[i]= S$Sim$Alloc_Leaf[i]-S$Sim$NPP_Leaf[i]
       S$Sim$Mnat_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespanLeaf
 
       S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_Leaf[i]-S$Sim$Alloc_Leaf[i])
@@ -810,7 +810,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
       S$Sim$NPP_FRoot[i]= S$Sim$Alloc_FRoot[i]/S$Parameters$epsilonFRoot
 
-      S$Sim$Rc_FRoot[i]= S$Sim$Alloc_FRoot[i]/(1-S$Parameters$epsilonFRoot)
+      S$Sim$Rc_FRoot[i]= S$Sim$Alloc_FRoot[i]-S$Sim$NPP_FRoot[i]
 
       S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_FRoot[i]-S$Sim$Alloc_FRoot[i])
 
