@@ -157,24 +157,24 @@ Shade.Tree= function(S,i){
           S$Parameters$lambda_Leaf_Tree*S$Sim$Offer_Total_Tree[i])
     S$Sim$M_Rm_FRoot_Tree[i]=
       S$Parameters$lambda_FRoot_Tree*S$Sim$Offer_Total_Tree[i]
-    S$Sim$M_Rm_Reserves_Tree[i]=
+    S$Sim$M_Rm_RE_Tree[i]=
       S$Sim$Offer_Total_Tree[i]-
       (S$Sim$M_Rm_FRoot_Tree[i]+S$Sim$M_Rm_Leaf_Tree[i]+
          S$Sim$M_Rm_Branch_Tree[i]+S$Sim$M_Rm_CR_Tree[i]+
          S$Sim$M_Rm_Stem_Tree[i])
 
-    if(S$Sim$M_Rm_Reserves_Tree[i]>(S$Sim$CM_RE_Tree[previous_i(i,1)]-S$Sim$Consumption_RE_Tree[i])){
+    if(S$Sim$M_Rm_RE_Tree[i]>(S$Sim$CM_RE_Tree[previous_i(i,1)]-S$Sim$Consumption_RE_Tree[i])){
       # If reserves cannot provide the C deficit, take it from wood mortality:
-      C_overdeficit_RE= S$Sim$M_Rm_Reserves_Tree[i]-(S$Sim$CM_RE_Tree[previous_i(i,1)]-S$Sim$Consumption_RE_Tree[i])
+      C_overdeficit_RE= S$Sim$M_Rm_RE_Tree[i]-(S$Sim$CM_RE_Tree[previous_i(i,1)]-S$Sim$Consumption_RE_Tree[i])
       S$Sim$M_Rm_CR_Tree[i]=
         S$Sim$M_Rm_CR_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_CR_Tree/S$Parameters$Wood_alloc)
       S$Sim$M_Rm_Branch_Tree[i]=
         S$Sim$M_Rm_Branch_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_Branch_Tree/S$Parameters$Wood_alloc)
       S$Sim$M_Rm_Stem_Tree[i]=
         S$Sim$M_Rm_Stem_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_Stem_Tree/S$Parameters$Wood_alloc)
-      S$Sim$M_Rm_Reserves_Tree[i]= S$Sim$M_Rm_Reserves_Tree[i]-C_overdeficit_RE
+      S$Sim$M_Rm_RE_Tree[i]= S$Sim$M_Rm_RE_Tree[i]-C_overdeficit_RE
     }
-    # NB : M_Rm_Reserves_Tree is regarded as an extra reserve consumption as offer is not met.
+    # NB : M_Rm_RE_Tree is regarded as an extra reserve consumption as offer is not met.
     S$Sim$Offer_Total_Tree[i]= 0
   }
 
@@ -193,7 +193,7 @@ Shade.Tree= function(S,i){
   S$Sim$Alloc_FRoot_Tree[i]=
     S$Parameters$lambda_FRoot_Tree*S$Sim$Offer_Total_Tree[i]
   # Allocation to reserves (Offer - all other allocations):
-  S$Sim$Alloc_Reserves_Tree[i]=
+  S$Sim$Alloc_RE_Tree[i]=
     S$Sim$Offer_Total_Tree[i]-
     (S$Sim$Alloc_FRoot_Tree[i]+S$Sim$Alloc_Leaf_Tree[i]+
        S$Sim$Alloc_Branch_Tree[i]+S$Sim$Alloc_CR_Tree[i]+
@@ -267,11 +267,11 @@ Shade.Tree= function(S,i){
 
 
   #### Reserves ####
-  S$Sim$NPP_Reserves_Tree[i]=
-    S$Sim$Alloc_Reserves_Tree[i]/S$Parameters$epsilon_Reserves_Tree
+  S$Sim$NPP_RE_Tree[i]=
+    S$Sim$Alloc_RE_Tree[i]/S$Parameters$epsilon_RE_Tree
   # Cost of allocating to reserves
-  S$Sim$Rc_Reserves_Tree[i]=
-    S$Sim$Alloc_Reserves_Tree[i]-S$Sim$NPP_Reserves_Tree[i]
+  S$Sim$Rc_RE_Tree[i]=
+    S$Sim$Alloc_RE_Tree[i]-S$Sim$NPP_RE_Tree[i]
 
 
 
@@ -358,7 +358,7 @@ Shade.Tree= function(S,i){
 
   S$Sim$CM_RE_Tree[i]=
     S$Sim$CM_RE_Tree[previous_i(i,1)]+
-    S$Sim$NPP_Reserves_Tree[i]-S$Sim$Consumption_RE_Tree[i]-S$Sim$M_Rm_Reserves_Tree[i]
+    S$Sim$NPP_RE_Tree[i]-S$Sim$Consumption_RE_Tree[i]-S$Sim$M_Rm_RE_Tree[i]
 
   ##########################################
   S$Sim$DM_Leaf_Tree[i]=
@@ -375,7 +375,7 @@ Shade.Tree= function(S,i){
   S$Sim$Rc_Tree[i]=
     S$Sim$Rc_CR_Tree[i]+S$Sim$Rc_Leaf_Tree[i]+
     S$Sim$Rc_Branch_Tree[i]+S$Sim$Rc_Stem_Tree[i]+
-    S$Sim$Rc_FRoot_Tree[i]+S$Sim$Rc_Reserves_Tree[i]
+    S$Sim$Rc_FRoot_Tree[i]+S$Sim$Rc_RE_Tree[i]
 
   S$Sim$Ra_Tree[i]=
     S$Sim$Rm_Tree[i]+S$Sim$Rc_Tree[i]
@@ -383,7 +383,7 @@ Shade.Tree= function(S,i){
   S$Sim$NPP_Tree[i]=
     S$Sim$NPP_Stem_Tree[i]+S$Sim$NPP_Branch_Tree[i]+
     S$Sim$NPP_Leaf_Tree[i]+S$Sim$NPP_CR_Tree[i]+
-    S$Sim$NPP_FRoot_Tree[i]+S$Sim$NPP_Reserves_Tree[i]
+    S$Sim$NPP_FRoot_Tree[i]+S$Sim$NPP_RE_Tree[i]
 
   # Daily C balance that should be nil every day:
   S$Sim$Cbalance_Tree[i]=
