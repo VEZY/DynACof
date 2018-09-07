@@ -79,12 +79,11 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dynacof-the-dynamic-agroforestry-coffee-crop-model" class="anchor"></a>DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="reference/figures/logo.png" alt="logo" width="300" align="right">
 </h1></div>
-<!-- <img src="C:/Users/vezyr/OneDrive/DynACof/man/figures/logo.png" alt="logo" style="width:30%;height:auto;" align="right" /> -->
 <p><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a> <a href="https://travis-ci.com/VEZY/DynACof"><img src="https://travis-ci.com/VEZY/DynACof.svg?branch=master" alt="Travis Build Status"></a> <a href="https://ci.appveyor.com/project/VEZY/DynACof"><img src="https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://gitter.im/DynACof/Lobby?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&amp;branch=master" alt="Join the chat at https://gitter.im/DynACof/Lobby#"></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a> <a href="https://zenodo.org/badge/latestdoi/125098628"><img src="https://zenodo.org/badge/125098628.svg" alt="DOI"></a></p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield, energy, and water balance of coffee plantations according to management, while accounting for spatial effects using metamodels from the 3D process-based MAESPA. The model also uses coffee bud and fruit cohorts for reproductive development to better represent fruit carbon demand distribution along the year.</p>
+<p>The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield, energy, and water balance of coffee plantations according to management, while accounting for spatial effects using metamodels from the 3D process-based <a href="https://maespa.github.io/">MAESPA</a>. The model also uses coffee bud and fruit cohorts for reproductive development to better represent fruit carbon demand distribution along the year.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -94,9 +93,8 @@
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</code></pre></div>
 <p>Or using the lightweight <a href="https://github.com/r-lib/remotes#readme">remotes</a> package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
-remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"VEZY/DynACof"</span>)</code></pre></div>
-<p>For the moment, there is no <a href="https://CRAN.R-project.org">CRAN</a> released version of DynACof, but we work on that. You will soon be able to run this command to install the package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"DynACof"</span>)</code></pre></div>
+remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</code></pre></div>
+<p>The package is tested routinely to pass all <a href="https://CRAN.R-project.org">CRAN</a> tests using Travis-CI (linux) and AppVeyor (Windows), but is not released to the CRAN servers because we believe DynACof users are not widespread enough to bother CRAN people and use their free server time.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
@@ -106,7 +104,7 @@ remotes<span class="op">::</span><span class="kw">install_github</span>(<span cl
 <span class="kw">library</span>(<span class="st">"DynACof"</span>)
 <span class="kw">Sys.setenv</span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)
 <span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">Period=</span> <span class="kw">as.POSIXct</span>(<span class="kw">c</span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)))</code></pre></div>
-<p>To use your own data, you’ll have to tell DynACof where to find it using <code>Inpath</code> parameter, and what is the files names with the <code>FileName</code> parameter list:</p>
+<p>To use your own data, you have to tell DynACof where to find it using <code>Inpath</code> parameter, and what are the file names with the <code>FileName</code> parameter list:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
 <span class="kw">library</span>(<span class="st">"DynACof"</span>)
 <span class="kw">Sys.setenv</span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)

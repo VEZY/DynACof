@@ -23,23 +23,27 @@ ALS(Elevation, SlopeAzimut = 0, Slope = 0, RowDistance = 1.5, Shade = 0,
 
 \item{Fertilization}{N fertilization per year}
 
-\item{ShadeType}{Shade type:  1= Legume only ; 2= bananas and legume ;
-3= bananas and other plants ; 4=    fruit and
-forest tree only ; 5= no shade}
+\item{ShadeType}{Shade type:\describe{
+\item{1}{Legume only}
+\item{2}{Bananas and legume}
+\item{3}{Bananas and other plants}
+\item{4}{Fruit and forest trees only}
+\item{5}{No shade (Full sun)}
+}}
 
 \item{CoffeePruning}{Character specifying the pruning management.
-Values: tree, row, block or NULL.}
+Values: \code{tree}, \code{row}, \code{block} or \code{NULL}.}
 
 \item{df_rain}{Data frame with DOY, year and Rain (mm) values}
 }
 \value{
-\item{ALS}{Percentage of dead leaves by ALS by day (\eqn{\%  day-1})}
+\item{ALS}{Percentage of dead leaves by ALS by day (\eqn{\%  day^{-1}})}
 }
 \description{
-Compute the percentage of leaves on coffee dying from
+Compute the percentage of \emph{Coffea} leaves dying from
              American Leaf Spot disease, drought excluded.
 }
-\details{
+\note{
 It is good practice to use shade tree transmittance to compute \code{Shade} percentage
          (\eqn{Shade= 1-Transmittance}).
 }

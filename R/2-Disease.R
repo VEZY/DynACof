@@ -1,6 +1,6 @@
 #' American Leaf Spot
 #'
-#' @description Compute the percentage of leaves on coffee dying from
+#' @description Compute the percentage of \emph{Coffea} leaves dying from
 #'              American Leaf Spot disease, drought excluded.
 #'
 #' @param Elevation           Site elevation       (m.a.s.l)
@@ -10,18 +10,22 @@
 #' @param Shade               Shade percentage     (\eqn{\%})
 #' @param CanopyHeight.Coffee Coffee Height        (m)
 #' @param Fertilization       N fertilization per year
-#' @param ShadeType           Shade type:  1= Legume only ; 2= bananas and legume ;
-#'                                         3= bananas and other plants ; 4=	fruit and
-#'                                         forest tree only ; 5= no shade
+#' @param ShadeType           Shade type:\describe{
+#'                                                 \item{1}{Legume only}
+#'                                                 \item{2}{Bananas and legume}
+#'                                                 \item{3}{Bananas and other plants}
+#'                                                 \item{4}{Fruit and forest trees only}
+#'                                                 \item{5}{No shade (Full sun)}
+#'                                                 }
 #' @param CoffeePruning       Character specifying the pruning management.
-#'                            Values: tree, row, block or NULL.
+#'                            Values: \code{tree}, \code{row}, \code{block} or \code{NULL}.
 #' @param df_rain             Data frame with DOY, year and Rain (mm) values
 #'
-#' @details It is good practice to use shade tree transmittance to compute \code{Shade} percentage
+#' @note It is good practice to use shade tree transmittance to compute \code{Shade} percentage
 #'          (\eqn{Shade= 1-Transmittance}).
 #'
 #'
-#' @return \item{ALS}{Percentage of dead leaves by ALS by day (\eqn{\%  day-1})}
+#' @return \item{ALS}{Percentage of dead leaves by ALS by day (\eqn{\%  day^{-1}})}
 #'
 #' @references Avelino et al. (2007) Topography and Crop Management Are Key Factors
 #' for the Development of American Leaf Spot Epidemics on Coffee in Costa Rica

@@ -1,10 +1,10 @@
 
 #' Shade Tree subroutine
 #'
-#' @description This make all computations for shade trees (similar to coffee, but no fruits) for the ith
+#' @description Make all computations for shade trees (similar to coffee, but no fruits) for the ith
 #'              day by modifying the \code{S} list in place.
 #'
-#' @param S The main simulation list to make the computation on and to modify.
+#' @param S The simulation list of class "Simulation".
 #' @param i The index of the day since the first day of the simulation.
 #'
 #' @return Nothing, modify the list of simulation \code{S} in place. See \code{\link{DynACof}} for
@@ -89,35 +89,35 @@ Shade.Tree= function(S,i){
   S$Sim$Rm_Leaf_Tree[i]=
     S$Parameters$PaliveLeaf_Tree*S$Sim$DM_Leaf_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NContentLeaf_Tree*S$Parameters$Q10Leaf_Tree^
-    ((S$Met_c$Tair[i]-S$Parameters$TMR)/10)
+    ((S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_CR_Tree[i]=
     S$Parameters$PaliveCR_Tree*
     S$Sim$DM_CR_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NContentCR_Tree*
     S$Parameters$Q10CR_Tree^(
-      (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
+      (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_Branch_Tree[i]=
     S$Parameters$PaliveBranch_Tree[S$Sim$Plot_Age[i],2]*
     S$Sim$DM_Branch_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NContentBranch_Tree*
     S$Parameters$Q10Branch_Tree^(
-      (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
+      (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_Stem_Tree[i]=
     S$Parameters$PaliveStem_Tree[S$Sim$Plot_Age[i],2]*
     S$Sim$DM_Stem_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NContentStem_Tree*
     S$Parameters$Q10Stem_Tree^(
-      (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
+      (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_FRoot_Tree[i]=
     S$Parameters$PaliveFRoot_Tree*
     S$Sim$DM_FRoot_Tree[previous_i(i,1)]*
     S$Parameters$MRN*S$Parameters$NContentFRoot_Tree*
     S$Parameters$Q10FRoot_Tree^(
-      (S$Met_c$Tair[i]-S$Parameters$TMR)/10)
+      (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_Tree[i]=
     S$Sim$Rm_Leaf_Tree[i]+ S$Sim$Rm_CR_Tree[i]+
@@ -128,9 +128,9 @@ Shade.Tree= function(S,i){
 
   ########## Potential use of reserves####
   # Reserves are used only if GPP doesn't meet the maintenance respiration + 10% need.
-  # Thus, if GPP is < to Rm*1.1, then we take the needed C to meet the Rm (Rm*1.1-GPP), but not more than
-  # there is C in the reserves
-  if(S$Sim$GPP_Tree[i]<(S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i])){
+  # Thus, if GPP is < to Rm*kres_max_Tree, then we take the needed C to meet the Rm (Rm*1.1-GPP), but not more than
+  # there is C in the reserves. If the reserve mass are high (>50 gC m-2), we can use it whatever the need.
+  if(S$Sim$GPP_Tree[i]<(S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i])|S$Sim$CM_RE_Tree[previous_i(i,1)]>S$Parameters$Res_max_Tree){
     S$Sim$Consumption_RE_Tree[i]=
       max(0,min(S$Sim$CM_RE_Tree[previous_i(i,1)],S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i]))
   }

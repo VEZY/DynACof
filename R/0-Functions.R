@@ -122,7 +122,7 @@ warn.var= function(Var,replacement,type="error"){
 }
 
 
-#' Trigonometric Functions (degree angles version)
+#' Trigonometric Functions (degree)
 #'
 #' @description These functions give the obvious trigonometric functions.
 #'              They respectively compute the cosine, sine, tangent,
@@ -233,14 +233,14 @@ GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
 #' @param DOY         Day Of Year from 1st January (day)
 #' @param RAD         Incident total radiation (MJ m-2 d-1)
 #' @param Latitude    Latitude (deg)
-#' @param type        Model type, one of Spitters, Page or Gopinathan (default to Spitters)
+#' @param type        Model type, one of \code{Spitters}, \code{Page} or \code{Gopinathan}
 #'
 #' @details The daily extra-terrestrial radiation at a plane parallel to the earth surface
 #'          (\eqn{S0_d} or \eqn{H0} depending on the source) is computed following
 #'          Khorasanizadeh and Mohammadi (2016).
 #'          The daily diffuse fraction is computed following DB models from :
 #' \itemize{
-#'   \item Spitters et al. (1986), for de Bilt in Netherlands and stated that their model is
+#'   \item Spitters et al. (1986): used in de Bilt in Netherlands, stated that their model is
 #'         valid for a wide range of climate conditions
 #'   \item Page (1967) using the data from 10 widely-spread sites in the 40N to 40S latitude belt
 #'   \item Gopinathan and Soler (1995) from 40 widely distributed locations in the latitude range

@@ -12,7 +12,7 @@
 \alias{acos_deg}
 \alias{asin_deg}
 \alias{atan_deg}
-\title{Trigonometric Functions (degree angles version)}
+\title{Trigonometric Functions (degree)}
 \usage{
 cos_deg(x)
 

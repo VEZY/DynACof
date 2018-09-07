@@ -11,7 +11,7 @@ Shade.Tree(S, i)
 No_Shade(...)
 }
 \arguments{
-\item{S}{The main simulation list to make the computation on and to modify.}
+\item{S}{The simulation list of class "Simulation".}
 
 \item{i}{The index of the day since the first day of the simulation.}
 }
@@ -20,7 +20,7 @@ Nothing, modify the list of simulation \code{S} in place. See \code{\link{DynACo
         more details.
 }
 \description{
-This make all computations for shade trees (similar to coffee, but no fruits) for the ith
+Make all computations for shade trees (similar to coffee, but no fruits) for the ith
              day by modifying the \code{S} list in place.
 }
 \note{

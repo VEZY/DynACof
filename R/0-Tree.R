@@ -31,6 +31,7 @@ Tree= function(){
     lambda_Leaf_Tree     = 0.24,                      # Allocation coefficient to the Leaves. Source: Litton (2007)
     lambda_FRoot_Tree    = 0.05,                      # Allocation coefficient to the fine roots. Source: Litton (2007)
     kres_max_Tree        = 1.2,                       # Maximum carbon extracted from reserves compared to maintenance respiration
+    Res_max_Tree         = 80,                        # Maximum reserve until Tree always use it for growth
     CContent_Leaf_Tree   = 0.47,                      # Leaf carbon content in gC gDM-1. Source: Masera et al. (2003)
     CContent_wood_Tree   = 0.47,                      # Wood carbon content in gC gDM-1. Source: Masera et al. (2003)
     epsilon_Branch_Tree  = 1.33,                      # Branch growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)

@@ -14,7 +14,7 @@ Diffuse_d(DOY, RAD, Latitude = 35, type = c("Spitters", "Page",
 
 \item{Latitude}{Latitude (deg)}
 
-\item{type}{Model type, one of Spitters, Page or Gopinathan (default to Spitters)}
+\item{type}{Model type, one of \code{Spitters}, \code{Page} or \code{Gopinathan}}
 }
 \value{
 \item{\eqn{Hd/H}}{Daily diffuse fraction of light (\%)}
@@ -28,7 +28,7 @@ The daily extra-terrestrial radiation at a plane parallel to the earth surface
          Khorasanizadeh and Mohammadi (2016).
          The daily diffuse fraction is computed following DB models from :
 \itemize{
-  \item Spitters et al. (1986), for de Bilt in Netherlands and stated that their model is
+  \item Spitters et al. (1986): used in de Bilt in Netherlands, stated that their model is
         valid for a wide range of climate conditions
   \item Page (1967) using the data from 10 widely-spread sites in the 40N to 40S latitude belt
   \item Gopinathan and Soler (1995) from 40 widely distributed locations in the latitude range

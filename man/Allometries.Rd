@@ -7,18 +7,18 @@
 Allometries(S, i)
 }
 \arguments{
-\item{S}{The global list used within the DynACof model.}
+\item{S}{The list of class "Simulation" used by the DynACof model.}
 
-\item{i}{The day of interest.}
+\item{i}{The index of the day.}
 }
 \value{
-Any variable that is computed in the function. Default: DM_Stem_Tree, Height_Tree, CrownProj_Tree,
-          CrownRad_Tree, Crown_H_Tree, Trunk_H_Tree, LA_Tree and LAD_Tree.
+Any variable that is computed by the function. Default: \code{DM_Stem_Tree}, \code{Height_Tree},
+          \code{CrownProj_Tree}, \code{CrownRad_Tree}, \code{Crown_H_Tree}, \code{Trunk_H_Tree},
+          \code{LA_Tree and LAD_Tree}.
 }
 \description{
 Compute shade tree allometries, which are optional in the model.
-             This function is made available to the user to easily change or add equations,
-             not to be called directly.
+             The function is available to easily change or add equations, not to be called directly.
 }
 \details{
 This function is called from the \code{\link{Tree}} parameter functions, and then by the model.
