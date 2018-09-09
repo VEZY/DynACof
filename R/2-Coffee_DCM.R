@@ -75,7 +75,6 @@
 #'                              \tab lambdaSCRage             \tab gC gC-1             \tab Age related allocation coefficient to Stump and Coarse Roots                       \cr
 #'                              \tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
 #'                              \tab Offer_*                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
-#'                              \tab Demand_*                 \tab gC m-2 d-1          \tab Total C demand from organ                                                          \cr
 #'                              \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
 #'                              \tab NPP_*                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
 #'                              \tab Mnat_*                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
@@ -85,7 +84,6 @@
 #'                              \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
 #'                              \tab CM_*                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
 #'                              \tab DM_*                     \tab gDM m-2 d-1         \tab Organ dry mass                                                                     \cr
-#'                              \tab Height_Tree              \tab m                   \tab Shade tree total height (used for boundary conductance), set to 0 if no shade trees\cr
 #' Fruit development            \tab BudInitPeriod            \tab boolean             \tab Bud initiation period                                                              \cr
 #'                              \tab Budinit                  \tab Buds d-1            \tab Total Number of Buds Initiated per day                                             \cr
 #'                              \tab ratioNodestoLAI          \tab Nodes LAI-1         \tab Number of fruiting nodes per LAI unit                                              \cr
@@ -127,12 +125,13 @@
 #' Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1    \tab shade tree leaf area                                                               \cr
 #'                              \tab Crown_H_Tree             \tab m                   \tab Crown height                                                                       \cr
 #'                              \tab Trunk_H_Tree             \tab m                   \tab Trunk height                                                                       \cr
+#'                              \tab Height_Tree              \tab m                   \tab Shade tree total height (used for boundary conductance), set to 0 if no shade trees\cr
 #'                              \tab DBH_Tree_m               \tab m                   \tab Diameter at breast height                                                          \cr
 #'                              \tab LAD_Tree                 \tab m2 m-3              \tab Shade tree Leaf Area Density                                                       \cr
 #'                              \tab CrownRad_Tree            \tab m                   \tab Crown radius                                                                       \cr
 #'                              \tab CrownProj_Tree           \tab m2 crown tree-1     \tab Crown projection                                                                   \cr
 #'                              \tab Stocking_Tree            \tab tree m-2            \tab Shade tree density                                                                 \cr
-#'                              \tab TimetoThin_Tree          \tab boolean             \tab Is it time to thin the shade tree                                                  \cr
+#'                              \tab TimetoThin_Tree          \tab boolean             \tab Days on which tree is thinned                                                      \cr
 #'                              \tab MThinning_*_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 #'}
 #'
@@ -142,18 +141,18 @@
 #' DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
 #' Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr
 #' Tair            \tab deg C       \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
-#' Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \tab Required (error) \cr
-#' Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \tab Required (error) \cr
+#' Tmax            \tab deg C       \tab Maximum air temperature during the day       \tab Required (error) \cr
+#' Tmin            \tab deg C       \tab Minimum air temperature during the day       \tab Required (error) \cr
 #' RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
 #' RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
 #' Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Try to compute from VPD, Tair and Elevation, or Tair and Elevation. \cr
 #' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Try to set it to constant: \code{Parameters$WindSpeed} \cr
 #' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Try to set it to constant: \code{Parameters$CO2}\cr
-#' DegreeDays      \tab deg C       \tab Growing degrre days                          \tab Computed using \code{\link{GDD}} \cr
+#' DegreeDays      \tab deg C       \tab Growing degree days                          \tab Computed using \code{\link{GDD}} \cr
 #' PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
-#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} usinf Spitters formula \cr
+#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} using Spitters formula \cr
 #' VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
-#' Rn              \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
+#' Rn (!=Rn_tot)    \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
 #' DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
 #' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf]{air.density}}}
 #'   \item Parameters: A list of the input parameters (see \code{\link{site}})
@@ -169,6 +168,8 @@
 #'          Important :
 #'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
 #'          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
+#'
+#' @note All variable units are available as attributes (see example)
 #'
 #' @examples
 #' \dontrun{

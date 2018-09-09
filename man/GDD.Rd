@@ -26,14 +26,14 @@ GDD(Tmax = NULL, Tmin = NULL, MinTT = 5, MaxTT = NULL, Round = T,
 \description{
 Compute the physiological degree days at daily time-step
              using the maximum and minimum daily temperature (and optionally using the
-             average daily temperature, not recommanded).
+             average daily temperature, not recommended).
 }
 \details{
 Please keep in mind that this function gives an approximation of the degree days. GDD are
 usually computed as the integral of hourly (or less) values.
 The round argument is provided for convenience, as growing temperatures with less than 3 digits are likely to be
 within the measurement error, and will probably have no visible effect on plant phenology.
-Caution, use Tmean only if Tmax and Tmin are not available because it tends to give less powerful approximation.
+Caution, use Tmean only if Tmax and Tmin are not available because it tends to give less powerful estimation.
 }
 \examples{
 # Growing degree days over 10 days :

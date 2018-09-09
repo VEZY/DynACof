@@ -86,12 +86,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/VEZY/DynACof">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -105,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Bulk aerodynamic conductance</h1>
-    <small class="dont-index">Source: <a href='https://github.com/VEZY/DynACof/blob/master/R/0-Functions.R'><code>R/0-Functions.R</code></a></small>
+    
     <div class="hidden name"><code>G_bulk.Rd</code></div>
     </div>
 
@@ -177,25 +172,26 @@ Van de Griend et al (1989).</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>alpha</code> can also be computed as:
-         $$alpha=\frac{zw-d}{Z_top-d}$$
-         The bulk aerodynamic conductance \(ga_bulk\) is computed as follow:
-         $$ga_bulk=\frac{1}{r1+r2+r3}$$
+         $$alpha=\frac{zw-d}{Z_{top}-d}$$
+         The bulk aerodynamic conductance \(ga_{bulk}\) is computed as follow:
+         $$ga_{bulk}=\frac{1}{r1+r2+r3}$$
          where <code>r1</code>, <code>r2</code> and <code>r3</code> are the aerodynamic resistances of the inertial
          sublayer, the roughness sublayer and the top layer of the canopy respectively. Because
          wind speed measurements are more often made directly in the roughness sublayer, the
          resistance in the inertial sublayer <code>r1</code> is set to <code>0</code> though. <code>r2</code> and
          <code>r3</code> are computed using the equation 43 of Van de Griend and Van Boxel (refer to
-         the pdf version of the help file for Latex rendering) :
+         the pdf of the <a href='https://vezy.github.io/DynACof/reference/G_bulk.html'>web</a> version
+         of the help file for Latex rendering) :
          $$r2=\int_{zh}^{zw}\frac{1}{K''}$$
-         with $$K''= kU_*(z_w-d)$$.
+         with $$K''= kU_*(z_w-d)$$
          And:
          $$r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z$$
-         with $$K'''= U_z\frac{K_h}{U_h}$$.</p>
-<p>Integration of <code>r2</code> and <code>r3</code> integral equations give:
+         with $$K'''= U_z\frac{K_h}{U_h}$$</p>
+<p>Integration of <code>r2</code> and <code>r3</code> equations give:
          $$\frac{(\ln(ZPD-ZW)^2-\ln(ZPD-Z2)^2)}{(2kU_*)}$$
          simplified in:
          $$r2= \frac{1}{kU_*}\ln(\frac{ZPD-ZW}{ZPD-Z2})$$
-         and   $$r3= \frac{Uh}{Kh}\ln(\frac{Uh}{U_{interlayer}})$$</p>
+         and finaly:  $$r3= \frac{Uh}{Kh}\ln(\frac{Uh}{U_{interlayer}})$$</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

@@ -34,8 +34,8 @@
 
 <meta property="og:description" content="The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield,
                energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
-               metamodels from the 3D process-based MAESPA. The model also uses coffee bud and fruit cohorts for reproductive
-               development to better represent fruit carbon demand distribution along the year." />
+               metamodels from the 3D process-based model MAESPA. The model also uses cohorts for
+               the development of the coffee buds and fruits to better represent fruit carbon demand distribution along the year." />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -87,12 +87,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/VEZY/DynACof">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -106,7 +101,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Dynamic Agroforestry Coffee Crop Model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/VEZY/DynACof/blob/master/R/2-Coffee_DCM.R'><code>R/2-Coffee_DCM.R</code></a></small>
+    
     <div class="hidden name"><code>DynACof.Rd</code></div>
     </div>
 
@@ -114,8 +109,8 @@
     
     <p>The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield,
                energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
-               metamodels from the 3D process-based MAESPA. The model also uses coffee bud and fruit cohorts for reproductive
-               development to better represent fruit carbon demand distribution along the year.</p>
+               metamodels from the 3D process-based model <a href='https://maespa.github.io/'>MAESPA</a>. The model also uses cohorts for
+               the development of the coffee buds and fruits to better represent fruit carbon demand distribution along the year.</p>
     
     </div>
 
@@ -133,16 +128,16 @@
     </tr>
     <tr>
       <th>WriteIt</th>
-      <td><p>If <code>TRUE</code>, write the resulting list, see details. Default: <code>FALSE</code></p></td>
+      <td><p>If <code>TRUE</code>, write the outputs to disk using <code><a href='write.results.html'>write.results</a></code>, see details. Default: <code>FALSE</code></p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>PARAM_DESCRIPTION</p></td>
+      <td><p>Further arguments to pass to <code><a href='write.results.html'>write.results</a></code>.</p></td>
     </tr>
     <tr>
       <th>output_f</th>
-      <td><p>Output format, if '.RData', the output list will be saved as a unique <code>.RData</code> file, if it is different from
-<code>.RData</code>, the output list will be writen in several <code>.csv</code> and <code>.txt</code> format. Default: <code>.RData</code></p></td>
+      <td><p>Output format. If <code>output_f = ".RData"</code>, the output list will be saved as a unique <code>.RData</code> file. Any other value:
+write the output list in several <code>.csv</code> and <code>.txt</code> files. Default: <code>.RData</code></p></td>
     </tr>
     <tr>
       <th>Inpath</th>
@@ -150,11 +145,11 @@
     </tr>
     <tr>
       <th>Outpath</th>
-      <td><p>Path pointing to the folder were the results will be writen, Default: <code>=Inpath</code></p></td>
+      <td><p>Path pointing to the folder were the results will be writen, Default: <code>Outpath = Inpath</code></p></td>
     </tr>
     <tr>
       <th>Simulation_Name</th>
-      <td><p>Character name of the simulation file name if <code>WriteIt=T</code>. Default: <code>DynACof</code></p></td>
+      <td><p>Character name of the simulation file name if <code>WriteIt = T</code>. Default: <code>"DynACof"</code></p></td>
     </tr>
     <tr>
       <th>FileName</th>
@@ -164,26 +159,26 @@
   <dt>Soil</dt><dd><p>Soil parameters file name, see details. Default: <code>'3-Soil.R'</code></p></dd>
   <dt>Coffee</dt><dd><p>Coffee parameters file name, see details. Default: <code>'4-Coffee.R'</code></p></dd>
   <dt>Tree</dt><dd><p>Shade tree parameters file name, see details. Default: <code>NULL</code></p></dd>
-</dl><p>Default input filenames are provided with the package so the model can run with no input parameter files at all.</p></td>
+</dl><p>Default input files are provided with the package as an example parameterization.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Return invisibly a list containing three objects (Parameters, Meteo and Sim):</p><ul>
-<li><p>A data.frame of the simulation outputs at daily time-step:</p><table class='table'>
+<li><p>Sim: A data.frame of the simulation outputs at daily time-step:</p><table class='table'>
 <tr><td><strong>Type</strong></td><td><strong>Var</strong></td><td><strong>unit</strong></td><td><strong>Definition</strong></td></tr>
 <tr><td>General</td><td>Cycle</td><td>-</td><td>Plantation cycle ID</td></tr>
-<tr><td></td><td>Plot_Age</td><td>year</td><td>Plantation age</td></tr>
+<tr><td></td><td>Plot_Age</td><td>year</td><td>Plantation age (starting at 1)</td></tr>
 <tr><td></td><td>Plot_Age_num</td><td>year (numeric)</td><td>Numeric age of plantation</td></tr>
 <tr><td></td><td>LAIplot</td><td>m2 leaves m-2 soil</td><td>Plot (Coffee + Shade Tree if any) Leaf Area Index</td></tr>
-<tr><td>Organs Coffee</td><td>*_RE</td><td>-</td><td>Reserves</td></tr>
+<tr><td>Suffixes for Coffee organs</td><td>*_RE</td><td>-</td><td>Reserves</td></tr>
 <tr><td></td><td>*_SCR</td><td>-</td><td>Stump and Coarse roots</td></tr>
 <tr><td></td><td>*_Fruit</td><td>-</td><td>Fruit</td></tr>
 <tr><td></td><td>*_RsWood</td><td>-</td><td>Resprout wood (= branches)</td></tr>
 <tr><td></td><td>*_FRoot</td><td>-</td><td>Fine roots</td></tr>
 <tr><td></td><td>*_Leaf</td><td></td><td>Leaves</td></tr>
-<tr><td>Organs shade tree</td><td>*_RE_Tree</td><td>-</td><td>Reserves</td></tr>
+<tr><td>Suffixes for Shade Tree org.</td><td>*_RE_Tree</td><td>-</td><td>Reserves</td></tr>
 <tr><td></td><td>*_Stem_Tree</td><td>-</td><td>Stem (= trunk)</td></tr>
 <tr><td></td><td>*_Branch_Tree</td><td>-</td><td>Branches</td></tr>
 <tr><td></td><td>*_CoarseRoot_Tree</td><td>-</td><td>Coarse roots</td></tr>
@@ -197,9 +192,9 @@
 <tr><td></td><td>LE_*</td><td>MJ m-2 d-1</td><td>System/Coffee/Tree/Soil latent heat</td></tr>
 <tr><td></td><td>H_*</td><td>MJ m-2 d-1</td><td>System/Coffee/Tree/Soil sensible heat</td></tr>
 <tr><td></td><td>Q_Soil</td><td>MJ m-2 d-1</td><td>Soil heat transport</td></tr>
-<tr><td></td><td>Transmittance_Tree</td><td>fraction</td><td>Fraction of light transmitted under the shade trees canopy</td></tr>
-<tr><td></td><td>PAR_Trans_Tree</td><td>MJ m-2 d-1</td><td>Light transmitted under the shade trees canopy</td></tr>
-<tr><td></td><td>PAR_Trans</td><td>MJ m-2 d-1</td><td>Light transmitted under the Coffea canopy</td></tr>
+<tr><td></td><td>Transmittance_Tree</td><td>fraction</td><td>Fraction of light transmitted by the shade trees</td></tr>
+<tr><td></td><td>PAR_Trans_Tree</td><td>MJ m-2 d-1</td><td>Light transmitted by the shade trees canopy</td></tr>
+<tr><td></td><td>PAR_Trans</td><td>MJ m-2 d-1</td><td>Light transmitted by the Coffea canopy</td></tr>
 <tr><td></td><td>K_Dir</td><td>-</td><td>Direct light extinction coefficient</td></tr>
 <tr><td></td><td>K_Dif</td><td>-</td><td>Diffuse light extinction coefficient</td></tr>
 <tr><td></td><td>APAR</td><td>MJ m-2 d-1</td><td>Absorbed PAR by the plant</td></tr>
@@ -212,18 +207,17 @@
 <tr><td></td><td>DegreeDays_Tcan</td><td>deg C</td><td>Growing degree days computed using Coffee Canopy Temperature</td></tr>
 <tr><td>Carbon</td><td>GPP</td><td>gC m-2 d-1</td><td>Gross primary productivity</td></tr>
 <tr><td></td><td>Consumption_RE</td><td>gC m-2 d-1</td><td>Daily reserve consumption</td></tr>
-<tr><td></td><td>Carbon_Lack_Mortality</td><td>gC m-2 d-1</td><td>Mortality from a higher carbon consumption than carbon offer</td></tr>
+<tr><td></td><td>Carbon_Lack_Mortality</td><td>gC m-2 d-1</td><td>Mortality from a higher carbon consumption than offer</td></tr>
 <tr><td></td><td>Rm</td><td>gC m-2 d-1</td><td>Total Coffee maintenance respiration</td></tr>
 <tr><td></td><td>Rm_*</td><td>gC m-2 d-1</td><td>Maintenance respiration at organ scale</td></tr>
 <tr><td></td><td>Rc</td><td>gC m-2 d-1</td><td>Total Coffee growth respiration</td></tr>
 <tr><td></td><td>Rc_*</td><td>gC m-2 d-1</td><td>Growth respiration at organ scale</td></tr>
-<tr><td></td><td>Ra</td><td>gC m-2 d-1</td><td>Coffee layer autotrophic respiration (=maintenance+growth)</td></tr>
+<tr><td></td><td>Ra</td><td>gC m-2 d-1</td><td>Coffee layer autotrophic respiration (=Rm+Rc)</td></tr>
 <tr><td></td><td>Demand_*</td><td>gC m-2 d-1</td><td>C demand at organ scale (fruit, leaf and fine root only)</td></tr>
 <tr><td></td><td>Alloc_*</td><td>gC m-2 d-1</td><td>C allocation to organ net of Rm (NPP+Rc)</td></tr>
-<tr><td></td><td>lambdaSCRage</td><td>gC gC-1</td><td>Age related allocation coefficient to Stump and Coars Roots</td></tr>
+<tr><td></td><td>lambdaSCRage</td><td>gC gC-1</td><td>Age related allocation coefficient to Stump and Coarse Roots</td></tr>
 <tr><td></td><td>Offer</td><td>gC m-2 d-1</td><td>C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)</td></tr>
-<tr><td></td><td>Offer_*</td><td>gC m-2 d-1</td><td>C offer to organ net of Rm</td></tr>
-<tr><td></td><td>Demand_*</td><td>gC m-2 d-1</td><td>Total C demand from organ</td></tr>
+<tr><td></td><td>Offer_*</td><td>gC m-2 d-1</td><td>C offer to organ, net of Rm</td></tr>
 <tr><td></td><td>NPP</td><td>gC m-2 d-1</td><td>Net primary productivity at layer scale</td></tr>
 <tr><td></td><td>NPP_*</td><td>gC m-2 d-1</td><td>Net primary productivity at organ scale</td></tr>
 <tr><td></td><td>Mnat_*</td><td>gC m-2 d-1</td><td>Organ natural mortality (= due to lifespan)</td></tr>
@@ -233,7 +227,6 @@
 <tr><td></td><td>LAI</td><td>m2 leaves m-2 soil</td><td>Leaf Area Index</td></tr>
 <tr><td></td><td>CM_*</td><td>gC m-2 d-1</td><td>Organ C mass</td></tr>
 <tr><td></td><td>DM_*</td><td>gDM m-2 d-1</td><td>Organ dry mass</td></tr>
-<tr><td></td><td>Height_Tree</td><td>m</td><td>Shade tree total height (used for boundary conductance), set to 0 if no shade trees</td></tr>
 <tr><td>Fruit development</td><td>BudInitPeriod</td><td>boolean</td><td>Bud initiation period</td></tr>
 <tr><td></td><td>Budinit</td><td>Buds d-1</td><td>Total Number of Buds Initiated per day</td></tr>
 <tr><td></td><td>ratioNodestoLAI</td><td>Nodes LAI-1</td><td>Number of fruiting nodes per LAI unit</td></tr>
@@ -275,39 +268,40 @@
 <tr><td>Special shade tree variables</td><td>LA_Tree</td><td>m2 leaves tree-1</td><td>shade tree leaf area</td></tr>
 <tr><td></td><td>Crown_H_Tree</td><td>m</td><td>Crown height</td></tr>
 <tr><td></td><td>Trunk_H_Tree</td><td>m</td><td>Trunk height</td></tr>
+<tr><td></td><td>Height_Tree</td><td>m</td><td>Shade tree total height (used for boundary conductance), set to 0 if no shade trees</td></tr>
 <tr><td></td><td>DBH_Tree_m</td><td>m</td><td>Diameter at breast height</td></tr>
 <tr><td></td><td>LAD_Tree</td><td>m2 m-3</td><td>Shade tree Leaf Area Density</td></tr>
 <tr><td></td><td>CrownRad_Tree</td><td>m</td><td>Crown radius</td></tr>
 <tr><td></td><td>CrownProj_Tree</td><td>m2 crown tree-1</td><td>Crown projection</td></tr>
 <tr><td></td><td>Stocking_Tree</td><td>tree m-2</td><td>Shade tree density</td></tr>
-<tr><td></td><td>TimetoThin_Tree</td><td>boolean</td><td>Is it time to thin the shade tree</td></tr>
+<tr><td></td><td>TimetoThin_Tree</td><td>boolean</td><td>Days on which tree is thinned</td></tr>
 <tr><td></td><td>MThinning_*_Tree</td><td>gc m-2 d-1</td><td>Mortality due to thining at organ scale</td></tr>
 </table>
 </li>
-<li><p>A data.frame of the input meteorology, potentially coming from the output of <code><a href='Meteorology.html'>Meteorology</a></code>:</p><table class='table'>
+<li><p>Meteo: A data.frame of the input meteorology, potentially coming from the output of <code><a href='Meteorology.html'>Meteorology</a></code>:</p><table class='table'>
 <tr><td><strong>Var</strong></td><td><strong>unit</strong></td><td><strong>Definition</strong></td><td><strong>If missing</strong></td></tr>
 <tr><td>Date</td><td>POSIXct date</td><td>Date in POSIXct format</td><td>Computed from start date parameter, or set a dummy date if missing</td></tr>
 <tr><td>year</td><td>year</td><td>Year of the simulation</td><td>Computed from Date</td></tr>
 <tr><td>DOY</td><td>day</td><td>day of the year</td><td>Computed from Date</td></tr>
 <tr><td>Rain</td><td>mm</td><td>Rainfall</td><td>Assume no rain</td></tr>
 <tr><td>Tair</td><td>deg C</td><td>Air temperature (above canopy)</td><td>Computed from Tmax and Tmin</td></tr>
-<tr><td>Tmax</td><td>deg C</td><td>Maximum air temperature durnig the day</td><td>Required (error)</td></tr>
-<tr><td>Tmin</td><td>deg C</td><td>Minimum air temperature durnig the day</td><td>Required (error)</td></tr>
+<tr><td>Tmax</td><td>deg C</td><td>Maximum air temperature during the day</td><td>Required (error)</td></tr>
+<tr><td>Tmin</td><td>deg C</td><td>Minimum air temperature during the day</td><td>Required (error)</td></tr>
 <tr><td>RH</td><td>%</td><td>Relative humidity</td><td>Not used, but prefered over VPD for Rn computation</td></tr>
 <tr><td>RAD</td><td>MJ m-2 d-1</td><td>Incident shortwave radiation</td><td>Computed from PAR</td></tr>
 <tr><td>Pressure</td><td>hPa</td><td>Atmospheric pressure</td><td>Try to compute from VPD, Tair and Elevation, or Tair and Elevation.</td></tr>
 <tr><td>WindSpeed</td><td>m s-1</td><td>Wind speed</td><td>Try to set it to constant: <code>Parameters$WindSpeed</code></td></tr>
 <tr><td>CO2</td><td>ppm</td><td>Atmospheric CO2 concentration</td><td>Try to set it to constant: <code>Parameters$CO2</code></td></tr>
-<tr><td>DegreeDays</td><td>deg C</td><td>Growing degrre days</td><td>Computed using <code><a href='GDD.html'>GDD</a></code></td></tr>
+<tr><td>DegreeDays</td><td>deg C</td><td>Growing degree days</td><td>Computed using <code><a href='GDD.html'>GDD</a></code></td></tr>
 <tr><td>PAR</td><td>MJ m-2 d-1</td><td>Incident photosynthetically active radiation</td><td>Computed from RAD</td></tr>
-<tr><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td><td>Computed using <code><a href='Diffuse_d.html'>Diffuse_d</a></code> usinf Spitters formula</td></tr>
+<tr><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td><td>Computed using <code><a href='Diffuse_d.html'>Diffuse_d</a></code> using Spitters formula</td></tr>
 <tr><td>VPD</td><td>hPa</td><td>Vapor pressure deficit</td><td>Computed from RH</td></tr>
-<tr><td>Rn</td><td>MJ m-2 d-1</td><td>Net radiation (will soon be depreciated)</td><td>Computed using <code><a href='Rad_net.html'>Rad_net</a></code> with RH, or VPD</td></tr>
+<tr><td>Rn (!=Rn_tot)</td><td>MJ m-2 d-1</td><td>Net radiation (will soon be depreciated)</td><td>Computed using <code><a href='Rad_net.html'>Rad_net</a></code> with RH, or VPD</td></tr>
 <tr><td>DaysWithoutRain</td><td>day</td><td>Number of consecutive days with no rainfall</td><td>Computed from Rain</td></tr>
 <tr><td>Air_Density</td><td>kg m-3</td><td>Air density of moist air (\(\rho\)) above canopy</td><td>Computed using <code><a href='http://www.rdocumentation.org/packages/bigleaf/topics/air.density'>air.density</a></code></td></tr>
 </table>
 </li>
-<li><p>A list of the input parameters (see <code><a href='site.html'>site</a></code>)</p></li>
+<li><p>Parameters: A list of the input parameters (see <code><a href='site.html'>site</a></code>)</p></li>
 </ul>
 
     
@@ -323,6 +317,10 @@
          Important :
          It is highly recommended to set the system environment timezone to the one from the meteorology file.
          For example the default meteorology file (<code><a href='Aquiares.html'>Aquiares</a></code>) has to be set to <code>Sys.setenv(TZ="UTC")</code>.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>All variable units are available as attributes (see example)</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -352,14 +350,12 @@
 
       <li><a href="#details">Details</a></li>
 
+      <li><a href="#note">Note</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
-
-    <h2>Author</h2>
-    
-R. Vezy; O. Roupsard
 
   </div>
 </div>

@@ -186,7 +186,7 @@ atan_deg= function(x){
 #'
 #' @description Compute the physiological degree days at daily time-step
 #'              using the maximum and minimum daily temperature (and optionally using the
-#'              average daily temperature, not recommanded).
+#'              average daily temperature, not recommended).
 #'
 #' @param Tmax    Maximum daily temperature (Celsius degree)
 #' @param Tmin    Minimum daily temperature (Celsius degree)
@@ -200,7 +200,7 @@ atan_deg= function(x){
 #' usually computed as the integral of hourly (or less) values.
 #' The round argument is provided for convenience, as growing temperatures with less than 3 digits are likely to be
 #' within the measurement error, and will probably have no visible effect on plant phenology.
-#' Caution, use Tmean only if Tmax and Tmin are not available because it tends to give less powerful approximation.
+#' Caution, use Tmean only if Tmax and Tmin are not available because it tends to give less powerful estimation.
 #'
 #'
 #' @return \item{GDD}{Growing degree days (Celsius degree)}
@@ -251,22 +251,23 @@ GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
 #'
 #' @return \item{\eqn{Hd/H}}{Daily diffuse fraction of light (\%)}
 #'
-#' @references Duffie, J.A. and W.A. Beckman, Solar engineering of thermal processes. 2013: John Wiley & Sons.
-#'             Gopinathan, K. and A. Soler, Diffuse radiation models and monthly-average, daily, diffuse data for
-#'             a wide latitude range. Energy, 1995. 20(7): p. 657-667.
-#'             Kalogirou, S.A., Solar energy engineering: processes and systems. 2013: Academic Press.
-#'             Khorasanizadeh, H. and K. Mohammadi, Diffuse solar radiation on a horizontal surface:
-#'             Reviewing and categorizing the empirical models. Renewable and Sustainable Energy Reviews,
-#'             2016. 53: p. 338-362.
-#'             Liu, B.Y.H. and R.C. Jordan, The interrelationship and characteristic distribution of direct,
-#'             diffuse and total solar radiation. Solar Energy, 1960. 4(3): p. 1-19.
-#'             Page, J. The estimation of monthly mean values of daily total short wave radiation on vertical
-#'             and inclined surfaces from sunshine records 40S-40N. in Proceedings of the United Nations
-#'             Conference on New Sources of Energy: Solar Energy, Wind Power and Geothermal Energy, Rome, Italy. 1967.
-#'             Spitters, C.J.T., H.A.J.M. Toussaint, and J. Goudriaan, Separating the diffuse and direct
-#'             component of global radiation and its implications for modeling canopy photosynthesis Part I.
-#'             Components of incoming radiation. Agricultural and Forest Meteorology, 1986. 38(1): p. 217-229.
-
+#' @references \itemize{
+#'   \item Duffie, J.A. and W.A. Beckman, Solar engineering of thermal processes. 2013: John Wiley & Sons.
+#'         Gopinathan, K. and A. Soler, Diffuse radiation models and monthly-average, daily, diffuse data for
+#'         a wide latitude range. Energy, 1995. 20(7): p. 657-667.
+#'   \item Kalogirou, S.A., Solar energy engineering: processes and systems. 2013: Academic Press.
+#'         Khorasanizadeh, H. and K. Mohammadi, Diffuse solar radiation on a horizontal surface:
+#'         Reviewing and categorizing the empirical models. Renewable and Sustainable Energy Reviews,
+#'         2016. 53: p. 338-362.
+#'   \item Liu, B.Y.H. and R.C. Jordan, The interrelationship and characteristic distribution of direct,
+#'         diffuse and total solar radiation. Solar Energy, 1960. 4(3): p. 1-19.
+#'   \item Page, J. The estimation of monthly mean values of daily total short wave radiation on vertical
+#'         and inclined surfaces from sunshine records 40S-40N. in Proceedings of the United Nations
+#'         Conference on New Sources of Energy: Solar Energy, Wind Power and Geothermal Energy, Rome, Italy. 1967.
+#'   \item Spitters, C.J.T., H.A.J.M. Toussaint, and J. Goudriaan, Separating the diffuse and direct
+#'         component of global radiation and its implications for modeling canopy photosynthesis Part I.
+#'         Components of incoming radiation. Agricultural and Forest Meteorology, 1986. 38(1): p. 217-229.
+#' }
 #'
 #' @examples
 #' # Daily diffuse fraction of january 1st at latitude 35 N, with a RAD of 25 MJ m-2 day-1 :
@@ -483,9 +484,11 @@ PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind=0,wleaf=0.06
 #' Canopy and Soil boundary layer conductance
 #'
 #' @description This function assumes two aerodynamic conductances in series:
-#'  1) from the atmosphere to the canopy, based on Van de Griend (1989), this is actually two conductances,
+#' \enumerate{
+#'   \item from the atmosphere to the canopy, based on Van de Griend (1989). This is actually two conductances,
 #'   one in the inertial sublayer and one in the roughness sublayer.
-#'  2) within the canopy to the soil, based on Choudhury & Monteith (1988).
+#'   \item within the canopy to the soil, based on Choudhury & Monteith (1988).
+#' }
 #'
 #' @param WIND        Average daily windspeed (m s-1)
 #' @param ZHT         Wind measurement height (m)
@@ -494,17 +497,29 @@ PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind=0,wleaf=0.06
 #' @param ZPD         Zero-plane displacement (m), defaults to 0.75*TREEH
 #' @param GBCANMS1MIN Minimum allowed atmosphere to canopy conductance (mol m-2 s-1), default to 0.0123
 #' @param VONKARMAN   Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
+#'
 #' @details The defaults for Z0 and ZPD are computed very simply. Other simple formulations:
-#'          1) Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \code{h*}
+#' \enumerate{
+#'   \item Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \code{h*}
 #'          is canopy height, s is the average silhouette area (projected area of the tree on a vertical plane)
-#'           and S the specific area, with \deqn{S= A/n}, where A is the total plot area and n the number of trees.
-#'          2) For ZPD, Verhoef et al. (1997) said \deqn{d= 0.67}. h is a good proxy without any prior knowledge.
+#'          and S the specific area, with \eqn{S= A/n}, where A is the total plot area and n the number of trees.
+#'   \item For ZPD, Verhoef et al. (1997) said \eqn{d= 0.67}. h is a good proxy without any prior knowledge.
+#' }
+#'
 #' @return A list of three :
 #'         \item{ustar}{The friction velocity (m s-1)}
-#'         \item{\eqn{Canopy}}{Atmosphere to canopy boundary layer conductance (mol m-2 s-1)}
+#'         \item{Canopy}{Atmosphere to canopy boundary layer conductance (mol m-2 s-1)}
 #'         \item{Soil}{Canopy to soil boundary layer conductance (mol m-2 s-1)}
 #'
-#' @references Van de Griend (1989), Choudhury & Monteith (1988)
+#' @references \itemize{
+#'   \item Van de Griend, A. A. and J. H. Van Boxel (1989). "Water and surface energy balance model
+#'         with a multilayer canopy representation for remote sensing purposes." Water Resources Research 25(5): 949-971.
+#'   \item Choudhury, B. and J. Monteith (1988). "A four‐layer model for the heat budget of homogeneous land surfaces.
+#'         " Quarterly Journal of the Royal Meteorological Society 114(480): 373-398.
+#' }
+#'
+#' @seealso \code{\link{Gb_h}}, \code{\link{G_bulk}}, \code{\link{G_interlay}}, \code{\link{G_soilcan}},
+#'          \code{\link{Gb_hForced}}, \code{\link{Gb_hFree}} and \code{\link{PENMON}}
 #'
 #' @examples
 #' # Canop conductance of a forest:
@@ -592,9 +607,9 @@ GBCANMS= function(WIND,ZHT,TREEH,Z0=TREEH*0.1,ZPD=TREEH*0.75,GBCANMS1MIN = 0.012
 #' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 #'
-#' @details As the function computes the average wind speed at the center of the canopy layer, it
-#'          uses the \code{LAI_lay} parameter to add half of the target layer to the cumulated LAI
-#'          above:
+#' @details The function computes the average wind speed at the center of the canopy layer. It is considered
+#'          that the leaf distibution is homogeneous in the layer, so the \code{LAI_lay} parameter is used to
+#'          add half of the target layer to the cumulated LAI above:
 #'          \deqn{WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}}{
 #'          WindLay= Wh*e(-extwind*(LAI_abv+LAI_lay/2)}
 #'          with \code{Wh} the wind speed at top of the canopy.
@@ -651,27 +666,28 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
 #' @details \code{alpha} can also be computed as:
-#'          \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
-#'          The bulk aerodynamic conductance \eqn{ga_bulk}{ga_bulk} is computed as follow:
-#'          \deqn{ga_bulk=\frac{1}{r1+r2+r3}}{ga_bulk= 1/(r1+r2+r3)}
+#'          \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
+#'          The bulk aerodynamic conductance \eqn{ga_{bulk}}{ga_bulk} is computed as follow:
+#'          \deqn{ga_{bulk}=\frac{1}{r1+r2+r3}}{ga_bulk= 1/(r1+r2+r3)}
 #'          where \code{r1}, \code{r2} and \code{r3} are the aerodynamic resistances of the inertial
 #'          sublayer, the roughness sublayer and the top layer of the canopy respectively. Because
 #'          wind speed measurements are more often made directly in the roughness sublayer, the
 #'          resistance in the inertial sublayer \code{r1} is set to \code{0} though. \code{r2} and
 #'          \code{r3} are computed using the equation 43 of Van de Griend and Van Boxel (refer to
-#'          the pdf version of the help file for Latex rendering) :
+#'          the pdf of the \href{https://vezy.github.io/DynACof/reference/G_bulk.html}{web} version
+#'          of the help file for Latex rendering) :
 #'          \deqn{r2=\int_{zh}^{zw}\frac{1}{K''}}{r2= Integral{zh,zw}(1/K'')dz}
-#'          with \deqn{K''= kU_*(z_w-d)}{K''= k x Ustar x (zw-d)}.
+#'          with \deqn{K''= kU_*(z_w-d)}{K''= k x Ustar x (zw-d)}
 #'          And:
 #'          \deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{z2+z1)/2,zh}(1/K''')dz}
-#'          with \deqn{K'''= U_z\frac{K_h}{U_h}}{K'''= Uz x (Kh/Uh)}.
+#'          with \deqn{K'''= U_z\frac{K_h}{U_h}}{K'''= Uz x (Kh/Uh)}
 #'
-#'          Integration of \code{r2} and \code{r3} integral equations give:
+#'          Integration of \code{r2} and \code{r3} equations give:
 #'          \deqn{\frac{(\ln(ZPD-ZW)^2-\ln(ZPD-Z2)^2)}{(2kU_*)}}{
 #'          r2= (log((ZPD-ZW)^2)-log((ZPD-Z2)^2))/(2*vonkarman*Ustar)}
 #'          simplified in:
 #'          \deqn{r2= \frac{1}{kU_*}\ln(\frac{ZPD-ZW}{ZPD-Z2})}{r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z2))}
-#'          and   \deqn{r3= \frac{Uh}{Kh}\ln(\frac{Uh}{U_{interlayer}})}{r3= (Uh/Kh)*log(Uh/U_interlayer)}
+#'          and finaly:  \deqn{r3= \frac{Uh}{Kh}\ln(\frac{Uh}{U_{interlayer}})}{r3= (Uh/Kh)*log(Uh/U_interlayer)}
 #'
 #' @return \item{G_bulk}{The bulk aerodynamic conductance (m s-1)}
 #'
@@ -688,8 +704,13 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
 #' @export
 G_bulk= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                  LAI,extwind=0,vonkarman=Constants()$vonkarman){
-
-  if((ZHT-ZPD)/Z0<1){ZPD= (ZHT-Z0)*0.9}
+  if(any(ZHT<Z_top)){
+    warning("Measurement height lower than canopy height (ZHT < Z_top), forcing ZHT > Z_top")
+    ZHT2= 1.01*Z_top
+    ZHT2[ZHT>Z_top]=ZHT
+    ZHT= ZHT2
+  }
+  # if((ZHT-ZPD)/Z0<1){ZPD= (ZHT-Z0)*0.9}
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   Kh= alpha*vonkarman*Ustar*(Z_top-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
@@ -730,12 +751,12 @@ G_bulk= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alp
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
 #' @details \code{alpha} can also be computed as:
-#'          \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
+#'          \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
 #'          The aerodynamic conductance between canopy layers is computed as:
 #'          \deqn{g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}}{g_af= 1/((Uh/Kh)*log(U_mid/U_inter))}
-#'          where usually \eqn{U_mid} is the wind speed at median cumulated LAI between
-#'          the top and the soil, and \eqn{U_inter} the wind speed at height between
-#'          the two canopy layers. In this function, \eqn{U_mid} and \eqn{U_inter} are computed
+#'          where usually \eqn{U_{mid}}{U_mid} is the wind speed at (median) cumulated LAI between
+#'          the top and the soil, and \eqn{U_{inter}}{U_inter} the wind speed at the height between
+#'          the two canopy layers. In this function, \eqn{U_{mid}}{U_mid} and \eqn{U_{inter}}{U_inter} are computed
 #'          relative to the leaf area instead of the height of the vegetation layers.
 #'
 #' @return \item{g_af}{The aerodynamic conductance of the air between two canopy layers (m s-1)}
@@ -754,7 +775,12 @@ G_bulk= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alp
 #' @export
 G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                      LAI_top,LAI_bot,extwind=0,vonkarman=Constants()$vonkarman){
-
+  if(any(ZHT<Z_top)){
+    warning("Measurement height lower than canopy height (ZHT < Z_top), forcing ZHT > Z_top")
+    ZHT2= 1.01*Z_top
+    ZHT2[ZHT>Z_top]=ZHT
+    ZHT= ZHT2
+  }
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   Kh= alpha*vonkarman*Ustar*(Z_top-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
@@ -794,13 +820,13 @@ G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
 #' @details \code{alpha} can also be computed as:
-#'          \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
+#'          \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
 #'          The aerodynamic conductance between the lowest canopy layer and the soil
 #'          is computed as:
 #'          \deqn{g_{a0}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{0})}}{g_a0= 1/((Uh/Kh)*log(U_mid/U_0))}
-#'          where \eqn{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
+#'          where \eqn{U_{mid}}{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
 #'          \eqn{U_0} the wind speed at soil surface.
-#' @return \item{g_a0}{The aerodynamic conductance of the air between the lowest canopy layer
+#' @return \item{\eqn{g_a0}}{The aerodynamic conductance of the air between the lowest canopy layer
 #'                     and the soil surface (m s-1)}
 #'
 #' @references Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
@@ -816,6 +842,12 @@ G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD
 #' @export
 G_soilcan= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
                      LAI_top,LAI_bot,extwind=0,vonkarman=Constants()$vonkarman){
+  if(any(ZHT<Z_top)){
+    warning("Measurement height lower than canopy height (ZHT < Z_top), forcing ZHT > Z_top")
+    ZHT2= 1.01*Z_top
+    ZHT2[ZHT>Z_top]=ZHT
+    ZHT= ZHT2
+  }
   Ustar = Wind*vonkarman/log((ZHT-ZPD)/Z0) # by inverting eq.41 from Van de Griend
   Kh= alpha*vonkarman*Ustar*(Z_top-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
@@ -908,8 +940,8 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
 #'
 #' @param Tair   Average daily air temperature (deg C)
 #' @param Tleaf  Average daily leaf temperature (deg C)
-#' @param Wind   Wind speed (m s-1). Default to \code{0.068}
-#' @param wleaf  Leaf width (m)
+#' @param Wind   Wind speed (m s-1)
+#' @param wleaf  Leaf width (m). Default to \code{0.068}
 #' @param Dheat  Molecular diffusivity for heat (m2 s-1). Default to: \code{Constants()$Dheat}.
 #'
 #' @aliases Gb_hForced Gb_hFree
@@ -919,8 +951,9 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
 #' @references Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration: scaling from
 #'             leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
 #'
-#' @seealso The \href{https://maespa.github.io/}{MAESPA model}, from which both functions are taken (FORTRAN code).
-#'          The function from which both are usually called internally: \code{\link{Gb_h}}
+#' @seealso The \href{https://maespa.github.io/}{MAESPA model}, from which both functions were taken (FORTRAN code) and
+#'          translated into R.
+#'          The function from which both are usually called internally in DynACof: \code{\link{Gb_h}}
 #'
 #' @examples
 #' Gb_hForced(Wind=3)

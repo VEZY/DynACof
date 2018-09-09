@@ -1,15 +1,15 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-DynACof: The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" alt="logo" width="300" align="right" />
-===========================================================================================================================
+[DynACof](https://vezy.github.io/DynACof): The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" alt="logo" width="300" align="right" />
+=============================================================================================================================================================
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) [![Travis Build Status](https://travis-ci.com/VEZY/DynACof.svg?branch=master)](https://travis-ci.com/VEZY/DynACof) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&svg=true)](https://ci.appveyor.com/project/VEZY/DynACof) [![Join the chat at https://gitter.im/DynACof/Lobby\#](https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&branch=master)](https://gitter.im/DynACof/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![DOI](https://zenodo.org/badge/125098628.svg)](https://zenodo.org/badge/latestdoi/125098628)
 
 Overview
 --------
 
-The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield, energy, and water balance of coffee plantations according to management, while accounting for spatial effects using metamodels from the 3D process-based [MAESPA](https://maespa.github.io/). The model also uses coffee bud and fruit cohorts for reproductive development to better represent fruit carbon demand distribution along the year.
+The [DynACof](https://vezy.github.io/DynACof) process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield, energy, and water balance of coffee plantations according to management, while accounting for spatial effects using metamodels from the 3D process-based [MAESPA](https://maespa.github.io/). The model also uses coffee bud and fruit cohorts for reproductive development to better represent fruit carbon demand distribution along the year. Its official website is available [here](https://vezy.github.io/DynACof).
 
 Installation
 ------------

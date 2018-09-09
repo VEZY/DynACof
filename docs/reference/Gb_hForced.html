@@ -85,12 +85,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/VEZY/DynACof">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -104,7 +99,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Leaf boundary layer conductance for heat under forced and free convection</h1>
-    <small class="dont-index">Source: <a href='https://github.com/VEZY/DynACof/blob/master/R/0-Functions.R'><code>R/0-Functions.R</code></a></small>
+    
     <div class="hidden name"><code>Gb_hForced.Rd</code></div>
     </div>
 
@@ -124,11 +119,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Wind</th>
-      <td><p>Wind speed (m s-1). Default to <code>0.068</code></p></td>
+      <td><p>Wind speed (m s-1)</p></td>
     </tr>
     <tr>
       <th>wleaf</th>
-      <td><p>Leaf width (m)</p></td>
+      <td><p>Leaf width (m). Default to <code>0.068</code></p></td>
     </tr>
     <tr>
       <th>Tair</th>
@@ -159,8 +154,9 @@
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>The <a href='https://maespa.github.io/'>MAESPA model</a>, from which both functions are taken (FORTRAN code).
-         The function from which both are usually called internally: <code><a href='Gb_h.html'>Gb_h</a></code></p></div>
+    <div class='dont-index'><p>The <a href='https://maespa.github.io/'>MAESPA model</a>, from which both functions were taken (FORTRAN code) and
+         translated into R.
+         The function from which both are usually called internally in DynACof: <code><a href='Gb_h.html'>Gb_h</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

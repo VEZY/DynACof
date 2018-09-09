@@ -33,9 +33,10 @@
 <meta property="og:title" content="Canopy and Soil boundary layer conductance — GBCANMS" />
 
 <meta property="og:description" content="This function assumes two aerodynamic conductances in series:
- 1) from the atmosphere to the canopy, based on Van de Griend (1989), this is actually two conductances,
+from the atmosphere to the canopy, based on Van de Griend (1989). This is actually two conductances,
   one in the inertial sublayer and one in the roughness sublayer.
- 2) within the canopy to the soil, based on Choudhury &amp;amp; Monteith (1988)." />
+within the canopy to the soil, based on Choudhury &amp;amp; Monteith (1988).
+" />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -87,12 +88,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/VEZY/DynACof">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -106,16 +102,17 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Canopy and Soil boundary layer conductance</h1>
-    <small class="dont-index">Source: <a href='https://github.com/VEZY/DynACof/blob/master/R/0-Functions.R'><code>R/0-Functions.R</code></a></small>
+    
     <div class="hidden name"><code>GBCANMS.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>This function assumes two aerodynamic conductances in series:
- 1) from the atmosphere to the canopy, based on Van de Griend (1989), this is actually two conductances,
-  one in the inertial sublayer and one in the roughness sublayer.
- 2) within the canopy to the soil, based on Choudhury &amp; Monteith (1988).</p>
+    <p>This function assumes two aerodynamic conductances in series:</p><ol>
+<li><p>from the atmosphere to the canopy, based on Van de Griend (1989). This is actually two conductances,
+  one in the inertial sublayer and one in the roughness sublayer.</p></li>
+<li><p>within the canopy to the soil, based on Choudhury &amp; Monteith (1988).</p></li>
+</ol>
     
     </div>
 
@@ -159,21 +156,32 @@
 
     <p>A list of three :</p>
 <dt>ustar</dt><dd><p>The friction velocity (m s-1)</p></dd>
-        <dt>\(Canopy\)</dt><dd><p>Atmosphere to canopy boundary layer conductance (mol m-2 s-1)</p></dd>
+        <dt>Canopy</dt><dd><p>Atmosphere to canopy boundary layer conductance (mol m-2 s-1)</p></dd>
         <dt>Soil</dt><dd><p>Canopy to soil boundary layer conductance (mol m-2 s-1)</p></dd>
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The defaults for Z0 and ZPD are computed very simply. Other simple formulations:
-         1) Lettau (1969) proposed an other way: $$Z0= 0.5 . h* . s / S$$ where <code>h*</code>
+    <p>The defaults for Z0 and ZPD are computed very simply. Other simple formulations:</p><ol>
+<li><p>Lettau (1969) proposed an other way: $$Z0= 0.5 . h* . s / S$$ where <code>h*</code>
          is canopy height, s is the average silhouette area (projected area of the tree on a vertical plane)
-          and S the specific area, with $$S= A/n$$, where A is the total plot area and n the number of trees.
-         2) For ZPD, Verhoef et al. (1997) said $$d= 0.67$$. h is a good proxy without any prior knowledge.</p>
+         and S the specific area, with \(S= A/n\), where A is the total plot area and n the number of trees.</p></li>
+<li><p>For ZPD, Verhoef et al. (1997) said \(d= 0.67\). h is a good proxy without any prior knowledge.</p></li>
+</ol>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Van de Griend (1989), Choudhury &amp; Monteith (1988)</p>
+    <ul>
+<li><p>Van de Griend, A. A. and J. H. Van Boxel (1989). "Water and surface energy balance model
+        with a multilayer canopy representation for remote sensing purposes." Water Resources Research 25(5): 949-971.</p></li>
+<li><p>Choudhury, B. and J. Monteith (1988). "A four‐layer model for the heat budget of homogeneous land surfaces.
+        " Quarterly Journal of the Royal Meteorological Society 114(480): 373-398.</p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='Gb_h.html'>Gb_h</a></code>, <code><a href='G_bulk.html'>G_bulk</a></code>, <code><a href='G_interlay.html'>G_interlay</a></code>, <code><a href='G_soilcan.html'>G_soilcan</a></code>,
+         <code><a href='Gb_hForced.html'>Gb_hForced</a></code>, <code>Gb_hFree</code> and <code><a href='PENMON.html'>PENMON</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -192,6 +200,8 @@
       <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

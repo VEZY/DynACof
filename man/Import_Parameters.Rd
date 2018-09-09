@@ -4,13 +4,13 @@
 \alias{Import_Parameters}
 \title{Import model parameters}
 \usage{
-Import_Parameters(path = NULL, Names = list(Site = "1-Site.R", Soil =
-  "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
+Import_Parameters(path = NULL, Names = list(Site = "Site.R", Soil =
+  "Soil.R", Coffee = "Coffee.R", Tree = NULL))
 }
 \arguments{
 \item{path}{The path to the parameter files folder. If \code{NULL}, take the default files from the package}
 
-\item{Names}{List of the file names. Default: \code{list(Site="1-Site.R",Soil="3-Soil.R",Coffee="4-Coffee.R",Tree=NULL)}}
+\item{Names}{List of the file names. Default: \code{list(Site="Site.R",Soil="Soil.R",Coffee="Coffee.R",Tree=NULL)}}
 }
 \value{
 A list of all input parameters for DynACof

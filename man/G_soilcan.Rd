@@ -33,7 +33,7 @@ Van de Griend et al (1989).}
 \item{vonkarman}{Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.}
 }
 \value{
-\item{g_a0}{The aerodynamic conductance of the air between the lowest canopy layer
+\item{\eqn{g_a0}}{The aerodynamic conductance of the air between the lowest canopy layer
                     and the soil surface (m s-1)}
 }
 \description{
@@ -43,11 +43,11 @@ Compute the aerodynamic conductance for sensible and
 }
 \details{
 \code{alpha} can also be computed as:
-         \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
+         \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
          The aerodynamic conductance between the lowest canopy layer and the soil
          is computed as:
          \deqn{g_{a0}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{0})}}{g_a0= 1/((Uh/Kh)*log(U_mid/U_0))}
-         where \eqn{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
+         where \eqn{U_{mid}}{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
          \eqn{U_0} the wind speed at soil surface.
 }
 \examples{

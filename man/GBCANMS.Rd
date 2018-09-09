@@ -25,21 +25,25 @@ GBCANMS(WIND, ZHT, TREEH, Z0 = TREEH * 0.1, ZPD = TREEH * 0.75,
 \value{
 A list of three :
         \item{ustar}{The friction velocity (m s-1)}
-        \item{\eqn{Canopy}}{Atmosphere to canopy boundary layer conductance (mol m-2 s-1)}
+        \item{Canopy}{Atmosphere to canopy boundary layer conductance (mol m-2 s-1)}
         \item{Soil}{Canopy to soil boundary layer conductance (mol m-2 s-1)}
 }
 \description{
 This function assumes two aerodynamic conductances in series:
- 1) from the atmosphere to the canopy, based on Van de Griend (1989), this is actually two conductances,
+\enumerate{
+  \item from the atmosphere to the canopy, based on Van de Griend (1989). This is actually two conductances,
   one in the inertial sublayer and one in the roughness sublayer.
- 2) within the canopy to the soil, based on Choudhury & Monteith (1988).
+  \item within the canopy to the soil, based on Choudhury & Monteith (1988).
+}
 }
 \details{
 The defaults for Z0 and ZPD are computed very simply. Other simple formulations:
-         1) Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \code{h*}
+\enumerate{
+  \item Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \code{h*}
          is canopy height, s is the average silhouette area (projected area of the tree on a vertical plane)
-          and S the specific area, with \deqn{S= A/n}, where A is the total plot area and n the number of trees.
-         2) For ZPD, Verhoef et al. (1997) said \deqn{d= 0.67}. h is a good proxy without any prior knowledge.
+         and S the specific area, with \eqn{S= A/n}, where A is the total plot area and n the number of trees.
+  \item For ZPD, Verhoef et al. (1997) said \eqn{d= 0.67}. h is a good proxy without any prior knowledge.
+}
 }
 \examples{
 # Canop conductance of a forest:
@@ -49,5 +53,14 @@ GBCANMS(WIND = 3, ZHT = 26, TREEH = 25)$Soil
 
 }
 \references{
-Van de Griend (1989), Choudhury & Monteith (1988)
+\itemize{
+  \item Van de Griend, A. A. and J. H. Van Boxel (1989). "Water and surface energy balance model
+        with a multilayer canopy representation for remote sensing purposes." Water Resources Research 25(5): 949-971.
+  \item Choudhury, B. and J. Monteith (1988). "A four‐layer model for the heat budget of homogeneous land surfaces.
+        " Quarterly Journal of the Royal Meteorological Society 114(480): 373-398.
+}
+}
+\seealso{
+\code{\link{Gb_h}}, \code{\link{G_bulk}}, \code{\link{G_interlay}}, \code{\link{G_soilcan}},
+         \code{\link{Gb_hForced}}, \code{\link{Gb_hFree}} and \code{\link{PENMON}}
 }

@@ -10,7 +10,7 @@ Description: The DynACof process-based model computes plot-scale Net Primary Pro
  energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
  metamodels from the 3D process-based MAESPA. The model also uses coffee bud and fruit cohorts for reproductive
  development to better represent fruit carbon demand distribution along the year.
-URL: https://github.com/VEZY/DynACof
+URL: https://vezy.github.io/DynACof/
 BugReports: https://github.com/VEZY/DynACof/issues
 Depends: R (>= 2.10)
 License: file LICENSE

@@ -89,12 +89,7 @@ Decrease wind speed further with increasing canopy depth using an exponential
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/VEZY/DynACof">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -108,7 +103,7 @@ Decrease wind speed further with increasing canopy depth using an exponential
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get the average wind speed at center of canopy layer</h1>
-    <small class="dont-index">Source: <a href='https://github.com/VEZY/DynACof/blob/master/R/0-Functions.R'><code>R/0-Functions.R</code></a></small>
+    
     <div class="hidden name"><code>GetWind.Rd</code></div>
     </div>
 
@@ -186,9 +181,9 @@ Van de Griend et al (1989).</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>As the function computes the average wind speed at the center of the canopy layer, it
-         uses the <code>LAI_lay</code> parameter to add half of the target layer to the cumulated LAI
-         above:
+    <p>The function computes the average wind speed at the center of the canopy layer. It is considered
+         that the leaf distibution is homogeneous in the layer, so the <code>LAI_lay</code> parameter is used to
+         add half of the target layer to the cumulated LAI above:
          $$WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}$$
          with <code>Wh</code> the wind speed at top of the canopy.
          Note: the <code>alpha</code> parameter can also be computed as:

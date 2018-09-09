@@ -42,12 +42,12 @@ Compute the aerodynamic conductance for sensible and
 }
 \details{
 \code{alpha} can also be computed as:
-         \deqn{alpha=\frac{zw-d}{Z_top-d}}{alpha= (zw-d)/(Z_top-d)}
+         \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
          The aerodynamic conductance between canopy layers is computed as:
          \deqn{g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}}{g_af= 1/((Uh/Kh)*log(U_mid/U_inter))}
-         where usually \eqn{U_mid} is the wind speed at median cumulated LAI between
-         the top and the soil, and \eqn{U_inter} the wind speed at height between
-         the two canopy layers. In this function, \eqn{U_mid} and \eqn{U_inter} are computed
+         where usually \eqn{U_{mid}}{U_mid} is the wind speed at (median) cumulated LAI between
+         the top and the soil, and \eqn{U_{inter}}{U_inter} the wind speed at the height between
+         the two canopy layers. In this function, \eqn{U_{mid}}{U_mid} and \eqn{U_{inter}}{U_inter} are computed
          relative to the leaf area instead of the height of the vegetation layers.
 }
 \examples{

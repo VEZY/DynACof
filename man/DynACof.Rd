@@ -12,18 +12,18 @@ DynACof(Period = NULL, WriteIt = F, ..., output_f = ".RData",
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}
 
-\item{WriteIt}{If \code{TRUE}, write the resulting list, see details. Default: \code{FALSE}}
+\item{WriteIt}{If \code{TRUE}, write the outputs to disk using \code{\link{write.results}}, see details. Default: \code{FALSE}}
 
-\item{...}{PARAM_DESCRIPTION}
+\item{...}{Further arguments to pass to \code{\link{write.results}}.}
 
-\item{output_f}{Output format, if '.RData', the output list will be saved as a unique \code{.RData} file, if it is different from
-\code{.RData}, the output list will be writen in several \code{.csv} and \code{.txt} format. Default: \code{.RData}}
+\item{output_f}{Output format. If \code{output_f = ".RData"}, the output list will be saved as a unique \code{.RData} file. Any other value:
+write the output list in several \code{.csv} and \code{.txt} files. Default: \code{.RData}}
 
 \item{Inpath}{Path to the input parameter list folder, Default: \code{"1-Input/Default"}}
 
-\item{Outpath}{Path pointing to the folder were the results will be writen, Default: \code{=Inpath}}
+\item{Outpath}{Path pointing to the folder were the results will be writen, Default: \code{Outpath = Inpath}}
 
-\item{Simulation_Name}{Character name of the simulation file name if \code{WriteIt=T}. Default: \code{DynACof}}
+\item{Simulation_Name}{Character name of the simulation file name if \code{WriteIt = T}. Default: \code{"DynACof"}}
 
 \item{FileName}{A list of input file names :
 \describe{
@@ -33,24 +33,24 @@ DynACof(Period = NULL, WriteIt = F, ..., output_f = ".RData",
   \item{Coffee}{Coffee parameters file name, see details. Default: \code{'4-Coffee.R'}}
   \item{Tree}{Shade tree parameters file name, see details. Default: \code{NULL}}
 }
-Default input filenames are provided with the package so the model can run with no input parameter files at all.}
+Default input files are provided with the package as an example parameterization.}
 }
 \value{
 Return invisibly a list containing three objects (Parameters, Meteo and Sim):
 \itemize{
-  \item A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
+  \item Sim: A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
 \strong{Type} \tab \strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
 General                      \tab Cycle                    \tab -                   \tab Plantation cycle ID                                                                \cr
-                             \tab Plot_Age                 \tab year                \tab Plantation age                                                                     \cr
+                             \tab Plot_Age                 \tab year                \tab Plantation age (starting at 1)                                                     \cr
                              \tab Plot_Age_num             \tab year (numeric)      \tab Numeric age of plantation                                                          \cr
                              \tab LAIplot                  \tab m2 leaves m-2 soil  \tab Plot (Coffee + Shade Tree if any) Leaf Area Index                                  \cr
-Organs Coffee                \tab *_RE                     \tab -                   \tab Reserves                                                                           \cr
+Suffixes for Coffee organs   \tab *_RE                     \tab -                   \tab Reserves                                                                           \cr
                              \tab *_SCR                    \tab -                   \tab Stump and Coarse roots                                                             \cr
                              \tab *_Fruit                  \tab -                   \tab Fruit                                                                              \cr
                              \tab *_RsWood                 \tab -                   \tab Resprout wood (= branches)                                                         \cr
                              \tab *_FRoot                  \tab -                   \tab Fine roots                                                                         \cr
                              \tab *_Leaf                   \tab                     \tab Leaves                                                                             \cr
-Organs shade tree            \tab *_RE_Tree                \tab -                   \tab Reserves                                                                           \cr
+Suffixes for Shade Tree org. \tab *_RE_Tree                \tab -                   \tab Reserves                                                                           \cr
                              \tab *_Stem_Tree              \tab -                   \tab Stem (= trunk)                                                                     \cr
                              \tab *_Branch_Tree            \tab -                   \tab Branches                                                                           \cr
                              \tab *_CoarseRoot_Tree        \tab -                   \tab Coarse roots                                                                       \cr
@@ -60,13 +60,13 @@ Energy                       \tab Rn_tot                   \tab MJ m-2 d-1      
                              \tab Rn_Tree                  \tab MJ m-2 d-1          \tab Shade tree net radiation                                                           \cr
                              \tab Rn_Coffee                \tab MJ m-2 d-1          \tab Coffee net radiation                                                               \cr
                              \tab Rn_Soil                  \tab MJ m-2 d-1          \tab Soil net radiation                                                                 \cr
-                             \tab Rn_Soil_SW               \tab MJ m-2 d-1          \tab Soil net radiation computed using Shuttleworth & Wallace (1985) for reference     \cr
+                             \tab Rn_Soil_SW               \tab MJ m-2 d-1          \tab Soil net radiation computed using Shuttleworth & Wallace (1985) for reference      \cr
                              \tab LE_*                     \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil latent heat                                                \cr
                              \tab H_*                      \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil sensible heat                                              \cr
                              \tab Q_Soil                   \tab MJ m-2 d-1          \tab Soil heat transport                                                                \cr
-                             \tab Transmittance_Tree       \tab fraction            \tab Fraction of light transmitted under the shade trees canopy                         \cr
-                             \tab PAR_Trans_Tree           \tab MJ m-2 d-1          \tab Light transmitted under the shade trees canopy                                     \cr
-                             \tab PAR_Trans                \tab MJ m-2 d-1          \tab Light transmitted under the Coffea canopy                                          \cr
+                             \tab Transmittance_Tree       \tab fraction            \tab Fraction of light transmitted by the shade trees                                   \cr
+                             \tab PAR_Trans_Tree           \tab MJ m-2 d-1          \tab Light transmitted by the shade trees canopy                                        \cr
+                             \tab PAR_Trans                \tab MJ m-2 d-1          \tab Light transmitted by the Coffea canopy                                             \cr
                              \tab K_Dir                    \tab -                   \tab Direct light extinction coefficient                                                \cr
                              \tab K_Dif                    \tab -                   \tab Diffuse light extinction coefficient                                               \cr
                              \tab APAR                     \tab MJ m-2 d-1          \tab Absorbed PAR by the plant                                                          \cr
@@ -79,18 +79,17 @@ Energy                       \tab Rn_tot                   \tab MJ m-2 d-1      
                              \tab DegreeDays_Tcan          \tab deg C               \tab Growing degree days computed using Coffee Canopy Temperature                       \cr
 Carbon                       \tab GPP                      \tab gC m-2 d-1          \tab Gross primary productivity                                                         \cr
                              \tab Consumption_RE           \tab gC m-2 d-1          \tab Daily reserve consumption                                                          \cr
-                             \tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than carbon offer                       \cr
+                             \tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than offer                              \cr
                              \tab Rm                       \tab gC m-2 d-1          \tab Total Coffee maintenance respiration                                               \cr
                              \tab Rm_*                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
                              \tab Rc                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
                              \tab Rc_*                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
-                             \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=maintenance+growth)                         \cr
+                             \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rc)                                      \cr
                              \tab Demand_*                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
                              \tab Alloc_*                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rc)                                           \cr
-                             \tab lambdaSCRage             \tab gC gC-1             \tab Age related allocation coefficient to Stump and Coars Roots                        \cr
+                             \tab lambdaSCRage             \tab gC gC-1             \tab Age related allocation coefficient to Stump and Coarse Roots                       \cr
                              \tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
-                             \tab Offer_*                  \tab gC m-2 d-1          \tab C offer to organ net of Rm                                                         \cr
-                             \tab Demand_*                 \tab gC m-2 d-1          \tab Total C demand from organ                                                          \cr
+                             \tab Offer_*                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
                              \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
                              \tab NPP_*                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
                              \tab Mnat_*                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
@@ -100,7 +99,6 @@ Carbon                       \tab GPP                      \tab gC m-2 d-1      
                              \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
                              \tab CM_*                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
                              \tab DM_*                     \tab gDM m-2 d-1         \tab Organ dry mass                                                                     \cr
-                             \tab Height_Tree              \tab m                   \tab Shade tree total height (used for boundary conductance), set to 0 if no shade trees\cr
 Fruit development            \tab BudInitPeriod            \tab boolean             \tab Bud initiation period                                                              \cr
                              \tab Budinit                  \tab Buds d-1            \tab Total Number of Buds Initiated per day                                             \cr
                              \tab ratioNodestoLAI          \tab Nodes LAI-1         \tab Number of fruiting nodes per LAI unit                                              \cr
@@ -142,43 +140,44 @@ Water                        \tab IntercMax                \tab mm              
 Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1    \tab shade tree leaf area                                                               \cr
                              \tab Crown_H_Tree             \tab m                   \tab Crown height                                                                       \cr
                              \tab Trunk_H_Tree             \tab m                   \tab Trunk height                                                                       \cr
+                             \tab Height_Tree              \tab m                   \tab Shade tree total height (used for boundary conductance), set to 0 if no shade trees\cr
                              \tab DBH_Tree_m               \tab m                   \tab Diameter at breast height                                                          \cr
                              \tab LAD_Tree                 \tab m2 m-3              \tab Shade tree Leaf Area Density                                                       \cr
                              \tab CrownRad_Tree            \tab m                   \tab Crown radius                                                                       \cr
                              \tab CrownProj_Tree           \tab m2 crown tree-1     \tab Crown projection                                                                   \cr
                              \tab Stocking_Tree            \tab tree m-2            \tab Shade tree density                                                                 \cr
-                             \tab TimetoThin_Tree          \tab boolean             \tab Is it time to thin the shade tree                                                  \cr
+                             \tab TimetoThin_Tree          \tab boolean             \tab Days on which tree is thinned                                                      \cr
                              \tab MThinning_*_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 }
 
-  \item A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
+  \item Meteo: A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
 Date            \tab POSIXct date\tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
 year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
 DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
 Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr
 Tair            \tab deg C       \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
-Tmax            \tab deg C       \tab Maximum air temperature durnig the day       \tab Required (error) \cr
-Tmin            \tab deg C       \tab Minimum air temperature durnig the day       \tab Required (error) \cr
+Tmax            \tab deg C       \tab Maximum air temperature during the day       \tab Required (error) \cr
+Tmin            \tab deg C       \tab Minimum air temperature during the day       \tab Required (error) \cr
 RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
 RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
 Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Try to compute from VPD, Tair and Elevation, or Tair and Elevation. \cr
 WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Try to set it to constant: \code{Parameters$WindSpeed} \cr
 CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Try to set it to constant: \code{Parameters$CO2}\cr
-DegreeDays      \tab deg C       \tab Growing degrre days                          \tab Computed using \code{\link{GDD}} \cr
+DegreeDays      \tab deg C       \tab Growing degree days                          \tab Computed using \code{\link{GDD}} \cr
 PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
-FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} usinf Spitters formula \cr
+FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} using Spitters formula \cr
 VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
-Rn              \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
+Rn (!=Rn_tot)    \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
 DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
 Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf]{air.density}}}
-  \item A list of the input parameters (see \code{\link{site}})
+  \item Parameters: A list of the input parameters (see \code{\link{site}})
 }
 }
 \description{
 The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield,
                energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
-               metamodels from the 3D process-based MAESPA. The model also uses coffee bud and fruit cohorts for reproductive
-               development to better represent fruit carbon demand distribution along the year.
+               metamodels from the 3D process-based model \href{https://maespa.github.io/}{MAESPA}. The model also uses cohorts for
+               the development of the coffee buds and fruits to better represent fruit carbon demand distribution along the year.
 }
 \details{
 Almost all variables for coffee exist also for shade trees with the suffix
@@ -191,6 +190,9 @@ Almost all variables for coffee exist also for shade trees with the suffix
          Important :
          It is highly recommended to set the system environment timezone to the one from the meteorology file.
          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
+}
+\note{
+All variable units are available as attributes (see example)
 }
 \examples{
 \dontrun{
@@ -208,7 +210,4 @@ if(interactive()){
 }
 \seealso{
 \code{\link{Meteorology}} \code{\link{site}}
-}
-\author{
-R. Vezy; O. Roupsard
 }

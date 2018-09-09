@@ -45,9 +45,9 @@ Calculate the wind speed decrease in two steps:
 }
 }
 \details{
-As the function computes the average wind speed at the center of the canopy layer, it
-         uses the \code{LAI_lay} parameter to add half of the target layer to the cumulated LAI
-         above:
+The function computes the average wind speed at the center of the canopy layer. It is considered
+         that the leaf distibution is homogeneous in the layer, so the \code{LAI_lay} parameter is used to
+         add half of the target layer to the cumulated LAI above:
          \deqn{WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}}{
          WindLay= Wh*e(-extwind*(LAI_abv+LAI_lay/2)}
          with \code{Wh} the wind speed at top of the canopy.

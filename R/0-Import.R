@@ -3,7 +3,7 @@
 #' @description Import the parameters from local files, or from default (from package data)
 #'
 #' @param path   The path to the parameter files folder. If \code{NULL}, take the default files from the package
-#' @param Names  List of the file names. Default: \code{list(Site="1-Site.R",Soil="3-Soil.R",Coffee="4-Coffee.R",Tree=NULL)}
+#' @param Names  List of the file names. Default: \code{list(Site="Site.R",Soil="Soil.R",Coffee="Coffee.R",Tree=NULL)}
 #'
 #' @details For the full list of parameters and the format of the parameter files, see \code{\link{site}}.
 #'          The function return the parameter files path in the list, to access it, see example.
@@ -21,9 +21,9 @@
 #' @export
 Import_Parameters= function(path= NULL,
                             Names= list(
-                              Site="1-Site.R",
-                              Soil="3-Soil.R",
-                              Coffee="4-Coffee.R",
+                              Site="Site.R",
+                              Soil="Soil.R",
+                              Coffee="Coffee.R",
                               Tree=NULL)){
   Filespath= Names
   Filespath= lapply(Filespath, function(x)x="No parameters")

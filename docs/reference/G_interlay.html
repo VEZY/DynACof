@@ -86,12 +86,7 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/VEZY/DynACof">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -105,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Canopy layer to canopy layer aerodynamic conductance</h1>
-    <small class="dont-index">Source: <a href='https://github.com/VEZY/DynACof/blob/master/R/0-Functions.R'><code>R/0-Functions.R</code></a></small>
+    
     <div class="hidden name"><code>G_interlay.Rd</code></div>
     </div>
 
@@ -181,12 +176,12 @@ Van de Griend et al (1989).</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>alpha</code> can also be computed as:
-         $$alpha=\frac{zw-d}{Z_top-d}$$
+         $$alpha=\frac{zw-d}{Z_{top}-d}$$
          The aerodynamic conductance between canopy layers is computed as:
          $$g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}$$
-         where usually \(U_mid\) is the wind speed at median cumulated LAI between
-         the top and the soil, and \(U_inter\) the wind speed at height between
-         the two canopy layers. In this function, \(U_mid\) and \(U_inter\) are computed
+         where usually \(U_{mid}\) is the wind speed at (median) cumulated LAI between
+         the top and the soil, and \(U_{inter}\) the wind speed at the height between
+         the two canopy layers. In this function, \(U_{mid}\) and \(U_{inter}\) are computed
          relative to the leaf area instead of the height of the vegetation layers.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>

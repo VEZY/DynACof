@@ -11,9 +11,9 @@ Gb_hForced(Wind, wleaf = 0.068)
 Gb_hFree(Tair, Tleaf, wleaf = 0.068, Dheat = Constants()$Dheat)
 }
 \arguments{
-\item{Wind}{Wind speed (m s-1). Default to \code{0.068}}
+\item{Wind}{Wind speed (m s-1)}
 
-\item{wleaf}{Leaf width (m)}
+\item{wleaf}{Leaf width (m). Default to \code{0.068}}
 
 \item{Tair}{Average daily air temperature (deg C)}
 
@@ -39,6 +39,7 @@ Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiratio
             leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
 }
 \seealso{
-The \href{https://maespa.github.io/}{MAESPA model}, from which both functions are taken (FORTRAN code).
-         The function from which both are usually called internally: \code{\link{Gb_h}}
+The \href{https://maespa.github.io/}{MAESPA model}, from which both functions were taken (FORTRAN code) and
+         translated into R.
+         The function from which both are usually called internally in DynACof: \code{\link{Gb_h}}
 }
