@@ -166,7 +166,9 @@ Init_Sim= function(S){
     S$Sim$SWD=
     S$Sim$H_Coffee=
     S$Sim$Rn_Coffee=
-    S$Sim$LE_Coffee= rep_len(0,length(S$Sim$Cycle))
+    S$Sim$LE_Coffee=
+    S$Sim$Rn_Soil_SW=
+    rep_len(0,length(S$Sim$Cycle))
 
   S$Sim$W_1= rep_len(290,length(S$Sim$Cycle))
   S$Sim$W_2= rep_len(66,length(S$Sim$Cycle))
@@ -222,6 +224,7 @@ Tree.init= function(S){
 
   S$Sim$Trunk_H_Tree=
     S$Sim$Crown_H_Tree=
+    S$Sim$Height_Tree=
     S$Sim$LA_Tree=
     S$Sim$DM_Leaf_Tree=
     S$Sim$DM_Branch_Tree=
@@ -246,6 +249,8 @@ Tree.init= function(S){
     S$Sim$APAR_Dir_Tree=
     S$Sim$APAR_Tree=
     S$Sim$Transmittance_Tree=
+    S$Sim$PAR_Trans_Tree=
+    S$Sim$PAR_Trans=
     S$Sim$lue_Tree=
     S$Sim$T_Tree=
     S$Sim$H_Tree=
@@ -306,7 +311,7 @@ Tree.init= function(S){
     S$Sim$Rn_tot=
     S$Sim$Rn_Tree=
     rep_len(0,length(S$Sim$Cycle))
-  S$Sim$Height_Tree= 0.001 # because G_bulk doesn't allow heights of 0
+  S$Sim$Height_Tree[1]= 0.001 # because G_bulk doesn't allow heights of 0
   # Pre-computation of some variables / parameters:
   S$Sim$Stocking_Tree= rep_len(S$Parameters$StockingTree_treeha1/10000,
                                      length(S$Sim$Cycle))

@@ -67,8 +67,7 @@ Metamodels= function(S,i){
     0.03390*S$Met_c$VPD[i] - 0.24565*S$Met_c$PAR[i]
 
   S$Sim$T_Tree[i]=
-    -0.50236 +  0.02240*S$Met_c$VPD[i] + 0.01321*S$Met_c$Tair[i] +
-    0.72191*S$Sim$APAR_Tree[i] - 0.86182*(1-S$Met_c$FDiff[i]) + 0.07139*S$Sim$LAI_Tree[i]
+    -0.2366 + 0.6591*S$Sim$APAR_Tree[i] +0.1324*S$Sim$LAI_Tree[i]
   # 0.021820*S$Met_c$VPD[i] - 0.016112*S$Met_c$Tair[i] + 0.942021*S$Sim$APAR_Tree[i]-
   # 1.397349*(1-S$Met_c$FDiff[i]) + 0.004328*S$Sim$LAI_Tree[i]
   S$Sim$T_Tree[i][S$Sim$T_Tree[i]<0]= 0 #to discard negative values
@@ -149,6 +148,7 @@ Allometries= function(S,i){
   S$Sim$LAD_Tree[i]=
     S$Sim$LA_Tree[i]/((S$Sim$CrownRad_Tree[i]^2)*
                         (0.5*S$Sim$Crown_H_Tree[i])*pi*(4/3))
+  S$Sim$LAD_Tree[i][is.nan(S$Sim$LAD_Tree[i])]= 0.21
   S$Sim$LAD_Tree[i][S$Sim$LAD_Tree[i]<0.21]= 0.21
   S$Sim$LAD_Tree[i][S$Sim$LAD_Tree[i]>0.76]= 0.76
 }

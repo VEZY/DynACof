@@ -44,7 +44,7 @@ Shade.Tree= function(S,i){
   # S$Sim$LAI_Tree[previous_i(i,1)]))
   S$Sim$Transmittance_Tree[i]=
     1-(S$Sim$APAR_Tree[i]/S$Met_c$PAR[i])
-  S$Sim$Transmittance_Tree[i][is.nan(S$Sim$Transmittance_Tree[i])]=0
+  S$Sim$Transmittance_Tree[i][is.nan(S$Sim$Transmittance_Tree[i])]= 1
   # Calling the metamodels for LUE, Transpiration and sensible heat flux :
   S$Parameters$Metamodels(S,i)
   # Computing the air temperature in the shade tree layer:
@@ -284,20 +284,20 @@ Shade.Tree= function(S,i){
       S$Sim$CM_Leaf_Tree[previous_i(i,1)]*S$Parameters$pruningIntensity_Tree
     # Total mortality (cannot exceed total leaf dry mass):
     S$Sim$Mact_Leaf_Tree[i]=
-      min(S$Sim$Mact_Leaf_Tree[i] + S$Sim$Mprun_Leaf_Tree[i],
-          S$Sim$CM_Leaf_Tree[previous_i(i,1)])
+      max(0,min(S$Sim$Mact_Leaf_Tree[i] + S$Sim$Mprun_Leaf_Tree[i],
+                S$Sim$CM_Leaf_Tree[previous_i(i,1)]))
 
     # Branch pruning:
     S$Sim$Mprun_Branch_Tree[i]=
       S$Sim$CM_Branch_Tree[previous_i(i,1)]*S$Parameters$pruningIntensity_Tree
     S$Sim$Mact_Branch_Tree[i]=
-      min((S$Sim$Mact_Branch_Tree[i]+S$Sim$Mprun_Branch_Tree[i]),
-          S$Sim$CM_Branch_Tree[previous_i(i,1)])
+      max(0,min((S$Sim$Mact_Branch_Tree[i]+S$Sim$Mprun_Branch_Tree[i]),
+                S$Sim$CM_Branch_Tree[previous_i(i,1)]))
     S$Sim$Mprun_FRoot_Tree[i]=
       S$Parameters$M_RateFRootprun_Tree*S$Sim$Mprun_Leaf_Tree[i]
     S$Sim$Mact_FRoot_Tree[i]=
-      min(S$Sim$Mact_FRoot_Tree[i]+S$Sim$Mprun_FRoot_Tree[i],
-          S$Sim$CM_FRoot_Tree[previous_i(i,1)])
+      max(0,min(S$Sim$Mact_FRoot_Tree[i]+S$Sim$Mprun_FRoot_Tree[i],
+                S$Sim$CM_FRoot_Tree[previous_i(i,1)]))
   }
 
 
@@ -339,26 +339,27 @@ Shade.Tree= function(S,i){
   # Dry Mass update ---------------------------------------------------------
 
   S$Sim$CM_Leaf_Tree[i]=
-    S$Sim$CM_Leaf_Tree[previous_i(i,1)]+S$Sim$NPP_Leaf_Tree[i]-S$Sim$Mortality_Leaf_Tree[i]
+    max(0,S$Sim$CM_Leaf_Tree[previous_i(i,1)]+S$Sim$NPP_Leaf_Tree[i]-S$Sim$Mortality_Leaf_Tree[i])
 
   S$Sim$CM_Branch_Tree[i]=
-    S$Sim$CM_Branch_Tree[previous_i(i,1)]+S$Sim$NPP_Branch_Tree[i]-
-    S$Sim$Mortality_Branch_Tree[i]
+    max(0,S$Sim$CM_Branch_Tree[previous_i(i,1)]+S$Sim$NPP_Branch_Tree[i]-
+          S$Sim$Mortality_Branch_Tree[i])
 
   S$Sim$CM_Stem_Tree[i]=
-    S$Sim$CM_Stem_Tree[previous_i(i,1)]+S$Sim$NPP_Stem_Tree[i]-S$Sim$Mortality_Stem_Tree[i]
+    max(0,S$Sim$CM_Stem_Tree[previous_i(i,1)]+S$Sim$NPP_Stem_Tree[i]-
+          S$Sim$Mortality_Stem_Tree[i])
 
   S$Sim$CM_CR_Tree[i]=
-    S$Sim$CM_CR_Tree[previous_i(i,1)]+
-    S$Sim$NPP_CR_Tree[i]-S$Sim$Mortality_CR_Tree[i]
+    max(0,S$Sim$CM_CR_Tree[previous_i(i,1)]+
+          S$Sim$NPP_CR_Tree[i]-S$Sim$Mortality_CR_Tree[i])
 
   S$Sim$CM_FRoot_Tree[i]=
-    S$Sim$CM_FRoot_Tree[previous_i(i,1)]+
-    S$Sim$NPP_FRoot_Tree[i]-S$Sim$Mortality_FRoot_Tree[i]
+    max(0,S$Sim$CM_FRoot_Tree[previous_i(i,1)]+
+          S$Sim$NPP_FRoot_Tree[i]-S$Sim$Mortality_FRoot_Tree[i])
 
   S$Sim$CM_RE_Tree[i]=
-    S$Sim$CM_RE_Tree[previous_i(i,1)]+
-    S$Sim$NPP_RE_Tree[i]-S$Sim$Consumption_RE_Tree[i]-S$Sim$M_Rm_RE_Tree[i]
+    max(0,S$Sim$CM_RE_Tree[previous_i(i,1)]+
+          S$Sim$NPP_RE_Tree[i]-S$Sim$Consumption_RE_Tree[i]-S$Sim$M_Rm_RE_Tree[i])
 
   ##########################################
   S$Sim$DM_Leaf_Tree[i]=
