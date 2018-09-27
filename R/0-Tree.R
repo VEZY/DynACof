@@ -13,32 +13,33 @@ Tree= function(){
                                 0.015,0.04),
     Fall_Period_Tree     = list(1:55,175:240,         # Time period were leaves fall at high rate (DOY). List of length= Leaf_fall_rate_Tree
                                 300:354,355:365),
-    Thin_Age_Tree        = 20,                        # Ages at which thinning is made (age). Set to NULL if no thinning
+    Thin_Age_Tree        = 22,                        # Ages at which thinning is made (age). Set to NULL if no thinning
     ThinThresh           = 0,                         # (option) Lowest transmittance threshold under wich thinning is triggered (0-1)
     RateThinning_Tree    = 0.97072,                   # How many trees are thinned per thinning event, in percentage.
     date_Thin_Tree       = 100,                       # Date(s) of thinning (DOY)
     date_pruning_Tree    = 213,                       # Date(s) of pruning each year (DOY)
     pruningIntensity_Tree= 0.7,                       # Pruning intensity (% dry mass)
     M_RateFRootprun_Tree = 0.005,                     # Fine root percentage that die at pruning
-    Pruning_Age_Tree     = 1:19,                      # Ages at which pruning is made (age). Set to NULL if no prunning.
+    Pruning_Age_Tree     = 1:21,                      # Ages at which pruning is made (age). Set to NULL if no prunning.
     # k_Dif_Tree           = 0.305,                   # Light extionction coefficient for diffuse light. Now computed by metamodels
     # k_Dir_Tree           = 0.304,                   # Light extionction coefficient for direct light. Now computed by metamodels
     # lue_Tree             = 1.1375,                  # Light-use efficiency (gc MJ-1). Now computed by metamodels
     WoodDensity_kgDMm3   = 250,                       # Wood density. Source: Van Oijen et al (2010, I) + Nygren (1995)
-    lambda_Stem_Tree     = 0.22,                      # Allocation coefficient to the stem. Source: Litton (2007)
+    lambda_Stem_Tree     = 0.20,                      # Allocation coefficient to the stem. Source: Litton (2007)
     lambda_Branch_Tree   = 0.25,                      # Allocation coefficient to the branches wood. Source: Litton (2007)
     lambda_CR_Tree       = 0.10,                      # Allocation coefficient to the coarse roots. Source: Litton (2007)
-    lambda_Leaf_Tree     = 0.24,                      # Allocation coefficient to the Leaves. Source: Litton (2007)
+    lambda_Leaf_Tree     = 0.26,                      # Allocation coefficient to the Leaves. Source: Litton (2007)
     lambda_FRoot_Tree    = 0.05,                      # Allocation coefficient to the fine roots. Source: Litton (2007)
     kres_max_Tree        = 1.2,                       # Maximum carbon extracted from reserves compared to maintenance respiration
-    Res_max_Tree         = 80,                        # Maximum reserve until Tree always use it for growth
+    Res_max_Tree         = 150,                        # Maximum reserve until Tree always use it for growth
     CContent_Leaf_Tree   = 0.47,                      # Leaf carbon content in gC gDM-1. Source: Masera et al. (2003)
     CContent_wood_Tree   = 0.47,                      # Wood carbon content in gC gDM-1. Source: Masera et al. (2003)
-    epsilon_Branch_Tree  = 1.33,                      # Branch growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
-    epsilon_Stem_Tree    = 1.33,                      # Stem growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
+    epsilon_Branch_Tree  = 1.2,                       # Branch growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
+    epsilon_Stem_Tree    = 1.2,                       # Stem growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
     epsilon_CR_Tree      = 1.33,                      # Coarse root growth cost coefficient (gC.gC-1). Source: Litton et al. (2007)
     epsilon_Leaf_Tree    = 1.392,                     # Leaf growth cost coefficient (gC.gC-1). Source: Erythrina excelsa Villar and Merino (2001),
-    epsilon_RE_Tree= 1.000001,                  # Reserves growth cost coefficient (gC.gC-1). No cost, unknown.
+    epsilon_FRoot_Tree   = 1.392,                     # Leaf growth cost coefficient (gC.gC-1). Considered = to leaves
+    epsilon_RE_Tree      = 1.000001,                  # Reserves growth cost coefficient (gC.gC-1). No cost, unknown.
     lifespanBranch_Tree  = 7300,                      # Branch lifespan, natural mortality (d)
     lifespanLeaf_Tree    = 10^5,                      # Leaf lifespan (d). Taken infinite because regulated by leaf fall phenology.
     lifespanFRoot_Tree   = 90,                        # Fine roots lifespan (d).
@@ -48,8 +49,8 @@ Tree= function(){
     Kc                   = 8,                         # Allometries, source: CAF2007, Van Oijen et al. (2010). Adjusted to fit our observations.
     KcExp                = 0.45,                      # Allometries, source: CAF2007, Van Oijen et al. (2010). Adjusted to fit our observations.
     MRN_Tree             = 0.20,                      # Base maintenance respiration (gC.gN.day-1)
-    NContentBranch_Tree  = 0.0084,                    # Branch nitrogen content (gN.gDM-1). Source: Van Oijen et al. (2010,I)
-    NContentStem_Tree    = 0.0084,                    # Stem nitrogen content (gN.gDM-1). Source: Van Oijen et al. (2010,I)
+    NContentBranch_Tree  = 0.005,                     # Branch nitrogen content (gN.gDM-1).
+    NContentStem_Tree    = 0.005,                     # Stem nitrogen content (gN.gDM-1).
     NContentCR_Tree      = 0.0084,                    # Coarse roots nitrogen content (gN.gDM-1). Source: Van Oijen et al. (2010,I)
     NContentLeaf_Tree    = 0.0359,                    # Leaf nitrogen content (gN.gDM-1). Source: average 3.35 to 3.82%, Van Oijen et al. (2010,I)
     NContentFRoot_Tree   = 0.0084,                    # Fine root nitrogen content (gN.gDM-1). Taken = to leaves
