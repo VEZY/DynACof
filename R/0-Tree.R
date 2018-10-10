@@ -66,6 +66,5 @@ Tree= function(){
     k                    = Light_extinction_K,         # Light extinction coefficient (call external function)
     Metamodels           = Metamodels,                 # Idem for lue, transpiration and sensible heat flux using MAESPA metamodels
     Allometries          = Allometries                 # Idem for allometric equations (optional, any kind of variable can be added here).
-    # NB: Default metamodels and allometries from the package. If you want to update them, you can write the function here
   )
 }
