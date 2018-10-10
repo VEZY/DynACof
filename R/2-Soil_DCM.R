@@ -20,17 +20,15 @@
 #' @export
 Soilfun= function(S,i){
 
-  # Rn or AE per layer (radiation reaching every layer, valid only during dailight hours,
-  # not during night hours)
-  # 1- Rn understorey using Shuttleworth & Wallace, 1985, eq. 21 for reference
+  # Rn understorey using Shuttleworth & Wallace, 1985, eq. 21 for reference
   S$Sim$Rn_Soil_SW[i]=
     S$Met_c$Rn[i]*exp(-S$Parameters$k_Rn*S$Sim$LAIplot[i])
 
-  # 1- Rn understorey using metamodels
+  # Rn understorey using metamodels
   S$Parameters$Metamodels_soil(S,i)
   # NB: soil heat storage is negligible at daily time-step (or equilibrate rapidly)
 
-  #1/ Rainfall interception, source Gomez-Delgado et al.2011, Box A: IntercMax=AX;
+  # 1/ Rainfall interception, source Gomez-Delgado et al.2011, Box A: IntercMax=AX;
   S$Sim$IntercMax[i]= S$Parameters$IntercSlope*S$Sim$LAIplot[i]
 
   S$Sim$CanopyHumect[i]=
@@ -92,9 +90,10 @@ Soilfun= function(S,i){
     }
   }
 
-  # 2.c Calculating infiltration from superficial-box to soil-boxes and updating stock in superficial-box
+  # 2.c Calculating infiltration from superficial-box to soil-boxes and updating stock
+  # in superficial-box
   if(S$Sim$InfilCapa[i]<= S$Sim$WSurfaceRes[i]){
-    S$Sim$Infiltration[i]= S$Sim$InfilCapa[i]   # infiltration (m?dt-1)
+    S$Sim$Infiltration[i]= S$Sim$InfilCapa[i]
     S$Sim$WSurfaceRes[i]=
       S$Sim$WSurfaceRes[i] - S$Sim$Infiltration[i]
   }else{
@@ -102,34 +101,40 @@ Soilfun= function(S,i){
     S$Sim$WSurfaceRes[i]= 0
   }
 
-  #3/ Adding Infiltration to soil water content of the previous day, computing drainage,
+  # 3/ Adding Infiltration to soil water content of the previous day, computing drainage,
   # source Gomez-Delgado et al. 2010
   S$Sim$W_1[i]= S$Sim$W_1[previous_i(i,1)]+S$Sim$Infiltration[i]
 
-  #Preventing W_1 to be larger than the soil storage at field capacity:
+  # Preventing W_1 to be larger than the soil storage at field capacity:
   if(S$Sim$W_1[i] > S$Parameters$Wf1){
     S$Sim$Drain_1[i]= S$Sim$W_1[i] - S$Parameters$Wf1
     S$Sim$W_1[i] = S$Parameters$Wf1
-  }else{S$Sim$Drain_1[i]= 0}     # Water excess in the root-box that drains (m)
+  }else{
+    # Water excess in the root-box that drains (m)
+    S$Sim$Drain_1[i]= 0
+  }
 
-  # RV: same as CanopyHumect
   S$Sim$W_2[i]= S$Sim$W_2[previous_i(i,1)]+S$Sim$Drain_1[i]
 
-  #Preventing W_2 to be larger than the soil storage at field capacity:
+  # Preventing W_2 to be larger than the soil storage at field capacity:
   if(S$Sim$W_2[i] > S$Parameters$Wf2){
     S$Sim$Drain_2[i]= S$Sim$W_2[i] - S$Parameters$Wf2
     S$Sim$W_2[i] = S$Parameters$Wf2
-  }else{S$Sim$Drain_2[i]= 0}     # Water excess in the root-box that drains (m)
+  }else{
+    S$Sim$Drain_2[i]= 0
+  }
 
   S$Sim$W_3[i]= S$Sim$W_3[previous_i(i,1)]+S$Sim$Drain_2[i]
 
-  #Preventing W_3 to be larger than the soil storage at field capacity:
+  # Preventing W_3 to be larger than the soil storage at field capacity:
   if(S$Sim$W_3[i] > S$Parameters$Wf3){
     S$Sim$Drain_3[i]= S$Sim$W_3[i] - S$Parameters$Wf3
     S$Sim$W_3[i] = S$Parameters$Wf3
-  }else{S$Sim$Drain_3[i]= 0}     # Water excess in the root-box that drains (m)
+  }else{
+    S$Sim$Drain_3[i]= 0
+  }
 
-  #3/First computing water per soil layer
+  # 4/ First computing water per soil layer
   S$Sim$EW_1[i]= S$Sim$W_1[i]-S$Parameters$Wm1 # Extractable water (m)
   # Relative extractable water (dimensionless):
   S$Sim$REW_1[i]= S$Sim$EW_1[i]/(S$Parameters$Wf1-S$Parameters$Wm1)
@@ -138,42 +143,48 @@ Soilfun= function(S,i){
   S$Sim$EW_3[i]= S$Sim$W_3[i]-S$Parameters$Wm3
   S$Sim$REW_3[i]= S$Sim$EW_3[i]/(S$Parameters$Wf3-S$Parameters$Wm3)
   S$Sim$EW_tot[i]= S$Sim$EW_1[i]+S$Sim$EW_2[i]+S$Sim$EW_3[i]
-  S$Sim$REW_tot[i]= S$Sim$EW_tot[i]/
+  S$Sim$REW_tot[i]=
+    S$Sim$EW_tot[i]/
     ((S$Parameters$Wf1-S$Parameters$Wm1)+(S$Parameters$Wf2-S$Parameters$Wm2)+
        (S$Parameters$Wf3-S$Parameters$Wm3))
 
-  #4/Evaporation of the Understorey, E_Soil (from W_1 only)
+  # 5/ Evaporation of the Understorey, E_Soil (from W_1 only)
   S$Sim$E_Soil[i]= S$Sim$Rn_Soil[i]*S$Parameters$Soil_LE_p/S$Parameters$lambda
-
-  #Avoiding depleting W_1 below Wm1 and udating Wx after retrieving actual E_Soil
+  # Avoid depleting W_1 below Wm1 and udating Wx after retrieving actual E_Soil
   if((S$Sim$W_1[i]-S$Sim$E_Soil[i])>=S$Parameters$Wm1){
     S$Sim$W_1[i]= S$Sim$W_1[i]-S$Sim$E_Soil[i]
-  }else{S$Sim$E_Soil[i]= S$Sim$W_1[i]-S$Parameters$Wm1
-  S$Sim$W_1[i]= S$Parameters$Wm1}
+  }else{
+    S$Sim$E_Soil[i]= S$Sim$W_1[i]-S$Parameters$Wm1
+    S$Sim$W_1[i]= S$Parameters$Wm1
+  }
 
-  #6/ Root Water Extraction by soil layer, source Granier et al., 1999
+  # 6/ Root Water Extraction by soil layer, source Granier et al., 1999
   S$Sim$RootWaterExtract_1[i]= S$Sim$T_tot[i]*S$Parameters$RootFraction1
   S$Sim$RootWaterExtract_2[i]= S$Sim$T_tot[i]*S$Parameters$RootFraction2
   S$Sim$RootWaterExtract_3[i]= S$Sim$T_tot[i]*S$Parameters$RootFraction3
-  #Avoiding depleting Wx below Wmx, and udating Wx after retrieving actual RootWaterExtract
+  # Avoiding depleting Wx below Wmx, and udating Wx after retrieving actual RootWaterExtract
   if((S$Sim$W_1[i]-S$Sim$RootWaterExtract_1[i])>=S$Parameters$Wm1){
     S$Sim$W_1[i]= S$Sim$W_1[i]-S$Sim$RootWaterExtract_1[i]
-  }else{S$Sim$RootWaterExtract_1[i]=S$Sim$W_1[i]-S$Parameters$Wm1
-  S$Sim$W_1[i]=S$Parameters$Wm1}
+  }else{
+    S$Sim$RootWaterExtract_1[i]=S$Sim$W_1[i]-S$Parameters$Wm1
+    S$Sim$W_1[i]=S$Parameters$Wm1
+  }
 
   if((S$Sim$W_2[i]-S$Sim$RootWaterExtract_2[i])>=S$Parameters$Wm2){
     S$Sim$W_2[i]=S$Sim$W_2[i]-S$Sim$RootWaterExtract_2[i]
-  }else{S$Sim$RootWaterExtract_2[i]=S$Sim$W_2[i]-S$Parameters$Wm2
-  S$Sim$W_2[i]=S$Parameters$Wm2}
+  }else{
+    S$Sim$RootWaterExtract_2[i]=S$Sim$W_2[i]-S$Parameters$Wm2
+    S$Sim$W_2[i]=S$Parameters$Wm2
+  }
 
   if((S$Sim$W_3[i]-S$Sim$RootWaterExtract_3[i])>=S$Parameters$Wm3){
     S$Sim$W_3[i]=S$Sim$W_3[i]-S$Sim$RootWaterExtract_3[i]
-  }else{S$Sim$RootWaterExtract_3[i]=S$Sim$W_3[i]-S$Parameters$Wm3
-  S$Sim$W_3[i]=S$Parameters$Wm3}
+  }else{
+    S$Sim$RootWaterExtract_3[i]=S$Sim$W_3[i]-S$Parameters$Wm3
+    S$Sim$W_3[i]=S$Parameters$Wm3
+  }
 
-
-
-  #8/Second Updating water per soil layer
+  # 7/ Second Updating water per soil layer
   S$Sim$W_tot[i]= S$Sim$W_1[i]+S$Sim$W_2[i]+S$Sim$W_3[i]
   S$Sim$EW_1[i]= S$Sim$W_1[i]-S$Parameters$Wm1 # Extractable water (m)
   S$Sim$REW_1[i]= S$Sim$EW_1[i]/(S$Parameters$Wf1-S$Parameters$Wm1)
@@ -187,21 +198,22 @@ Soilfun= function(S,i){
     ((S$Parameters$Wf1-S$Parameters$Wm1)+(S$Parameters$Wf2-S$Parameters$Wm2)+
        (S$Parameters$Wf3-S$Parameters$Wm3))
 
-  #9/ Soil water deficit
+  # 8/ Soil water deficit
   if(S$Parameters$REWc*S$Parameters$EWMtot-S$Sim$EW_tot[i]>0){
     S$Sim$SWD[i]= S$Parameters$REWc*S$Parameters$EWMtot-S$Sim$EW_tot[i]
-  }else{S$Sim$SWD[i]= 0}
+  }else{
+    S$Sim$SWD[i]= 0
+  }
 
-  # Soil Water potential, Campbell (1974) equation
+  # 9/ Soil Water potential, Campbell (1974) equation
   S$Sim$SoilWaterPot[i]=
     S$Parameters$PSIE*(((S$Sim$W_1[i]+S$Sim$W_2[i]+
                            S$Sim$W_3[i])/(S$Parameters$TotalDepth*1000))/
                          S$Parameters$PoreFrac)^(-S$Parameters$B)
 
+  # 10/ Energy balance
   S$Sim$LE_Soil[i]= S$Sim$E_Soil[i]*S$Parameters$lambda
-
   S$Sim$H_Soil[i]= S$Sim$Rn_Soil[i]*(1-S$Parameters$Soil_LE_p)
-
   S$Sim$Q_Soil[i]= 0
   # RV: Q_Soil is negligible at yearly time-step, and equilibriate between several
   # days anyway.

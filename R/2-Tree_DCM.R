@@ -29,27 +29,25 @@ Shade.Tree= function(S,i){
   # LE_Tree (sum of transpiration + leaf evap)
   # And via allometries: Height_Tree for canopy boundary layer conductance
 
-
   # Metamodel for kdif and kdir
   S$Parameters$k(S,i)
 
-  #For stocking Cordia=50, without thinning, with metamodel
   S$Sim$APAR_Dif_Tree[i]=
     (S$Met_c$PAR[i]*S$Met_c$FDiff[i])*
-    (1-exp(-S$Sim$K_Dif_Tree[i]*S$Sim$LAI_Tree[previous_i(i,1)]))#MJ m-2 d-1
+    (1-exp(-S$Sim$K_Dif_Tree[i]*S$Sim$LAI_Tree[previous_i(i,1)]))
   S$Sim$APAR_Dir_Tree[i]= (S$Met_c$PAR[i]*(1-S$Met_c$FDiff[i]))*
-    (1-exp(-S$Sim$K_Dir_Tree[i]*S$Sim$LAI_Tree[previous_i(i,1)]))#MJ m-2 d-1
+    (1-exp(-S$Sim$K_Dir_Tree[i]*S$Sim$LAI_Tree[previous_i(i,1)]))
+
   S$Sim$APAR_Tree[i]= max(0,S$Sim$APAR_Dir_Tree[i]+S$Sim$APAR_Dif_Tree[i])
-  # S$Sim$APAR_Tree[i]= S$Met_c$PAR[i]*(1-exp(-S$Sim$k_Tree[i]*
-  # S$Sim$LAI_Tree[previous_i(i,1)]))
-  S$Sim$Transmittance_Tree[i]=
+
+    S$Sim$Transmittance_Tree[i]=
     1-(S$Sim$APAR_Tree[i]/S$Met_c$PAR[i])
   S$Sim$Transmittance_Tree[i][is.nan(S$Sim$Transmittance_Tree[i])]= 1
+
   # Calling the metamodels for LUE, Transpiration and sensible heat flux :
   S$Parameters$Metamodels(S,i)
+
   # Computing the air temperature in the shade tree layer:
-
-
   S$Sim$TairCanopy_Tree[i]=
     S$Met_c$Tair[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
     (S$Met_c$Air_Density[i]*S$Parameters$Cp*
@@ -71,12 +69,8 @@ Shade.Tree= function(S,i){
                    LAI_lay= S$Sim$LAI_Tree[previous_i(i,1)],
                    LAI_abv= 0,ZHT = S$Parameters$ZHT,
                    Z_top = S$Sim$Height_Tree[previous_i(i,1)],
-                   extwind= S$Parameters$extwind)
-       ))
+                   extwind= S$Parameters$extwind)))
 
-
-
-  #GPP
   S$Sim$GPP_Tree[i]= S$Sim$lue_Tree[i]*S$Sim$APAR_Tree[i]
 
   #Tree Thinning threshold when Transmittance <=S$Parameters$ThinThresh:
@@ -124,13 +118,17 @@ Shade.Tree= function(S,i){
     S$Sim$Rm_Branch_Tree[i]+S$Sim$Rm_Stem_Tree[i]+
     S$Sim$Rm_FRoot_Tree[i]
 
-  ############################----- Shade Tree Allocation ----############################
 
-  ########## Potential use of reserves####
-  # Reserves are used only if GPP doesn't meet the maintenance respiration + 10% need.
-  # Thus, if GPP is < to Rm*kres_max_Tree, then we take the needed C to meet the Rm (Rm*1.1-GPP), but not more than
-  # there is C in the reserves. If the reserve mass are high (>50 gC m-2), we can use it whatever the need.
-  if(S$Sim$GPP_Tree[i]<(S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i])|S$Sim$CM_RE_Tree[previous_i(i,1)]>S$Parameters$Res_max_Tree){
+  # Shade Tree Allocation ---------------------------------------------------
+
+  # Potential use of reserves:
+  # Reserves are used only if GPP doesn't meet the condition:
+  # maintenance respiration * kres_max_Tree.
+  # Thus, if GPP is < to Rm*kres_max_Tree, the model take the needed C to meet the Rm,
+  # but not more than there is C in the reserves. If the reserve mass are high enough
+  # (>Res_max_Tree gC m-2), the model use it whatever the need.
+  if(S$Sim$GPP_Tree[i]<(S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i])|
+     S$Sim$CM_RE_Tree[previous_i(i,1)]>S$Parameters$Res_max_Tree){
     S$Sim$Consumption_RE_Tree[i]=
       max(0,min(S$Sim$CM_RE_Tree[previous_i(i,1)],S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i]))
   }
@@ -138,7 +136,8 @@ Shade.Tree= function(S,i){
   S$Sim$Offer_Total_Tree[i]=
     S$Sim$GPP_Tree[i]-S$Sim$Rm_Tree[i]+S$Sim$Consumption_RE_Tree[i]
   # If the offer is negative (Rm>GPP+RE), there is mortality. This mortality is shared between
-  # the organs according to their potential carbon allocation (it is a deficit in carbon allocation)
+  # the organs according to their potential carbon allocation (it is a deficit in carbon
+  # allocation)
 
   if(S$Sim$Offer_Total_Tree[i]<0){
     # Make it positive to cumulate in mortality:
@@ -163,15 +162,21 @@ Shade.Tree= function(S,i){
          S$Sim$M_Rm_Branch_Tree[i]+S$Sim$M_Rm_CR_Tree[i]+
          S$Sim$M_Rm_Stem_Tree[i])
 
-    if(S$Sim$M_Rm_RE_Tree[i]>(S$Sim$CM_RE_Tree[previous_i(i,1)]-S$Sim$Consumption_RE_Tree[i])){
+    if(S$Sim$M_Rm_RE_Tree[i]>(S$Sim$CM_RE_Tree[previous_i(i,1)]-
+                              S$Sim$Consumption_RE_Tree[i])){
       # If reserves cannot provide the C deficit, take it from wood mortality:
-      C_overdeficit_RE= S$Sim$M_Rm_RE_Tree[i]-(S$Sim$CM_RE_Tree[previous_i(i,1)]-S$Sim$Consumption_RE_Tree[i])
+      C_overdeficit_RE=
+        S$Sim$M_Rm_RE_Tree[i]-(S$Sim$CM_RE_Tree[previous_i(i,1)]-
+                                 S$Sim$Consumption_RE_Tree[i])
       S$Sim$M_Rm_CR_Tree[i]=
-        S$Sim$M_Rm_CR_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_CR_Tree/S$Parameters$Wood_alloc)
+        S$Sim$M_Rm_CR_Tree[i]+
+        C_overdeficit_RE*(S$Parameters$lambda_CR_Tree/S$Parameters$Wood_alloc)
       S$Sim$M_Rm_Branch_Tree[i]=
-        S$Sim$M_Rm_Branch_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_Branch_Tree/S$Parameters$Wood_alloc)
+        S$Sim$M_Rm_Branch_Tree[i]+
+        C_overdeficit_RE*(S$Parameters$lambda_Branch_Tree/S$Parameters$Wood_alloc)
       S$Sim$M_Rm_Stem_Tree[i]=
-        S$Sim$M_Rm_Stem_Tree[i]+C_overdeficit_RE*(S$Parameters$lambda_Stem_Tree/S$Parameters$Wood_alloc)
+        S$Sim$M_Rm_Stem_Tree[i]+
+        C_overdeficit_RE*(S$Parameters$lambda_Stem_Tree/S$Parameters$Wood_alloc)
       S$Sim$M_Rm_RE_Tree[i]= S$Sim$M_Rm_RE_Tree[i]-C_overdeficit_RE
     }
     # NB : M_Rm_RE_Tree is regarded as an extra reserve consumption as offer is not met.
@@ -199,43 +204,30 @@ Shade.Tree= function(S,i){
        S$Sim$Alloc_Branch_Tree[i]+S$Sim$Alloc_CR_Tree[i]+
        S$Sim$Alloc_Stem_Tree[i])
 
-  #### Stem ####
-  #NPP = Offer * growth cost coefficient:
+  # Stem:
   S$Sim$NPP_Stem_Tree[i]= S$Sim$Alloc_Stem_Tree[i]/S$Parameters$epsilon_Stem_Tree
-  # Growth respiration = Offer * (1-growth cost coefficient):
   S$Sim$Rc_Stem_Tree[i]=
     S$Sim$Alloc_Stem_Tree[i]-S$Sim$NPP_Stem_Tree[i]
   # Mortality: No mortality yet for this compartment.
   # If stem mortality has to be set, write it here.
 
-
-  #### Coarse Roots ####
-  #NPP
+  # Coarse Roots:
   S$Sim$NPP_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]/S$Parameters$epsilon_CR_Tree
-  # Growth respiration:
   S$Sim$Rc_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]-S$Sim$NPP_CR_Tree[i]
-  # Natural mortality
   S$Sim$Mact_CR_Tree[i]=
     S$Sim$CM_CR_Tree[previous_i(i,1)]/S$Parameters$lifespanCR_Tree
 
-
-  #### Branches ####
-  #NPP
+  # Branches:
   S$Sim$NPP_Branch_Tree[i]=
     S$Sim$Alloc_Branch_Tree[i]/S$Parameters$epsilon_Branch_Tree
-  # Growth respiration:
   S$Sim$Rc_Branch_Tree[i]=
     S$Sim$Alloc_Branch_Tree[i]-S$Sim$NPP_Branch_Tree[i]
-  # Natural mortality:
   S$Sim$Mact_Branch_Tree[i]=
     S$Sim$CM_Branch_Tree[previous_i(i,1)]/S$Parameters$lifespanBranch_Tree
 
-
-  #### Leaves ####
-  #NPP
+  # Leaves:
   S$Sim$NPP_Leaf_Tree[i]=
     S$Sim$Alloc_Leaf_Tree[i]/S$Parameters$epsilon_Leaf_Tree
-  # Growth respiration:
   S$Sim$Rc_Leaf_Tree[i]=
     S$Sim$Alloc_Leaf_Tree[i]-S$Sim$Rc_Leaf_Tree[i]
 
@@ -254,26 +246,20 @@ Shade.Tree= function(S,i){
       S$Sim$CM_Leaf_Tree[previous_i(i,1)]/S$Parameters$lifespanLeaf_Tree
   }
 
-  #### Fine roots ####
-  # NPP
+  # Fine roots
   S$Sim$NPP_FRoot_Tree[i]=
     S$Sim$Alloc_FRoot_Tree[i]/S$Parameters$epsilon_FRoot_Tree
-  # Growth respiration
   S$Sim$Rc_FRoot_Tree[i]=
     S$Sim$Alloc_FRoot_Tree[i]-S$Sim$NPP_FRoot_Tree[i]
-  # Natural mortality
   S$Sim$Mact_FRoot_Tree[i]=
     S$Sim$CM_FRoot_Tree[previous_i(i,1)]/S$Parameters$lifespanFRoot_Tree
 
-
-  #### Reserves ####
+  # Reserves:
   S$Sim$NPP_RE_Tree[i]=
     S$Sim$Alloc_RE_Tree[i]/S$Parameters$epsilon_RE_Tree
   # Cost of allocating to reserves
   S$Sim$Rc_RE_Tree[i]=
     S$Sim$Alloc_RE_Tree[i]-S$Sim$NPP_RE_Tree[i]
-
-
 
   # Pruning -----------------------------------------------------------------
 
@@ -300,7 +286,6 @@ Shade.Tree= function(S,i){
                 S$Sim$CM_FRoot_Tree[previous_i(i,1)]))
   }
 
-
   # Thinning ----------------------------------------------------------------
 
   if(S$Sim$TimetoThin_Tree[i]){
@@ -320,7 +305,6 @@ Shade.Tree= function(S,i){
       S$Sim$CM_FRoot_Tree[previous_i(i,1)]*S$Parameters$RateThinning_Tree
   }
 
-
   # Mortality update --------------------------------------------------------
 
   S$Sim$Mortality_Leaf_Tree[i]=
@@ -335,8 +319,7 @@ Shade.Tree= function(S,i){
     S$Sim$M_Rm_FRoot_Tree[i]+S$Sim$Mact_FRoot_Tree[i]+
     S$Sim$MThinning_FRoot_Tree[i]
 
-
-  # Dry Mass update ---------------------------------------------------------
+  # C mass update -----------------------------------------------------------
 
   S$Sim$CM_Leaf_Tree[i]=
     max(0,S$Sim$CM_Leaf_Tree[previous_i(i,1)]+S$Sim$NPP_Leaf_Tree[i]-S$Sim$Mortality_Leaf_Tree[i])
@@ -361,7 +344,8 @@ Shade.Tree= function(S,i){
     max(0,S$Sim$CM_RE_Tree[previous_i(i,1)]+
           S$Sim$NPP_RE_Tree[i]-S$Sim$Consumption_RE_Tree[i]-S$Sim$M_Rm_RE_Tree[i])
 
-  ##########################################
+  # Dry Mass update ---------------------------------------------------------
+
   S$Sim$DM_Leaf_Tree[i]=
     S$Sim$CM_Leaf_Tree[i]/S$Parameters$CContent_Leaf_Tree
   S$Sim$DM_Branch_Tree[i]=
@@ -373,6 +357,8 @@ Shade.Tree= function(S,i){
   S$Sim$DM_FRoot_Tree[i]=
     S$Sim$CM_FRoot_Tree[i]/S$Parameters$CContent_wood_Tree
 
+  # Respiration -------------------------------------------------------------
+
   S$Sim$Rc_Tree[i]=
     S$Sim$Rc_CR_Tree[i]+S$Sim$Rc_Leaf_Tree[i]+
     S$Sim$Rc_Branch_Tree[i]+S$Sim$Rc_Stem_Tree[i]+
@@ -380,6 +366,8 @@ Shade.Tree= function(S,i){
 
   S$Sim$Ra_Tree[i]=
     S$Sim$Rm_Tree[i]+S$Sim$Rc_Tree[i]
+
+  # Total NPP ---------------------------------------------------------------
 
   S$Sim$NPP_Tree[i]=
     S$Sim$NPP_Stem_Tree[i]+S$Sim$NPP_Branch_Tree[i]+
@@ -391,6 +379,7 @@ Shade.Tree= function(S,i){
     S$Sim$Offer_Total_Tree[i]-(S$Sim$NPP_Tree[i]+S$Sim$Rc_Tree[i])
 
   S$Sim$LAI_Tree[i]= S$Sim$DM_Leaf_Tree[i]*(S$Parameters$SLA_Tree/1000)
+
   # Allometries ------------------------------------------------------------
   S$Parameters$Allometries(S,i)
 
