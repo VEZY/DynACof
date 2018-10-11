@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Continuous percentage of living tissue distribution — Paliv_dis" />
 
-<meta property="og:description" content="Help compute the percentage of living tissue in organs according to age" />
+<meta property="og:description" content="Computes the percentage of living tissue in the organ according to age" />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -104,7 +104,7 @@
 
     <div class="ref-description">
     
-    <p>Help compute the percentage of living tissue in organs according to age</p>
+    <p>Computes the percentage of living tissue in the organ according to age</p>
     
     </div>
 
@@ -133,15 +133,12 @@
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-
-<dt>Living tissue at each age</dt><dd><p>(In % of organ dry mass)</p></dd>
-
+    <p>Living tissue at each age in % of organ dry mass</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The percentage of living tissue is computed as follows:
- $$P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max)))$$</p>
+ $$P_{End}+\left((P_{Start}-P_{End})\cdot e^{seq(0,-k,length.out=Age_{Max})}\right)$$</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

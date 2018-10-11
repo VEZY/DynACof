@@ -32,13 +32,10 @@
 
 <meta property="og:title" content="Default (example) parameter functions — site" />
 
-<meta property="og:description" content="These input parameters for the model are imported as functions that are executed and return
-the list of parameters. It is strongly recommended for clarity to write the parameters into separate
-files corresponding to the site, the soil, the coffee layer and the tree layer.
-These functions are provided to define the default parameters for DynACof, and are used as example.
+<meta property="og:description" content="These functions return the default parameter values for DynACof.
 They are mainly used invisibly as defaults from Import_Parameters, but can still be
 called by the user for conveniance (but not needed for a model run). The parameters are divided into
-four functions." />
+four functions: site(), soil(), coffee(), and Tree()." />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -110,13 +107,10 @@ four functions." />
 
     <div class="ref-description">
     
-    <p>These input parameters for the model are imported as functions that are executed and return
-the list of parameters. It is strongly recommended for clarity to write the parameters into separate
-files corresponding to the site, the soil, the coffee layer and the tree layer.
-These functions are provided to define the default parameters for DynACof, and are used as example.
+    <p>These functions return the default parameter values for DynACof.
 They are mainly used invisibly as defaults from <code><a href='Import_Parameters.html'>Import_Parameters</a></code>, but can still be
 called by the user for conveniance (but not needed for a model run). The parameters are divided into
-four functions.</p>
+four functions: <code>site()</code>, <code>soil()</code>, <code>coffee()</code>, and <code>Tree()</code>.</p>
     
     </div>
 
@@ -130,9 +124,16 @@ four functions.</p>
         
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of parameters needed for a DynACof simulation. The full list (and example files)
- is available on the <a href='https://github.com/VEZY/DynACof/tree/master/data'>github repository </a> in the
-  <code>data/</code> folder.</p>
+    <p>A list of parameters needed for a DynACof simulation.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>These input functions are stored into R-script that can be customized at will by the user to fit
+new conditions. In that case, the user have to write the resulting functions to separate files
+corresponding to the site, the soil, the coffee layer and the tree layer.
+Then <code><a href='DynACof.html'>DynACof</a></code> read them using the <code>Inpath</code> and <code>FileName</code> parameters.
+File templates with default parameter values and an example use are available from this separate
+<a href='https://github.com/VEZY/DynACof_inputs'>github repository</a></p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
@@ -179,6 +180,8 @@ for monospecific coffee plantations.</p>
     <ul class="nav nav-pills nav-stacked">
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#note">Note</a></li>
 

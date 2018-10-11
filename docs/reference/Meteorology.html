@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Import Meteorology for model input — Meteorology" />
 
-<meta property="og:description" content="This function aims to import the meteorology data, check it, and compute missing variables." />
+<meta property="og:description" content="Import the meteorology data, check its format, and eventually compute missing variables." />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -104,7 +104,7 @@
 
     <div class="ref-description">
     
-    <p>This function aims to import the meteorology data, check it, and compute missing variables.</p>
+    <p>Import the meteorology data, check its format, and eventually compute missing variables.</p>
     
     </div>
 
@@ -115,26 +115,26 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>file</th>
-      <td><p>Either the file name to read, a shell command that preprocesses the file (e.g. fread("grep blah filename"))
+      <td><p>Either the file name to read, a shell command that preprocesses the file (e.g. fread("grep filename"))
 or the input itself as a string, see <code><a href='http://www.rdocumentation.org/packages/data.table/topics/fread'>fread</a></code>. In both cases, a length 1 character string.
 A filename input is passed through path.expand for convenience and may be a URL starting http:// or file://.
-Default to <code>NULL</code>, which make the function return the <code>Aquiares</code> package example data.</p></td>
+Default to <code>NULL</code> to return the <code><a href='Aquiares.html'>Aquiares</a></code> example data from the package.</p></td>
     </tr>
     <tr>
       <th>Period</th>
-      <td><p>The desired time period to be returned in the form of a vector of two POSIX dates (min and max).</p></td>
+      <td><p>A vector of two POSIX dates that correspond to the min and max dates for the desired time period to be returned.</p></td>
     </tr>
     <tr>
       <th>Parameters</th>
       <td><p>A list of parameters:</p><ul>
-<li><p>Start_Date: optional, the date of the first meteo file record. Only needed if the Date column is missing (Posixct).</p></li>
-<li><p>FPAR      : Fraction of global radiation that is PAR (source: MAESPA model), only needed if either RAD or PAR is missing (fraction).</p></li>
-<li><p>Elevation : elevation of the site, only needed if atmospheric pressure is missing (m)</p></li>
-<li><p>Latitude  : latitude of the site, only needed if the diffuse fraction of light is missing (degree)</p></li>
-<li><p>WindSpeed : constant wind speed, only needed if windspeed is missing (m s-1)</p></li>
-<li><p>CO2       : constant atmospheric \(CO_2\) concentration, only needed if \(CO_2\) is missing (ppm)</p></li>
-<li><p>MinTT     : minimum temperature threshold for degree days computing, see <code><a href='GDD.html'>GDD</a></code></p></li>
-<li><p>MaxTT     : maximum temperature threshold for degree days computing, see <code><a href='GDD.html'>GDD</a></code></p></li>
+<li><p>Start_Date: optional, the Posixct date of the first meteo file record. Only needed if the Date column is missing.</p></li>
+<li><p>FPAR      : Fraction of global radiation corresponding to PAR radiation, only needed if either RAD or PAR is missing.</p></li>
+<li><p>Elevation : elevation of the site (m), only needed if atmospheric pressure is missing</p></li>
+<li><p>Latitude  : latitude of the site (degree), only needed if the diffuse fraction of light is missing</p></li>
+<li><p>WindSpeed : constant wind speed (m s-1), only needed if windspeed is missing</p></li>
+<li><p>CO2       : constant atmospheric \(CO_2\) concentration (ppm), only needed if \(CO_2\) is missing</p></li>
+<li><p>MinTT     : minimum temperature threshold for degree days computing (Celsius), see <code><a href='GDD.html'>GDD</a></code></p></li>
+<li><p>MaxTT     : maximum temperature threshold for degree days computing (Celsius), see <code><a href='GDD.html'>GDD</a></code></p></li>
 <li><p>albedo    : site shortwave surface albedo, only needed if net radiation is missing, see <code><a href='Rad_net.html'>Rad_net</a></code></p></li>
 </ul></td>
     </tr>
@@ -142,32 +142,33 @@ Default to <code>NULL</code>, which make the function return the <code>Aquiares<
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A daily timestep meteorology data.frame (invisibly) with either the data read above or computed.</p>
+    <p>A daily meteorology data.frame (invisibly).</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The imported file is expected to be at daily time-step.
          The albedo is used to compute the system net radiation that is then used to compute the soil net radiation using an
          extinction coefficient with the plot LAI following the Shuttleworth &amp; Wallace (1985) formulation. This computation is
-         likely to change in the near future to add a more uniform process-based formulation (such as Choudhury &amp; Monteith 1988).</p><table class='table'>
+         likely to be depreciated in the near future as the computation has been replaced by a metamodel. It is kept for
+         information for the moment.</p><table class='table'>
 <tr><td><strong>Var</strong></td><td><strong>unit</strong></td><td><strong>Definition</strong></td><td><strong>If missing</strong></td></tr>
-<tr><td>Date</td><td>POSIXct date</td><td>Date in POSIXct format</td><td>Computed from start date parameter, or set a dummy date if missing</td></tr>
+<tr><td>Date</td><td>POSIXct</td><td>Date in POSIXct format</td><td>Computed from start date parameter, or set a dummy date if missing</td></tr>
 <tr><td>year</td><td>year</td><td>Year of the simulation</td><td>Computed from Date</td></tr>
 <tr><td>DOY</td><td>day</td><td>day of the year</td><td>Computed from Date</td></tr>
 <tr><td>Rain</td><td>mm</td><td>Rainfall</td><td>Assume no rain</td></tr>
-<tr><td>Tair</td><td>deg C</td><td>Air temperature (above canopy)</td><td>Computed from Tmax and Tmin</td></tr>
-<tr><td>Tmax</td><td>deg C</td><td>Maximum air temperature durnig the day</td><td>Required (error)</td></tr>
-<tr><td>Tmin</td><td>deg C</td><td>Minimum air temperature durnig the day</td><td>Required (error)</td></tr>
+<tr><td>Tair</td><td>Celsius</td><td>Air temperature (above canopy)</td><td>Computed from Tmax and Tmin</td></tr>
+<tr><td>Tmax</td><td>Celsius</td><td>Maximum air temperature during the day</td><td>Required (error)</td></tr>
+<tr><td>Tmin</td><td>Celsius</td><td>Minimum air temperature during the day</td><td>Required (error)</td></tr>
 <tr><td>RH</td><td>%</td><td>Relative humidity</td><td>Not used, but prefered over VPD for Rn computation</td></tr>
 <tr><td>RAD</td><td>MJ m-2 d-1</td><td>Incident shortwave radiation</td><td>Computed from PAR</td></tr>
-<tr><td>Pressure</td><td>hPa</td><td>Atmospheric pressure</td><td>Try to compute from VPD, Tair and Elevation, or Tair and Elevation.</td></tr>
-<tr><td>WindSpeed</td><td>m s-1</td><td>Wind speed</td><td>Try to set it to constant: <code>Parameters$WindSpeed</code></td></tr>
-<tr><td>CO2</td><td>ppm</td><td>Atmospheric CO2 concentration</td><td>Try to set it to constant: <code>Parameters$CO2</code></td></tr>
-<tr><td>DegreeDays</td><td>deg C</td><td>Growing degrre days</td><td>Computed using <code><a href='GDD.html'>GDD</a></code></td></tr>
+<tr><td>Pressure</td><td>hPa</td><td>Atmospheric pressure</td><td>Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation.</td></tr>
+<tr><td>WindSpeed</td><td>m s-1</td><td>Wind speed</td><td>Taken as constant: <code>Parameters$WindSpeed</code></td></tr>
+<tr><td>CO2</td><td>ppm</td><td>Atmospheric CO2 concentration</td><td>Taken as constant: <code>Parameters$CO2</code></td></tr>
+<tr><td>DegreeDays</td><td>Celsius</td><td>Growing degree days</td><td>Computed using <code><a href='GDD.html'>GDD</a></code></td></tr>
 <tr><td>PAR</td><td>MJ m-2 d-1</td><td>Incident photosynthetically active radiation</td><td>Computed from RAD</td></tr>
-<tr><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td><td>Computed using <code><a href='Diffuse_d.html'>Diffuse_d</a></code> usinf Spitters formula</td></tr>
+<tr><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td><td>Computed using <code><a href='Diffuse_d.html'>Diffuse_d</a></code> using Spitters et al. (1986) formula</td></tr>
 <tr><td>VPD</td><td>hPa</td><td>Vapor pressure deficit</td><td>Computed from RH</td></tr>
-<tr><td>Rn</td><td>MJ m-2 d-1</td><td>Net radiation (will soon be depreciated)</td><td>Computed using <code><a href='Rad_net.html'>Rad_net</a></code> with RH, or VPD</td></tr>
+<tr><td>Rn</td><td>MJ m-2 d-1</td><td>Net radiation (will be depreciated)</td><td>Computed using <code><a href='Rad_net.html'>Rad_net</a></code> with RH, or VPD</td></tr>
 <tr><td>DaysWithoutRain</td><td>day</td><td>Number of consecutive days with no rainfall</td><td>Computed from Rain</td></tr>
 <tr><td>Air_Density</td><td>kg m-3</td><td>Air density of moist air (\(\rho\)) above canopy</td><td>Computed using <code><a href='http://www.rdocumentation.org/packages/bigleaf/topics/air.density'>air.density</a></code></td></tr>
 </table>

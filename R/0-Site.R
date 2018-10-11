@@ -1,12 +1,9 @@
 #' Default (example) parameter functions
 #'
-#' @description These input parameters for the model are imported as functions that are executed and return
-#' the list of parameters. It is strongly recommended for clarity to write the parameters into separate
-#' files corresponding to the site, the soil, the coffee layer and the tree layer.
-#' These functions are provided to define the default parameters for DynACof, and are used as example.
+#' @description These functions return the default parameter values for DynACof.
 #' They are mainly used invisibly as defaults from \code{\link{Import_Parameters}}, but can still be
 #' called by the user for conveniance (but not needed for a model run). The parameters are divided into
-#' four functions.
+#' four functions: \code{site()}, \code{soil()}, \code{coffee()}, and \code{Tree()}.
 #'
 #' @section site:
 #' The default site is a stand from the Aquiares farm, located in Costa Rica. It is a \emph{Coffea arabica}
@@ -28,13 +25,17 @@
 #' average height of 26 m in 2018 on this site. NB: the Tree parameter file is optional, and not needed
 #' for monospecific coffee plantations.
 #'
-#' @return A list of parameters needed for a DynACof simulation. The full list (and example files)
-#'  is available on the \href{https://github.com/VEZY/DynACof/tree/master/data}{github repository } in the
-#'   \code{data/} folder.
-#'
+#' @return A list of parameters needed for a DynACof simulation.
 #'
 #' @note The Tree parameter file is optional. All other parameter files should have the same structure as
 #' the one from the default parameter files. Other parameters can be added to the files though.
+#'
+#' @details These input functions are stored into R-script that can be customized at will by the user to fit
+#' new conditions. In that case, the user have to write the resulting functions to separate files
+#' corresponding to the site, the soil, the coffee layer and the tree layer.
+#' Then \code{\link{DynACof}} read them using the \code{Inpath} and \code{FileName} parameters.
+#' File templates with default parameter values and an example use are available from this separate
+#' \href{https://github.com/VEZY/DynACof_inputs}{github repository}
 #'
 #' @aliases soil coffee Tree
 #'

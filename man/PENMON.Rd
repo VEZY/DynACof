@@ -30,14 +30,16 @@ PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind = 0,
 
 \item{wleaf}{Average leaf width (m)}
 
-\item{Parameters}{Constant parameters, default to Constants(), if different values are needed:
-Cp - specific heat of air for constant pressure (J K-1 kg-1) \cr
-Rgas - universal gas constant (J mol-1 K-1) \cr
-Kelvin - conversion degree Celsius to Kelvin \cr
-H2OMW - conversion from kg to mol for H2O (kg mol-1)}
+\item{Parameters}{Constant parameters, default to \code{\link{Constants()}}, if different values are needed:
+                   \describe{
+                     \item{Cp}{specific heat of air for constant pressure (J K-1 kg-1)}
+                     \item{Rgas}{universal gas constant (J mol-1 K-1)}
+                     \item{Kelvin}{conversion degree Celsius to Kelvin}
+                     \item{H2OMW}{conversion from kg to mol for H2O (kg mol-1)}
+}}
 }
 \value{
-\item{\eqn{ET}}{Daily evapotranspiration (mm d-1)}
+\eqn{ET}, the daily (evapo|transpi)ration (mm d-1)
 }
 \description{
 Compute the daily evaporation or transpiration of the surface using the
@@ -46,15 +48,16 @@ Compute the daily evaporation or transpiration of the surface using the
 \details{
 The daily evapotranspiration is computed using the Penman-Monteith equation, and a
          set of conductances as :
-         \deqn{ET= (Delta * Rn*10^6 + rho * Cp * (VPD/10) * GH) / (Delta + gamma * (1 + GH / GV))/\lambda}
+         \deqn{ET=\frac{\Delta\cdot Rn\cdot10^6+\rho\cdot Cp\cdot\frac{VPD}{10\ }\cdot GH}{\ \Delta+\frac{\gamma}{\lambda\ }\cdot(1+\frac{GH}{GV})}\ }{
+         ET= (Delta * Rn*10^6 + rho * Cp * (VPD/10) * GH) / (Delta + gamma * (1 + GH / GV))/\lambda}
          where \eqn{\Delta} is the slope of the saturation vapor pressure curve (kPa K-1),
-         \eqn{\rho} is the air density (kg m-3), GH the canopy boundary layer conductance (m s-1),
+         \eqn{\rho} is the air density (kg m-3), \eqn{GH} the canopy boundary layer conductance (m s-1),
          \eqn{\gamma} the psychrometric constant (kPa K-1) and \eqn{GV} the boundary + stomatal
-         conductance to water vapour (m s-1). To simulate evaporation, \eqn{Gs} can be set
-         to nearly infinite (e.g. \eqn{Gs= 1E09}).
+         conductance to water vapour (m s-1). To simulate evaporation, the input stomatal conductance
+         \eqn{Gs} can be set to nearly infinite (e.g. \eqn{Gs= 1\cdot e^9}).
 }
 \note{
-If \code{wind=0} it is replaced by a low value of \code{0.01}
+If \code{wind=0}, it is replaced by a low value of \code{0.01}
 }
 \examples{
 # leaf evaporation of a forest :
@@ -68,5 +71,5 @@ Allen R.G., Pereira L.S., Raes D., Smith M., 1998: Crop evapotranspiration -
              paper 56.
 }
 \seealso{
-\code{\link[bigleaf]{reference.ET}} and \href{https://maespa.github.io/}{MAESPA model}
+\code{\link[bigleaf]{potential.ET}} and \href{https://maespa.github.io/}{MAESPA model}
 }

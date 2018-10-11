@@ -300,21 +300,18 @@ Diffuse_d= function(DOY, RAD, Latitude= 35, type=c("Spitters","Page","Gopinathan
 }
 
 
-#' Daily extra-terrestrial radiation at a plane parallel to the earth surface
+#' Daily extra-terrestrial radiation
 #'
 #' @description Compute the daily extra-terrestrial radiation at a plane parallel to the
-#'              earth surface (\eqn{S0} or \eqn{H0} depending on the source) is computed
+#'              earth surface (\eqn{S0} or \eqn{H0} depending on the source)
 #'              following Khorasanizadeh and Mohammadi (2016).
 #'
-#' @param DOY         Day Of Year from 1st January (day)
+#' @param DOY         Ordinal date (integer): day of year from 1st January (day)
 #' @param Latitude    Latitude (deg)
-#' @param Gsc         The solar constant (W m-2), default to \code{Constants()$Gsc} (=1367).
+#' @param Gsc         The solar constant (W m-2), default to \code{Constants()$Gsc} (= 1367).
 #'
-#' @details The daily extra-terrestrial radiation at a plane parallel to the earth surface
-#'          (\eqn{S0_d} or \eqn{H0} depending on the source) is computed following
-#'          Khorasanizadeh and Mohammadi (2016).
 #'
-#' @return \item{\eqn{S0}}{Daily extra-terrestrial radiation (MJ m-2 d-1)}
+#' @return \eqn{S0}, the daily extra-terrestrial radiation (\eqn{MJ\ m^{-2}\ d^{-1}}{MJ m-2 d-1})
 #'
 #' @references Khorasanizadeh, H. and K. Mohammadi, Diffuse solar radiation on a horizontal surface:
 #'             Reviewing and categorizing the empirical models. Renewable and Sustainable Energy Reviews,
@@ -344,33 +341,39 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 #'              temperature, wind speed, relative humidity and the albedo. A clear description
 #'              of this methodology can be found in Allen et al. (1998) or in An et al. (2017).
 #'
-#' @param DOY         Day Of Year from 1st January (day)
-#' @param RAD         Incident daily total radiation (MJ m-2 d-1)
+#' @param DOY         Ordinal day, which is the day of year from 1st January (\eqn{day})
+#' @param RAD         Incident daily total radiation (\eqn{MJ\ m^{-2} d^{-1}}{MJ m-2 d-1})
 #' @param Tmax        Maximum daily air temperature (celsius degree)
 #' @param Tmin        Minimum daily air temperature (celsius degree)
 #' @param Rh          Average daily relative humidity (\code{\%})
-#' @param VPD         Mean daily Vapor Pressure Deficit (hPa), only needed if \code{Rh} is missing
-#' @param Latitude    Latitude (deg)
-#' @param Elevation   Elevation (m)
+#' @param VPD         Mean daily Vapor Pressure Deficit (\eqn{hPa}), only needed if \code{Rh} is missing
+#' @param Latitude    Latitude (\eqn{deg})
+#' @param Elevation   Elevation (\eqn{m})
 #' @param albedo      Shortwave surface albedo (-)
-#' @param sigma       Stefan-Boltzmann constant (W m-2 K-4), default to \code{Constants()$sigma}.
-#' @param Gsc         Solar constant (W m-2), default to \code{Constants()$Gsc} (=1367).
+#' @param sigma       Stefan-Boltzmann constant (\eqn{W\ m^{-2} K^{-4}}{W m-2 K-4}), default to \code{Constants()$sigma}.
+#' @param Gsc         Solar constant (\eqn{W\ m^{-2}}{W m-2}), default to \code{Constants()$Gsc} (= 1367).
 #'
 #' @details The daily net radiation is computed using the surface albedo. This method is only a
 #'          simple estimation. Several parameters (ac, bc, a1 and b1) are taken from
 #'          Evett et al. (2011). The net radiation is computed as:
-#'          \deqn{Rn= (1-albedo)*RAD-(ac*(RAD/Rso)+bc)*(a1+b1*ea^0.5)*sigma*((Tmax^4+Tmin^4)/2)}
+#'          \deqn{Rn=(1-\alpha)\cdot RAD-(ac\cdot\frac{RAD}{Rso}+bc)\cdot(a1+b1\cdot ea^{0.5})\cdot\sigma\cdot\frac{T_{\max}^4+T_{\min}^4}{2}}{
+#'          Rn= (1-albedo)*RAD-(ac*(RAD/Rso)+bc)*(a1+b1*ea^0.5)*sigma*((Tmax^4+Tmin^4)/2)}
 #'          And is derived from the equation :
-#'          \deqn{Rn= (1-albedo)*RAD-Rln}
-#'          where \eqn{Rln} is the net upward longwave radiation flux.
+#'          \deqn{Rn= (1-\alpha)\cdot RAD-Rln}{Rn= (1-albedo)*RAD-Rln}
+#'          where \eqn{Rln} is the net upward longwave radiation flux, \eqn{\alpha} is the albedo, \eqn{R_{so}} the
+#'          daily total clear sky solar irradiance, computed as follow:
+#'          \deqn{R_{so}= (0.75+0.00002\cdot Elevation)\cdot R{sa}}{R_{so}= (0.75+0.00002*Elevation)*Rsa}
+#'          where \eqn{R_{sa}} is the daily extra-terrestrial radiation, computed using \code{\link{Rad_ext}}.
 #'          The actual vapor pressure \eqn{ea} can be computed using either VPD or the relative
 #'          humidity and the maximum and minimum daily temperature. If both are provided, Rh will
 #'          be used.
-#' @return \item{\eqn{Rn}}{Daily net radiation (MJ m-2 d-1)}
+#' @return \eqn{Rn}, the daily net radiation (\eqn{MJ\ m^{-2} d^{-1}}{MJ m-2 d-1})
 #'
 #' @references An, N., S. Hemmati, and Y.-J. Cui, Assessment of the methods for determining net
 #'             radiation at different time-scales of meteorological variables. Journal of Rock
 #'             Mechanics and Geotechnical Engineering, 2017. 9(2): p. 239-246.
+#'
+#' @importFrom bigleaf Esat.slope dew.point
 #'
 #' @examples
 #' # Daily net radiation on january 1st at latitude 9 N :
@@ -421,30 +424,34 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 #' @param LAI         Leaf area index of the upper layer (m2 leaf m-2 soil)
 #' @param extwind     Extinction coefficient. Default: \code{0}, no extinction.
 #' @param wleaf       Average leaf width (m)
-#' @param Parameters  Constant parameters, default to Constants(), if different values are needed:
-#'                    Cp - specific heat of air for constant pressure (J K-1 kg-1) \cr
-#'                    Rgas - universal gas constant (J mol-1 K-1) \cr
-#'                    Kelvin - conversion degree Celsius to Kelvin \cr
-#'                    H2OMW - conversion from kg to mol for H2O (kg mol-1)
-#'
+#' @param Parameters  Constant parameters, default to \code{\link{Constants()}}, if different values are needed:
+#'                    \describe{
+#'                      \item{Cp}{specific heat of air for constant pressure (J K-1 kg-1)}
+#'                      \item{Rgas}{universal gas constant (J mol-1 K-1)}
+#'                      \item{Kelvin}{conversion degree Celsius to Kelvin}
+#'                      \item{H2OMW}{conversion from kg to mol for H2O (kg mol-1)}
+#' }
 #'
 #' @details The daily evapotranspiration is computed using the Penman-Monteith equation, and a
 #'          set of conductances as :
-#'          \deqn{ET= (Delta * Rn*10^6 + rho * Cp * (VPD/10) * GH) / (Delta + gamma * (1 + GH / GV))/\lambda}
+#'          \deqn{ET=\frac{\Delta\cdot Rn\cdot10^6+\rho\cdot Cp\cdot\frac{VPD}{10\ }\cdot GH}{\ \Delta+\frac{\gamma}{\lambda\ }\cdot(1+\frac{GH}{GV})}\ }{
+#'          ET= (Delta * Rn*10^6 + rho * Cp * (VPD/10) * GH) / (Delta + gamma * (1 + GH / GV))/\lambda}
 #'          where \eqn{\Delta} is the slope of the saturation vapor pressure curve (kPa K-1),
-#'          \eqn{\rho} is the air density (kg m-3), GH the canopy boundary layer conductance (m s-1),
+#'          \eqn{\rho} is the air density (kg m-3), \eqn{GH} the canopy boundary layer conductance (m s-1),
 #'          \eqn{\gamma} the psychrometric constant (kPa K-1) and \eqn{GV} the boundary + stomatal
-#'          conductance to water vapour (m s-1). To simulate evaporation, \eqn{Gs} can be set
-#'          to nearly infinite (e.g. \eqn{Gs= 1E09}).
+#'          conductance to water vapour (m s-1). To simulate evaporation, the input stomatal conductance
+#'          \eqn{Gs} can be set to nearly infinite (e.g. \eqn{Gs= 1\cdot e^9}).
 #'
-#' @note If \code{wind=0} it is replaced by a low value of \code{0.01}
-#' @return \item{\eqn{ET}}{Daily evapotranspiration (mm d-1)}
+#' @note If \code{wind=0}, it is replaced by a low value of \code{0.01}
+#' @return \eqn{ET}, the daily (evapo|transpi)ration (mm d-1)
 #'
 #' @references Allen R.G., Pereira L.S., Raes D., Smith M., 1998: Crop evapotranspiration -
 #'              Guidelines for computing crop water requirements - FAO Irrigation and drainage
 #'              paper 56.
 #'
-#' @seealso \code{\link[bigleaf]{reference.ET}} and \href{https://maespa.github.io/}{MAESPA model}
+#' @seealso \code{\link[bigleaf]{potential.ET}} and \href{https://maespa.github.io/}{MAESPA model}
+#'
+#' @importFrom bigleaf psychrometric.constant Esat.slope air.density LE.to.ET
 #'
 #' @examples
 #' # leaf evaporation of a forest :
@@ -462,8 +469,6 @@ PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind=0,wleaf=0.06
              1/Gb_h(Wind= Wind, wleaf= wleaf,LAI_lay= LAI, LAI_abv= 0, ZHT= ZHT,
                     Z_top= Z_top, extwind= extwind)))*CMOLAR    # in mol m-2 s-1
 
-  # Latent heat of water vapour at air temperature (J mol-1)
-  LHV = bigleaf::latent.heat.vaporization(Tair = Tair)*Parameters$H2OMW
   GH = GB
 
   GV = 1./(1./(Gs) + 1./GB)
@@ -1051,17 +1056,18 @@ Sucrose_cont_perc= function(x,a,b,x0,y0){
 
 #' Continuous percentage of living tissue distribution
 #'
-#' @description Help compute the percentage of living tissue in organs according to age
+#' @description Computes the percentage of living tissue in the organ according to age
 #'
 #' @param Age_Max Maximum age of the organ (year)
 #' @param P_Start Percentage of living tissue at first age (\% of dry mass)
 #' @param P_End   Percentage of living tissue at last age (\% of dry mass)
 #' @param k       Rate between P_Start and P_End
 #'
-#' @return \item{Living tissue at each age}{(In \% of organ dry mass)}
+#' @return Living tissue at each age in \% of organ dry mass
 #'
 #' @details The percentage of living tissue is computed as follows:
-#'  \deqn{P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max)))}
+#'  \deqn{P_{End}+\left((P_{Start}-P_{End})\cdot e^{seq(0,-k,length.out=Age_{Max})}\right)}{
+#'        P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max)))}
 #'
 #' @examples
 #' Paliv_dis(40,1,0.05,5)

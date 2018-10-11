@@ -120,11 +120,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>DOY</th>
-      <td><p>Day Of Year from 1st January (day)</p></td>
+      <td><p>Ordinal day, which is the day of year from 1st January (\(day\))</p></td>
     </tr>
     <tr>
       <th>RAD</th>
-      <td><p>Incident daily total radiation (MJ m-2 d-1)</p></td>
+      <td><p>Incident daily total radiation (\(MJ\ m^{-2} d^{-1}\))</p></td>
     </tr>
     <tr>
       <th>Tmax</th>
@@ -136,7 +136,7 @@
     </tr>
     <tr>
       <th>VPD</th>
-      <td><p>Mean daily Vapor Pressure Deficit (hPa), only needed if <code>Rh</code> is missing</p></td>
+      <td><p>Mean daily Vapor Pressure Deficit (\(hPa\)), only needed if <code>Rh</code> is missing</p></td>
     </tr>
     <tr>
       <th>Rh</th>
@@ -144,11 +144,11 @@
     </tr>
     <tr>
       <th>Latitude</th>
-      <td><p>Latitude (deg)</p></td>
+      <td><p>Latitude (\(deg\))</p></td>
     </tr>
     <tr>
       <th>Elevation</th>
-      <td><p>Elevation (m)</p></td>
+      <td><p>Elevation (\(m\))</p></td>
     </tr>
     <tr>
       <th>albedo</th>
@@ -156,30 +156,30 @@
     </tr>
     <tr>
       <th>sigma</th>
-      <td><p>Stefan-Boltzmann constant (W m-2 K-4), default to <code>Constants()$sigma</code>.</p></td>
+      <td><p>Stefan-Boltzmann constant (\(W\ m^{-2} K^{-4}\)), default to <code>Constants()$sigma</code>.</p></td>
     </tr>
     <tr>
       <th>Gsc</th>
-      <td><p>Solar constant (W m-2), default to <code>Constants()$Gsc</code> (=1367).</p></td>
+      <td><p>Solar constant (\(W\ m^{-2}\)), default to <code>Constants()$Gsc</code> (= 1367).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-
-<dt>\(Rn\)</dt><dd><p>Daily net radiation (MJ m-2 d-1)</p></dd>
-
+    <p>\(Rn\), the daily net radiation (\(MJ\ m^{-2} d^{-1}\))</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The daily net radiation is computed using the surface albedo. This method is only a
          simple estimation. Several parameters (ac, bc, a1 and b1) are taken from
          Evett et al. (2011). The net radiation is computed as:
-         $$Rn= (1-albedo)*RAD-(ac*(RAD/Rso)+bc)*(a1+b1*ea^0.5)*sigma*((Tmax^4+Tmin^4)/2)$$
+         $$Rn=(1-\alpha)\cdot RAD-(ac\cdot\frac{RAD}{Rso}+bc)\cdot(a1+b1\cdot ea^{0.5})\cdot\sigma\cdot\frac{T_{\max}^4+T_{\min}^4}{2}$$
          And is derived from the equation :
-         $$Rn= (1-albedo)*RAD-Rln$$
-         where \(Rln\) is the net upward longwave radiation flux.
+         $$Rn= (1-\alpha)\cdot RAD-Rln$$
+         where \(Rln\) is the net upward longwave radiation flux, \(\alpha\) is the albedo, \(R_{so}\) the
+         daily total clear sky solar irradiance, computed as follow:
+         $$R_{so}= (0.75+0.00002\cdot Elevation)\cdot R{sa}$$
+         where \(R_{sa}\) is the daily extra-terrestrial radiation, computed using <code><a href='Rad_ext.html'>Rad_ext</a></code>.
          The actual vapor pressure \(ea\) can be computed using either VPD or the relative
          humidity and the maximum and minimum daily temperature. If both are provided, Rh will
          be used.</p>

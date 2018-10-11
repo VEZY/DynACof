@@ -162,35 +162,33 @@
     </tr>
     <tr>
       <th>Parameters</th>
-      <td><p>Constant parameters, default to Constants(), if different values are needed:
-Cp - specific heat of air for constant pressure (J K-1 kg-1) <br />
-Rgas - universal gas constant (J mol-1 K-1) <br />
-Kelvin - conversion degree Celsius to Kelvin <br />
-H2OMW - conversion from kg to mol for H2O (kg mol-1)</p></td>
+      <td><p>Constant parameters, default to <code><a href='Constants.html'>Constants()</a></code>, if different values are needed:</p><dl class='dl-horizontal'>
+                     <dt>Cp</dt><dd><p>specific heat of air for constant pressure (J K-1 kg-1)</p></dd>
+                     <dt>Rgas</dt><dd><p>universal gas constant (J mol-1 K-1)</p></dd>
+                     <dt>Kelvin</dt><dd><p>conversion degree Celsius to Kelvin</p></dd>
+                     <dt>H2OMW</dt><dd><p>conversion from kg to mol for H2O (kg mol-1)</p></dd>
+</dl></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-
-<dt>\(ET\)</dt><dd><p>Daily evapotranspiration (mm d-1)</p></dd>
-
+    <p>\(ET\), the daily (evapo|transpi)ration (mm d-1)</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The daily evapotranspiration is computed using the Penman-Monteith equation, and a
          set of conductances as :
-         $$ET= (Delta * Rn*10^6 + rho * Cp * (VPD/10) * GH) / (Delta + gamma * (1 + GH / GV))/\lambda$$
+         $$ET=\frac{\Delta\cdot Rn\cdot10^6+\rho\cdot Cp\cdot\frac{VPD}{10\ }\cdot GH}{\ \Delta+\frac{\gamma}{\lambda\ }\cdot(1+\frac{GH}{GV})}\ $$
          where \(\Delta\) is the slope of the saturation vapor pressure curve (kPa K-1),
-         \(\rho\) is the air density (kg m-3), GH the canopy boundary layer conductance (m s-1),
+         \(\rho\) is the air density (kg m-3), \(GH\) the canopy boundary layer conductance (m s-1),
          \(\gamma\) the psychrometric constant (kPa K-1) and \(GV\) the boundary + stomatal
-         conductance to water vapour (m s-1). To simulate evaporation, \(Gs\) can be set
-         to nearly infinite (e.g. \(Gs= 1E09\)).</p>
+         conductance to water vapour (m s-1). To simulate evaporation, the input stomatal conductance
+         \(Gs\) can be set to nearly infinite (e.g. \(Gs= 1\cdot e^9\)).</p>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>If <code>wind=0</code> it is replaced by a low value of <code>0.01</code></p>
+    <p>If <code>wind=0</code>, it is replaced by a low value of <code>0.01</code></p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -200,7 +198,7 @@ H2OMW - conversion from kg to mol for H2O (kg mol-1)</p></td>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='http://www.rdocumentation.org/packages/bigleaf/topics/reference.ET'>reference.ET</a></code> and <a href='https://maespa.github.io/'>MAESPA model</a></p></div>
+    <div class='dont-index'><p><code><a href='http://www.rdocumentation.org/packages/bigleaf/topics/potential.ET'>potential.ET</a></code> and <a href='https://maespa.github.io/'>MAESPA model</a></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

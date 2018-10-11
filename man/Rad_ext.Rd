@@ -2,29 +2,24 @@
 % Please edit documentation in R/0-Functions.R
 \name{Rad_ext}
 \alias{Rad_ext}
-\title{Daily extra-terrestrial radiation at a plane parallel to the earth surface}
+\title{Daily extra-terrestrial radiation}
 \usage{
 Rad_ext(DOY, Latitude, Gsc = Constants()$Gsc)
 }
 \arguments{
-\item{DOY}{Day Of Year from 1st January (day)}
+\item{DOY}{Ordinal date (integer): day of year from 1st January (day)}
 
 \item{Latitude}{Latitude (deg)}
 
-\item{Gsc}{The solar constant (W m-2), default to \code{Constants()$Gsc} (=1367).}
+\item{Gsc}{The solar constant (W m-2), default to \code{Constants()$Gsc} (= 1367).}
 }
 \value{
-\item{\eqn{S0}}{Daily extra-terrestrial radiation (MJ m-2 d-1)}
+\eqn{S0}, the daily extra-terrestrial radiation (\eqn{MJ\ m^{-2}\ d^{-1}}{MJ m-2 d-1})
 }
 \description{
 Compute the daily extra-terrestrial radiation at a plane parallel to the
-             earth surface (\eqn{S0} or \eqn{H0} depending on the source) is computed
+             earth surface (\eqn{S0} or \eqn{H0} depending on the source)
              following Khorasanizadeh and Mohammadi (2016).
-}
-\details{
-The daily extra-terrestrial radiation at a plane parallel to the earth surface
-         (\eqn{S0_d} or \eqn{H0} depending on the source) is computed following
-         Khorasanizadeh and Mohammadi (2016).
 }
 \examples{
 # Daily extra-terrestrial radiation on january 1st at latitude 35 N :

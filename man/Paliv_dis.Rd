@@ -16,14 +16,15 @@ Paliv_dis(Age_Max, P_Start, P_End, k)
 \item{k}{Rate between P_Start and P_End}
 }
 \value{
-\item{Living tissue at each age}{(In \% of organ dry mass)}
+Living tissue at each age in \% of organ dry mass
 }
 \description{
-Help compute the percentage of living tissue in organs according to age
+Computes the percentage of living tissue in the organ according to age
 }
 \details{
 The percentage of living tissue is computed as follows:
- \deqn{P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max)))}
+ \deqn{P_{End}+\left((P_{Start}-P_{End})\cdot e^{seq(0,-k,length.out=Age_{Max})}\right)}{
+       P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max)))}
 }
 \examples{
 Paliv_dis(40,1,0.05,5)
