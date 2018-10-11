@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">DynACof</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.0.2</span>
       </span>
     </div>
 
@@ -72,7 +72,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dynacof-the-dynamic-agroforestry-coffee-crop-model" class="anchor"></a><a href="https://vezy.github.io/DynACof">DynACof</a>: The Dynamic Agroforestry Coffee Crop Model <img src="reference/figures/logo.png" alt="logo" width="300" align="right">
 </h1></div>
-<p><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a> <a href="https://travis-ci.com/VEZY/DynACof"><img src="https://travis-ci.com/VEZY/DynACof.svg?branch=master" alt="Travis Build Status"></a> <a href="https://ci.appveyor.com/project/VEZY/DynACof"><img src="https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://gitter.im/DynACof/Lobby?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&amp;branch=master" alt="Join the chat at https://gitter.im/DynACof/Lobby#"></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a> <a href="https://zenodo.org/badge/latestdoi/125098628"><img src="https://zenodo.org/badge/125098628.svg" alt="DOI"></a></p>
+<p><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a> <a href="https://travis-ci.com/VEZY/DynACof"><img src="https://travis-ci.com/VEZY/DynACof.svg?branch=master" alt="Travis Build Status"></a> <a href="https://ci.appveyor.com/project/VEZY/DynACof"><img src="https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://gitter.im/DynACof/Lobby?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&amp;branch=master" alt="Join the chat at https://gitter.im/DynACof/Lobby#"></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a> <a href="https://zenodo.org/record/1455744"><img src="https://zenodo.org/badge/125098628.svg" alt="DOI"></a></p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -97,14 +97,15 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <span class="kw">library</span>(<span class="st">"DynACof"</span>)
 <span class="kw">Sys.setenv</span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)
 <span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">Period=</span> <span class="kw">as.POSIXct</span>(<span class="kw">c</span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)))</code></pre></div>
-<p>To use your own data, you have to tell DynACof where to find it using <code>Inpath</code> parameter, and what are the file names with the <code>FileName</code> parameter list:</p>
+<p>To use your own data, you have to tell DynACof where to find it using <code>Inpath</code> parameter, and what are the file names with the <code>FileName</code> parameter list. A separate <a href="https://github.com/VEZY/DynACof_inputs">Github repository</a> is available for input files templates, and some help on how to proceed.</p>
+<p>Example using custom input parameter files:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
 <span class="kw">library</span>(<span class="st">"DynACof"</span>)
 <span class="kw">Sys.setenv</span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)
-<span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">WriteIt =</span> T, <span class="dt">Period=</span> <span class="kw">as.POSIXct</span>(<span class="kw">c</span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)),<span class="dt">Inpath =</span> <span class="st">"1-Input/Aquiares/"</span>,
-                    <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,
-                    <span class="dt">FileName =</span> <span class="kw">list</span>(<span class="dt">Site =</span> <span class="st">"1-Site.R"</span>, <span class="dt">Meteo =</span><span class="st">"2-Meteorology.txt"</span>, <span class="dt">Soil =</span> <span class="st">"3-Soil.R"</span>,
-                                    <span class="dt">Coffee =</span> <span class="st">"4-Coffee.R"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</code></pre></div>
+<span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">WriteIt =</span> T, <span class="dt">Period =</span> <span class="kw">as.POSIXct</span>(<span class="kw">c</span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)),
+        <span class="dt">Inpath =</span> <span class="st">"1-Input/Aquiares/"</span>, <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,
+        <span class="dt">FileName =</span> <span class="kw">list</span>(<span class="dt">Site =</span> <span class="st">"1-Site.R"</span>, <span class="dt">Meteo =</span><span class="st">"2-Meteorology.txt"</span>,
+                        <span class="dt">Soil =</span> <span class="st">"3-Soil.R"</span>,<span class="dt">Coffee =</span> <span class="st">"4-Coffee.R"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</code></pre></div>
 <p>Note that the Meteo file can be of any regular format because the model uses the <code><a href="http://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread</a></code> function internally.</p>
 </div>
 <div id="code-of-conduct" class="section level2">
