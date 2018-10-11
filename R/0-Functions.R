@@ -426,7 +426,7 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 #' @param LAI         Leaf area index of the upper layer (m2 leaf m-2 soil)
 #' @param extwind     Extinction coefficient. Default: \code{0}, no extinction.
 #' @param wleaf       Average leaf width (m)
-#' @param Parameters  Constant parameters, default to \code{\link{Constants()}}, if different values are needed:
+#' @param Parameters  Constant parameters, default to \code{\link{Constants}}, if different values are needed:
 #'                    \describe{
 #'                      \item{Cp}{specific heat of air for constant pressure (J K-1 kg-1)}
 #'                      \item{Rgas}{universal gas constant (J mol-1 K-1)}
@@ -1034,12 +1034,12 @@ F_Integ_Dens= function(x,index,u_log,s_log){
 #' @description Logistic sucrose accumulation into coffee fruits through time
 #'
 #' @param x      Cumulated degree days
-#' @param a      Parameters
-#' @param b      Parameters
+#' @param a      Parameter
+#' @param b      Parameter
 #' @param x0     Mid-maturation (logistic function inflexion point)
 #' @param y0     Sucrose content at the beginning (in \%, 1-100)
 #'
-#' @return \item{Sucrose content}{(In \% of fruit total dry mass)}
+#' @return Sucrose content, in \% of fruit total dry mass
 #'
 #' @references Pezzopane et al. (2012) :
 #' Pezzopane, J., et al., Agrometeorological parameters for prediction of the maturation period

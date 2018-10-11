@@ -30,7 +30,7 @@ PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind = 0,
 
 \item{wleaf}{Average leaf width (m)}
 
-\item{Parameters}{Constant parameters, default to \code{\link{Constants()}}, if different values are needed:
+\item{Parameters}{Constant parameters, default to \code{\link{Constants}}, if different values are needed:
                    \describe{
                      \item{Cp}{specific heat of air for constant pressure (J K-1 kg-1)}
                      \item{Rgas}{universal gas constant (J mol-1 K-1)}

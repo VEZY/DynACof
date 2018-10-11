@@ -57,14 +57,16 @@ The default soil parameters.
 
 The default coffee parameters. It is essentially a high density plantation (6666 coffee plants
  per hectares) of \emph{Coffea arabica var. Caturra} that are pruned every year to sustain
- three resprouts per cep in average.
+ three resprouts per stump in average.
 }
 
 \section{Tree}{
 
-The default shade tree parameters. The shade trees in Aquiares are  \emph{Erythrina poeppigiana}
-planted at a low density of ~7.4 trees ha-1. These trees make a relatively large crown and have an
-average height of 26 m in 2018 on this site. NB: the Tree parameter file is optional, and not needed
+The default shade tree parameters. The shade trees in Aquiares were  \emph{Erythrina poeppigiana}
+planted at high density (250 trees ha-1) and pruned to optimize light transmitted to the \emph{Coffea},
+and were depressed in 2000 to a low density of ~7.4 trees ha-1.
+From 2000, these trees made a relatively large crown with an average height of 26 m in 2018
+on this site. NB: the Tree parameter file is optional, and not needed
 for monospecific coffee plantations.
 }
 

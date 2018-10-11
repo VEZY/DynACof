@@ -4,7 +4,7 @@
 [DynACof](https://vezy.github.io/DynACof): The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" alt="logo" width="300" align="right" />
 =============================================================================================================================================================
 
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) [![Travis Build Status](https://travis-ci.com/VEZY/DynACof.svg?branch=master)](https://travis-ci.com/VEZY/DynACof) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&svg=true)](https://ci.appveyor.com/project/VEZY/DynACof) [![Join the chat at https://gitter.im/DynACof/Lobby\#](https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&branch=master)](https://gitter.im/DynACof/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![DOI](https://zenodo.org/badge/125098628.svg)](https://zenodo.org/badge/latestdoi/125098628)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) [![Travis Build Status](https://travis-ci.com/VEZY/DynACof.svg?branch=master)](https://travis-ci.com/VEZY/DynACof) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&svg=true)](https://ci.appveyor.com/project/VEZY/DynACof) [![Join the chat at https://gitter.im/DynACof/Lobby\#](https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&branch=master)](https://gitter.im/DynACof/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![DOI](https://zenodo.org/badge/125098628.svg)](https://zenodo.org/record/1455744)
 
 Overview
 --------
@@ -42,16 +42,18 @@ Sys.setenv(TZ="UTC")
 DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 ```
 
-To use your own data, you have to tell DynACof where to find it using `Inpath` parameter, and what are the file names with the `FileName` parameter list:
+To use your own data, you have to tell DynACof where to find it using `Inpath` parameter, and what are the file names with the `FileName` parameter list. A separate [Github repository](https://github.com/VEZY/DynACof_inputs) is available for input files templates, and some help on how to proceed.
+
+Example using custom input parameter files:
 
 ``` r
 rm(list = ls())
 library("DynACof")
 Sys.setenv(TZ="UTC")
-DynACof(WriteIt = T, Period= as.POSIXct(c("1979-01-01", "1980-12-31")),Inpath = "1-Input/Aquiares/",
-                    Simulation_Name = "Test1",
-                    FileName = list(Site = "1-Site.R", Meteo ="2-Meteorology.txt", Soil = "3-Soil.R",
-                                    Coffee = "4-Coffee.R", Tree = NULL))
+DynACof(WriteIt = T, Period = as.POSIXct(c("1979-01-01", "1980-12-31")),
+        Inpath = "1-Input/Aquiares/", Simulation_Name = "Test1",
+        FileName = list(Site = "1-Site.R", Meteo ="2-Meteorology.txt",
+                        Soil = "3-Soil.R",Coffee = "4-Coffee.R", Tree = NULL))
 ```
 
 Note that the Meteo file can be of any regular format because the model uses the `data.table::fread` function internally.

@@ -9,16 +9,16 @@ Sucrose_cont_perc(x, a, b, x0, y0)
 \arguments{
 \item{x}{Cumulated degree days}
 
-\item{a}{Parameters}
+\item{a}{Parameter}
 
-\item{b}{Parameters}
+\item{b}{Parameter}
 
 \item{x0}{Mid-maturation (logistic function inflexion point)}
 
 \item{y0}{Sucrose content at the beginning (in \%, 1-100)}
 }
 \value{
-\item{Sucrose content}{(In \% of fruit total dry mass)}
+Sucrose content, in \% of fruit total dry mass
 }
 \description{
 Logistic sucrose accumulation into coffee fruits through time
