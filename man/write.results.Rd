@@ -29,3 +29,6 @@ Write the ouptut list to disk either under a unique \code{.RData} file or three 
   \item Model parameters (txt file)
 }
 }
+\details{
+To re-import the output, the user should use \code{\link[base]{readRDS}}
+}

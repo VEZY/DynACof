@@ -63,6 +63,8 @@ after= function(x,ref){
 #'   \item Model parameters (txt file)
 #' }
 #'
+#' @details To re-import the output, the user should use \code{\link[base]{readRDS}}
+#'
 #' @param FinalList        The model output list
 #' @param output           Output format. Character. \code{".RData"} if single file, or anything else for
 #'                         3 separate file. Default: \code{".RData"}
@@ -87,7 +89,7 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
                           file =  file.path(Outpath,paste0(Simulation_Name,"_Parameters.csv")))
   }else{
     S= FinalList
-    save(S,file = paste0(Outpath,"/",Simulation_Name,".RData"))
+    saveRDS(S,file = paste0(Outpath,"/",Simulation_Name,".RData"))
   }
 
   message("Simulation results saved in ", file.path(getwd(),Outpath,Simulation_Name), "\n")

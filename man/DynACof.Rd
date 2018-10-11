@@ -180,7 +180,8 @@ The DynACof process-based model computes plot-scale Net Primary Productivity, ca
                the development of the coffee buds and fruits to better represent fruit carbon demand distribution along the year.
 }
 \details{
-Almost all variables for coffee exist also for shade trees with the suffix
+The user can import a simulation using \code{\link[base]{readRDS}}.
+         Almost all variables for coffee exist also for shade trees with the suffix
          \code{_Tree} after the name of the variable, e.g. : LAI = coffee LAI,
          LAI_Tree = shade tree LAI.
          Special shade tree variables (see return section) are only optional,
@@ -198,13 +199,13 @@ All variable units are available as attributes (see example)
 \dontrun{
 if(interactive()){
  Sys.setenv(TZ="UTC")
- DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
+ Sim= DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 
  # Get the units of the input variables:
- attr(S$Met_c,"unit")
+ attr(Sim$Meteo,"unit")
 
  # Get the units of the output variables:
- attr(S$Sim,"unit")
+ attr(Sim$Sim,"unit")
  }
 }
 }

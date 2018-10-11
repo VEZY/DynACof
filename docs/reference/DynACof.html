@@ -307,7 +307,8 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Almost all variables for coffee exist also for shade trees with the suffix
+    <p>The user can import a simulation using <code><a href='http://www.rdocumentation.org/packages/base/topics/readRDS'>readRDS</a></code>.
+         Almost all variables for coffee exist also for shade trees with the suffix
          <code>_Tree</code> after the name of the variable, e.g. : LAI = coffee LAI,
          LAI_Tree = shade tree LAI.
          Special shade tree variables (see return section) are only optional,
@@ -331,13 +332,13 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='kw'>if</span>(<span class='fu'>interactive</span>()){
  <span class='fu'>Sys.setenv</span>(<span class='kw'>TZ</span><span class='kw'>=</span><span class='st'>"UTC"</span>)
- <span class='fu'>DynACof</span>(<span class='kw'>Period</span><span class='kw'>=</span> <span class='fu'>as.POSIXct</span>(<span class='fu'>c</span>(<span class='st'>"1979-01-01"</span>, <span class='st'>"1980-12-31"</span>)))
+ <span class='no'>Sim</span><span class='kw'>=</span> <span class='fu'>DynACof</span>(<span class='kw'>Period</span><span class='kw'>=</span> <span class='fu'>as.POSIXct</span>(<span class='fu'>c</span>(<span class='st'>"1979-01-01"</span>, <span class='st'>"1980-12-31"</span>)))
 
  <span class='co'># Get the units of the input variables:</span>
- <span class='fu'>attr</span>(<span class='no'>S</span>$<span class='no'>Met_c</span>,<span class='st'>"unit"</span>)
+ <span class='fu'>attr</span>(<span class='no'>Sim</span>$<span class='no'>Meteo</span>,<span class='st'>"unit"</span>)
 
  <span class='co'># Get the units of the output variables:</span>
- <span class='fu'>attr</span>(<span class='no'>S</span>$<span class='no'>Sim</span>,<span class='st'>"unit"</span>)
+ <span class='fu'>attr</span>(<span class='no'>Sim</span>$<span class='no'>Sim</span>,<span class='st'>"unit"</span>)
  }
 <span class='co'># }</span></pre>
   </div>
