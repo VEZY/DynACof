@@ -3,7 +3,7 @@
 Tree= function(){
   list(
     Tree_Species         = "Erythrina poeppigiana",   # Names of the shade Tree species
-    Species_ID           = "Erythrina_Aquiares",      # Optionnal species ID
+    Species_ID           = "Erythrina_Aquiares",      # Optional species ID
     StockingTree_treeha1 = 250,                       # density at planting (trees ha-1). Source: Taugourdeau et al. (2014)
     SLA_Tree             = 17.4,                      # Specific leaf area (m2 kg-1). Source: Van Oijen et al. (2010, I)
     wleaf_Tree           = 0.068,                     # Leaf width (m)
@@ -20,9 +20,9 @@ Tree= function(){
     date_pruning_Tree    = 213,                       # Date(s) of pruning each year (DOY)
     pruningIntensity_Tree= 0.7,                       # Pruning intensity (% dry mass)
     M_RateFRootprun_Tree = 0.005,                     # Fine root percentage that die at pruning
-    Pruning_Age_Tree     = 1:21,                      # Ages at which pruning is made (age). Set to NULL if no prunning.
-    # k_Dif_Tree           = 0.305,                   # Light extionction coefficient for diffuse light. Now computed by metamodels
-    # k_Dir_Tree           = 0.304,                   # Light extionction coefficient for direct light. Now computed by metamodels
+    Pruning_Age_Tree     = 1:21,                      # Ages at which pruning is made (age). Set to NULL if no pruning.
+    # k_Dif_Tree           = 0.305,                   # Light extinction coefficient for diffuse light. Now computed by metamodels
+    # k_Dir_Tree           = 0.304,                   # Light extinction coefficient for direct light. Now computed by metamodels
     # lue_Tree             = 1.1375,                  # Light-use efficiency (gc MJ-1). Now computed by metamodels
     lambda_Stem_Tree     = 0.20,                      # Allocation coefficient to the stem. Source: Litton (2007)
     lambda_Branch_Tree   = 0.25,                      # Allocation coefficient to the branches wood. Source: Litton (2007)
