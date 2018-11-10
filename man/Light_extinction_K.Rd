@@ -19,16 +19,22 @@ Metamodels_soil(S, i)
 \item{i}{The day of interest.}
 }
 \value{
-\item{\eqn{K_{dif_{Tree}}}}{Shade tree diffuse light coefficient}
-        \item{\eqn{K_{dir_{Tree}}}}{Shade tree direct light coefficient}
-        \item{\eqn{lue_{Tree}}}{Light use efficiency (gC MJ-1)}
-        \item{\eqn{T_{Tree}}}{Transpiration (mm d-1)}
-        \item{\eqn{H_{Tree}}}{Sensible heat (MJ m-2 d-1)}
+\item{\eqn{K_Dif_Tree}{K_{dif_{Tree}}}}{Shade tree diffuse light coefficient}
+        \item{\eqn{K_Dir_Tree}{K_{dir_{Tree}}}}{Shade tree direct light coefficient}
+        \item{\eqn{lue_Tree}{lue_{Tree}}}{Light use efficiency (gC MJ-1)}
+        \item{\eqn{T_Tree}{T_{Tree}}}{Transpiration (mm d-1)}
+        \item{\eqn{H_Tree}{H_{Tree}}}{Sensible heat (MJ m-2 d-1)}
 }
 \description{
 Several variables can be highly impacted by the 3D canopy structure. Hence, some variables are
-             computed using metamodels from the MAESPA model (see details). These functions are helper
-             functions available to the user for the possibility to change the equations easily,
+             computed using metamodels from the MAESPA model (see details). These functions are example functions
+             for metamodels and allometries. They are imported by the parameter files for a default simulation.
+             Any simulation on different conditions than the one used as in the package default should
+             have custom metamodels, and/or allometries. The user can write the customized functions directly
+             in the parameter files were these functions are called. For example, to replace the light extinction
+             coefficient computation, the user should write a customized function instead of the call to
+             \code{Light_extinction_K()} on the line \code{k= Light_extinction_K}.
+             These functions are helper functions available to the user to use as a template,
              but not to call them directly.
 }
 \details{

@@ -33,8 +33,14 @@
 <meta property="og:title" content="MAESPA metamodels — Light_extinction_K" />
 
 <meta property="og:description" content="Several variables can be highly impacted by the 3D canopy structure. Hence, some variables are
-             computed using metamodels from the MAESPA model (see details). These functions are helper
-             functions available to the user for the possibility to change the equations easily,
+             computed using metamodels from the MAESPA model (see details). These functions are example functions
+             for metamodels and allometries. They are imported by the parameter files for a default simulation.
+             Any simulation on different conditions than the one used as in the package default should
+             have custom metamodels, and/or allometries. The user can write the customized functions directly
+             in the parameter files were these functions are called. For example, to replace the light extinction
+             coefficient computation, the user should write a customized function instead of the call to
+             Light_extinction_K() on the line k= Light_extinction_K.
+             These functions are helper functions available to the user to use as a template,
              but not to call them directly." />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
@@ -108,8 +114,14 @@
     <div class="ref-description">
     
     <p>Several variables can be highly impacted by the 3D canopy structure. Hence, some variables are
-             computed using metamodels from the MAESPA model (see details). These functions are helper
-             functions available to the user for the possibility to change the equations easily,
+             computed using metamodels from the MAESPA model (see details). These functions are example functions
+             for metamodels and allometries. They are imported by the parameter files for a default simulation.
+             Any simulation on different conditions than the one used as in the package default should
+             have custom metamodels, and/or allometries. The user can write the customized functions directly
+             in the parameter files were these functions are called. For example, to replace the light extinction
+             coefficient computation, the user should write a customized function instead of the call to
+             <code>Light_extinction_K()</code> on the line <code>k= Light_extinction_K</code>.
+             These functions are helper functions available to the user to use as a template,
              but not to call them directly.</p>
     
     </div>
@@ -137,11 +149,11 @@
 
     
 
-<dt>\(K_{dif_{Tree}}\)</dt><dd><p>Shade tree diffuse light coefficient</p></dd>
-        <dt>\(K_{dir_{Tree}}\)</dt><dd><p>Shade tree direct light coefficient</p></dd>
-        <dt>\(lue_{Tree}\)</dt><dd><p>Light use efficiency (gC MJ-1)</p></dd>
-        <dt>\(T_{Tree}\)</dt><dd><p>Transpiration (mm d-1)</p></dd>
-        <dt>\(H_{Tree}\)</dt><dd><p>Sensible heat (MJ m-2 d-1)</p></dd>
+<dt>\(K_Dif_Tree\)</dt><dd><p>Shade tree diffuse light coefficient</p></dd>
+        <dt>\(K_Dir_Tree\)</dt><dd><p>Shade tree direct light coefficient</p></dd>
+        <dt>\(lue_Tree\)</dt><dd><p>Light use efficiency (gC MJ-1)</p></dd>
+        <dt>\(T_Tree\)</dt><dd><p>Transpiration (mm d-1)</p></dd>
+        <dt>\(H_Tree\)</dt><dd><p>Sensible heat (MJ m-2 d-1)</p></dd>
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

@@ -72,7 +72,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#dynacof-the-dynamic-agroforestry-coffee-crop-model" class="anchor"></a><a href="https://vezy.github.io/DynACof">DynACof</a>: The Dynamic Agroforestry Coffee Crop Model <img src="reference/figures/logo.png" alt="logo" width="300" align="right">
 </h1></div>
-<p><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a> <a href="https://travis-ci.com/VEZY/DynACof"><img src="https://travis-ci.com/VEZY/DynACof.svg?branch=master" alt="Travis Build Status"></a> <a href="https://ci.appveyor.com/project/VEZY/DynACof"><img src="https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://gitter.im/DynACof/Lobby?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&amp;branch=master" alt="Join the chat at https://gitter.im/DynACof/Lobby#"></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a> <a href="https://zenodo.org/record/1455744"><img src="https://zenodo.org/badge/125098628.svg" alt="DOI"></a></p>
+<p><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a> <a href="https://travis-ci.com/VEZY/DynACof"><img src="https://travis-ci.com/VEZY/DynACof.svg?branch=master" alt="Travis Build Status"></a> <a href="https://ci.appveyor.com/project/VEZY/DynACof"><img src="https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://gitter.im/DynACof/Lobby?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&amp;branch=master" alt="Join the chat at https://gitter.im/DynACof/Lobby#"></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a> <a href="https://doi.org/10.5281/zenodo.1256816"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1256816.svg" alt="DOI"></a></p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -82,30 +82,30 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The development version from <a href="https://github.com/">GitHub</a> can be installed with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</a></code></pre></div>
 <p>Or using the lightweight <a href="https://github.com/r-lib/remotes#readme">remotes</a> package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
-remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</a></code></pre></div>
 <p>The package is tested routinely to pass all <a href="https://CRAN.R-project.org">CRAN</a> tests using Travis-CI (linux) and AppVeyor (Windows), but is not released to the CRAN servers because we believe DynACof users are not widespread enough to bother CRAN people and use their free server time.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>This is a basic example using all defaults (parameters and meteorology) over 2 years :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
-<span class="kw">library</span>(<span class="st">"DynACof"</span>)
-<span class="kw">Sys.setenv</span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)
-<span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">Period=</span> <span class="kw">as.POSIXct</span>(<span class="kw">c</span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">library</span>(<span class="st">"DynACof"</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">Sys.setenv</span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">Period=</span> <span class="kw">as.POSIXct</span>(<span class="kw">c</span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)))</a></code></pre></div>
 <p>To use your own data, you have to tell DynACof where to find it using <code>Inpath</code> parameter, and what are the file names with the <code>FileName</code> parameter list. A separate <a href="https://github.com/VEZY/DynACof_inputs">Github repository</a> is available for input files templates, and some help on how to proceed.</p>
 <p>Example using custom input parameter files:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
-<span class="kw">library</span>(<span class="st">"DynACof"</span>)
-<span class="kw">Sys.setenv</span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)
-<span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">WriteIt =</span> T, <span class="dt">Period =</span> <span class="kw">as.POSIXct</span>(<span class="kw">c</span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)),
-        <span class="dt">Inpath =</span> <span class="st">"1-Input/Aquiares/"</span>, <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,
-        <span class="dt">FileName =</span> <span class="kw">list</span>(<span class="dt">Site =</span> <span class="st">"1-Site.R"</span>, <span class="dt">Meteo =</span><span class="st">"2-Meteorology.txt"</span>,
-                        <span class="dt">Soil =</span> <span class="st">"3-Soil.R"</span>,<span class="dt">Coffee =</span> <span class="st">"4-Coffee.R"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">library</span>(<span class="st">"DynACof"</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">Sys.setenv</span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">WriteIt =</span> T, <span class="dt">Period =</span> <span class="kw">as.POSIXct</span>(<span class="kw">c</span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)),</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">        <span class="dt">Inpath =</span> <span class="st">"1-Input/Aquiares/"</span>, <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">        <span class="dt">FileName =</span> <span class="kw">list</span>(<span class="dt">Site =</span> <span class="st">"1-Site.R"</span>, <span class="dt">Meteo =</span><span class="st">"2-Meteorology.txt"</span>,</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">                        <span class="dt">Soil =</span> <span class="st">"3-Soil.R"</span>,<span class="dt">Coffee =</span> <span class="st">"4-Coffee.R"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</a></code></pre></div>
 <p>Note that the Meteo file can be of any regular format because the model uses the <code><a href="http://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread</a></code> function internally.</p>
 </div>
 <div id="code-of-conduct" class="section level2">
@@ -116,7 +116,7 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
-<p>The DynACof model was mainly developed thanks to the MACCAC project<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by CIRAD<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and INRA<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>. The authors are grateful for the support of CATIE<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure <a href="http://www.anaee-france.fr/fr/">ANAEE-F</a>; the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.</p>
+<p>The DynACof model was mainly developed thanks to the MACCAC project<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by CIRAD<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and INRA<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. The authors are grateful for the support of CATIE<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure <a href="http://www.anaee-france.fr/fr/">ANAEE-F</a>; the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.</p>
 <hr>
 <p><sub>The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> </sub></p>
 </div>
@@ -124,10 +124,10 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p><strong>MACACC project ANR-13-AGRO-0005</strong>, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux AGROBIOSPHERE 2013 program<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>Centre de Coopération Internationale en Recherche Agronomique pour le Développement<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>Institut National de la Recherche Agronomique<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>Centro Agronómico Tropical de Investigación y Enseñanza<a href="#fnref4">↩</a></p></li>
+<li id="fn1"><p><strong>MACACC project ANR-13-AGRO-0005</strong>, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux AGROBIOSPHERE 2013 program<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Centre de Coopération Internationale en Recherche Agronomique pour le Développement<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>Institut National de la Recherche Agronomique<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>Centro Agronómico Tropical de Investigación y Enseñanza<a href="#fnref4" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
   </div>
