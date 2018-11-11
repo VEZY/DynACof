@@ -40,7 +40,7 @@ Shade.Tree= function(S,i){
 
   S$Sim$APAR_Tree[i]= max(0,S$Sim$APAR_Dir_Tree[i]+S$Sim$APAR_Dif_Tree[i])
 
-    S$Sim$Transmittance_Tree[i]=
+  S$Sim$Transmittance_Tree[i]=
     1-(S$Sim$APAR_Tree[i]/S$Met_c$PAR[i])
   S$Sim$Transmittance_Tree[i][is.nan(S$Sim$Transmittance_Tree[i])]= 1
 

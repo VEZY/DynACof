@@ -2,12 +2,16 @@
 % Please edit documentation in R/2-Coffee_DCM.R
 \name{DynACof}
 \alias{DynACof}
+\alias{mainfun}
+\alias{mainfun}
 \title{Dynamic Agroforestry Coffee Crop Model}
 \usage{
 DynACof(Period = NULL, WriteIt = F, ..., output_f = ".RData",
   Inpath = NULL, Outpath = Inpath, Simulation_Name = "DynACof",
   FileName = list(Site = "1-Site.R", Meteo = "2-Meteorology.txt", Soil =
   "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
+
+mainfun(cy, Direction, Meteo, Parameters)
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}
