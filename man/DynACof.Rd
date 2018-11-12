@@ -2,16 +2,12 @@
 % Please edit documentation in R/2-Coffee_DCM.R
 \name{DynACof}
 \alias{DynACof}
-\alias{mainfun}
-\alias{mainfun}
 \title{Dynamic Agroforestry Coffee Crop Model}
 \usage{
 DynACof(Period = NULL, WriteIt = F, ..., output_f = ".RData",
   Inpath = NULL, Outpath = Inpath, Simulation_Name = "DynACof",
   FileName = list(Site = "1-Site.R", Meteo = "2-Meteorology.txt", Soil =
   "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
-
-mainfun(cy, Direction, Meteo, Parameters)
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}
@@ -145,7 +141,7 @@ Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1
                              \tab Crown_H_Tree             \tab m                   \tab Crown height                                                                       \cr
                              \tab Trunk_H_Tree             \tab m                   \tab Trunk height                                                                       \cr
                              \tab Height_Tree              \tab m                   \tab Shade tree total height (used for boundary conductance), set to 0 if no shade trees\cr
-                             \tab DBH_Tree_m               \tab m                   \tab Diameter at breast height                                                          \cr
+                             \tab DBH_Tree                 \tab m                   \tab Diameter at breast height                                                          \cr
                              \tab LAD_Tree                 \tab m2 m-3              \tab Shade tree Leaf Area Density                                                       \cr
                              \tab CrownRad_Tree            \tab m                   \tab Crown radius                                                                       \cr
                              \tab CrownProj_Tree           \tab m2 crown tree-1     \tab Crown projection                                                                   \cr

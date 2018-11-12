@@ -21,8 +21,6 @@
 #' }
 #' Default input files are provided with the package as an example parameterization.
 #'
-#' @aliases mainfun
-#'
 #' @return Return invisibly a list containing three objects (Parameters, Meteo and Sim):
 #' \itemize{
 #'   \item Sim: A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
@@ -188,7 +186,6 @@
 #'  }
 #' }
 #' @export
-#' @rdname DynACof
 #' @seealso \code{\link{Meteorology}} \code{\link{site}}
 #' @importFrom bigleaf air.density
 #' @importFrom dplyr n
@@ -278,7 +275,26 @@ DynACof= function(Period=NULL, WriteIt= F,...,
 
 
 
-#' @rdname DynACof
+#' Main function
+#'
+#' @description This is the main function of the model that calls all other functions
+#' (meteorology, shade tree, soil) and computes the Coffea simulation. This function
+#' is called by \code{\link{DynACof}} under the hood, and users should always call
+#' \code{\link{DynACof}} instead of this function because it imports the files,
+#' format the simulation inputs, checks for errors, takes care automatically
+#' of the computation distribution along nodes, and format the outputs.
+#'
+#' @param cy         The growing cycle (crop rotation)
+#' @param Direction  Simulation directives as a data.frame
+#' @param Meteo      Meteorology data.frame
+#' @param Parameters Simulation parameters
+#'
+#' @details The Direction \code{data.frame} has to contain at least one column
+#' named Cycle that denotes the crop rotation, Plot_Age, an integer for the plot age,
+#' Plot_Age_num for the plot age as a continuous variable (see example).
+#'
+#' @return The simulation output as a data.frame.
+#'
 #' @export
 mainfun= function(cy,Direction,Meteo,Parameters){
 
