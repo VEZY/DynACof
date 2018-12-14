@@ -1,5 +1,9 @@
 # DynACof 1.1.0
 
+* Add soil surface temperature computation
+* DynACof now calls mainfun(), which regroups all computations.
+* update documentation for metamodels
+
 # DynACof 1.0.2
 
 * Add templates for input parameters
