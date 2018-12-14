@@ -1,3 +1,5 @@
+# DynACof 1.1.0
+
 # DynACof 1.0.2
 
 * Add templates for input parameters

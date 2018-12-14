@@ -1,7 +1,7 @@
 Package: DynACof
 Type: Package
 Title: Dynamic Crop Model to Simulate Coffee Crop Ecophysiology for Monospecific Stands or Agroforestry
-Version: 1.0.2
+Version: 1.1.0
 Date: 2018-04-16
 Authors@R: c(person("Remi", "Vezy",, "vezy.remi@gmail.com", c("aut", "cre", "cph"),comment = c(ORCID = "0000-0002-0808-1461")),
     person("Olivier", "Roupsard",, "olivier.roupsard@cirad.fr", c("aut", "cph")),
