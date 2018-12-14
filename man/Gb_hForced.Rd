@@ -3,7 +3,6 @@
 \name{Gb_hForced}
 \alias{Gb_hForced}
 \alias{Gb_hFree}
-\alias{Gb_hFree}
 \title{Leaf boundary layer conductance for heat under forced and free convection}
 \usage{
 Gb_hForced(Wind, wleaf = 0.068)

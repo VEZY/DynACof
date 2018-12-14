@@ -4,8 +4,8 @@
 \alias{Rad_net}
 \title{Daily net radiation}
 \usage{
-Rad_net(DOY, RAD, Tmax, Tmin, VPD, Rh = NULL, Latitude, Elevation, albedo,
-  sigma = Constants()$sigma, Gsc = Constants()$Gsc)
+Rad_net(DOY, RAD, Tmax, Tmin, VPD, Rh = NULL, Latitude, Elevation,
+  albedo, sigma = Constants()$sigma, Gsc = Constants()$Gsc)
 }
 \arguments{
 \item{DOY}{Ordinal day, which is the day of year from 1st January (\eqn{day})}

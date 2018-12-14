@@ -45,9 +45,9 @@ Soilfun= function(S,i){
     S$Sim$IntercRevapor[i]= min(S$Sim$CanopyHumect[i], Potential_LeafEvap)
     S$Sim$CanopyHumect[i]= max(0,S$Sim$CanopyHumect[i]-S$Sim$IntercRevapor[i])
   }else{
-    S$Sim$Throughfall[i]=S$Sim$CanopyHumect[i]-S$Sim$IntercMax[i]
-    S$Sim$IntercRevapor[i]=min(S$Sim$IntercMax[i],Potential_LeafEvap)
-    S$Sim$CanopyHumect[i]=max(0,S$Sim$IntercMax[i]-S$Sim$IntercRevapor[i])
+    S$Sim$Throughfall[i]= S$Sim$CanopyHumect[i]-S$Sim$IntercMax[i]
+    S$Sim$IntercRevapor[i]= min(S$Sim$IntercMax[i],Potential_LeafEvap)
+    S$Sim$CanopyHumect[i]= max(0,S$Sim$IntercMax[i]-S$Sim$IntercRevapor[i])
   }
 
   # 2/ SURFACE RUNOFF / INFILTRATION source Gomez-Delgado et al. 2011,
@@ -208,6 +208,7 @@ Soilfun= function(S,i){
   # 9/ Soil Water potential, Campbell (1974) equation
   S$Sim$SoilWaterPot[i]=
     S$Parameters$PSIE*(((S$Sim$W_1[i]+S$Sim$W_2[i]+
+
                            S$Sim$W_3[i])/(S$Parameters$TotalDepth*1000))/
                          S$Parameters$PoreFrac)^(-S$Parameters$B)
 
@@ -215,9 +216,21 @@ Soilfun= function(S,i){
   S$Sim$LE_Soil[i]= S$Sim$E_Soil[i]*S$Parameters$lambda
   S$Sim$H_Soil[i]= S$Sim$Rn_Soil[i]*(1-S$Parameters$Soil_LE_p)
   S$Sim$Q_Soil[i]= 0
-  # RV: Q_Soil is negligible at yearly time-step, and equilibriate between several
+  # RV: Q_Soil is negligible at yearly time-step, and equilibrate between several
   # days anyway.
   S$Sim$Rn_Soil[i]=
     S$Sim$H_Soil[i] + S$Sim$LE_Soil[i] + S$Sim$Q_Soil[i]
+
+  # 11/ Soil temperature
+
+  S$Sim$TSoil[i]=
+    S$Sim$TairCanopy[i]+(S$Sim$H_Soil[i]*Parameters$MJ_to_W)/
+    (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
+       S$Parameters$Cp*
+       G_soilcan(Wind= S$Met_c$WindSpeed[i], ZHT=S$Parameters$ZHT,
+                 Z_top= max(S$Sim$Height_Tree[i],
+                            S$Parameters$Height_Coffee, na.rm = T),
+                 LAI = S$Sim$LAI_Tree[i] + S$Sim$LAI[i],
+                 extwind= S$Parameters$extwind))
 
 }

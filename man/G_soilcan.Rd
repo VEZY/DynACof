@@ -5,8 +5,8 @@
 \title{Canopy to soil aerodynamic conductance}
 \usage{
 G_soilcan(Wind, ZHT, Z_top, Z0 = Z_top * 0.1, ZPD = Z_top * 0.75,
-  alpha = 1.5, ZW = ZPD + alpha * (Z_top - ZPD), LAI_top, LAI_bot,
-  extwind = 0, vonkarman = Constants()$vonkarman)
+  alpha = 1.5, ZW = ZPD + alpha * (Z_top - ZPD), LAI, extwind = 0,
+  vonkarman = Constants()$vonkarman)
 }
 \arguments{
 \item{Wind}{Average daily wind speed above canopy (m s-1)}
@@ -24,9 +24,7 @@ Van de Griend et al (1989).}
 
 \item{ZW}{Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}}
 
-\item{LAI_top}{Leaf area index of the upper layer (m2 leaf m-2 soil).}
-
-\item{LAI_bot}{Leaf area index of the layer below the upper layer (m2 leaf m-2 soil).}
+\item{LAI}{Total leaf area index above the soil (m2 leaf m-2 soil).}
 
 \item{extwind}{Extinction coefficient. Default: \code{0}, no extinction.}
 
@@ -52,7 +50,7 @@ Compute the aerodynamic conductance for sensible and
 }
 \examples{
 # G_a0 for a coffee plantation managed in agroforestry system:
-G_soilcan(Wind=1,ZHT=25,Z_top=24,LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
+G_soilcan(Wind= 1, ZHT= 25, Z_top= 24,LAI= 4.5, extwind= 0.58)
 
 }
 \references{

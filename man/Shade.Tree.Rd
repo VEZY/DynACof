@@ -3,7 +3,6 @@
 \name{Shade.Tree}
 \alias{Shade.Tree}
 \alias{No_Shade}
-\alias{No_Shade}
 \title{Shade Tree subroutine}
 \usage{
 Shade.Tree(S, i)

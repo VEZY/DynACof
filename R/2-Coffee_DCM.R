@@ -750,7 +750,8 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       round(sum(S$Sim$Sucrose_Mass[FruitingPeriod])/
               sum(S$Sim$DM_Fruit_Cohort[FruitingPeriod]*
                     ((S$Parameters$S_y0 + S$Parameters$S_a)/100)),3)
-    # NB : here harvest maturity is computed as the average maturity of the cohorts.
+    # NB : here harvest maturity is computed as the average maturity of the cohorts, because
+    # all cohorts present in the Coffea are within the 'FruitingPeriod' window.
     # It could be computed as the percentage of cohorts that are fully mature (Pezzopane
     # et al. 2012 say at 221 days after flowering)
     # Optimal sucrose concentration around 8.8% of the dry mass

@@ -5,9 +5,10 @@
 \title{Leaf boundary layer conductance for heat}
 \usage{
 Gb_h(Wind, wleaf = 0.068, LAI_lay, LAI_abv, extwind = 0, Z_top, ZHT,
-  Z0 = Z_top * 0.1, ZPD = Z_top * 0.75, alpha = 1.5, ZW = ZPD + alpha *
-  (Z_top - ZPD), Tleaf = NULL, Tair = NULL, Dheat = Constants()$Dheat,
-  formulation = c("Jones_1992", "Leuning_1995"))
+  Z0 = Z_top * 0.1, ZPD = Z_top * 0.75, alpha = 1.5, ZW = ZPD +
+  alpha * (Z_top - ZPD), Tleaf = NULL, Tair = NULL,
+  Dheat = Constants()$Dheat, formulation = c("Jones_1992",
+  "Leuning_1995"))
 }
 \arguments{
 \item{Wind}{Average daily wind speed above canopy (m s-1)}

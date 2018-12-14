@@ -8,3 +8,77 @@ authors:
   Olivier Roupsard:
     href: https://www.researchgate.net/profile/Olivier_Roupsard
 
+reference:
+  - title: "Main function"
+    desc: Call to the DynACof model
+    contents:
+      - DynACof
+      - mainfun
+
+  - title: "Imports"
+    desc: Imports values from files or default, check consistancy, and compute missing variables if needed
+    contents:
+      - Meteorology
+      - Import_Parameters
+
+  - title: "Meteorology functions"
+    desc: Compute missing meteorology variables
+    contents:
+      - Rad_ext
+      - Rad_net
+      - GDD
+      - Diffuse_d
+
+  - title: "Evapotranspiration"
+    desc: Compute the daily evaporation or transpiration
+    contents:
+      - PENMON
+
+  - title: "Aerodynamic conductance"
+    desc: Different functions to compute the aerodynamic conductances
+    contents:
+      - Gb_hForced
+      - Gb_hFree
+      - Gb_h
+      - GetWind
+      - G_bulk
+      - G_interlay
+      - G_soilcan
+      - GBCANMS
+
+  - title: "Modules"
+    desc: Functions used to compute allometries, metamodels or diseases that the user can change (from input parameter files)
+    contents:
+      - Light_extinction_K
+      - Metamodels
+      - Metamodels_soil
+      - Allometries
+      - ALS
+
+  - title: "Maturation"
+    desc: Compute the coffee fruit maturation
+    contents:
+      - Sucrose_cont_perc
+
+  - title: "Helpers"
+    desc: Little functions used as helpers
+    contents:
+      - ends_with("_deg")
+      - Paliv_dis
+      - Simulation-class
+
+  - title: "Data"
+    desc: Example data or parameters
+    contents:
+      - Aquiares
+      - site
+      - soil
+      - coffee
+      - Tree
+      - Constants
+      - varnames
+
+  - title: "Writing"
+    desc: Write the results to disk
+    contents:
+      - write.results

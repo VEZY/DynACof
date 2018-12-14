@@ -5,9 +5,6 @@
 \alias{soil}
 \alias{coffee}
 \alias{Tree}
-\alias{soil}
-\alias{coffee}
-\alias{Tree}
 \title{Default (example) parameter functions}
 \usage{
 site()

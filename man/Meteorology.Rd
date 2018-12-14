@@ -4,7 +4,8 @@
 \alias{Meteorology}
 \title{Import Meteorology for model input}
 \usage{
-Meteorology(file = NULL, Period = NULL, Parameters = Import_Parameters())
+Meteorology(file = NULL, Period = NULL,
+  Parameters = Import_Parameters())
 }
 \arguments{
 \item{file}{Either the file name to read, a shell command that preprocesses the file (e.g. fread("grep filename"))

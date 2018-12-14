@@ -2,7 +2,7 @@
 % Please edit documentation in R/0-Functions.R
 \name{GBCANMS}
 \alias{GBCANMS}
-\title{Canopy and Soil boundary layer conductance}
+\title{Canopy and Soil boundary layer conductance (depreciated)}
 \usage{
 GBCANMS(WIND, ZHT, TREEH, Z0 = TREEH * 0.1, ZPD = TREEH * 0.75,
   GBCANMS1MIN = 0.0123, VONKARMAN = Constants()$vonkarman)
@@ -29,6 +29,8 @@ A list of three :
         \item{Soil}{Canopy to soil boundary layer conductance (mol m-2 s-1)}
 }
 \description{
+This function is not used in the model anymore, but is still available in the package
+for compatibility with older versions. Please use other functions from the package.
 This function assumes two aerodynamic conductances in series:
 \enumerate{
   \item from the atmosphere to the canopy, based on Van de Griend (1989). This is actually two conductances,

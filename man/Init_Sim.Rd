@@ -4,8 +4,6 @@
 \alias{Init_Sim}
 \alias{No_Shade.init}
 \alias{Tree.init}
-\alias{No_Shade.init}
-\alias{Tree.init}
 \title{Initialise model variables.}
 \usage{
 Init_Sim(S)

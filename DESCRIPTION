@@ -30,7 +30,7 @@ Imports:
     lubridate,
     bigleaf,
     crayon
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Collate: 
     '0-Constants.R'
     '0-Initialization.R'

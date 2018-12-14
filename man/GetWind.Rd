@@ -4,9 +4,9 @@
 \alias{GetWind}
 \title{Get the average wind speed at center of canopy layer}
 \usage{
-GetWind(Wind, LAI_lay, LAI_abv, extwind = 0, Z_top, ZHT, Z0 = Z_top * 0.1,
-  ZPD = Z_top * 0.75, alpha = 1.5, ZW = ZPD + alpha * (Z_top - ZPD),
-  vonkarman = Constants()$vonkarman)
+GetWind(Wind, LAI_lay, LAI_abv, extwind = 0, Z_top, ZHT, Z0 = Z_top *
+  0.1, ZPD = Z_top * 0.75, alpha = 1.5, ZW = ZPD + alpha * (Z_top -
+  ZPD), vonkarman = Constants()$vonkarman)
 }
 \arguments{
 \item{Wind}{Above canopy wind speed (m s-1)}

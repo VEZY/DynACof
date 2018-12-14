@@ -4,8 +4,6 @@
 \alias{F_repartition}
 \alias{F_densite}
 \alias{F_Integ_Dens}
-\alias{F_densite}
-\alias{F_Integ_Dens}
 \title{Logistic function helpers}
 \usage{
 F_repartition(xi, u_log, s_log)

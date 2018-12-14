@@ -89,7 +89,7 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
                           file =  file.path(Outpath,paste0(Simulation_Name,"_Parameters.csv")))
   }else{
     S= FinalList
-    saveRDS(S,file = paste0(Outpath,"/",Simulation_Name,".RData"))
+    saveRDS(S,file = file.path(Outpath,paste0(Simulation_Name,".RData")))
   }
 
   message("Simulation results saved in ", file.path(getwd(),Outpath,Simulation_Name), "\n")
@@ -488,9 +488,11 @@ PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind=0,wleaf=0.06
 }
 
 
-#' Canopy and Soil boundary layer conductance
+#' Canopy and Soil boundary layer conductance (depreciated)
 #'
-#' @description This function assumes two aerodynamic conductances in series:
+#' @description This function is not used in the model anymore, but is still available in the package
+#' for compatibility with older versions. Please use other functions from the package.
+#' This function assumes two aerodynamic conductances in series:
 #' \enumerate{
 #'   \item from the atmosphere to the canopy, based on Van de Griend (1989). This is actually two conductances,
 #'   one in the inertial sublayer and one in the roughness sublayer.
@@ -821,8 +823,7 @@ G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD
 #' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
 #'                  Van de Griend et al (1989).
 #' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
-#' @param LAI_top   Leaf area index of the upper layer (m2 leaf m-2 soil).
-#' @param LAI_bot   Leaf area index of the layer below the upper layer (m2 leaf m-2 soil).
+#' @param LAI       Total leaf area index above the soil (m2 leaf m-2 soil).
 #' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
 #' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
 
@@ -844,11 +845,11 @@ G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD
 #'
 #' @examples
 #' # G_a0 for a coffee plantation managed in agroforestry system:
-#' G_soilcan(Wind=1,ZHT=25,Z_top=24,LAI_top = 0.5,LAI_bot = 4,extwind=0.58)
+#' G_soilcan(Wind= 1, ZHT= 25, Z_top= 24,LAI= 4.5, extwind= 0.58)
 #'
 #' @export
 G_soilcan= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alpha*(Z_top-ZPD),
-                     LAI_top,LAI_bot,extwind=0,vonkarman=Constants()$vonkarman){
+                     LAI,extwind=0,vonkarman=Constants()$vonkarman){
   if(any(ZHT<Z_top)){
     warning("Measurement height lower than canopy height (ZHT < Z_top), forcing ZHT > Z_top")
     ZHT2= 1.01*Z_top
@@ -859,9 +860,9 @@ G_soilcan= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+
   Kh= alpha*vonkarman*Ustar*(Z_top-ZPD)
   Uw= (Ustar/vonkarman)*log((ZW-ZPD)/Z0)
   Uh= Uw-(Ustar/vonkarman)*(1-((Z_top-ZPD)/(ZW-ZPD)))
-  U_mid= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= (LAI_top+LAI_bot)/2,extwind= extwind,
+  U_mid= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI/2,extwind= extwind,
                  Z_top= Z_top, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
-  U_0= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI_top+LAI_bot,extwind= extwind,
+  U_0= GetWind(Wind= Wind,LAI_lay= 0, LAI_abv= LAI,extwind= extwind,
                Z_top= Z_top, ZHT= ZHT, Z0= Z0, ZPD= ZPD,alpha= alpha, ZW= ZW)
 
   g_a0= 1/((Uh/Kh)*log(U_mid/U_0))

@@ -4,9 +4,10 @@
 \alias{ALS}
 \title{American Leaf Spot}
 \usage{
-ALS(Elevation, SlopeAzimut = 0, Slope = 0, RowDistance = 1.5, Shade = 0,
-  CanopyHeight.Coffee = 2, Fertilization = 3, ShadeType = 5,
-  CoffeePruning = c("tree", "row", "block", NULL), df_rain)
+ALS(Elevation, SlopeAzimut = 0, Slope = 0, RowDistance = 1.5,
+  Shade = 0, CanopyHeight.Coffee = 2, Fertilization = 3,
+  ShadeType = 5, CoffeePruning = c("tree", "row", "block", NULL),
+  df_rain)
 }
 \arguments{
 \item{Elevation}{Site elevation       (m.a.s.l)}
