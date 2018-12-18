@@ -1094,7 +1094,7 @@ Paliv_dis= function(Age_Max,P_Start,P_End,k){
 #' @examples
 #' # The function returns the temperature correction function itself.
 #' # Exemple of corrcetion factor for a 32 Celsius degrees temperature:
-#' Bud_T_correction()(32)
+#' CB()(32)
 #'
 CB= function(){
   Data_Buds_day= data.frame(Air_T=c(10,15.5,20.5,25.5,30.5),

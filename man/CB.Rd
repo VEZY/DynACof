@@ -22,7 +22,7 @@ increasing T).
 \examples{
 # The function returns the temperature correction function itself.
 # Exemple of corrcetion factor for a 32 Celsius degrees temperature:
-Bud_T_correction()(32)
+CB()(32)
 
 }
 \references{
