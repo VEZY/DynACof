@@ -707,7 +707,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # same as Demand_Fruit but keeping each value :
     Demand_Fruit_Cohort_Period=
       S$Sim$BudBreak[FruitingPeriod]*S$Parameters$Opti_C_DemandFruit*
-      F_Integ_Dens(DegreeDay_i,FruitingPeriod,S$Parameters$u_log,S$Parameters$s_log)
+      logistic_deriv(DegreeDay_i,S$Parameters$u_log,S$Parameters$s_log)
     Demand_Fruit_Cohort_Period[is.na(Demand_Fruit_Cohort_Period)]= 0
     # Total C demand of the fruits :
     S$Sim$Demand_Fruit[i]= sum(Demand_Fruit_Cohort_Period)

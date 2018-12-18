@@ -989,46 +989,34 @@ Gb_hFree= function(Tair,Tleaf,wleaf= 0.068,Dheat=Constants()$Dheat){
 
 #' Logistic function helpers
 #'
-#' @description Compute the distribution, density and delta of the
-#'              logistic function
+#' @description Compute a logistic function or its derivative
 #'
 #' @param xi     X vector
 #' @param u_log  Inflexion point (x-value of the sigmoid's midpoint)
 #' @param s_log  Steepness of the curve
-#' @param index  Index at which to compute the delta between x's
 #'
-#' @aliases F_densite F_Integ_Dens
+#' @aliases logistic_deriv
 #'
-#' @return \item{F_repartition}{Logistic function distibution}
-#'         \item{F_densite}{Logistic function density}
-#'         \item{F_Integ_Dens}{Delta between logistic function x's}
+#' @return \item{logistic}{Logistic function}
+#'         \item{logistic_deriv}{Derivative of the Logistic function}
 #'
 #' @seealso More informations can be found in \href{https://en.wikipedia.org/wiki/Logistic_function}{
 #'             the wikipedia page}
 #'
-#' @keywords internal
 #'
 #' @examples
-#' F_repartition(1:10,5,0.1)
-#' F_densite(1:10,5,0.1)
-#' F_Integ_Dens(1:10,10,5,0.1)
+#' logistic(1:10,5,0.1)
+#' logistic_deriv(1:10,5,0.1)
 #'
 #' @export
-F_repartition= function(xi,u_log,s_log){1/(1+exp(-((xi-u_log)/s_log)))}
+logistic= function(xi,u_log,s_log){1/(1+exp(-((xi-u_log)/s_log)))}
 
-#' @rdname F_repartition
+#' @rdname logistic
 #' @export
-F_densite= function(xi,u_log,s_log){
-  exp(-((xi-u_log)/s_log))/(s_log*(1+exp(-((xi-u_log)/s_log)))^2)
+logistic_deriv= function(xi,u_log,s_log){
+  res= c(0,diff(xi))
+  (exp(-((xi-u_log)/s_log))/(s_log*(1+exp(-((xi-u_log)/s_log)))^2))*res
 }
-
-#' @rdname F_repartition
-#' @export
-F_Integ_Dens= function(x,index,u_log,s_log){
-  F_repartition(x[seq_along(index)+1],u_log,s_log)-
-    F_repartition(x[seq_along(index)],u_log,s_log)
-}
-
 
 #' Fruit sucrose accumulation
 #'

@@ -55,16 +55,18 @@ reference:
       - Allometries
       - ALS
 
-  - title: "Maturation"
-    desc: Compute the coffee fruit maturation
+  - title: "Fruiting"
+    desc: Helpers to compute coffee fruit related variables
     contents:
       - Sucrose_cont_perc
+      - CB
 
   - title: "Helpers"
     desc: Little functions used as helpers
     contents:
       - ends_with("_deg")
       - Paliv_dis
+      - logistic
       - Simulation-class
 
   - title: "Data"

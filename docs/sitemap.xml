@@ -31,9 +31,6 @@
     <loc>https://vezy.github.io/sticRs//reference/DynACof.html</loc>
   </url>
   <url>
-    <loc>https://vezy.github.io/sticRs//reference/F_repartition.html</loc>
-  </url>
-  <url>
     <loc>https://vezy.github.io/sticRs//reference/GBCANMS.html</loc>
   </url>
   <url>
@@ -65,6 +62,9 @@
   </url>
   <url>
     <loc>https://vezy.github.io/sticRs//reference/Light_extinction_K.html</loc>
+  </url>
+  <url>
+    <loc>https://vezy.github.io/sticRs//reference/logistic.html</loc>
   </url>
   <url>
     <loc>https://vezy.github.io/sticRs//reference/mainfun.html</loc>
