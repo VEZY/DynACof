@@ -1080,3 +1080,39 @@ Paliv_dis= function(Age_Max,P_Start,P_End,k){
   data.frame(Age= 1:Age_Max,
              PaliveStem_Tree= round(P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max))),3))
 }
+
+
+
+#' Temperature-dependent correction (CB)
+#'
+#' @description Make a monotone Hermite spline function (Fritsch and Carlson, 1980) fitted on Drinnan et al. (1995) data.
+#'
+#' @details As temperature increases, the number of nodes on coffee increases due to increased vegetative
+#' growth, but the number of buds per nodes decreases. This is computed by using a temperature correction
+#' factor that decrease with increasing mean temperature during bud development (0-1, and =1 if mean T < 23).
+#' This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
+#' increasing T).
+#'
+#' @return A function to predict the temperature correction coefficient (see Eq. 36 from Vezy et al. (in prep.))
+#'
+#' @export
+#'
+#' @references \itemize{
+#'   \item Fritsch, F. N. and R. E. Carlson (1980). "Monotone Piecewise Cubic Interpolation."  17(2): 238-246.
+#'   \item Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
+#'   Journal of Horticultural Science, 1995. 70(1): p. 25-34.
+#' }
+#'
+#' @examples
+#' # The function returns the temperature correction function itself.
+#' # Exemple of corrcetion factor for a 32 Celsius degrees temperature:
+#' Bud_T_correction()(32)
+#'
+CB= function(){
+  Data_Buds_day= data.frame(Air_T=c(10,15.5,20.5,25.5,30.5),
+                            Buds_per_Node=c(0,2.6,3.2,1.5,0))
+  Data_Buds_day$Buds_per_Node_cor= Data_Buds_day$Buds_per_Node/max(Data_Buds_day$Buds_per_Node)
+  spl= splinefun(Data_Buds_day$Buds_per_Node_cor~Data_Buds_day$Air_T,
+                 method = "monoH.FC")
+  return(spl)
+}

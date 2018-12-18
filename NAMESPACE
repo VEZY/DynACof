@@ -2,6 +2,7 @@
 
 export(ALS)
 export(Allometries)
+export(CB)
 export(Constants)
 export(Diffuse_d)
 export(DynACof)

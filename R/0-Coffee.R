@@ -47,7 +47,7 @@ coffee= function(){
     Min_Fruit_CM      = 20,         # Minimum fruit carbon mass below which harvest cannot be triggered
     FtS               = 0.63,       # Fruit to seed ratio (g g-1). Source: Wintgens
     lambdaRsWood      = 0.14,       # Allocation coefficient to resprout wood
-    lambdaSCR         = 0.075,       # Allocation coefficient to stump and coarse roots at age 0.
+    lambdaSCR         = 0.075,      # Allocation coefficient to stump and coarse roots.
     lambdaLeaf_remain = 0.85,       # Allocation coefficient to allocate the remaining carbon to leaves and fine roots
     lambdaFRoot_remain= 0.15,       # Idem, remain carbon: (1-lambdaRsWood-lambdaSCR-Fruit_Allocation)
     lifespanLeaf      = 265,        # Leaf life span. Source: Charbonnier et al. (2017)
@@ -88,22 +88,7 @@ coffee= function(){
     PaliveFRoot       = 1,          # Fine root living tissue (fraction)
     Opti_C_DemandFruit= 0.164,      # optimum demand in total carbon for each berry (including growth respiration)
     # = Optimum_Berry_DM*CContent_Fruit+Optimum_Berry_DM*CContent_Fruit*(1-epsilonFruit),
-
-    # As temperature increases, the number of nodes on coffee increases due to increased vegetative
-    # growth, but the number of buds per nodes decreases. This is computed by using a temperature correction
-    # factor that decrease with increasing mean temperature during bud development (0-1, and =1 if mean T < 23).
-    # This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
-    # increasing T).
-    # Source: Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
-    # Journal of Horticultural Science, 1995. 70(1): p. 25-34. The correction is fitted like this :
-    Bud_T_correction= function(){
-      Data_Buds_day= data.frame(Air_T=c(10,15.5,20.5,25.5,30.5),
-                                Buds_per_Node=c(0,2.6,3.2,1.5,0))
-      Data_Buds_day$Buds_per_Node_cor= Data_Buds_day$Buds_per_Node/max(Data_Buds_day$Buds_per_Node)
-      spl= splinefun(Data_Buds_day$Buds_per_Node_cor~Data_Buds_day$Air_T,
-                     method = "monoH.FC")
-      return(spl)
-    },
+    Bud_T_correction= CB, # must be a function to predict the temperature-dependent coefficient giving the mean T in input
     # Parameters for American Leaf Spot
     SlopeAzimut       = 180,        # site slope azimuth (deg)
     Slope             = 5,          # Percentage slope (%)
