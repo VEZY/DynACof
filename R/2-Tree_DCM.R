@@ -81,35 +81,35 @@ Shade.Tree= function(S,i){
 
   # Rm is computed at the beginning of the day on the drymass of the previous day.
   S$Sim$Rm_Leaf_Tree[i]=
-    S$Parameters$PaliveLeaf_Tree*S$Sim$DM_Leaf_Tree[previous_i(i,1)]*
-    S$Parameters$MRN_Tree*S$Parameters$NContentLeaf_Tree*S$Parameters$Q10Leaf_Tree^
+    S$Parameters$Palive_Leaf_Tree*S$Sim$DM_Leaf_Tree[previous_i(i,1)]*
+    S$Parameters$MRN_Tree*S$Parameters$NC_Leaf_Tree*S$Parameters$Q10Leaf_Tree^
     ((S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_CR_Tree[i]=
-    S$Parameters$PaliveCR_Tree*
+    S$Parameters$Palive_CR_Tree*
     S$Sim$DM_CR_Tree[previous_i(i,1)]*
-    S$Parameters$MRN_Tree*S$Parameters$NContentCR_Tree*
+    S$Parameters$MRN_Tree*S$Parameters$NC_CR_Tree*
     S$Parameters$Q10CR_Tree^(
       (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_Branch_Tree[i]=
-    S$Parameters$PaliveBranch_Tree[S$Sim$Plot_Age[i],2]*
+    S$Parameters$Palive_Branch_Tree[S$Sim$Plot_Age[i],2]*
     S$Sim$DM_Branch_Tree[previous_i(i,1)]*
-    S$Parameters$MRN_Tree*S$Parameters$NContentBranch_Tree*
+    S$Parameters$MRN_Tree*S$Parameters$NC_Branch_Tree*
     S$Parameters$Q10Branch_Tree^(
       (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_Stem_Tree[i]=
-    S$Parameters$PaliveStem_Tree[S$Sim$Plot_Age[i],2]*
+    S$Parameters$Palive_Stem_Tree[S$Sim$Plot_Age[i],2]*
     S$Sim$DM_Stem_Tree[previous_i(i,1)]*
-    S$Parameters$MRN_Tree*S$Parameters$NContentStem_Tree*
+    S$Parameters$MRN_Tree*S$Parameters$NC_Stem_Tree*
     S$Parameters$Q10Stem_Tree^(
       (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_FRoot_Tree[i]=
-    S$Parameters$PaliveFRoot_Tree*
+    S$Parameters$Palive_FRoot_Tree*
     S$Sim$DM_FRoot_Tree[previous_i(i,1)]*
-    S$Parameters$MRN*S$Parameters$NContentFRoot_Tree*
+    S$Parameters$MRN*S$Parameters$NC_FRoot_Tree*
     S$Parameters$Q10FRoot_Tree^(
       (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
@@ -150,7 +150,7 @@ Shade.Tree= function(S,i){
     S$Sim$M_Rm_Branch_Tree[i]=
       S$Parameters$lambda_Branch_Tree*S$Sim$Offer_Total_Tree[i]
     S$Sim$M_Rm_Leaf_Tree[i]=
-      min(S$Parameters$Demand_Leaf_max_Tree*S$Sim$Stocking_Tree[i]*
+      min(S$Parameters$DELM_Tree*S$Sim$Stocking_Tree[i]*
             ((S$Parameters$LAI_max_Tree-S$Sim$LAI_Tree[previous_i(i,1)])/
                (S$Sim$LAI_Tree[previous_i(i,1)]+S$Parameters$LAI_max_Tree)),
           S$Parameters$lambda_Leaf_Tree*S$Sim$Offer_Total_Tree[i])
@@ -191,7 +191,7 @@ Shade.Tree= function(S,i){
   S$Sim$Alloc_Branch_Tree[i]=
     S$Parameters$lambda_Branch_Tree*S$Sim$Offer_Total_Tree[i]
   S$Sim$Alloc_Leaf_Tree[i]=
-    min(S$Parameters$Demand_Leaf_max_Tree*S$Sim$Stocking_Tree[i]*
+    min(S$Parameters$DELM_Tree*S$Sim$Stocking_Tree[i]*
           ((S$Parameters$LAI_max_Tree-S$Sim$LAI_Tree[previous_i(i,1)])/
              (S$Sim$LAI_Tree[previous_i(i,1)]+S$Parameters$LAI_max_Tree)),
         S$Parameters$lambda_Leaf_Tree*S$Sim$Offer_Total_Tree[i])
@@ -215,7 +215,7 @@ Shade.Tree= function(S,i){
   S$Sim$NPP_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]/S$Parameters$epsilon_CR_Tree
   S$Sim$Rc_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]-S$Sim$NPP_CR_Tree[i]
   S$Sim$Mact_CR_Tree[i]=
-    S$Sim$CM_CR_Tree[previous_i(i,1)]/S$Parameters$lifespanCR_Tree
+    S$Sim$CM_CR_Tree[previous_i(i,1)]/S$Parameters$lifespan_CR_Tree
 
   # Branches:
   S$Sim$NPP_Branch_Tree[i]=
@@ -223,7 +223,7 @@ Shade.Tree= function(S,i){
   S$Sim$Rc_Branch_Tree[i]=
     S$Sim$Alloc_Branch_Tree[i]-S$Sim$NPP_Branch_Tree[i]
   S$Sim$Mact_Branch_Tree[i]=
-    S$Sim$CM_Branch_Tree[previous_i(i,1)]/S$Parameters$lifespanBranch_Tree
+    S$Sim$CM_Branch_Tree[previous_i(i,1)]/S$Parameters$lifespan_Branch_Tree
 
   # Leaves:
   S$Sim$NPP_Leaf_Tree[i]=
@@ -243,7 +243,7 @@ Shade.Tree= function(S,i){
   }else{
     # Or just natural litterfall assuming no diseases
     S$Sim$Mact_Leaf_Tree[i]=
-      S$Sim$CM_Leaf_Tree[previous_i(i,1)]/S$Parameters$lifespanLeaf_Tree
+      S$Sim$CM_Leaf_Tree[previous_i(i,1)]/S$Parameters$lifespan_Leaf_Tree
   }
 
   # Fine roots
@@ -252,7 +252,7 @@ Shade.Tree= function(S,i){
   S$Sim$Rc_FRoot_Tree[i]=
     S$Sim$Alloc_FRoot_Tree[i]-S$Sim$NPP_FRoot_Tree[i]
   S$Sim$Mact_FRoot_Tree[i]=
-    S$Sim$CM_FRoot_Tree[previous_i(i,1)]/S$Parameters$lifespanFRoot_Tree
+    S$Sim$CM_FRoot_Tree[previous_i(i,1)]/S$Parameters$lifespan_FRoot_Tree
 
   # Reserves:
   S$Sim$NPP_RE_Tree[i]=
@@ -347,15 +347,15 @@ Shade.Tree= function(S,i){
   # Dry Mass update ---------------------------------------------------------
 
   S$Sim$DM_Leaf_Tree[i]=
-    S$Sim$CM_Leaf_Tree[i]/S$Parameters$CContent_Leaf_Tree
+    S$Sim$CM_Leaf_Tree[i]/S$Parameters$CC_Leaf_Tree
   S$Sim$DM_Branch_Tree[i]=
-    S$Sim$CM_Branch_Tree[i]/S$Parameters$CContent_wood_Tree
+    S$Sim$CM_Branch_Tree[i]/S$Parameters$CC_wood_Tree
   S$Sim$DM_Stem_Tree[i]=
-    S$Sim$CM_Stem_Tree[i]/S$Parameters$CContent_wood_Tree
+    S$Sim$CM_Stem_Tree[i]/S$Parameters$CC_wood_Tree
   S$Sim$DM_CR_Tree[i]=
-    S$Sim$CM_CR_Tree[i]/S$Parameters$CContent_wood_Tree
+    S$Sim$CM_CR_Tree[i]/S$Parameters$CC_wood_Tree
   S$Sim$DM_FRoot_Tree[i]=
-    S$Sim$CM_FRoot_Tree[i]/S$Parameters$CContent_wood_Tree
+    S$Sim$CM_FRoot_Tree[i]/S$Parameters$CC_wood_Tree
 
   # Respiration -------------------------------------------------------------
 
