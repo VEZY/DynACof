@@ -750,6 +750,8 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       round(sum(S$Sim$Sucrose_Mass[FruitingPeriod])/
               sum(S$Sim$DM_Fruit_Cohort[FruitingPeriod]*
                     ((S$Parameters$S_y0 + S$Parameters$S_a)/100)),3)
+    S$Sim$Harvest_Maturity_Pot[i][is.nan(S$Sim$Harvest_Maturity_Pot[i])]= 0
+
     # NB : here harvest maturity is computed as the average maturity of the cohorts, because
     # all cohorts present in the Coffea are within the 'FruitingPeriod' window.
     # It could be computed as the percentage of cohorts that are fully mature (Pezzopane
@@ -760,13 +762,29 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$Rc_Fruit[i]= S$Sim$Alloc_Fruit[i]-S$Sim$NPP_Fruit[i]
 
     # Harvest. Made one day only for now (TODO: make it a period of harvest)
-    # Made as soon as the fruit dry mass is decreasing for 10 consecutive days.
-    # This condition is met when fruit overriping is more important than fruit NPP
-    # for 10 days:
-    if(S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity&
-       all(S$Sim$NPP_Fruit[previous_i(i,0:10)]<
-           S$Sim$Overriped_Fruit[previous_i(i,0:10)])&
-       S$Sim$CM_Fruit[previous_i(i,1)]>S$Parameters$Min_Fruit_CM){
+
+      if(harvest=="quantity"){
+        is_harvest=
+          S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity&
+          all(S$Sim$NPP_Fruit[previous_i(i,0:10)]<
+                S$Sim$Overriped_Fruit[previous_i(i,0:10)])&
+          S$Sim$CM_Fruit[previous_i(i,1)]>S$Parameters$Min_Fruit_CM
+        # Made as soon as the fruit dry mass is decreasing for 10 consecutive days.
+        # This condition is met when fruit overriping is more important than fruit NPP
+        # for 10 days.
+        # This option is the best one when fruit maturation is not well known or when the
+        # harvest is made throughout several days or weeks with the assumption that fruits
+        # are harvested when mature.
+      }else{
+        is_harvest=
+          S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity &
+          mean(S$Sim$Harvest_Maturity_Pot[previous_i(i,0:9)])<
+          mean(S$Sim$Harvest_Maturity_Pot[previous_i(i,10:19)])
+        # Made as soon as the overall fruit maturation is optimal (all fruits are mature)
+      }
+
+
+    if(is_harvest){
       # Save the date of harvest:
       S$Sim$Date_harvest[i]= S$Met_c$DOY[i]
       S$Sim$Harvest_Fruit[i]=

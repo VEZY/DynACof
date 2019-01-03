@@ -44,6 +44,9 @@ coffee= function(){
     S_y0              = 3.4980,     # Sucrose concentration in berries throught time parameter
     Optimum_Berry_DM  = 0.246,      # Optimum berry dry mass, without carbohydrate limitation (g dry mass berry-1). Source: Wintgens book + Vaast et al. (2005)
     kscale_Fruit      = 0.05,       # Empirical coefficient for the exponential fruit growth
+    harvest           = "quantity", # Harvest condition: "quality"  -> harvest when most fruits are mature is reached (optimize fruit quality)
+                                    #                    "quantity" -> harvest when fruit dry mass is at maximum.
+                                    # NB: "quality" requires a well-set maturation module.
     Min_Fruit_CM      = 20,         # Minimum fruit carbon mass below which harvest cannot be triggered
     FtS               = 0.63,       # Fruit to seed ratio (g g-1). Source: Wintgens
     lambdaRsWood      = 0.14,       # Allocation coefficient to resprout wood
