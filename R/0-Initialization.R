@@ -220,7 +220,7 @@ Tree.init= function(S){
 
   S$Sim$LAI_Tree=
     S$Sim$CM_Leaf_Tree*(S$Parameters$SLA_Tree/1000)/
-    S$Parameters$CContent_Leaf_Tree
+    S$Parameters$CC_Leaf_Tree
 
   S$Sim$Trunk_H_Tree=
     S$Sim$Crown_H_Tree=

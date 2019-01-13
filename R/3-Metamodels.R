@@ -116,7 +116,7 @@ Metamodels_soil= function(S,i){
 Allometries= function(S,i){
   S$Sim$DBH_Tree[i]=
     ((S$Sim$DM_Stem_Tree[i]/
-        (S$Parameters$CContent_wood_Tree*1000*S$Sim$Stocking_Tree[i])/0.5)^0.625)/100
+        (S$Parameters$CC_wood_Tree*1000*S$Sim$Stocking_Tree[i])/0.5)^0.625)/100
   # Source: Rojas-García et al. (2015) DOI: 10.1007/s13595-015-0456-y
   # /!\ DBH is an average DBH among trees.
   #Tree Height. Source:  CAF2007 used in Van Oijen et al. (2011). With no pruning :

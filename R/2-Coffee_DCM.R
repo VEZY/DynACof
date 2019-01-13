@@ -706,7 +706,8 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # same as Demand_Fruit but keeping each value :
     Demand_Fruit_Cohort_Period=
       S$Sim$BudBreak[FruitingPeriod]*S$Parameters$Opti_C_DemandFruit*
-      logistic_deriv(DegreeDay_i,S$Parameters$u_log,S$Parameters$s_log)
+      logistic_deriv(DegreeDay_i[1:length(FruitingPeriod)],
+                     S$Parameters$u_log,S$Parameters$s_log)
     Demand_Fruit_Cohort_Period[is.na(Demand_Fruit_Cohort_Period)]= 0
     # Total C demand of the fruits :
     S$Sim$Demand_Fruit[i]= sum(Demand_Fruit_Cohort_Period)
@@ -719,10 +720,10 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # Total C allocation to all fruits on day i :
     S$Sim$Alloc_Fruit[i]= min(S$Sim$Demand_Fruit[i],S$Sim$Offer_Fruit[i])
     # Allocation to each cohort, relative to each cohort demand :
+    Rel_DE= Demand_Fruit_Cohort_Period/S$Sim$Demand_Fruit[i]
+    Rel_DE[is.nan(Rel_DE)]= 0
     S$Sim$Alloc_Fruit_Cohort[FruitingPeriod]=
-      S$Sim$Alloc_Fruit[i]*(Demand_Fruit_Cohort_Period/S$Sim$Demand_Fruit[i])
-    S$Sim$Alloc_Fruit_Cohort[FruitingPeriod][
-      is.nan(S$Sim$Alloc_Fruit_Cohort[FruitingPeriod])]= 0
+      S$Sim$Alloc_Fruit[i]*Rel_DE
     S$Sim$NPP_Fruit_Cohort[FruitingPeriod]=
       S$Sim$Alloc_Fruit_Cohort[FruitingPeriod]/S$Parameters$epsilon_Fruit
     S$Sim$CM_Fruit_Cohort[FruitingPeriod]= S$Sim$CM_Fruit_Cohort[FruitingPeriod]+
@@ -762,7 +763,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     # Harvest. Made one day only for now (TODO: make it a period of harvest)
 
-      if(harvest=="quantity"){
+      if(S$Parameters$harvest=="quantity"){
         is_harvest=
           S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity&
           all(S$Sim$NPP_Fruit[previous_i(i,0:10)]<

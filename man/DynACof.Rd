@@ -87,7 +87,6 @@ Carbon                       \tab GPP                      \tab gC m-2 d-1      
                              \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rc)                                      \cr
                              \tab Demand_*                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
                              \tab Alloc_*                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rc)                                           \cr
-                             \tab lambdaSCRage             \tab gC gC-1             \tab Age related allocation coefficient to Stump and Coarse Roots                       \cr
                              \tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
                              \tab Offer_*                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
                              \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
