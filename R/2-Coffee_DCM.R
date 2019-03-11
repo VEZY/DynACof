@@ -510,8 +510,19 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     }
     # NB: if no trees, TairCanopy_Tree= Tair
 
+    # Recomputing soil temperature knowing TairCanopy
 
-    # Metamodel for Coffea Tcanopy to compare:
+    S$Sim$TSoil[i]=
+      S$Sim$TairCanopy[i]+(S$Sim$H_Soil[i]*S$Parameters$MJ_to_W)/
+      (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
+         S$Parameters$Cp*
+         G_soilcan(Wind= S$Met_c$WindSpeed[i], ZHT=S$Parameters$ZHT,
+                   Z_top= max(S$Sim$Height_Tree[i],
+                              S$Parameters$Height_Coffee, na.rm = T),
+                   LAI = S$Sim$LAI_Tree[i] + S$Sim$LAI[i],
+                   extwind= S$Parameters$extwind))
+
+        # Metamodel for Coffea Tcanopy to compare:
     S$Sim$Tcan_MAESPA_Coffee[i]=
       -0.07741 + 0.99456*S$Met_c$Tair[i] - 0.06948*S$Met_c$VPD[i] -
       1.87975*(1-S$Met_c$FDiff[i]) + 0.19615*S$Sim$PAR_Trans_Tree[i]
