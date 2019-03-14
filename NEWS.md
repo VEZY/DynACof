@@ -1,3 +1,10 @@
+# DynACof 1.1.1
+
+* Add Temperature-dependent correction (CB) as a function  
+* Simplify derivative function of the logarithm (logistic_deriv)  
+* Add an option for harvest: optimize quantity or quality  
+* Rename the parameters as in the scientific article  
+
 # DynACof 1.1.0
 
 * Add soil surface temperature computation

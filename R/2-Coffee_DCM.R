@@ -67,11 +67,11 @@
 #'                              \tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than offer                              \cr
 #'                              \tab Rm                       \tab gC m-2 d-1          \tab Total Coffee maintenance respiration                                               \cr
 #'                              \tab Rm_*                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
-#'                              \tab Rc                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
-#'                              \tab Rc_*                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
-#'                              \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rc)                                      \cr
+#'                              \tab Rg                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
+#'                              \tab Rg_*                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
+#'                              \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rg)                                      \cr
 #'                              \tab Demand_*                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
-#'                              \tab Alloc_*                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rc)                                           \cr
+#'                              \tab Alloc_*                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rg)                                           \cr
 #'                              \tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
 #'                              \tab Offer_*                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
 #'                              \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
@@ -607,7 +607,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # Allocation priority 1, see Charbonnier 2012.
     S$Sim$Alloc_RsWood[i]= S$Parameters$lambda_RsWood*S$Sim$Offer[i]
     S$Sim$NPP_RsWood[i]= S$Sim$Alloc_RsWood[i]/S$Parameters$epsilon_RsWood
-    S$Sim$Rc_RsWood[i]= S$Sim$Alloc_RsWood[i]-S$Sim$NPP_RsWood[i]
+    S$Sim$Rg_RsWood[i]= S$Sim$Alloc_RsWood[i]-S$Sim$NPP_RsWood[i]
     S$Sim$Mnat_RsWood[i]=
       S$Sim$CM_RsWood[previous_i(i,1)]/S$Parameters$lifespan_RsWood
     # Pruning
@@ -623,7 +623,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # 2-Stump and coarse roots (perennial wood) ------------------------------
     S$Sim$Alloc_SCR[i]= S$Parameters$lambda_SCR*S$Sim$Offer[i]
     S$Sim$NPP_SCR[i]= S$Sim$Alloc_SCR[i]/S$Parameters$epsilon_SCR
-    S$Sim$Rc_SCR[i]= S$Sim$Alloc_SCR[i]-S$Sim$NPP_SCR[i]
+    S$Sim$Rg_SCR[i]= S$Sim$Alloc_SCR[i]-S$Sim$NPP_SCR[i]
     S$Sim$Mnat_SCR[i]=
       S$Sim$CM_SCR[previous_i(i,1)]/S$Parameters$lifespan_SCR
     S$Sim$Mortality_SCR[i]= S$Sim$Mnat_SCR[i]
@@ -770,7 +770,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # Optimal sucrose concentration around 8.8% of the dry mass
 
     S$Sim$NPP_Fruit[i]= S$Sim$Alloc_Fruit[i]/S$Parameters$epsilon_Fruit
-    S$Sim$Rc_Fruit[i]= S$Sim$Alloc_Fruit[i]-S$Sim$NPP_Fruit[i]
+    S$Sim$Rg_Fruit[i]= S$Sim$Alloc_Fruit[i]-S$Sim$NPP_Fruit[i]
 
     # Harvest. Made one day only for now (TODO: make it a period of harvest)
 
@@ -823,7 +823,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
 
     S$Sim$NPP_Leaf[i]= S$Sim$Alloc_Leaf[i]/S$Parameters$epsilon_Leaf
-    S$Sim$Rc_Leaf[i]= S$Sim$Alloc_Leaf[i]-S$Sim$NPP_Leaf[i]
+    S$Sim$Rg_Leaf[i]= S$Sim$Alloc_Leaf[i]-S$Sim$NPP_Leaf[i]
     S$Sim$Mnat_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespan_Leaf
 
     S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_Leaf[i]-S$Sim$Alloc_Leaf[i])
@@ -851,7 +851,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     S$Sim$NPP_FRoot[i]= S$Sim$Alloc_FRoot[i]/S$Parameters$epsilon_FRoot
 
-    S$Sim$Rc_FRoot[i]= S$Sim$Alloc_FRoot[i]-S$Sim$NPP_FRoot[i]
+    S$Sim$Rg_FRoot[i]= S$Sim$Alloc_FRoot[i]-S$Sim$NPP_FRoot[i]
 
     S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_FRoot[i]-S$Sim$Alloc_FRoot[i])
 
@@ -890,10 +890,10 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     # Total Respiration and NPP -----------------------------------------------
 
-    S$Sim$Rc[i]= S$Sim$Rc_Fruit[i]+S$Sim$Rc_Leaf[i]+
-      S$Sim$Rc_RsWood[i]+S$Sim$Rc_SCR[i]+
-      S$Sim$Rc_FRoot[i]
-    S$Sim$Ra[i]=S$Sim$Rm[i]+S$Sim$Rc[i]
+    S$Sim$Rg[i]= S$Sim$Rg_Fruit[i]+S$Sim$Rg_Leaf[i]+
+      S$Sim$Rg_RsWood[i]+S$Sim$Rg_SCR[i]+
+      S$Sim$Rg_FRoot[i]
+    S$Sim$Ra[i]=S$Sim$Rm[i]+S$Sim$Rg[i]
     S$Sim$NPP[i]=S$Sim$NPP_RsWood[i]+S$Sim$NPP_SCR[i]+
       S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
 

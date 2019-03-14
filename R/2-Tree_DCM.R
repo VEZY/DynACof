@@ -206,21 +206,21 @@ Shade.Tree= function(S,i){
 
   # Stem:
   S$Sim$NPP_Stem_Tree[i]= S$Sim$Alloc_Stem_Tree[i]/S$Parameters$epsilon_Stem_Tree
-  S$Sim$Rc_Stem_Tree[i]=
+  S$Sim$Rg_Stem_Tree[i]=
     S$Sim$Alloc_Stem_Tree[i]-S$Sim$NPP_Stem_Tree[i]
   # Mortality: No mortality yet for this compartment.
   # If stem mortality has to be set, write it here.
 
   # Coarse Roots:
   S$Sim$NPP_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]/S$Parameters$epsilon_CR_Tree
-  S$Sim$Rc_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]-S$Sim$NPP_CR_Tree[i]
+  S$Sim$Rg_CR_Tree[i]= S$Sim$Alloc_CR_Tree[i]-S$Sim$NPP_CR_Tree[i]
   S$Sim$Mact_CR_Tree[i]=
     S$Sim$CM_CR_Tree[previous_i(i,1)]/S$Parameters$lifespan_CR_Tree
 
   # Branches:
   S$Sim$NPP_Branch_Tree[i]=
     S$Sim$Alloc_Branch_Tree[i]/S$Parameters$epsilon_Branch_Tree
-  S$Sim$Rc_Branch_Tree[i]=
+  S$Sim$Rg_Branch_Tree[i]=
     S$Sim$Alloc_Branch_Tree[i]-S$Sim$NPP_Branch_Tree[i]
   S$Sim$Mact_Branch_Tree[i]=
     S$Sim$CM_Branch_Tree[previous_i(i,1)]/S$Parameters$lifespan_Branch_Tree
@@ -228,8 +228,8 @@ Shade.Tree= function(S,i){
   # Leaves:
   S$Sim$NPP_Leaf_Tree[i]=
     S$Sim$Alloc_Leaf_Tree[i]/S$Parameters$epsilon_Leaf_Tree
-  S$Sim$Rc_Leaf_Tree[i]=
-    S$Sim$Alloc_Leaf_Tree[i]-S$Sim$Rc_Leaf_Tree[i]
+  S$Sim$Rg_Leaf_Tree[i]=
+    S$Sim$Alloc_Leaf_Tree[i]-S$Sim$Rg_Leaf_Tree[i]
 
   # Leaf Fall ---------------------------------------------------------------
 
@@ -249,7 +249,7 @@ Shade.Tree= function(S,i){
   # Fine roots
   S$Sim$NPP_FRoot_Tree[i]=
     S$Sim$Alloc_FRoot_Tree[i]/S$Parameters$epsilon_FRoot_Tree
-  S$Sim$Rc_FRoot_Tree[i]=
+  S$Sim$Rg_FRoot_Tree[i]=
     S$Sim$Alloc_FRoot_Tree[i]-S$Sim$NPP_FRoot_Tree[i]
   S$Sim$Mact_FRoot_Tree[i]=
     S$Sim$CM_FRoot_Tree[previous_i(i,1)]/S$Parameters$lifespan_FRoot_Tree
@@ -258,7 +258,7 @@ Shade.Tree= function(S,i){
   S$Sim$NPP_RE_Tree[i]=
     S$Sim$Alloc_RE_Tree[i]/S$Parameters$epsilon_RE_Tree
   # Cost of allocating to reserves
-  S$Sim$Rc_RE_Tree[i]=
+  S$Sim$Rg_RE_Tree[i]=
     S$Sim$Alloc_RE_Tree[i]-S$Sim$NPP_RE_Tree[i]
 
   # Pruning -----------------------------------------------------------------
@@ -359,13 +359,13 @@ Shade.Tree= function(S,i){
 
   # Respiration -------------------------------------------------------------
 
-  S$Sim$Rc_Tree[i]=
-    S$Sim$Rc_CR_Tree[i]+S$Sim$Rc_Leaf_Tree[i]+
-    S$Sim$Rc_Branch_Tree[i]+S$Sim$Rc_Stem_Tree[i]+
-    S$Sim$Rc_FRoot_Tree[i]+S$Sim$Rc_RE_Tree[i]
+  S$Sim$Rg_Tree[i]=
+    S$Sim$Rg_CR_Tree[i]+S$Sim$Rg_Leaf_Tree[i]+
+    S$Sim$Rg_Branch_Tree[i]+S$Sim$Rg_Stem_Tree[i]+
+    S$Sim$Rg_FRoot_Tree[i]+S$Sim$Rg_RE_Tree[i]
 
   S$Sim$Ra_Tree[i]=
-    S$Sim$Rm_Tree[i]+S$Sim$Rc_Tree[i]
+    S$Sim$Rm_Tree[i]+S$Sim$Rg_Tree[i]
 
   # Total NPP ---------------------------------------------------------------
 
@@ -376,7 +376,7 @@ Shade.Tree= function(S,i){
 
   # Daily C balance that should be nil every day:
   S$Sim$Cbalance_Tree[i]=
-    S$Sim$Offer_Total_Tree[i]-(S$Sim$NPP_Tree[i]+S$Sim$Rc_Tree[i])
+    S$Sim$Offer_Total_Tree[i]-(S$Sim$NPP_Tree[i]+S$Sim$Rg_Tree[i])
 
   S$Sim$LAI_Tree[i]= S$Sim$DM_Leaf_Tree[i]*(S$Parameters$SLA_Tree/1000)
 
