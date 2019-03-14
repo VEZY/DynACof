@@ -81,33 +81,33 @@ Shade.Tree= function(S,i){
 
   # Rm is computed at the beginning of the day on the drymass of the previous day.
   S$Sim$Rm_Leaf_Tree[i]=
-    S$Parameters$Palive_Leaf_Tree*S$Sim$DM_Leaf_Tree[previous_i(i,1)]*
+    S$Parameters$pa_Leaf_Tree*S$Sim$DM_Leaf_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NC_Leaf_Tree*S$Parameters$Q10Leaf_Tree^
     ((S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_CR_Tree[i]=
-    S$Parameters$Palive_CR_Tree*
+    S$Parameters$pa_CR_Tree*
     S$Sim$DM_CR_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NC_CR_Tree*
     S$Parameters$Q10CR_Tree^(
       (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_Branch_Tree[i]=
-    S$Parameters$Palive_Branch_Tree[S$Sim$Plot_Age[i],2]*
+    S$Parameters$pa_Branch_Tree[S$Sim$Plot_Age[i],2]*
     S$Sim$DM_Branch_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NC_Branch_Tree*
     S$Parameters$Q10Branch_Tree^(
       (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_Stem_Tree[i]=
-    S$Parameters$Palive_Stem_Tree[S$Sim$Plot_Age[i],2]*
+    S$Parameters$pa_Stem_Tree[S$Sim$Plot_Age[i],2]*
     S$Sim$DM_Stem_Tree[previous_i(i,1)]*
     S$Parameters$MRN_Tree*S$Parameters$NC_Stem_Tree*
     S$Parameters$Q10Stem_Tree^(
       (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_FRoot_Tree[i]=
-    S$Parameters$Palive_FRoot_Tree*
+    S$Parameters$pa_FRoot_Tree*
     S$Sim$DM_FRoot_Tree[previous_i(i,1)]*
     S$Parameters$MRN*S$Parameters$NC_FRoot_Tree*
     S$Parameters$Q10FRoot_Tree^(
@@ -280,7 +280,7 @@ Shade.Tree= function(S,i){
       max(0,min((S$Sim$Mact_Branch_Tree[i]+S$Sim$Mprun_Branch_Tree[i]),
                 S$Sim$CM_Branch_Tree[previous_i(i,1)]))
     S$Sim$Mprun_FRoot_Tree[i]=
-      S$Parameters$M_RateFRootprun_Tree*S$Sim$Mprun_Leaf_Tree[i]
+      S$Parameters$m_FRoot_Tree*S$Sim$Mprun_Leaf_Tree[i]
     S$Sim$Mact_FRoot_Tree[i]=
       max(0,min(S$Sim$Mact_FRoot_Tree[i]+S$Sim$Mprun_FRoot_Tree[i],
                 S$Sim$CM_FRoot_Tree[previous_i(i,1)]))

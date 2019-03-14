@@ -10,15 +10,15 @@ coffee= function(){
     DELM              = 7,          # Max leaf carbon demand (gC m-2 d-1)
     LAI_max           = 6,          # Max measured LAI to compute leaf demand. (measured= 5.56)
     Height_Coffee     = 2,          # Average coffee canopy height (m), used for aerodynamic conductance.
-    date_pruning      = 74,         # day of year of pruning
+    D_pruning         = 74,         # day of year of pruning
     MeanAgePruning    = 5,          # Age of first pruning (year)
     LeafPruningRate   = 0.6,        # how much leaves are pruned (ratio)
     WoodPruningRate   = 1/3,        # how much branches wood are pruned (ratio)
     k_Dif             = 0.4289,     # Light extinction coefficient for diffuse light (-), computed from MAESPA
     k_Dir             = 0.3579,     # Light extinction coefficient for direct light (-), computed from MAESPA
     kres              = 0.33,       # Maximum carbon proportion extracted from reserves mass per day
-    VGS_Start         = 105,        # Day of year for the beginning of the Vegetative Growing Season
-    VGS_Stop          = 244,        # Day of year for the end of the Vegetative Growing Season
+    DVG1              = 105,        # Day of year for the beginning of the Vegetative Growing Season
+    DVG2              = 244,        # Day of year for the end of the Vegetative Growing Season
     MinTT             = 10,         # Minimum temperature threshold (deg C) for degree days computation
     MaxTT             = 40,         # Maximum temperature threshold (deg C) for degree days computation (if any)
     RNL_base          = 91.2,       # Nodes per LAI unit at the reference 20 Celsius degrees following Drinnan & Menzel (1995)
@@ -57,7 +57,7 @@ coffee= function(){
     lifespan_RsWood   = 7300,       # Resprout wood life span. Source: Van Oijen et al (2010 I)
     lifespan_SCR      = 7300,       # Stump and coarse roots life span. Source: Charbonnier et al. (2017)
     lifespan_FRoot    = 365,        # Fine roots life span. Source: Van Oijen et al (2010 I)
-    M_RateFRootprun   = 0.05,       # Fine root percentage that die at pruning
+    m_FRoot           = 0.05,       # Fine root percentage that die at pruning
     CC_Fruit          = 0.4857,     # Fruit carbon content (gC g-1 dry mass)
     CC_Leaf           = 0.463,      # Leaf carbon content (gC g-1 dry mass)
     CC_RsWood         = 0.463,      # Resprout wood carbon content (gC g-1 dry mass)
@@ -84,12 +84,12 @@ coffee= function(){
          (0.00055*0.6*12*12))/2,
     # MRN: transformed in gDM gN-1 d-1 in the model using CC of each organ.
     # Accounting for 40% reduction during daytime (*1+ during night, *0.6 during daylight)
-    Palive_Fruit       = 1,          # Fruit living tissue (fraction)
-    Palive_Leaf        = 1,          # Leaf living tissue (fraction)
-    Palive_RsWood      = 0.37,       # Resprout wood living tissue (fraction)
-    Palive_SCR         = 0.21,       # Stump and coarse root living tissue (fraction)
-    Palive_FRoot       = 1,          # Fine root living tissue (fraction)
-    Opti_C_DemandFruit= 0.164,      # optimum demand in total carbon for each berry (including growth respiration)
+    pa_Fruit          = 1,          # Fruit living tissue (fraction)
+    pa_Leaf           = 1,          # Leaf living tissue (fraction)
+    pa_RsWood         = 0.37,       # Resprout wood living tissue (fraction)
+    pa_SCR            = 0.21,       # Stump and coarse root living tissue (fraction)
+    pa_FRoot          = 1,          # Fine root living tissue (fraction)
+    DE_opt            = 0.164,      # optimum demand in total carbon for each berry (including growth respiration)
     # = Optimum_Berry_DM*CC_Fruit+Optimum_Berry_DM*CC_Fruit*(1-epsilonFruit),
     Bud_T_correction= CB, # must be a function to predict the temperature-dependent coefficient giving the mean T in input
     # Parameters for American Leaf Spot

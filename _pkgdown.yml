@@ -60,6 +60,7 @@ reference:
     contents:
       - Sucrose_cont_perc
       - CB
+      - CN
 
   - title: "Helpers"
     desc: Little functions used as helpers

@@ -78,19 +78,19 @@
 #'                              \tab NPP_*                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
 #'                              \tab Mnat_*                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
 #'                              \tab Mprun_*                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
-#'                              \tab M_ALS                     \tab gC m-2 d-1          \tab Coffee leaf mortality from American Leaf Spot                                      \cr
+#'                              \tab M_ALS                     \tab gC m-2 d-1         \tab Coffee leaf mortality from American Leaf Spot                                      \cr
 #'                              \tab Mortality_*              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
 #'                              \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
 #'                              \tab CM_*                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
 #'                              \tab DM_*                     \tab gDM m-2 d-1         \tab Organ dry mass                                                                     \cr
-#' Fruit development            \tab BudInitPeriod            \tab boolean             \tab Bud initiation period                                                              \cr
+#' Fruit development            \tab BudInitPeriod            \tab boolean             \tab Bud initiation period (BIP)                                                        \cr
 #'                              \tab Budinit                  \tab Buds d-1            \tab Total Number of Buds Initiated per day                                             \cr
 #'                              \tab ratioNodestoLAI          \tab Nodes LAI-1         \tab Number of fruiting nodes per LAI unit                                              \cr
 #'                              \tab Temp_cor_Bud             \tab fraction            \tab Temperature correction factor for bud development                                  \cr
-#'                              \tab p_budbreakperday         \tab 0-1                 \tab Daily probability of bud dormancy break                                            \cr
+#'                              \tab pbreak                   \tab 0-1                 \tab Daily probability of bud dormancy break                                            \cr
 #'                              \tab BudBreak                 \tab Buds d-1            \tab Total number of buds breaking dormancy per day                                     \cr
-#'                              \tab Sucrose_Mass             \tab g m-2 d-1           \tab Coffee Fruit Sucrose Mass                                                          \cr
-#'                              \tab Sucrose_Content          \tab g Sugar gDM         \tab Coffee Fruit Sucrose Content                                                       \cr
+#'                              \tab SM                       \tab g m-2 d-1           \tab Coffee Fruit Sucrose Mass                                                          \cr
+#'                              \tab SC                       \tab g Sugar gDM         \tab Coffee Fruit Sucrose Content                                                       \cr
 #'                              \tab Maturation_duration      \tab days Fruit cohort-1 \tab Coffee Fruit Total Maturation Duration for each cohort                             \cr
 #'                              \tab Harvest_Maturity_Pot     \tab Fraction            \tab Daily average fruit maturity (0-1)                                                 \cr
 #'                              \tab Date_harvest             \tab day of year         \tab date of harvest                                                                    \cr
@@ -320,7 +320,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
   # between plant F_Tffb parameter and the first flowering day only.
 
   # Day of vegetative growth end:
-  VegetGrowthEndDay= which(S$Met_c$DOY==S$Parameters$VGS_Stop)
+  VegetGrowthEndDay= which(S$Met_c$DOY==S$Parameters$DVG2)
   # Temporary variables declaration:
   CumsumRelativeToVeget= CumsumRelativeToBudinit=
     matrix(data = NA, nrow = length(VegetGrowthEndDay), ncol = length(S$Met_c$Date))
@@ -546,14 +546,14 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # Resprout (branches) wood:
     S$Sim$Rm_RsWood[i]=
       after(i,2)*
-      (S$Parameters$Palive_RsWood*S$Sim$DM_RsWood[previous_i(i,1)]*
+      (S$Parameters$pa_RsWood*S$Sim$DM_RsWood[previous_i(i,1)]*
          S$Parameters$NC_RsWood*S$Parameters$MRN*
          S$Parameters$Q10_RsWood^((S$Sim$TairCanopy[i]-S$Parameters$TMR)/10))
 
     # Stump and Coarse roots (perennial wood):
     S$Sim$Rm_SCR[i]=
       after(i,2)*
-      (S$Parameters$Palive_SCR*
+      (S$Parameters$pa_SCR*
          S$Sim$DM_SCR[previous_i(i,1)]*
          S$Parameters$NC_SCR*S$Parameters$MRN*
          S$Parameters$Q10_SCR^(
@@ -562,21 +562,21 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # Fruits:
     S$Sim$Rm_Fruit[i]=
       after(i,2)*
-      (S$Parameters$Palive_Fruit*S$Sim$DM_Fruit[previous_i(i,1)]*
+      (S$Parameters$pa_Fruit*S$Sim$DM_Fruit[previous_i(i,1)]*
          S$Parameters$NC_Fruit*S$Parameters$MRN*
          S$Parameters$Q10_Fruit^((S$Sim$TairCanopy[i]-S$Parameters$TMR)/10))
 
     # Leaves:
     S$Sim$Rm_Leaf[i]=
       after(i,2)*
-      (S$Parameters$Palive_Leaf*S$Sim$DM_Leaf[previous_i(i,1)]*
+      (S$Parameters$pa_Leaf*S$Sim$DM_Leaf[previous_i(i,1)]*
          S$Parameters$NC_Leaf*S$Parameters$MRN*
          S$Parameters$Q10_Leaf^((S$Sim$TairCanopy[i]-S$Parameters$TMR)/10))
 
     # Fine roots:
     S$Sim$Rm_FRoot[i]=
       after(i,2)*
-      (S$Parameters$Palive_FRoot*S$Sim$DM_FRoot[previous_i(i,1)]*
+      (S$Parameters$pa_FRoot*S$Sim$DM_FRoot[previous_i(i,1)]*
          S$Parameters$NC_FRoot*S$Parameters$MRN*
          S$Parameters$Q10_FRoot^((S$Sim$TairCanopy[i]-S$Parameters$TMR)/10))
 
@@ -612,7 +612,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       S$Sim$CM_RsWood[previous_i(i,1)]/S$Parameters$lifespan_RsWood
     # Pruning
     if(S$Sim$Plot_Age[i]>=S$Parameters$MeanAgePruning&
-       S$Met_c$DOY[i]==S$Parameters$date_pruning){
+       S$Met_c$DOY[i]==S$Parameters$D_pruning){
       S$Sim$Mprun_RsWood[i]=
         S$Sim$CM_RsWood[previous_i(i,1)]*S$Parameters$WoodPruningRate
     }
@@ -638,12 +638,12 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # number of green wood nodes that potentially carry flower buds. Green wood mass (and
     # so number of nodes) are related to leaf area (new leaves appear on nodes) :
     # GUTIERREZ et al. (1998)
-    if(S$Met_c$DOY[i]==S$Parameters$VGS_Stop){
+    if(S$Met_c$DOY[i]==S$Parameters$DVG2){
       S$Sim$ratioNodestoLAI[S$Met_c$year>=S$Met_c$year[i]]=
         mean(S$Sim$Tleaf_Coffee[S$Met_c$year==S$Met_c$year[i]&
-                                  S$Met_c$DOY>=S$Parameters$VGS_Start&
-                                  S$Met_c$DOY <= S$Parameters$VGS_Stop])%>%
-                                  {S$Parameters$RNL_base*(0.0005455*.^3 - 0.0226364*.^2+0.2631364*. + 0.4194773)}
+                                  S$Met_c$DOY>=S$Parameters$DVG1&
+                                  S$Met_c$DOY <= S$Parameters$DVG2])%>%
+                                  {S$Parameters$RNL_base*CN(.)}
     }
 
     # Flower Buds + Flower + Fruits -------------------------------------------
@@ -662,14 +662,14 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # S$Sim%>%group_by(Plot_Age)%>%summarise(N_Flowers= sum(BudBreak))
 
     # (2) Cumulative degree days experienced by each bud cohort :
-    DegreeDay_i= round(cumsum(S$Sim$DegreeDays_Tcan[i:previous_i(i,1000)]),2)
+    dd_i= round(cumsum(S$Sim$DegreeDays_Tcan[i:previous_i(i,1000)]),2)
 
     # (3) Find the window where buds are under dormancy (find the dormant cohorts)
     # Bud develops during F_buds1 (840) degree days after initiation, so they cannot
     # be dormant less than F_buds1 before i. But they can stay under dormancy until
     # F_buds2 dd maximum, so they cannot be older than F_buds2 dd before i.
-    OldestDormancy= i - (max(which(DegreeDay_i<S$Parameters$F_buds2))-1)
-    YoungestDormancy= i - (max(which(DegreeDay_i<S$Parameters$F_buds1))-1)
+    OldestDormancy= i - (max(which(dd_i<S$Parameters$F_buds2))-1)
+    YoungestDormancy= i - (max(which(dd_i<S$Parameters$F_buds1))-1)
     # Idem above (reduce the days computed, F_buds2 is ~300 days and F_buds1
     # ~80-100 days)
 
@@ -687,15 +687,15 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$Temp_cor_Bud[i][S$Sim$Temp_cor_Bud[i]>1]= 1
 
     # (7) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
-    S$Sim$p_budbreakperday[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
+    S$Sim$pbreak[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
                                           S$Sim$LeafWaterPotential[i]))
     # (8) Compute the number of buds that effectively break dormancy in each cohort:
     S$Sim$BudBreak_cohort[DormancyBreakPeriod]=
       pmin(S$Sim$Bud_available[DormancyBreakPeriod],
-           S$Sim$Budinit[DormancyBreakPeriod]*S$Sim$p_budbreakperday[i]*
+           S$Sim$Budinit[DormancyBreakPeriod]*S$Sim$pbreak[i]*
              S$Sim$Temp_cor_Bud[DormancyBreakPeriod])
     # NB 1: cannot exceed the number of buds of each cohort
-    # NB 2: using Budinit and not Bud_available because p_budbreakperday is fitted on
+    # NB 2: using Budinit and not Bud_available because pbreak is fitted on
     # total bud cohort
 
     # (9) Remove buds that did break dormancy from the pool of dormant buds
@@ -710,14 +710,14 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # during each dormancy-terminating episode was set to 12 (see Table 1).
 
     # Fruits :
-    FruitingPeriod= i-which(DegreeDay_i<(S$Parameters$F_over))+1
+    FruitingPeriod= i-which(dd_i<(S$Parameters$F_over))+1
     # NB : Fruits that are older than the FruitingPeriod are overripped
 
     # Demand from each fruits cohort present on the coffee tree (not overriped),
     # same as Demand_Fruit but keeping each value :
     Demand_Fruit_Cohort_Period=
-      S$Sim$BudBreak[FruitingPeriod]*S$Parameters$Opti_C_DemandFruit*
-      logistic_deriv(DegreeDay_i[1:length(FruitingPeriod)],
+      S$Sim$BudBreak[FruitingPeriod]*S$Parameters$DE_opt*
+      logistic_deriv(dd_i[1:length(FruitingPeriod)],
                      S$Parameters$u_log,S$Parameters$s_log)
     Demand_Fruit_Cohort_Period[is.na(Demand_Fruit_Cohort_Period)]= 0
     # Total C demand of the fruits :
@@ -749,16 +749,16 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$Maturation_duration[FruitingPeriod]=
       seq_along(FruitingPeriod)
     # Sucrose content of each cohort:
-    S$Sim$Sucrose_Content[FruitingPeriod]=
+    S$Sim$SC[FruitingPeriod]=
       Sucrose_cont_perc(S$Sim$Maturation_duration[FruitingPeriod],
                         a= S$Parameters$S_a, b= S$Parameters$S_b,
                         x0= S$Parameters$S_x0, y0=S$Parameters$S_y0)
     # Sucrose mass of each cohort
-    S$Sim$Sucrose_Mass[FruitingPeriod]=
-      S$Sim$DM_Fruit_Cohort[FruitingPeriod]*S$Sim$Sucrose_Content[FruitingPeriod]
+    S$Sim$SM[FruitingPeriod]=
+      S$Sim$DM_Fruit_Cohort[FruitingPeriod]*S$Sim$SC[FruitingPeriod]
     # Harvest maturity:
     S$Sim$Harvest_Maturity_Pot[i]=
-      round(sum(S$Sim$Sucrose_Mass[FruitingPeriod])/
+      round(sum(S$Sim$SM[FruitingPeriod])/
               sum(S$Sim$DM_Fruit_Cohort[FruitingPeriod]*
                     ((S$Parameters$S_y0 + S$Parameters$S_a)/100)),3)
     S$Sim$Harvest_Maturity_Pot[i][is.nan(S$Sim$Harvest_Maturity_Pot[i])]= 0
@@ -832,7 +832,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       after(i,2)*max(0,S$Sim$CM_Leaf[previous_i(i,1)]*S$Sim$ALS[i])
 
     if(S$Sim$Plot_Age[i]>=
-       S$Parameters$MeanAgePruning&S$Met_c$DOY[i]==S$Parameters$date_pruning){
+       S$Parameters$MeanAgePruning&S$Met_c$DOY[i]==S$Parameters$D_pruning){
       S$Sim$Mprun_Leaf[i]= S$Sim$CM_Leaf[previous_i(i,1)]*S$Parameters$LeafPruningRate
     }else{
       S$Sim$Mprun_Leaf[i]= 0
@@ -856,7 +856,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_FRoot[i]-S$Sim$Alloc_FRoot[i])
 
     S$Sim$Mnat_FRoot[i]= S$Sim$CM_FRoot[previous_i(i,1)]/S$Parameters$lifespan_FRoot
-    S$Sim$Mprun_FRoot[i]= S$Parameters$M_RateFRootprun*S$Sim$Mprun_Leaf[i]
+    S$Sim$Mprun_FRoot[i]= S$Parameters$m_FRoot*S$Sim$Mprun_Leaf[i]
     S$Sim$Mortality_FRoot[i]= S$Sim$Mnat_FRoot[i]+S$Sim$Mprun_FRoot[i]
 
 

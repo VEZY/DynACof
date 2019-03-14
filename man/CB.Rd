@@ -2,7 +2,7 @@
 % Please edit documentation in R/0-Functions.R
 \name{CB}
 \alias{CB}
-\title{Temperature-dependent correction (CB)}
+\title{Temperature-dependent correction function for buds (CB)}
 \usage{
 CB()
 }
@@ -10,12 +10,15 @@ CB()
 A function to predict the temperature correction coefficient (see Eq. 36 from Vezy et al. (in prep.))
 }
 \description{
-Make a monotone Hermite spline function (Fritsch and Carlson, 1980) fitted on Drinnan et al. (1995) data.
+Make a monotone Hermite spline function (Fritsch and Carlson, 1980) fitted on Drinnan et al. (1995)
+data. This function is given as a parameter in the coffee parameter file to be further used in the model as
+`Bud_T_correction()` so the user can modify the function and give it as input.
 }
 \details{
 As temperature increases, the number of nodes on coffee increases due to increased vegetative
-growth, but the number of buds per nodes decreases. This is computed by using a temperature correction
-factor that decrease with increasing mean temperature during bud development (0-1, and =1 if mean T < 23).
+growth (see `CN()`), but the number of buds per nodes decreases.
+The number of buds is computed by using a temperature correction factor that decreases with increasing
+mean temperature during bud development (0-1, and =1 if mean T < 23).
 This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
 increasing T).
 }

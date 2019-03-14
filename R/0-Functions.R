@@ -1070,14 +1070,38 @@ Paliv_dis= function(Age_Max,P_Start,P_End,k){
 }
 
 
-
-#' Temperature-dependent correction (CB)
+#' Temperature-dependent correction coefficient for nodes (CB)
 #'
-#' @description Make a monotone Hermite spline function (Fritsch and Carlson, 1980) fitted on Drinnan et al. (1995) data.
+#' @description Compute the temperature-dependent correction coefficient for green nodes in the
+#' coffee plant according to Drinnan and Menzel (1995).
+#'
+#' @param x The average air temperature during the vegetative growing period
+#'
+#' @return The correction coefficient to compute the number of green nodes in the coffee (see Eq. 27 from Vezy et al. (in prep.))
+#' @export
+#'
+#' @references \itemize{
+#'   \item Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
+#'   Journal of Horticultural Science, 1995. 70(1): p. 25-34.
+#' }
+#'
+#' @examples
+#' CN(25)
+CN= function(x){
+  (0.4194773 + 0.2631364*x - 0.0226364*x^2 + 0.0005455*x^3)
+}
+
+
+#' Temperature-dependent correction function for buds (CB)
+#'
+#' @description Make a monotone Hermite spline function (Fritsch and Carlson, 1980) fitted on Drinnan et al. (1995)
+#' data. This function is given as a parameter in the coffee parameter file to be further used in the model as
+#' `Bud_T_correction()` so the user can modify the function and give it as input.
 #'
 #' @details As temperature increases, the number of nodes on coffee increases due to increased vegetative
-#' growth, but the number of buds per nodes decreases. This is computed by using a temperature correction
-#' factor that decrease with increasing mean temperature during bud development (0-1, and =1 if mean T < 23).
+#' growth (see `CN()`), but the number of buds per nodes decreases.
+#' The number of buds is computed by using a temperature correction factor that decreases with increasing
+#' mean temperature during bud development (0-1, and =1 if mean T < 23).
 #' This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
 #' increasing T).
 #'

@@ -82,30 +82,30 @@ Carbon                       \tab GPP                      \tab gC m-2 d-1      
                              \tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than offer                              \cr
                              \tab Rm                       \tab gC m-2 d-1          \tab Total Coffee maintenance respiration                                               \cr
                              \tab Rm_*                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
-                             \tab Rc                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
-                             \tab Rc_*                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
-                             \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rc)                                      \cr
+                             \tab Rg                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
+                             \tab Rg_*                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
+                             \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rg)                                      \cr
                              \tab Demand_*                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
-                             \tab Alloc_*                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rc)                                           \cr
+                             \tab Alloc_*                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rg)                                           \cr
                              \tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
                              \tab Offer_*                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
                              \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
                              \tab NPP_*                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
                              \tab Mnat_*                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
                              \tab Mprun_*                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
-                             \tab M_ALS                     \tab gC m-2 d-1          \tab Coffee leaf mortality from American Leaf Spot                                      \cr
+                             \tab M_ALS                     \tab gC m-2 d-1         \tab Coffee leaf mortality from American Leaf Spot                                      \cr
                              \tab Mortality_*              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
                              \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
                              \tab CM_*                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
                              \tab DM_*                     \tab gDM m-2 d-1         \tab Organ dry mass                                                                     \cr
-Fruit development            \tab BudInitPeriod            \tab boolean             \tab Bud initiation period                                                              \cr
+Fruit development            \tab BudInitPeriod            \tab boolean             \tab Bud initiation period (BIP)                                                        \cr
                              \tab Budinit                  \tab Buds d-1            \tab Total Number of Buds Initiated per day                                             \cr
                              \tab ratioNodestoLAI          \tab Nodes LAI-1         \tab Number of fruiting nodes per LAI unit                                              \cr
                              \tab Temp_cor_Bud             \tab fraction            \tab Temperature correction factor for bud development                                  \cr
-                             \tab p_budbreakperday         \tab 0-1                 \tab Daily probability of bud dormancy break                                            \cr
+                             \tab pbreak                   \tab 0-1                 \tab Daily probability of bud dormancy break                                            \cr
                              \tab BudBreak                 \tab Buds d-1            \tab Total number of buds breaking dormancy per day                                     \cr
-                             \tab Sucrose_Mass             \tab g m-2 d-1           \tab Coffee Fruit Sucrose Mass                                                          \cr
-                             \tab Sucrose_Content          \tab g Sugar gDM         \tab Coffee Fruit Sucrose Content                                                       \cr
+                             \tab SM                       \tab g m-2 d-1           \tab Coffee Fruit Sucrose Mass                                                          \cr
+                             \tab SC                       \tab g Sugar gDM         \tab Coffee Fruit Sucrose Content                                                       \cr
                              \tab Maturation_duration      \tab days Fruit cohort-1 \tab Coffee Fruit Total Maturation Duration for each cohort                             \cr
                              \tab Harvest_Maturity_Pot     \tab Fraction            \tab Daily average fruit maturity (0-1)                                                 \cr
                              \tab Date_harvest             \tab day of year         \tab date of harvest                                                                    \cr

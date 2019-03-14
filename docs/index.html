@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">DynACof</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -79,30 +79,30 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The development version from <a href="https://github.com/">GitHub</a> can be installed with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</a></code></pre></div>
 <p>Or using the lightweight <a href="https://github.com/r-lib/remotes#readme">remotes</a> package:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("remotes")</span>
-remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># install.packages("remotes")</span></a>
+<a class="sourceLine" id="cb2-2" title="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</a></code></pre></div>
 <p>The package is tested routinely to pass all <a href="https://CRAN.R-project.org">CRAN</a> tests using Travis-CI (linux) and AppVeyor (Windows), but is not released to the CRAN servers because we believe DynACof users are not widespread enough to bother CRAN people and use their free server time.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>This is a basic example using all defaults (parameters and meteorology) over 2 years :</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rm">rm</a></span>(<span class="dt">list =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ls">ls</a></span>())
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"DynACof"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.setenv">Sys.setenv</a></span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)
-<span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">Period=</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rm">rm</a></span>(<span class="dt">list =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ls">ls</a></span>())</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"DynACof"</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.setenv">Sys.setenv</a></span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">Period=</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)))</a></code></pre></div>
 <p>To use your own data, you have to tell DynACof where to find it using <code>Inpath</code> parameter, and what are the file names with the <code>FileName</code> parameter list. A separate <a href="https://github.com/VEZY/DynACof_inputs">Github repository</a> is available for input files templates, and some help on how to proceed.</p>
 <p>Example using custom input parameter files:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rm">rm</a></span>(<span class="dt">list =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ls">ls</a></span>())
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"DynACof"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.setenv">Sys.setenv</a></span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)
-<span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">WriteIt =</span> T, <span class="dt">Period =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)),
-        <span class="dt">Inpath =</span> <span class="st">"1-Input/Aquiares/"</span>, <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,
-        <span class="dt">FileName =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">Site =</span> <span class="st">"1-Site.R"</span>, <span class="dt">Meteo =</span><span class="st">"2-Meteorology.txt"</span>,
-                        <span class="dt">Soil =</span> <span class="st">"3-Soil.R"</span>,<span class="dt">Coffee =</span> <span class="st">"4-Coffee.R"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rm">rm</a></span>(<span class="dt">list =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ls">ls</a></span>())</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"DynACof"</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.setenv">Sys.setenv</a></span>(<span class="dt">TZ=</span><span class="st">"UTC"</span>)</a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="kw"><a href="reference/DynACof.html">DynACof</a></span>(<span class="dt">WriteIt =</span> T, <span class="dt">Period =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)),</a>
+<a class="sourceLine" id="cb4-5" title="5">        <span class="dt">Inpath =</span> <span class="st">"1-Input/Aquiares/"</span>, <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,</a>
+<a class="sourceLine" id="cb4-6" title="6">        <span class="dt">FileName =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">Site =</span> <span class="st">"1-Site.R"</span>, <span class="dt">Meteo =</span><span class="st">"2-Meteorology.txt"</span>,</a>
+<a class="sourceLine" id="cb4-7" title="7">                        <span class="dt">Soil =</span> <span class="st">"3-Soil.R"</span>,<span class="dt">Coffee =</span> <span class="st">"4-Coffee.R"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</a></code></pre></div>
 <p>Note that the Meteo file can be of any regular format because the model uses the <code><a href="https://www.rdocumentation.org/packages/data.table/topics/fread">data.table::fread</a></code> function internally.</p>
 </div>
 <div id="code-of-conduct" class="section level2">
@@ -113,7 +113,7 @@ remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocument
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
-<p>The DynACof model was mainly developed thanks to the MACCAC project<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by CIRAD<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and INRA<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>. The authors are grateful for the support of CATIE<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure <a href="http://www.anaee-france.fr/fr/">ANAEE-F</a>; the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.</p>
+<p>The DynACof model was mainly developed thanks to the MACCAC project<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by CIRAD<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and INRA<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. The authors are grateful for the support of CATIE<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure <a href="http://www.anaee-france.fr/fr/">ANAEE-F</a>; the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.</p>
 <hr>
 <p><sub>The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> </sub></p>
 </div>
@@ -121,10 +121,10 @@ remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocument
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p><strong>MACACC project ANR-13-AGRO-0005</strong>, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux AGROBIOSPHERE 2013 program<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>Centre de Coopération Internationale en Recherche Agronomique pour le Développement<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>Institut National de la Recherche Agronomique<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>Centro Agronómico Tropical de Investigación y Enseñanza<a href="#fnref4">↩</a></p></li>
+<li id="fn1"><p><strong>MACACC project ANR-13-AGRO-0005</strong>, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux AGROBIOSPHERE 2013 program<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Centre de Coopération Internationale en Recherche Agronomique pour le Développement<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>Institut National de la Recherche Agronomique<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>Centro Agronómico Tropical de Investigación y Enseñanza<a href="#fnref4" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
   </div>

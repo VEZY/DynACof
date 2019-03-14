@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DynACof</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -225,12 +225,12 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 <tr><td></td><td></td><td>Rm</td><td>gC m-2 d-1</td></tr>
 <tr><td>Total Coffee maintenance respiration</td><td></td><td></td><td>Rm_*</td></tr>
 <tr><td>gC m-2 d-1</td><td>Maintenance respiration at organ scale</td><td></td><td></td></tr>
-<tr><td>Rc</td><td>gC m-2 d-1</td><td>Total Coffee growth respiration</td><td></td></tr>
-<tr><td></td><td>Rc_*</td><td>gC m-2 d-1</td><td>Growth respiration at organ scale</td></tr>
+<tr><td>Rg</td><td>gC m-2 d-1</td><td>Total Coffee growth respiration</td><td></td></tr>
+<tr><td></td><td>Rg_*</td><td>gC m-2 d-1</td><td>Growth respiration at organ scale</td></tr>
 <tr><td></td><td></td><td>Ra</td><td>gC m-2 d-1</td></tr>
-<tr><td>Coffee layer autotrophic respiration (=Rm+Rc)</td><td></td><td></td><td>Demand_*</td></tr>
+<tr><td>Coffee layer autotrophic respiration (=Rm+Rg)</td><td></td><td></td><td>Demand_*</td></tr>
 <tr><td>gC m-2 d-1</td><td>C demand at organ scale (fruit, leaf and fine root only)</td><td></td><td></td></tr>
-<tr><td>Alloc_*</td><td>gC m-2 d-1</td><td>C allocation to organ net of Rm (NPP+Rc)</td><td></td></tr>
+<tr><td>Alloc_*</td><td>gC m-2 d-1</td><td>C allocation to organ net of Rm (NPP+Rg)</td><td></td></tr>
 <tr><td></td><td>Offer</td><td>gC m-2 d-1</td><td>C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)</td></tr>
 <tr><td></td><td></td><td>Offer_*</td><td>gC m-2 d-1</td></tr>
 <tr><td>C offer to organ, net of Rm</td><td></td><td></td><td>NPP</td></tr>
@@ -245,15 +245,15 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 <tr><td></td><td></td><td>CM_*</td><td>gC m-2 d-1</td></tr>
 <tr><td>Organ C mass</td><td></td><td></td><td>DM_*</td></tr>
 <tr><td>gDM m-2 d-1</td><td>Organ dry mass</td><td></td><td>Fruit development</td></tr>
-<tr><td>BudInitPeriod</td><td>boolean</td><td>Bud initiation period</td><td></td></tr>
+<tr><td>BudInitPeriod</td><td>boolean</td><td>Bud initiation period (BIP)</td><td></td></tr>
 <tr><td></td><td>Budinit</td><td>Buds d-1</td><td>Total Number of Buds Initiated per day</td></tr>
 <tr><td></td><td></td><td>ratioNodestoLAI</td><td>Nodes LAI-1</td></tr>
 <tr><td>Number of fruiting nodes per LAI unit</td><td></td><td></td><td>Temp_cor_Bud</td></tr>
 <tr><td>fraction</td><td>Temperature correction factor for bud development</td><td></td><td></td></tr>
-<tr><td>p_budbreakperday</td><td>0-1</td><td>Daily probability of bud dormancy break</td><td></td></tr>
+<tr><td>pbreak</td><td>0-1</td><td>Daily probability of bud dormancy break</td><td></td></tr>
 <tr><td></td><td>BudBreak</td><td>Buds d-1</td><td>Total number of buds breaking dormancy per day</td></tr>
-<tr><td></td><td></td><td>Sucrose_Mass</td><td>g m-2 d-1</td></tr>
-<tr><td>Coffee Fruit Sucrose Mass</td><td></td><td></td><td>Sucrose_Content</td></tr>
+<tr><td></td><td></td><td>SM</td><td>g m-2 d-1</td></tr>
+<tr><td>Coffee Fruit Sucrose Mass</td><td></td><td></td><td>SC</td></tr>
 <tr><td>g Sugar gDM</td><td>Coffee Fruit Sucrose Content</td><td></td><td></td></tr>
 <tr><td>Maturation_duration</td><td>days Fruit cohort-1</td><td>Coffee Fruit Total Maturation Duration for each cohort</td><td></td></tr>
 <tr><td></td><td>Harvest_Maturity_Pot</td><td>Fraction</td><td>Daily average fruit maturity (0-1)</td></tr>
