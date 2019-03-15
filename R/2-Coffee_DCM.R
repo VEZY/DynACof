@@ -32,7 +32,7 @@
 #' Suffixes for Coffee organs   \tab *_RE                     \tab -                   \tab Reserves                                                                           \cr
 #'                              \tab *_SCR                    \tab -                   \tab Stump and Coarse roots                                                             \cr
 #'                              \tab *_Fruit                  \tab -                   \tab Fruit                                                                              \cr
-#'                              \tab *_RsWood                 \tab -                   \tab Resprout wood (= branches)                                                         \cr
+#'                              \tab *_Shoot                 \tab -                   \tab Resprout wood (= branches)                                                         \cr
 #'                              \tab *_FRoot                  \tab -                   \tab Fine roots                                                                         \cr
 #'                              \tab *_Leaf                   \tab                     \tab Leaves                                                                             \cr
 #' Suffixes for Shade Tree org. \tab *_RE_Tree                \tab -                   \tab Reserves                                                                           \cr
@@ -544,11 +544,11 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # This is considered as the highest priority for the plant (to maintain its dry mass)
 
     # Resprout (branches) wood:
-    S$Sim$Rm_RsWood[i]=
+    S$Sim$Rm_Shoot[i]=
       after(i,2)*
-      (S$Parameters$pa_RsWood*S$Sim$DM_RsWood[previous_i(i,1)]*
-         S$Parameters$NC_RsWood*S$Parameters$MRN*
-         S$Parameters$Q10_RsWood^((S$Sim$TairCanopy[i]-S$Parameters$TMR)/10))
+      (S$Parameters$pa_Shoot*S$Sim$DM_Shoot[previous_i(i,1)]*
+         S$Parameters$NC_Shoot*S$Parameters$MRN*
+         S$Parameters$Q10_Shoot^((S$Sim$TairCanopy[i]-S$Parameters$TMR)/10))
 
     # Stump and Coarse roots (perennial wood):
     S$Sim$Rm_SCR[i]=
@@ -583,7 +583,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # Total plant maintenance respiration
     S$Sim$Rm[i]=
       S$Sim$Rm_Fruit[i]+S$Sim$Rm_Leaf[i]+
-      S$Sim$Rm_RsWood[i]+S$Sim$Rm_SCR[i]+
+      S$Sim$Rm_Shoot[i]+S$Sim$Rm_SCR[i]+
       S$Sim$Rm_FRoot[i]
 
 
@@ -605,20 +605,20 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     # 1-Resprout wood ---------------------------------------------------------
     # Allocation priority 1, see Charbonnier 2012.
-    S$Sim$Alloc_RsWood[i]= S$Parameters$lambda_RsWood*S$Sim$Offer[i]
-    S$Sim$NPP_RsWood[i]= S$Sim$Alloc_RsWood[i]/S$Parameters$epsilon_RsWood
-    S$Sim$Rg_RsWood[i]= S$Sim$Alloc_RsWood[i]-S$Sim$NPP_RsWood[i]
-    S$Sim$Mnat_RsWood[i]=
-      S$Sim$CM_RsWood[previous_i(i,1)]/S$Parameters$lifespan_RsWood
+    S$Sim$Alloc_Shoot[i]= S$Parameters$lambda_Shoot*S$Sim$Offer[i]
+    S$Sim$NPP_Shoot[i]= S$Sim$Alloc_Shoot[i]/S$Parameters$epsilon_Shoot
+    S$Sim$Rg_Shoot[i]= S$Sim$Alloc_Shoot[i]-S$Sim$NPP_Shoot[i]
+    S$Sim$Mnat_Shoot[i]=
+      S$Sim$CM_Shoot[previous_i(i,1)]/S$Parameters$lifespan_Shoot
     # Pruning
     if(S$Sim$Plot_Age[i]>=S$Parameters$MeanAgePruning&
        S$Met_c$DOY[i]==S$Parameters$D_pruning){
-      S$Sim$Mprun_RsWood[i]=
-        S$Sim$CM_RsWood[previous_i(i,1)]*S$Parameters$WoodPruningRate
+      S$Sim$Mprun_Shoot[i]=
+        S$Sim$CM_Shoot[previous_i(i,1)]*S$Parameters$WoodPruningRate
     }
-    S$Sim$Mortality_RsWood[i]=
-      min((S$Sim$Mnat_RsWood[i]+S$Sim$Mprun_RsWood[i]),
-          S$Sim$CM_RsWood[previous_i(i,1)])
+    S$Sim$Mortality_Shoot[i]=
+      min((S$Sim$Mnat_Shoot[i]+S$Sim$Mprun_Shoot[i]),
+          S$Sim$CM_Shoot[previous_i(i,1)])
 
     # 2-Stump and coarse roots (perennial wood) ------------------------------
     S$Sim$Alloc_SCR[i]= S$Parameters$lambda_SCR*S$Sim$Offer[i]
@@ -725,7 +725,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # C offer to Fruits (i.e. what is left from Offer after removing the consumption
     # by previous compartments and Rm):
     S$Sim$Offer_Fruit[i]=
-      S$Sim$Offer[i]-S$Sim$Alloc_RsWood[i]-
+      S$Sim$Offer[i]-S$Sim$Alloc_Shoot[i]-
       S$Sim$Alloc_SCR[i]
 
     # Total C allocation to all fruits on day i :
@@ -813,7 +813,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$Offer_Leaf[i]=
       S$Parameters$lambda_Leaf_remain*
       (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
-         S$Sim$Alloc_RsWood[i]-S$Sim$Alloc_SCR[i])
+         S$Sim$Alloc_Shoot[i]-S$Sim$Alloc_SCR[i])
 
     S$Sim$Alloc_Leaf[i]=
       min(S$Parameters$DELM*(S$Parameters$Stocking_Coffee/10000)*
@@ -845,7 +845,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$Offer_FRoot[i]=
       S$Parameters$lambda_FRoot_remain*
       (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
-         S$Sim$Alloc_RsWood[i]-S$Sim$Alloc_SCR[i])
+         S$Sim$Alloc_Shoot[i]-S$Sim$Alloc_SCR[i])
 
     S$Sim$Alloc_FRoot[i]=max(0,min(S$Sim$Alloc_Leaf[i],S$Sim$Offer_FRoot[i]))
 
@@ -865,8 +865,8 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$CM_Leaf[i]= S$Sim$CM_Leaf[previous_i(i,1)]+
       S$Sim$NPP_Leaf[i]-S$Sim$Mortality_Leaf[i]-
       S$Sim$Carbon_Lack_Mortality[i]*0.25
-    S$Sim$CM_RsWood[i]= S$Sim$CM_RsWood[previous_i(i,1)]+
-      S$Sim$NPP_RsWood[i]-S$Sim$Mortality_RsWood[i]-
+    S$Sim$CM_Shoot[i]= S$Sim$CM_Shoot[previous_i(i,1)]+
+      S$Sim$NPP_Shoot[i]-S$Sim$Mortality_Shoot[i]-
       S$Sim$Carbon_Lack_Mortality[i]*0.25
     S$Sim$CM_Fruit[i]=S$Sim$CM_Fruit[previous_i(i,1)]+
       S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
@@ -880,7 +880,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       S$Sim$Consumption_RE[i]
 
     S$Sim$DM_Leaf[i]= S$Sim$CM_Leaf[i]/S$Parameters$CC_Leaf
-    S$Sim$DM_RsWood[i]= S$Sim$CM_RsWood[i]/S$Parameters$CC_RsWood
+    S$Sim$DM_Shoot[i]= S$Sim$CM_Shoot[i]/S$Parameters$CC_Shoot
     S$Sim$DM_Fruit[i]=S$Sim$CM_Fruit[i]/S$Parameters$CC_Fruit
     S$Sim$DM_SCR[i]= S$Sim$CM_SCR[i]/
       S$Parameters$CC_SCR
@@ -891,10 +891,10 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     # Total Respiration and NPP -----------------------------------------------
 
     S$Sim$Rg[i]= S$Sim$Rg_Fruit[i]+S$Sim$Rg_Leaf[i]+
-      S$Sim$Rg_RsWood[i]+S$Sim$Rg_SCR[i]+
+      S$Sim$Rg_Shoot[i]+S$Sim$Rg_SCR[i]+
       S$Sim$Rg_FRoot[i]
     S$Sim$Ra[i]=S$Sim$Rm[i]+S$Sim$Rg[i]
-    S$Sim$NPP[i]=S$Sim$NPP_RsWood[i]+S$Sim$NPP_SCR[i]+
+    S$Sim$NPP[i]=S$Sim$NPP_Shoot[i]+S$Sim$NPP_SCR[i]+
       S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
 
   }

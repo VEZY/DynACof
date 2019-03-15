@@ -47,7 +47,7 @@ General                      \tab Cycle                    \tab -               
 Suffixes for Coffee organs   \tab *_RE                     \tab -                   \tab Reserves                                                                           \cr
                              \tab *_SCR                    \tab -                   \tab Stump and Coarse roots                                                             \cr
                              \tab *_Fruit                  \tab -                   \tab Fruit                                                                              \cr
-                             \tab *_RsWood                 \tab -                   \tab Resprout wood (= branches)                                                         \cr
+                             \tab *_Shoot                 \tab -                   \tab Resprout wood (= branches)                                                         \cr
                              \tab *_FRoot                  \tab -                   \tab Fine roots                                                                         \cr
                              \tab *_Leaf                   \tab                     \tab Leaves                                                                             \cr
 Suffixes for Shade Tree org. \tab *_RE_Tree                \tab -                   \tab Reserves                                                                           \cr
