@@ -140,8 +140,9 @@ increasing T).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># The function returns the temperature correction function itself.</span>
-<span class='co'># Exemple of corrcetion factor for a 32 Celsius degrees temperature:</span>
-<span class='fu'>CB</span>()(<span class='fl'>32</span>)</div><div class='output co'>#&gt; [1] -0.140625</div><div class='input'>
+<span class='co'># It is called inside DynACof using the leaf temperature:</span>
+<span class='no'>Tleaf</span><span class='kw'>=</span> <span class='fl'>10</span>:<span class='fl'>30</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>Tleaf</span>,<span class='fu'>CB</span>()(<span class='no'>Tleaf</span>), <span class='kw'>pch</span><span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>ylab</span><span class='kw'>=</span><span class='st'>"Buds correction factor (CB)"</span>, <span class='kw'>xlab</span><span class='kw'>=</span> <span class='st'>"Leaf temperature (°C)"</span>)</div><div class='img'><img src='CB-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

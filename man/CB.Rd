@@ -24,8 +24,9 @@ increasing T).
 }
 \examples{
 # The function returns the temperature correction function itself.
-# Exemple of corrcetion factor for a 32 Celsius degrees temperature:
-CB()(32)
+# It is called inside DynACof using the leaf temperature:
+Tleaf= 10:30
+plot(Tleaf,CB()(Tleaf), pch= 19, ylab="Buds correction factor (CB)", xlab= "Leaf temperature (°C)")
 
 }
 \references{
