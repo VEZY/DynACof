@@ -2,7 +2,7 @@
 % Please edit documentation in R/0-Functions.R
 \name{CN}
 \alias{CN}
-\title{Temperature-dependent correction coefficient for nodes (CB)}
+\title{Temperature-dependent correction coefficient for nodes (CN)}
 \usage{
 CN(x)
 }

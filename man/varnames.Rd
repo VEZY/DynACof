@@ -10,7 +10,7 @@
   \item{Unit}{unit of the variable}
   \item{Definition}{a brief definition of the variable}
 }
-For the moment the model has 106 output variables.}
+For the moment the model has 246 output variables (without meteorological variables).}
 \usage{
 varnames
 }

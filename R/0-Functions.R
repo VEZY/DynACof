@@ -1070,7 +1070,7 @@ Paliv_dis= function(Age_Max,P_Start,P_End,k){
 }
 
 
-#' Temperature-dependent correction coefficient for nodes (CB)
+#' Temperature-dependent correction coefficient for nodes (CN)
 #'
 #' @description Compute the temperature-dependent correction coefficient for green nodes in the
 #' coffee plant according to Drinnan and Menzel (1995).
