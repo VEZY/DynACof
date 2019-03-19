@@ -4,7 +4,8 @@
 * Add Temperature-dependent correction for nodes (CN) as a function  
 * Simplify derivative function of the logarithm (logistic_deriv)  
 * Add an option for harvest: optimize quantity or quality  
-* Rename the parameters as in the scientific article  
+* Rename the parameters as in the scientific article and update the inputs
+* Update documentation
 
 
 # DynACof 1.1.0
