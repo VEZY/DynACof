@@ -4,10 +4,11 @@
 \alias{DynACof}
 \title{Dynamic Agroforestry Coffee Crop Model}
 \usage{
-DynACof(Period = NULL, WriteIt = F, ..., output_f = ".RData",
-  Inpath = NULL, Outpath = Inpath, Simulation_Name = "DynACof",
-  FileName = list(Site = "1-Site.R", Meteo = "2-Meteorology.txt", Soil =
-  "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
+DynACof(Period = NULL, WriteIt = F, ..., parallel = TRUE,
+  output_f = ".RData", Inpath = NULL, Outpath = Inpath,
+  Simulation_Name = "DynACof", FileName = list(Site = "1-Site.R", Meteo
+  = "2-Meteorology.txt", Soil = "3-Soil.R", Coffee = "4-Coffee.R", Tree =
+  NULL))
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}
@@ -15,6 +16,8 @@ DynACof(Period = NULL, WriteIt = F, ..., output_f = ".RData",
 \item{WriteIt}{If \code{TRUE}, write the outputs to disk using \code{\link{write.results}}, see details. Default: \code{FALSE}}
 
 \item{...}{Further arguments to pass to \code{\link{write.results}}.}
+
+\item{parallel}{Boolean. Parallelize the computation over crop rotations.}
 
 \item{output_f}{Output format. If \code{output_f = ".RData"}, the output list will be saved as a unique \code{.RData} file. Any other value:
 write the output list in several \code{.csv} and \code{.txt} files. Default: \code{.RData}}

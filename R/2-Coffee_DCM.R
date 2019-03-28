@@ -5,6 +5,7 @@
 #'                the development of the coffee buds and fruits to better represent fruit carbon demand distribution along the year.
 #' @param Period   Period of time to be simulated, see details. Default: \code{NULL}
 #' @param WriteIt  If \code{TRUE}, write the outputs to disk using \code{\link{write.results}}, see details. Default: \code{FALSE}
+#' @param parallel Boolean. Parallelize the computation over crop rotations.
 #' @param ...      Further arguments to pass to \code{\link{write.results}}.
 #' @param output_f Output format. If \code{output_f = ".RData"}, the output list will be saved as a unique \code{.RData} file. Any other value:
 #'                 write the output list in several \code{.csv} and \code{.txt} files. Default: \code{.RData}
@@ -194,7 +195,7 @@
 #' @importFrom crayon red green bold underline
 #' @importFrom utils setTxtProgressBar txtProgressBar
 #'
-DynACof= function(Period=NULL, WriteIt= F,...,
+DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
                   output_f=".RData",Inpath=NULL,Outpath=Inpath,Simulation_Name="DynACof",
                   FileName= list(Site="1-Site.R",Meteo="2-Meteorology.txt",Soil="3-Soil.R",
                                  Coffee="4-Coffee.R",Tree=NULL)){
@@ -240,7 +241,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,
                 crayon::red(max(Meteo$Date)),"over",crayon::red(NCycles),
                 "plantation cycle(s)"))
 
-  if(NCycles>1){
+  if(NCycles>1&parallel){
     # Setting the parallel computation over cycles: ---------------------------
 
     # Set the maximum number of cores working on the model computation
@@ -256,7 +257,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,
                                 }
     parallel::stopCluster(cl)
   }else{
-    CycleList= mainfun(NCycles,Direction,Meteo,Parameters)
+    CycleList=
+      lapply(1:NCycles, function(x){
+        mainfun(x,Direction,Meteo,Parameters)
+      })
   }
 
   Table= do.call(rbind, CycleList[c(1:NCycles)])
