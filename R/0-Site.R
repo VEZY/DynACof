@@ -41,8 +41,6 @@
 #'
 #' @aliases soil coffee Tree
 #'
-#' @importFrom stats splinefun
-#'
 #' @seealso \code{\link{DynACof}}
 #'
 #' @export

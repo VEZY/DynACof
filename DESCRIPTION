@@ -46,4 +46,5 @@ Collate:
     '2-Tree_DCM.R'
     '2-Soil_DCM.R'
     '3-Metamodels.R'
+    '0-test_parameters.R'
     'data.R'
