@@ -45,8 +45,8 @@ coffee= function(){
     Optimum_Berry_DM  = 0.246,      # Optimum berry dry mass, without carbohydrate limitation (g dry mass berry-1). Source: Wintgens book + Vaast et al. (2005)
     kscale_Fruit      = 0.05,       # Empirical coefficient for the exponential fruit growth
     harvest           = "quantity", # Harvest condition: "quality"  -> harvest when most fruits are mature is reached (optimize fruit quality)
-                                    #                    "quantity" -> harvest when fruit dry mass is at maximum.
-                                    # NB: "quality" requires a well-set maturation module.
+    #                    "quantity" -> harvest when fruit dry mass is at maximum.
+    # NB: "quality" requires a well-set maturation module.
     Min_Fruit_CM      = 20,         # Minimum fruit carbon mass below which harvest cannot be triggered
     FtS               = 0.63,       # Fruit to seed ratio (g g-1). Source: Wintgens
     lambda_Shoot      = 0.14,       # Allocation coefficient to resprout wood
@@ -101,7 +101,33 @@ coffee= function(){
     ShadeType         = 1,          # Shade type:
     # 1 Legume only; 2	bananas and legume only;3	bananas and other plants;
     # 4	fruit and forest tree only; 5	no shade
-    CoffeePruning= "tree"           # Coffee pruning management type:
+    CoffeePruning= "tree",           # Coffee pruning management type:
     # tree ; row ; 3 by block ; 4 NULL (no pruning)
+
+    # Metamodels (or subroutines):
+
+    # Leaf Water Potential:
+    LeafWaterPotential= function(S,i){
+      0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*S$Sim$PAR_Trans_Tree[i] +
+        2.676284*S$Sim$SoilWaterPot[i]
+    },
+    # Transpiration:
+    T_Coffee= function(S,i){
+      T_Coffee=
+        -0.72080 + 0.07319*S$Met_c$VPD[i] -0.76984*(1-S$Met_c$FDiff[i]) +
+        0.13646*S$Sim$LAI[i] + 0.12910*S$Sim$PAR_Trans_Tree[i]
+      T_Coffee[T_Coffee<0]= 0
+      T_Coffee
+    },
+    # Sensible heat flux:
+    H_Coffee= function(S,i){
+      1.2560 - 0.2886*S$Met_c$VPD[i] - 3.6280*S$Met_c$FDiff[i] +
+        2.6480*S$Sim$T_Coffee[i] + 0.4389*S$Sim$PAR_Trans_Tree[i]
+    },
+    # Light use efficiency:
+    lue= function(S,i){
+      2.784288 + 0.009667*S$Met_c$Tair[i] + 0.010561*S$Met_c$VPD[i] -
+        0.710361*sqrt(S$Sim$PAR_Trans_Tree[i])
+    }
   )
 }

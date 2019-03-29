@@ -58,7 +58,6 @@
 #'                              \tab APAR                     \tab MJ m-2 d-1          \tab Absorbed PAR by the plant                                                          \cr
 #'                              \tab APAR_Dif                 \tab MJ m-2 d-1          \tab Absorbed diffuse PAR (Direct is APAR-APAR_Dif)                                     \cr
 #'                              \tab lue                      \tab gC MJ               \tab Light use efficiency                                                               \cr
-#'                              \tab Tcan_MAESPA_Coffee       \tab deg C               \tab Coffee canopy temperature computed using MAESPA metamodel                          \cr
 #'                              \tab Tleaf_Coffee             \tab deg C               \tab Coffee canopy temperature computed by DynACof                                      \cr
 #'                              \tab WindSpeed_*              \tab m s-1               \tab Wind speed at the center of the layer                                              \cr
 #'                              \tab TairCanopy_*             \tab deg C               \tab Air tempetature at the center of the layer                                         \cr
@@ -413,20 +412,16 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     Soilfun(S,i)
 
     # Metamodel Coffee leaf water potential
-    S$Sim$LeafWaterPotential[i]=
-      0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*S$Sim$PAR_Trans_Tree[i] +
-      2.676284*S$Sim$SoilWaterPot[i]
+    S$Sim$LeafWaterPotential[i]= S$Parameters$LeafWaterPotential(S,i)
+
 
     # Energy balance ----------------------------------------------------------
 
     # Transpiration Coffee
-    S$Sim$T_Cof[i]=
-      -0.72080 + 0.07319*S$Met_c$VPD[i] -0.76984*(1-S$Met_c$FDiff[i]) +
-      0.13646*S$Sim$LAI[i] + 0.12910*S$Sim$PAR_Trans_Tree[i]
-    S$Sim$T_Cof[i][S$Sim$T_Cof[i]<0]= 0
+    S$Sim$T_Coffee[i]= S$Parameters$T_Coffee(S,i)
 
     # Plot transpiration
-    S$Sim$T_tot[i]= S$Sim$T_Tree[i]+S$Sim$T_Cof[i]
+    S$Sim$T_tot[i]= S$Sim$T_Tree[i]+S$Sim$T_Coffee[i]
 
     # Evapo-Transpiration
     S$Sim$ETR[i]=
@@ -436,12 +431,10 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$LE_Plot[i]= S$Sim$ETR[i]*S$Parameters$lambda
 
     S$Sim$LE_Coffee[i]=
-      (S$Sim$T_Cof[i]+S$Sim$IntercRevapor[i]*
+      (S$Sim$T_Coffee[i]+S$Sim$IntercRevapor[i]*
          (S$Sim$LAI[i]/S$Sim$LAIplot[i]))*S$Parameters$lambda
 
-    S$Sim$H_Coffee[i]=
-      1.2560 - 0.2886*S$Met_c$VPD[i] - 3.6280*S$Met_c$FDiff[i] +
-      2.6480*S$Sim$T_Cof[i] + 0.4389*S$Sim$PAR_Trans_Tree[i]
+    S$Sim$H_Coffee[i]= S$Parameters$H_Coffee(S,i)
 
     # Coffea layer net radiation
     S$Sim$Rn_Coffee[i]=
@@ -528,18 +521,12 @@ mainfun= function(cy,Direction,Meteo,Parameters){
                    LAI = S$Sim$LAI_Tree[i] + S$Sim$LAI[i],
                    extwind= S$Parameters$extwind))
 
-        # Metamodel for Coffea Tcanopy to compare:
-    S$Sim$Tcan_MAESPA_Coffee[i]=
-      -0.07741 + 0.99456*S$Met_c$Tair[i] - 0.06948*S$Met_c$VPD[i] -
-      1.87975*(1-S$Met_c$FDiff[i]) + 0.19615*S$Sim$PAR_Trans_Tree[i]
     S$Sim$DegreeDays_Tcan[i]=
       GDD(Tmean = S$Sim$Tleaf_Coffee[i],MinTT = S$Parameters$MinTT,
           MaxTT = S$Parameters$MaxTT)
 
     # Metamodel LUE coffee:
-    S$Sim$lue[i]=
-      2.784288 + 0.009667*S$Met_c$Tair[i] + 0.010561*S$Met_c$VPD[i] -
-      0.710361*sqrt(S$Sim$PAR_Trans_Tree[i])
+    S$Sim$lue[i]= S$Parameters$lue(S,i)
 
     #GPP Coffee
     S$Sim$GPP[i]= S$Sim$lue[i]*S$Sim$APAR[i]
@@ -693,8 +680,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$Temp_cor_Bud[i][S$Sim$Temp_cor_Bud[i]>1]= 1
 
     # (7) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
-    S$Sim$pbreak[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*
-                                          S$Sim$LeafWaterPotential[i]))
+    S$Sim$pbreak[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*S$Sim$LeafWaterPotential[i]))
     # (8) Compute the number of buds that effectively break dormancy in each cohort:
     S$Sim$BudBreak_cohort[DormancyBreakPeriod]=
       pmin(S$Sim$Bud_available[DormancyBreakPeriod],

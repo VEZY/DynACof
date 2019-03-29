@@ -75,7 +75,6 @@ Energy                       \tab Rn_tot                   \tab MJ m-2 d-1      
                              \tab APAR                     \tab MJ m-2 d-1          \tab Absorbed PAR by the plant                                                          \cr
                              \tab APAR_Dif                 \tab MJ m-2 d-1          \tab Absorbed diffuse PAR (Direct is APAR-APAR_Dif)                                     \cr
                              \tab lue                      \tab gC MJ               \tab Light use efficiency                                                               \cr
-                             \tab Tcan_MAESPA_Coffee       \tab deg C               \tab Coffee canopy temperature computed using MAESPA metamodel                          \cr
                              \tab Tleaf_Coffee             \tab deg C               \tab Coffee canopy temperature computed by DynACof                                      \cr
                              \tab WindSpeed_*              \tab m s-1               \tab Wind speed at the center of the layer                                              \cr
                              \tab TairCanopy_*             \tab deg C               \tab Air tempetature at the center of the layer                                         \cr
