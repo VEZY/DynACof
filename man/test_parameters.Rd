@@ -25,9 +25,10 @@ Different tests for the user-inputed parameter files:
 # No error:
 test_parameters(Parameters= Import_Parameters())
 
-# Removing a mandatory parameter from the soil:
-params= Import_Parameters()
-params$REWc= NULL
-test_parameters(Parameters= params)
-
+\donttest{
+ # Removing a mandatory parameter from the soil:
+ params= Import_Parameters()
+ params$REWc= NULL
+ test_parameters(Parameters= params)
+}
 }
