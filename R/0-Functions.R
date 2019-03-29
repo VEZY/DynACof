@@ -1107,6 +1107,8 @@ CN= function(x){
 #'
 #' @return A function to predict the temperature correction coefficient (see Eq. 36 from Vezy et al. (in prep.))
 #'
+#' @importFrom stats splinefun
+#'
 #' @export
 #'
 #' @references \itemize{
@@ -1125,7 +1127,7 @@ CB= function(){
   Data_Buds_day= data.frame(Air_T=c(10,15.5,20.5,25.5,30.5),
                             Buds_per_Node=c(0,2.6,3.2,1.5,0))
   Data_Buds_day$Buds_per_Node_cor= Data_Buds_day$Buds_per_Node/max(Data_Buds_day$Buds_per_Node)
-  spl= splinefun(Data_Buds_day$Buds_per_Node_cor~Data_Buds_day$Air_T,
-                 method = "monoH.FC")
+  spl= stats::splinefun(Data_Buds_day$Buds_per_Node_cor~Data_Buds_day$Air_T,
+                        method = "monoH.FC")
   return(spl)
 }
