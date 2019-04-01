@@ -118,16 +118,15 @@ data. This function is given as a parameter in the coffee parameter file to be f
         
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A function to predict the temperature correction coefficient (see Eq. 36 from Vezy et al. (in prep.))</p>
+    <p>A function to predict the temperature correction coefficient (see Eq. 34 from Vezy et al. (in prep.))</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>As temperature increases, the number of nodes on coffee increases due to increased vegetative
-growth (see `CN()`), but the number of buds per nodes decreases.
-The number of buds is computed by using a temperature correction factor that decreases with increasing
-mean temperature during bud development (0-1, and =1 if mean T &lt; 23).
-This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
-increasing T).</p>
+growth (see `CN()`), but the number of inflorescences per node, and the number of flowers per inflorescence
+decrease. This function fits a function that return itself a temperature correction coefficient that is fitted
+on the quite unique dataset of Drinnan and Menzel (1995). The correction coefficient is applied in DynACof to the
+number of buds that break dormancy (less buds break dormancy with increasing T).</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 

@@ -10,7 +10,8 @@ CN(x)
 \item{x}{The average air temperature during the vegetative growing period}
 }
 \value{
-The correction coefficient to compute the number of green nodes in the coffee (see Eq. 27 from Vezy et al. (in prep.))
+The correction coefficient to compute the number of green nodes in the coffee (see Eq. 26 from Vezy
+et al. (in prep.))
 }
 \description{
 Compute the temperature-dependent correction coefficient for green nodes in the

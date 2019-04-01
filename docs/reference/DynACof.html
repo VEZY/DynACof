@@ -116,10 +116,11 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>DynACof</span>(<span class='kw'>Period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>WriteIt</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>, <span class='kw'>output_f</span> <span class='kw'>=</span> <span class='st'>".RData"</span>,
-  <span class='kw'>Inpath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Outpath</span> <span class='kw'>=</span> <span class='no'>Inpath</span>, <span class='kw'>Simulation_Name</span> <span class='kw'>=</span> <span class='st'>"DynACof"</span>,
-  <span class='kw'>FileName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>Site</span> <span class='kw'>=</span> <span class='st'>"1-Site.R"</span>, <span class='kw'>Meteo</span> <span class='kw'>=</span> <span class='st'>"2-Meteorology.txt"</span>, <span class='kw'>Soil</span> <span class='kw'>=</span>
-  <span class='st'>"3-Soil.R"</span>, <span class='kw'>Coffee</span> <span class='kw'>=</span> <span class='st'>"4-Coffee.R"</span>, <span class='kw'>Tree</span> <span class='kw'>=</span> <span class='kw'>NULL</span>))</pre>
+    <pre class="usage"><span class='fu'>DynACof</span>(<span class='kw'>Period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>WriteIt</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>output_f</span> <span class='kw'>=</span> <span class='st'>".RData"</span>, <span class='kw'>Inpath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Outpath</span> <span class='kw'>=</span> <span class='no'>Inpath</span>,
+  <span class='kw'>Simulation_Name</span> <span class='kw'>=</span> <span class='st'>"DynACof"</span>, <span class='kw'>FileName</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>Site</span> <span class='kw'>=</span> <span class='st'>"1-Site.R"</span>, <span class='kw'>Meteo</span>
+  <span class='kw'>=</span> <span class='st'>"2-Meteorology.txt"</span>, <span class='kw'>Soil</span> <span class='kw'>=</span> <span class='st'>"3-Soil.R"</span>, <span class='kw'>Coffee</span> <span class='kw'>=</span> <span class='st'>"4-Coffee.R"</span>, <span class='kw'>Tree</span> <span class='kw'>=</span>
+  <span class='kw'>NULL</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,6 +136,10 @@
     <tr>
       <th>...</th>
       <td><p>Further arguments to pass to <code><a href='write.results.html'>write.results</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>parallel</th>
+      <td><p>Boolean. Parallelize the computation over crop rotations.</p></td>
     </tr>
     <tr>
       <th>output_f</th>
@@ -212,100 +217,99 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 <tr><td>MJ m-2 d-1</td><td>Absorbed PAR by the plant</td><td></td><td></td></tr>
 <tr><td>APAR_Dif</td><td>MJ m-2 d-1</td><td>Absorbed diffuse PAR (Direct is APAR-APAR_Dif)</td><td></td></tr>
 <tr><td></td><td>lue</td><td>gC MJ</td><td>Light use efficiency</td></tr>
-<tr><td></td><td></td><td>Tcan_MAESPA_Coffee</td><td>deg C</td></tr>
-<tr><td>Coffee canopy temperature computed using MAESPA metamodel</td><td></td><td></td><td>Tleaf_Coffee</td></tr>
-<tr><td>deg C</td><td>Coffee canopy temperature computed by DynACof</td><td></td><td></td></tr>
-<tr><td>WindSpeed_*</td><td>m s-1</td><td>Wind speed at the center of the layer</td><td></td></tr>
-<tr><td></td><td>TairCanopy_*</td><td>deg C</td><td>Air tempetature at the center of the layer</td></tr>
-<tr><td></td><td></td><td>DegreeDays_Tcan</td><td>deg C</td></tr>
-<tr><td>Growing degree days computed using Coffee Canopy Temperature</td><td></td><td>Carbon</td><td>GPP</td></tr>
-<tr><td>gC m-2 d-1</td><td>Gross primary productivity</td><td></td><td></td></tr>
-<tr><td>Consumption_RE</td><td>gC m-2 d-1</td><td>Daily reserve consumption</td><td></td></tr>
-<tr><td></td><td>Carbon_Lack_Mortality</td><td>gC m-2 d-1</td><td>Mortality from a higher carbon consumption than offer</td></tr>
-<tr><td></td><td></td><td>Rm</td><td>gC m-2 d-1</td></tr>
-<tr><td>Total Coffee maintenance respiration</td><td></td><td></td><td>Rm_*</td></tr>
-<tr><td>gC m-2 d-1</td><td>Maintenance respiration at organ scale</td><td></td><td></td></tr>
-<tr><td>Rg</td><td>gC m-2 d-1</td><td>Total Coffee growth respiration</td><td></td></tr>
-<tr><td></td><td>Rg_*</td><td>gC m-2 d-1</td><td>Growth respiration at organ scale</td></tr>
-<tr><td></td><td></td><td>Ra</td><td>gC m-2 d-1</td></tr>
-<tr><td>Coffee layer autotrophic respiration (=Rm+Rg)</td><td></td><td></td><td>Demand_*</td></tr>
-<tr><td>gC m-2 d-1</td><td>C demand at organ scale (fruit, leaf and fine root only)</td><td></td><td></td></tr>
-<tr><td>Alloc_*</td><td>gC m-2 d-1</td><td>C allocation to organ net of Rm (NPP+Rg)</td><td></td></tr>
-<tr><td></td><td>Offer</td><td>gC m-2 d-1</td><td>C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)</td></tr>
-<tr><td></td><td></td><td>Offer_*</td><td>gC m-2 d-1</td></tr>
-<tr><td>C offer to organ, net of Rm</td><td></td><td></td><td>NPP</td></tr>
-<tr><td>gC m-2 d-1</td><td>Net primary productivity at layer scale</td><td></td><td></td></tr>
-<tr><td>NPP_*</td><td>gC m-2 d-1</td><td>Net primary productivity at organ scale</td><td></td></tr>
-<tr><td></td><td>Mnat_*</td><td>gC m-2 d-1</td><td>Organ natural mortality (= due to lifespan)</td></tr>
-<tr><td></td><td></td><td>Mprun_*</td><td>gC m-2 d-1</td></tr>
-<tr><td>Organ mortality due to pruning</td><td></td><td></td><td>M_ALS</td></tr>
-<tr><td>gC m-2 d-1</td><td>Coffee leaf mortality from American Leaf Spot</td><td></td><td></td></tr>
-<tr><td>Mortality_*</td><td>gC m-2 d-1</td><td>Total organ mortality</td><td></td></tr>
-<tr><td></td><td>LAI</td><td>m2 leaves m-2 soil</td><td>Leaf Area Index</td></tr>
-<tr><td></td><td></td><td>CM_*</td><td>gC m-2 d-1</td></tr>
-<tr><td>Organ C mass</td><td></td><td></td><td>DM_*</td></tr>
-<tr><td>gDM m-2 d-1</td><td>Organ dry mass</td><td></td><td>Fruit development</td></tr>
-<tr><td>BudInitPeriod</td><td>boolean</td><td>Bud initiation period (BIP)</td><td></td></tr>
-<tr><td></td><td>Budinit</td><td>Buds d-1</td><td>Total Number of Buds Initiated per day</td></tr>
-<tr><td></td><td></td><td>ratioNodestoLAI</td><td>Nodes LAI-1</td></tr>
-<tr><td>Number of fruiting nodes per LAI unit</td><td></td><td></td><td>Temp_cor_Bud</td></tr>
-<tr><td>fraction</td><td>Temperature correction factor for bud development</td><td></td><td></td></tr>
-<tr><td>pbreak</td><td>0-1</td><td>Daily probability of bud dormancy break</td><td></td></tr>
-<tr><td></td><td>BudBreak</td><td>Buds d-1</td><td>Total number of buds breaking dormancy per day</td></tr>
-<tr><td></td><td></td><td>SM</td><td>g m-2 d-1</td></tr>
-<tr><td>Coffee Fruit Sucrose Mass</td><td></td><td></td><td>SC</td></tr>
-<tr><td>g Sugar gDM</td><td>Coffee Fruit Sucrose Content</td><td></td><td></td></tr>
-<tr><td>Maturation_duration</td><td>days Fruit cohort-1</td><td>Coffee Fruit Total Maturation Duration for each cohort</td><td></td></tr>
-<tr><td></td><td>Harvest_Maturity_Pot</td><td>Fraction</td><td>Daily average fruit maturity (0-1)</td></tr>
-<tr><td></td><td></td><td>Date_harvest</td><td>day of year</td></tr>
-<tr><td>date of harvest</td><td></td><td></td><td>Harvest_Fruit</td></tr>
-<tr><td>gC m-2</td><td>Total fruit carbon mass at harvest</td><td></td><td></td></tr>
-<tr><td>Harvest_Maturity</td><td>Fraction</td><td>Average fruit maturity at harvest (0-1)</td><td></td></tr>
-<tr><td></td><td>Overriped_Fruit</td><td>gC m-2 d-1</td><td>Overriped fruits that fall onto the ground</td></tr>
-<tr><td></td><td>Water</td><td>IntercMax</td><td>mm</td></tr>
-<tr><td>Maximum potential rainfall interception by canopy</td><td></td><td></td><td>CanopyHumect</td></tr>
-<tr><td>mm</td><td>Rainfall interception by canopy</td><td></td><td></td></tr>
-<tr><td>Throughfall</td><td>mm</td><td>Rainfall not intercepted by the canopy, coming to the soil</td><td></td></tr>
-<tr><td></td><td>SuperficialRunoff</td><td>mm</td><td>Water runoff from the superficial soil layer</td></tr>
-<tr><td></td><td></td><td>ExcessRunoff</td><td>mm</td></tr>
-<tr><td>Discharge from the superficial soil layer</td><td></td><td></td><td>TotSuperficialRunoff</td></tr>
-<tr><td>mm</td><td>Sum of discharge+ExcessRunoff</td><td></td><td></td></tr>
-<tr><td>InfilCapa</td><td>mm</td><td>Superficial water infiltration capacity to first layer of soil</td><td></td></tr>
-<tr><td></td><td>Infiltration</td><td>mm</td><td>Superficial water infiltration to first layer of soil</td></tr>
-<tr><td></td><td></td><td>Drain_[1-3]</td><td>mm</td></tr>
-<tr><td>Water drainage from soil layer 1, 2 or 3</td><td></td><td></td><td>WSurfaceRes</td></tr>
-<tr><td>mm</td><td>Soil water content from the surface layer</td><td></td><td></td></tr>
-<tr><td>W_tot</td><td>mm</td><td>Total soil profile water content</td><td></td></tr>
-<tr><td></td><td>W_[1-3]</td><td>mm</td><td>Soil water content from the layer 1, 2 or 3</td></tr>
-<tr><td></td><td></td><td>REW_tot</td><td>-</td></tr>
-<tr><td>Relative extractable water from the soil</td><td></td><td></td><td>REW_[1-3]</td></tr>
-<tr><td>-</td><td>Relative extractable water from the layer 1, 2 or 3</td><td></td><td></td></tr>
-<tr><td>EW_tot</td><td>mm</td><td>Extractable water from the soil</td><td></td></tr>
-<tr><td></td><td>EW_[1-3]</td><td>mm</td><td>Extractable water from the layer 1, 2 or 3</td></tr>
-<tr><td></td><td></td><td>SWD</td><td>mm</td></tr>
-<tr><td>soil water deficit</td><td></td><td></td><td>RootWaterExtract_[1-3]</td></tr>
-<tr><td>mm</td><td>Root water extraction for soil layer 1 to 3</td><td></td><td></td></tr>
-<tr><td>IntercRevapor</td><td>mm</td><td>Evaporation by canopy</td><td></td></tr>
-<tr><td></td><td>T_*</td><td>mm</td><td>Transpiration at system/Coffee/Tree scale</td></tr>
-<tr><td></td><td></td><td>E_Soil</td><td>mm</td></tr>
-<tr><td>Soil evaporation</td><td></td><td></td><td>ETR</td></tr>
-<tr><td>mm</td><td>System evapotranspiration</td><td></td><td></td></tr>
-<tr><td>SoilWaterPot</td><td>MPa</td><td>Soil water potential</td><td></td></tr>
-<tr><td></td><td>LeafWaterPotential</td><td>Mpa</td><td>Coffee leaf water potential</td></tr>
-<tr><td></td><td>Special shade tree variables</td><td>LA_Tree</td><td>m2 leaves tree-1</td></tr>
-<tr><td>shade tree leaf area</td><td></td><td></td><td>Crown_H_Tree</td></tr>
-<tr><td>m</td><td>Crown height</td><td></td><td></td></tr>
-<tr><td>Trunk_H_Tree</td><td>m</td><td>Trunk height</td><td></td></tr>
-<tr><td></td><td>Height_Tree</td><td>m</td><td>Shade tree total height (used for boundary conductance), set to 0 if no shade trees</td></tr>
-<tr><td></td><td></td><td>DBH_Tree</td><td>m</td></tr>
-<tr><td>Diameter at breast height</td><td></td><td></td><td>LAD_Tree</td></tr>
-<tr><td>m2 m-3</td><td>Shade tree Leaf Area Density</td><td></td><td></td></tr>
-<tr><td>CrownRad_Tree</td><td>m</td><td>Crown radius</td><td></td></tr>
-<tr><td></td><td>CrownProj_Tree</td><td>m2 crown tree-1</td><td>Crown projection</td></tr>
-<tr><td></td><td></td><td>Stocking_Tree</td><td>tree m-2</td></tr>
-<tr><td>Shade tree density</td><td></td><td></td><td>TimetoThin_Tree</td></tr>
-<tr><td>boolean</td><td>Days on which tree is thinned</td><td></td><td></td></tr>
-<tr><td>MThinning_*_Tree</td><td>gc m-2 d-1</td><td>Mortality due to thining at organ scale</td><td></td></tr>
+<tr><td></td><td></td><td>Tleaf_Coffee</td><td>deg C</td></tr>
+<tr><td>Coffee canopy temperature computed by DynACof</td><td></td><td></td><td>WindSpeed_*</td></tr>
+<tr><td>m s-1</td><td>Wind speed at the center of the layer</td><td></td><td></td></tr>
+<tr><td>TairCanopy_*</td><td>deg C</td><td>Air tempetature at the center of the layer</td><td></td></tr>
+<tr><td></td><td>DegreeDays_Tcan</td><td>deg C</td><td>Growing degree days computed using Coffee Canopy Temperature</td></tr>
+<tr><td></td><td>Carbon</td><td>GPP</td><td>gC m-2 d-1</td></tr>
+<tr><td>Gross primary productivity</td><td></td><td></td><td>Consumption_RE</td></tr>
+<tr><td>gC m-2 d-1</td><td>Daily reserve consumption</td><td></td><td></td></tr>
+<tr><td>Carbon_Lack_Mortality</td><td>gC m-2 d-1</td><td>Mortality from a higher carbon consumption than offer</td><td></td></tr>
+<tr><td></td><td>Rm</td><td>gC m-2 d-1</td><td>Total Coffee maintenance respiration</td></tr>
+<tr><td></td><td></td><td>Rm_*</td><td>gC m-2 d-1</td></tr>
+<tr><td>Maintenance respiration at organ scale</td><td></td><td></td><td>Rg</td></tr>
+<tr><td>gC m-2 d-1</td><td>Total Coffee growth respiration</td><td></td><td></td></tr>
+<tr><td>Rg_*</td><td>gC m-2 d-1</td><td>Growth respiration at organ scale</td><td></td></tr>
+<tr><td></td><td>Ra</td><td>gC m-2 d-1</td><td>Coffee layer autotrophic respiration (=Rm+Rg)</td></tr>
+<tr><td></td><td></td><td>Demand_*</td><td>gC m-2 d-1</td></tr>
+<tr><td>C demand at organ scale (fruit, leaf and fine root only)</td><td></td><td></td><td>Alloc_*</td></tr>
+<tr><td>gC m-2 d-1</td><td>C allocation to organ net of Rm (NPP+Rg)</td><td></td><td></td></tr>
+<tr><td>Offer</td><td>gC m-2 d-1</td><td>C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)</td><td></td></tr>
+<tr><td></td><td>Offer_*</td><td>gC m-2 d-1</td><td>C offer to organ, net of Rm</td></tr>
+<tr><td></td><td></td><td>NPP</td><td>gC m-2 d-1</td></tr>
+<tr><td>Net primary productivity at layer scale</td><td></td><td></td><td>NPP_*</td></tr>
+<tr><td>gC m-2 d-1</td><td>Net primary productivity at organ scale</td><td></td><td></td></tr>
+<tr><td>Mnat_*</td><td>gC m-2 d-1</td><td>Organ natural mortality (= due to lifespan)</td><td></td></tr>
+<tr><td></td><td>Mprun_*</td><td>gC m-2 d-1</td><td>Organ mortality due to pruning</td></tr>
+<tr><td></td><td></td><td>M_ALS</td><td>gC m-2 d-1</td></tr>
+<tr><td>Coffee leaf mortality from American Leaf Spot</td><td></td><td></td><td>Mortality_*</td></tr>
+<tr><td>gC m-2 d-1</td><td>Total organ mortality</td><td></td><td></td></tr>
+<tr><td>LAI</td><td>m2 leaves m-2 soil</td><td>Leaf Area Index</td><td></td></tr>
+<tr><td></td><td>CM_*</td><td>gC m-2 d-1</td><td>Organ C mass</td></tr>
+<tr><td></td><td></td><td>DM_*</td><td>gDM m-2 d-1</td></tr>
+<tr><td>Organ dry mass</td><td></td><td>Fruit development</td><td>BudInitPeriod</td></tr>
+<tr><td>boolean</td><td>Bud initiation period (BIP)</td><td></td><td></td></tr>
+<tr><td>Budinit</td><td>Buds d-1</td><td>Total Number of Buds Initiated per day</td><td></td></tr>
+<tr><td></td><td>ratioNodestoLAI</td><td>Nodes LAI-1</td><td>Number of fruiting nodes per LAI unit</td></tr>
+<tr><td></td><td></td><td>Temp_cor_Bud</td><td>fraction</td></tr>
+<tr><td>Temperature correction factor for bud development</td><td></td><td></td><td>pbreak</td></tr>
+<tr><td>0-1</td><td>Daily probability of bud dormancy break</td><td></td><td></td></tr>
+<tr><td>BudBreak</td><td>Buds d-1</td><td>Total number of buds breaking dormancy per day</td><td></td></tr>
+<tr><td></td><td>SM</td><td>g m-2 d-1</td><td>Coffee Fruit Sucrose Mass</td></tr>
+<tr><td></td><td></td><td>SC</td><td>g Sugar gDM</td></tr>
+<tr><td>Coffee Fruit Sucrose Content</td><td></td><td></td><td>Maturation_duration</td></tr>
+<tr><td>days Fruit cohort-1</td><td>Coffee Fruit Total Maturation Duration for each cohort</td><td></td><td></td></tr>
+<tr><td>Harvest_Maturity_Pot</td><td>Fraction</td><td>Daily average fruit maturity (0-1)</td><td></td></tr>
+<tr><td></td><td>Date_harvest</td><td>day of year</td><td>date of harvest</td></tr>
+<tr><td></td><td></td><td>Harvest_Fruit</td><td>gC m-2</td></tr>
+<tr><td>Total fruit carbon mass at harvest</td><td></td><td></td><td>Harvest_Maturity</td></tr>
+<tr><td>Fraction</td><td>Average fruit maturity at harvest (0-1)</td><td></td><td></td></tr>
+<tr><td>Overriped_Fruit</td><td>gC m-2 d-1</td><td>Overriped fruits that fall onto the ground</td><td></td></tr>
+<tr><td>Water</td><td>IntercMax</td><td>mm</td><td>Maximum potential rainfall interception by canopy</td></tr>
+<tr><td></td><td></td><td>CanopyHumect</td><td>mm</td></tr>
+<tr><td>Rainfall interception by canopy</td><td></td><td></td><td>Throughfall</td></tr>
+<tr><td>mm</td><td>Rainfall not intercepted by the canopy, coming to the soil</td><td></td><td></td></tr>
+<tr><td>SuperficialRunoff</td><td>mm</td><td>Water runoff from the superficial soil layer</td><td></td></tr>
+<tr><td></td><td>ExcessRunoff</td><td>mm</td><td>Discharge from the superficial soil layer</td></tr>
+<tr><td></td><td></td><td>TotSuperficialRunoff</td><td>mm</td></tr>
+<tr><td>Sum of discharge+ExcessRunoff</td><td></td><td></td><td>InfilCapa</td></tr>
+<tr><td>mm</td><td>Superficial water infiltration capacity to first layer of soil</td><td></td><td></td></tr>
+<tr><td>Infiltration</td><td>mm</td><td>Superficial water infiltration to first layer of soil</td><td></td></tr>
+<tr><td></td><td>Drain_[1-3]</td><td>mm</td><td>Water drainage from soil layer 1, 2 or 3</td></tr>
+<tr><td></td><td></td><td>WSurfaceRes</td><td>mm</td></tr>
+<tr><td>Soil water content from the surface layer</td><td></td><td></td><td>W_tot</td></tr>
+<tr><td>mm</td><td>Total soil profile water content</td><td></td><td></td></tr>
+<tr><td>W_[1-3]</td><td>mm</td><td>Soil water content from the layer 1, 2 or 3</td><td></td></tr>
+<tr><td></td><td>REW_tot</td><td>-</td><td>Relative extractable water from the soil</td></tr>
+<tr><td></td><td></td><td>REW_[1-3]</td><td>-</td></tr>
+<tr><td>Relative extractable water from the layer 1, 2 or 3</td><td></td><td></td><td>EW_tot</td></tr>
+<tr><td>mm</td><td>Extractable water from the soil</td><td></td><td></td></tr>
+<tr><td>EW_[1-3]</td><td>mm</td><td>Extractable water from the layer 1, 2 or 3</td><td></td></tr>
+<tr><td></td><td>SWD</td><td>mm</td><td>soil water deficit</td></tr>
+<tr><td></td><td></td><td>RootWaterExtract_[1-3]</td><td>mm</td></tr>
+<tr><td>Root water extraction for soil layer 1 to 3</td><td></td><td></td><td>IntercRevapor</td></tr>
+<tr><td>mm</td><td>Evaporation by canopy</td><td></td><td></td></tr>
+<tr><td>T_*</td><td>mm</td><td>Transpiration at system/Coffee/Tree scale</td><td></td></tr>
+<tr><td></td><td>E_Soil</td><td>mm</td><td>Soil evaporation</td></tr>
+<tr><td></td><td></td><td>ETR</td><td>mm</td></tr>
+<tr><td>System evapotranspiration</td><td></td><td></td><td>SoilWaterPot</td></tr>
+<tr><td>MPa</td><td>Soil water potential</td><td></td><td></td></tr>
+<tr><td>LeafWaterPotential</td><td>Mpa</td><td>Coffee leaf water potential</td><td></td></tr>
+<tr><td>Special shade tree variables</td><td>LA_Tree</td><td>m2 leaves tree-1</td><td>shade tree leaf area</td></tr>
+<tr><td></td><td></td><td>Crown_H_Tree</td><td>m</td></tr>
+<tr><td>Crown height</td><td></td><td></td><td>Trunk_H_Tree</td></tr>
+<tr><td>m</td><td>Trunk height</td><td></td><td></td></tr>
+<tr><td>Height_Tree</td><td>m</td><td>Shade tree total height (used for boundary conductance), set to 0 if no shade trees</td><td></td></tr>
+<tr><td></td><td>DBH_Tree</td><td>m</td><td>Diameter at breast height</td></tr>
+<tr><td></td><td></td><td>LAD_Tree</td><td>m2 m-3</td></tr>
+<tr><td>Shade tree Leaf Area Density</td><td></td><td></td><td>CrownRad_Tree</td></tr>
+<tr><td>m</td><td>Crown radius</td><td></td><td></td></tr>
+<tr><td>CrownProj_Tree</td><td>m2 crown tree-1</td><td>Crown projection</td><td></td></tr>
+<tr><td></td><td>Stocking_Tree</td><td>tree m-2</td><td>Shade tree density</td></tr>
+<tr><td></td><td></td><td>TimetoThin_Tree</td><td>boolean</td></tr>
+<tr><td>Days on which tree is thinned</td><td></td><td></td><td>MThinning_*_Tree</td></tr>
+<tr><td>gc m-2 d-1</td><td>Mortality due to thining at organ scale</td><td></td><td><strong>Type</strong></td></tr>
 </table>
 </li>
 <li><p>Meteo: A data.frame of the input meteorology, potentially coming from the output of <code><a href='Meteorology.html'>Meteorology</a></code>:</p><table class='table'>

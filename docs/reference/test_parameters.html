@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Temperature-dependent correction coefficient for nodes (CN) — CN • DynACof</title>
+<title>Tests on input parameters — test_parameters • DynACof</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,12 @@
 
 
 
-<meta property="og:title" content="Temperature-dependent correction coefficient for nodes (CN) — CN" />
+<meta property="og:title" content="Tests on input parameters — test_parameters" />
 
-<meta property="og:description" content="Compute the temperature-dependent correction coefficient for green nodes in the
-coffee plant according to Drinnan and Menzel (1995)." />
+<meta property="og:description" content="Different tests for the user-inputed parameter files:
+  Mandatory parameterTest if all mandatory parameters are present in the files
+  Parameter valuesSome parameter values are checked before running
+" />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -100,44 +102,46 @@ coffee plant according to Drinnan and Menzel (1995)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Temperature-dependent correction coefficient for nodes (CN)</h1>
+    <h1>Tests on input parameters</h1>
     
-    <div class="hidden name"><code>CN.Rd</code></div>
+    <div class="hidden name"><code>test_parameters.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Compute the temperature-dependent correction coefficient for green nodes in the
-coffee plant according to Drinnan and Menzel (1995).</p>
+    <p>Different tests for the user-inputed parameter files:</p><dl class='dl-horizontal'>
+  <dt>Mandatory parameter</dt><dd><p>Test if all mandatory parameters are present in the files</p></dd>
+  <dt>Parameter values</dt><dd><p>Some parameter values are checked before running</p></dd>
+</dl>
     
     </div>
 
-    <pre class="usage"><span class='fu'>CN</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>test_parameters</span>(<span class='no'>Parameters</span>, <span class='kw'>isTree</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>The average air temperature during the vegetative growing period</p></td>
+      <th>Parameters</th>
+      <td><p>The full list of parameter values, generally output from <code><a href='Import_Parameters.html'>Import_Parameters</a></code></p></td>
+    </tr>
+    <tr>
+      <th>isTree</th>
+      <td><p>Boolean. Set to <code>TRUE</code> if shade trees are simulated.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The correction coefficient to compute the number of green nodes in the coffee (see Eq. 26 from Vezy
-et al. (in prep.))</p>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <ul>
-<li><p>Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
-  Journal of Horticultural Science, 1995. 70(1): p. 25-34.</p></li>
-</ul>
+    <p>An error if any issue is encountered</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>CN</span>(<span class='fl'>25</span>)</div><div class='output co'>#&gt; [1] 1.373575</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># No error:</span>
+<span class='fu'>test_parameters</span>(<span class='kw'>Parameters</span><span class='kw'>=</span> <span class='fu'><a href='Import_Parameters.html'>Import_Parameters</a></span>())</div><div class='input'> <span class='co'># Removing a mandatory parameter from the soil:</span>
+ <span class='no'>params</span><span class='kw'>=</span> <span class='fu'><a href='Import_Parameters.html'>Import_Parameters</a></span>()
+ <span class='no'>params</span>$<span class='no'>REWc</span><span class='kw'>=</span> <span class='kw'>NULL</span>
+ <span class='fu'>test_parameters</span>(<span class='kw'>Parameters</span><span class='kw'>=</span> <span class='no'>params</span>)</div><div class='output co'>#&gt; <span class='error'>Error: Missing parameter in soil parameter file:  REWc</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -145,8 +149,6 @@ et al. (in prep.))</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#references">References</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -890,6 +890,5 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
 
   }
-  CycleList=list(Sim= S$Sim%>%as.data.frame)
-  CycleList
+  return(S$Sim%>%as.data.frame)
 }

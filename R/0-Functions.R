@@ -1077,7 +1077,8 @@ Paliv_dis= function(Age_Max,P_Start,P_End,k){
 #'
 #' @param x The average air temperature during the vegetative growing period
 #'
-#' @return The correction coefficient to compute the number of green nodes in the coffee (see Eq. 27 from Vezy et al. (in prep.))
+#' @return The correction coefficient to compute the number of green nodes in the coffee (see Eq. 26 from Vezy
+#' et al. (in prep.))
 #' @export
 #'
 #' @references \itemize{
@@ -1099,13 +1100,12 @@ CN= function(x){
 #' `Bud_T_correction()` so the user can modify the function and give it as input.
 #'
 #' @details As temperature increases, the number of nodes on coffee increases due to increased vegetative
-#' growth (see `CN()`), but the number of buds per nodes decreases.
-#' The number of buds is computed by using a temperature correction factor that decreases with increasing
-#' mean temperature during bud development (0-1, and =1 if mean T < 23).
-#' This factor is then applied on the number of buds that break dormancy (less buds break dormancy with
-#' increasing T).
+#' growth (see `CN()`), but the number of inflorescences per node, and the number of flowers per inflorescence
+#' decrease. This function fits a function that return itself a temperature correction coefficient that is fitted
+#' on the quite unique dataset of Drinnan and Menzel (1995). The correction coefficient is applied in DynACof to the
+#' number of buds that break dormancy (less buds break dormancy with increasing T).
 #'
-#' @return A function to predict the temperature correction coefficient (see Eq. 36 from Vezy et al. (in prep.))
+#' @return A function to predict the temperature correction coefficient (see Eq. 34 from Vezy et al. (in prep.))
 #'
 #' @importFrom stats splinefun
 #'
@@ -1125,9 +1125,13 @@ CN= function(x){
 #'
 CB= function(){
   Data_Buds_day= data.frame(Air_T=c(10,15.5,20.5,25.5,30.5),
-                            Buds_per_Node=c(0,2.6,3.2,1.5,0))
-  Data_Buds_day$Buds_per_Node_cor= Data_Buds_day$Buds_per_Node/max(Data_Buds_day$Buds_per_Node)
-  spl= stats::splinefun(Data_Buds_day$Buds_per_Node_cor~Data_Buds_day$Air_T,
+                            Inflo_per_Node=c(0,2.6,3.2,1.5,0),
+                            Buds_per_Inflo= c(0,1.2,1.2,0.15,0))
+  Data_Buds_day$Inflo_per_Node_standard= Data_Buds_day$Inflo_per_Node/max(Data_Buds_day$Inflo_per_Node)
+  Data_Buds_day$Buds_per_Inflo_standard= Data_Buds_day$Buds_per_Inflo/max(Data_Buds_day$Buds_per_Inflo)
+  Data_Buds_day$T_cor_Flower= Data_Buds_day$Inflo_per_Node_standard*Data_Buds_day$Buds_per_Inflo_standard
+
+  spl= stats::splinefun(Data_Buds_day$T_cor_Flower~Data_Buds_day$Air_T,
                         method = "monoH.FC")
   return(spl)
 }
