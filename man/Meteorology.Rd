@@ -40,8 +40,9 @@ The imported file is expected to be at daily time-step.
          extinction coefficient with the plot LAI following the Shuttleworth & Wallace (1985) formulation. This computation is
          likely to be depreciated in the near future as the computation has been replaced by a metamodel. It is kept for
          information for the moment.
-\tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
-Date            \tab POSIXct     \tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
+\tabular{llll}{
+\strong{Var}    \tab \strong{unit} \tab \strong{Definition}                        \tab \strong{If missing} \cr
+Date            \tab POSIXct     \tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing \cr
 year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
 DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
 Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr
@@ -52,16 +53,19 @@ RH              \tab \%          \tab Relative humidity                         
 RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
 Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation. \cr
 WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Taken as constant: \code{Parameters$WindSpeed} \cr
-CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Taken as constant: \code{Parameters$CO2}\cr
+CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Taken as constant: \code{Parameters$CO2} \cr
 DegreeDays      \tab Celsius     \tab Growing degree days                          \tab Computed using \code{\link{GDD}} \cr
 PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
 FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} using Spitters et al. (1986) formula \cr
 VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
 Rn              \tab MJ m-2 d-1  \tab Net radiation (will be depreciated)          \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
 DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
-Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf]{air.density}}}
-         It is highly recommended to set the system environment timezone to the one from the meteorology file.
-         For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
+Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf]{air.density}} \cr
+ZEN             \tab radian      \tab Solar zenithal angle at noon                 \tab Computed from Date, Latitude, Longitude and Timezone}
+}
+\note{
+It is highly recommended to set the system environment timezone to the one from the meteorology file. If not, the function try to use the Timezone
+from the parameter files to set it. When in doubt, set it to UTC, as for (\code{\link{Aquiares}}) (\code{Sys.setenv(TZ="UTC")}).
 }
 \examples{
 \dontrun{

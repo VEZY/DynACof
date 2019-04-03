@@ -154,39 +154,44 @@ Default to <code>NULL</code> to return the <code><a href='Aquiares.html'>Aquiare
          extinction coefficient with the plot LAI following the Shuttleworth &amp; Wallace (1985) formulation. This computation is
          likely to be depreciated in the near future as the computation has been replaced by a metamodel. It is kept for
          information for the moment.</p><table class='table'>
-<tr><td><strong>Var</strong></td><td></td><td></td><td><strong>unit</strong></td></tr>
-<tr><td></td><td></td><td><strong>Definition</strong></td><td></td></tr>
-<tr><td></td><td><strong>If missing</strong></td><td></td><td></td></tr>
-<tr><td>Date</td><td>POSIXct</td><td>Date in POSIXct format</td><td>Computed from start date parameter, or set a dummy date if missing</td></tr>
-<tr><td></td><td>year</td><td>year</td><td>Year of the simulation</td></tr>
-<tr><td>Computed from Date</td><td></td><td>DOY</td><td>day</td></tr>
-<tr><td>day of the year</td><td>Computed from Date</td><td></td><td>Rain</td></tr>
-<tr><td>mm</td><td>Rainfall</td><td>Assume no rain</td><td></td></tr>
-<tr><td>Tair</td><td>Celsius</td><td>Air temperature (above canopy)</td><td>Computed from Tmax and Tmin</td></tr>
-<tr><td></td><td>Tmax</td><td>Celsius</td><td>Maximum air temperature during the day</td></tr>
-<tr><td>Required (error)</td><td></td><td>Tmin</td><td>Celsius</td></tr>
-<tr><td>Minimum air temperature during the day</td><td>Required (error)</td><td></td><td>RH</td></tr>
-<tr><td>%</td><td>Relative humidity</td><td>Not used, but prefered over VPD for Rn computation</td><td></td></tr>
-<tr><td>RAD</td><td>MJ m-2 d-1</td><td>Incident shortwave radiation</td><td>Computed from PAR</td></tr>
-<tr><td></td><td>Pressure</td><td>hPa</td><td>Atmospheric pressure</td></tr>
-<tr><td>Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation.</td><td></td><td>WindSpeed</td><td>m s-1</td></tr>
-<tr><td>Wind speed</td><td>Taken as constant:</td><td><code>Parameters$WindSpeed</code></td><td></td></tr>
-<tr><td></td><td>CO2</td><td>ppm</td><td>Atmospheric CO2 concentration</td></tr>
-<tr><td>Taken as constant:</td><td><code>Parameters$CO2</code></td><td></td><td></td></tr>
-<tr><td>DegreeDays</td><td>Celsius</td><td>Growing degree days</td><td>Computed using</td></tr>
-<tr><td><code><a href='GDD.html'>GDD</a></code></td><td></td><td></td><td>PAR</td></tr>
-<tr><td>MJ m-2 d-1</td><td>Incident photosynthetically active radiation</td><td>Computed from RAD</td><td></td></tr>
-<tr><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td><td>Computed using</td></tr>
-<tr><td><code><a href='Diffuse_d.html'>Diffuse_d</a></code></td><td>using Spitters et al. (1986) formula</td><td></td><td>VPD</td></tr>
-<tr><td>hPa</td><td>Vapor pressure deficit</td><td>Computed from RH</td><td></td></tr>
-<tr><td>Rn</td><td>MJ m-2 d-1</td><td>Net radiation (will be depreciated)</td><td>Computed using</td></tr>
-<tr><td><code><a href='Rad_net.html'>Rad_net</a></code></td><td>with RH, or VPD</td><td></td><td>DaysWithoutRain</td></tr>
-<tr><td>day</td><td>Number of consecutive days with no rainfall</td><td>Computed from Rain</td><td></td></tr>
-<tr><td>Air_Density</td><td>kg m-3</td><td>Air density of moist air (</td><td>\(\rho\)</td></tr>
-<tr><td>) above canopy</td><td>Computed using</td><td><code><a href='https://www.rdocumentation.org/packages/bigleaf/topics/air.density'>air.density</a></code></td><td><strong>Var</strong></td></tr>
+<tr><td></td><td><strong>Var</strong></td><td></td><td></td></tr>
+<tr><td><strong>unit</strong></td><td></td><td></td><td><strong>Definition</strong></td></tr>
+<tr><td></td><td></td><td><strong>If missing</strong></td><td></td></tr>
+<tr><td></td><td>Date</td><td>POSIXct</td><td>Date in POSIXct format</td></tr>
+<tr><td>Computed from start date parameter, or set a dummy date if missing</td><td></td><td>year</td><td>year</td></tr>
+<tr><td>Year of the simulation</td><td>Computed from Date</td><td></td><td>DOY</td></tr>
+<tr><td>day</td><td>day of the year</td><td>Computed from Date</td><td></td></tr>
+<tr><td>Rain</td><td>mm</td><td>Rainfall</td><td>Assume no rain</td></tr>
+<tr><td></td><td>Tair</td><td>Celsius</td><td>Air temperature (above canopy)</td></tr>
+<tr><td>Computed from Tmax and Tmin</td><td></td><td>Tmax</td><td>Celsius</td></tr>
+<tr><td>Maximum air temperature during the day</td><td>Required (error)</td><td></td><td>Tmin</td></tr>
+<tr><td>Celsius</td><td>Minimum air temperature during the day</td><td>Required (error)</td><td></td></tr>
+<tr><td>RH</td><td>%</td><td>Relative humidity</td><td>Not used, but prefered over VPD for Rn computation</td></tr>
+<tr><td></td><td>RAD</td><td>MJ m-2 d-1</td><td>Incident shortwave radiation</td></tr>
+<tr><td>Computed from PAR</td><td></td><td>Pressure</td><td>hPa</td></tr>
+<tr><td>Atmospheric pressure</td><td>Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation.</td><td></td><td>WindSpeed</td></tr>
+<tr><td>m s-1</td><td>Wind speed</td><td>Taken as constant:</td><td><code>Parameters$WindSpeed</code></td></tr>
+<tr><td></td><td></td><td>CO2</td><td>ppm</td></tr>
+<tr><td>Atmospheric CO2 concentration</td><td>Taken as constant:</td><td><code>Parameters$CO2</code></td><td></td></tr>
+<tr><td></td><td>DegreeDays</td><td>Celsius</td><td>Growing degree days</td></tr>
+<tr><td>Computed using</td><td><code><a href='GDD.html'>GDD</a></code></td><td></td><td></td></tr>
+<tr><td>PAR</td><td>MJ m-2 d-1</td><td>Incident photosynthetically active radiation</td><td>Computed from RAD</td></tr>
+<tr><td></td><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td></tr>
+<tr><td>Computed using</td><td><code><a href='Diffuse_d.html'>Diffuse_d</a></code></td><td>using Spitters et al. (1986) formula</td><td></td></tr>
+<tr><td>VPD</td><td>hPa</td><td>Vapor pressure deficit</td><td>Computed from RH</td></tr>
+<tr><td></td><td>Rn</td><td>MJ m-2 d-1</td><td>Net radiation (will be depreciated)</td></tr>
+<tr><td>Computed using</td><td><code><a href='Rad_net.html'>Rad_net</a></code></td><td>with RH, or VPD</td><td></td></tr>
+<tr><td>DaysWithoutRain</td><td>day</td><td>Number of consecutive days with no rainfall</td><td>Computed from Rain</td></tr>
+<tr><td></td><td>Air_Density</td><td>kg m-3</td><td>Air density of moist air (</td></tr>
+<tr><td>\(\rho\)</td><td>) above canopy</td><td>Computed using</td><td><code><a href='https://www.rdocumentation.org/packages/bigleaf/topics/air.density'>air.density</a></code></td></tr>
+<tr><td></td><td></td><td>ZEN</td><td>radian</td></tr>
+<tr><td>Solar zenithal angle at noon</td><td>Computed from Date, Latitude, Longitude and Timezone</td><td></td><td><strong>Var</strong></td></tr>
 </table>
-<p>It is highly recommended to set the system environment timezone to the one from the meteorology file.
-         For example the default meteorology file (<code><a href='Aquiares.html'>Aquiares</a></code>) has to be set to <code><a href='https://www.rdocumentation.org/packages/base/topics/Sys.setenv'>Sys.setenv(TZ="UTC")</a></code>.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>It is highly recommended to set the system environment timezone to the one from the meteorology file. If not, the function try to use the Timezone
+from the parameter files to set it. When in doubt, set it to UTC, as for (<code><a href='Aquiares.html'>Aquiares</a></code>) (<code><a href='https://www.rdocumentation.org/packages/base/topics/Sys.setenv'>Sys.setenv(TZ="UTC")</a></code>).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -213,6 +218,8 @@ Default to <code>NULL</code> to return the <code><a href='Aquiares.html'>Aquiare
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#note">Note</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
