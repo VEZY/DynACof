@@ -64,8 +64,8 @@ Energy                       \tab Rn_tot                   \tab MJ m-2 d-1      
 \tab Rn_Coffee                \tab MJ m-2 d-1          \tab Coffee net radiation                                                               \cr
 \tab Rn_Soil                  \tab MJ m-2 d-1          \tab Soil net radiation                                                                 \cr
 \tab Rn_Soil_SW               \tab MJ m-2 d-1          \tab Soil net radiation computed using Shuttleworth & Wallace (1985) for reference      \cr
-\tab LE_*                     \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil latent heat                                                \cr
-\tab H_*                      \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil sensible heat                                              \cr
+\tab LE_x                     \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil latent heat                                                \cr
+\tab H_x                      \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil sensible heat                                              \cr
 \tab Q_Soil                   \tab MJ m-2 d-1          \tab Soil heat transport                                                                \cr
 \tab Transmittance_Tree       \tab fraction            \tab Fraction of light transmitted by the shade trees                                   \cr
 \tab PAR_Trans_Tree           \tab MJ m-2 d-1          \tab Light transmitted by the shade trees canopy                                        \cr
@@ -76,30 +76,30 @@ Energy                       \tab Rn_tot                   \tab MJ m-2 d-1      
 \tab APAR_Dif                 \tab MJ m-2 d-1          \tab Absorbed diffuse PAR (Direct is APAR-APAR_Dif)                                     \cr
 \tab lue                      \tab gC MJ               \tab Light use efficiency                                                               \cr
 \tab Tleaf_Coffee             \tab deg C               \tab Coffee canopy temperature computed by DynACof                                      \cr
-\tab WindSpeed_*              \tab m s-1               \tab Wind speed at the center of the layer                                              \cr
-\tab TairCanopy_*             \tab deg C               \tab Air tempetature at the center of the layer                                         \cr
+\tab WindSpeed_x              \tab m s-1               \tab Wind speed at the center of the layer                                              \cr
+\tab TairCanopy_x             \tab deg C               \tab Air tempetature at the center of the layer                                         \cr
 \tab DegreeDays_Tcan          \tab deg C               \tab Growing degree days computed using Coffee Canopy Temperature                       \cr
 Carbon                       \tab GPP                      \tab gC m-2 d-1          \tab Gross primary productivity                                                         \cr
 \tab Consumption_RE           \tab gC m-2 d-1          \tab Daily reserve consumption                                                          \cr
 \tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than offer                              \cr
 \tab Rm                       \tab gC m-2 d-1          \tab Total Coffee maintenance respiration                                               \cr
-\tab Rm_*                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
+\tab Rm_x                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
 \tab Rg                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
-\tab Rg_*                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
+\tab Rg_x                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
 \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rg)                                      \cr
-\tab Demand_*                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
-\tab Alloc_*                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rg)                                           \cr
+\tab Demand_x                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
+\tab Alloc_x                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rg)                                           \cr
 \tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
-\tab Offer_*                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
+\tab Offer_x                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
 \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
-\tab NPP_*                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
-\tab Mnat_*                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
-\tab Mprun_*                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
+\tab NPP_x                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
+\tab Mnat_x                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
+\tab Mprun_x                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
 \tab M_ALS                     \tab gC m-2 d-1         \tab Coffee leaf mortality from American Leaf Spot                                      \cr
-\tab Mortality_*              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
+\tab Mortality_x              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
 \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
-\tab CM_*                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
-\tab DM_*                     \tab gDM m-2 d-1         \tab Organ dry mass                                                                     \cr
+\tab CM_x                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
+\tab DM_x                     \tab gDM m-2 d-1         \tab Organ dry mass                                                                     \cr
 Fruit development            \tab BudInitPeriod            \tab boolean             \tab Bud initiation period (BIP)                                                        \cr
 \tab Budinit                  \tab Buds d-1            \tab Total Number of Buds Initiated per day                                             \cr
 \tab ratioNodestoLAI          \tab Nodes LAI-1         \tab Number of fruiting nodes per LAI unit                                              \cr
@@ -133,7 +133,7 @@ Water                        \tab IntercMax                \tab mm              
 \tab SWD                      \tab mm                  \tab soil water deficit                                                                 \cr
 \tab RootWaterExtract_\link{1-3}   \tab mm                  \tab Root water extraction for soil layer 1 to 3                                        \cr
 \tab IntercRevapor            \tab mm                  \tab Evaporation by canopy                                                              \cr
-\tab T_*                      \tab mm                  \tab Transpiration at system/Coffee/Tree scale                                          \cr
+\tab T_x                      \tab mm                  \tab Transpiration at system/Coffee/Tree scale                                          \cr
 \tab E_Soil                   \tab mm                  \tab Soil evaporation                                                                   \cr
 \tab ETR                      \tab mm                  \tab System evapotranspiration                                                          \cr
 \tab SoilWaterPot             \tab MPa                 \tab Soil water potential                                                               \cr
