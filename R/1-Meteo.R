@@ -53,7 +53,7 @@
 #' }
 #'
 #' @note It is highly recommended to set the system environment timezone to the one from the meteorology file. If not, the function try to use the Timezone
-#' from the parameter files to set it. When in doubt, set it to UTC, as for ([Aquiares()]): `Sys.setenv(TZ="UTC")`.
+#' from the parameter files to set it. When in doubt, set it to UTC (`Sys.setenv(TZ="UTC")`), as for [Aquiares()].
 #'
 #' @return A daily meteorology data.frame (invisibly).
 #'

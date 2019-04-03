@@ -25,23 +25,23 @@
 #' @return Return invisibly a list containing three objects (Parameters, Meteo and Sim):
 #' \itemize{
 #'   \item Sim: A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
-#' \strong{Type} \tab \strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
+#' \strong{Type}                \tab \strong{Var}             \tab \strong{unit}       \tab \strong{Definition}                                                                \cr
 #' General                      \tab Cycle                    \tab -                   \tab Plantation cycle ID                                                                \cr
 #'                              \tab Plot_Age                 \tab year                \tab Plantation age (starting at 1)                                                     \cr
 #'                              \tab Plot_Age_num             \tab year (numeric)      \tab Numeric age of plantation                                                          \cr
 #'                              \tab LAIplot                  \tab m2 leaves m-2 soil  \tab Plot (Coffee + Shade Tree if any) Leaf Area Index                                  \cr
-#' Suffixes for Coffee organs   \tab *_RE                     \tab -                   \tab Reserves                                                                           \cr
-#'                              \tab *_SCR                    \tab -                   \tab Stump and Coarse roots                                                             \cr
-#'                              \tab *_Fruit                  \tab -                   \tab Fruit                                                                              \cr
-#'                              \tab *_Shoot                 \tab -                   \tab Resprout wood (= branches)                                                         \cr
-#'                              \tab *_FRoot                  \tab -                   \tab Fine roots                                                                         \cr
-#'                              \tab *_Leaf                   \tab                     \tab Leaves                                                                             \cr
-#' Suffixes for Shade Tree org. \tab *_RE_Tree                \tab -                   \tab Reserves                                                                           \cr
-#'                              \tab *_Stem_Tree              \tab -                   \tab Stem (= trunk)                                                                     \cr
-#'                              \tab *_Branch_Tree            \tab -                   \tab Branches                                                                           \cr
-#'                              \tab *_CoarseRoot_Tree        \tab -                   \tab Coarse roots                                                                       \cr
-#'                              \tab *_FRoot_Tree             \tab -                   \tab Fine roots                                                                         \cr
-#'                              \tab *_Leaf_Tree              \tab                     \tab Leaves                                                                             \cr
+#' Suffixes for Coffee organs   \tab x_RE                     \tab -                   \tab Reserves                                                                           \cr
+#'                              \tab x_SCR                    \tab -                   \tab Stump and Coarse roots                                                             \cr
+#'                              \tab x_Fruit                  \tab -                   \tab Fruit                                                                              \cr
+#'                              \tab x_Shoot                  \tab -                   \tab Resprout wood (= branches)                                                         \cr
+#'                              \tab x_FRoot                  \tab -                   \tab Fine roots                                                                         \cr
+#'                              \tab x_Leaf                   \tab                     \tab Leaves                                                                             \cr
+#' Suffixes for Shade Tree org. \tab x_RE_Tree                \tab -                   \tab Reserves                                                                           \cr
+#'                              \tab x_Stem_Tree              \tab -                   \tab Stem (= trunk)                                                                     \cr
+#'                              \tab x_Branch_Tree            \tab -                   \tab Branches                                                                           \cr
+#'                              \tab x_CoarseRoot_Tree        \tab -                   \tab Coarse roots                                                                       \cr
+#'                              \tab x_FRoot_Tree             \tab -                   \tab Fine roots                                                                         \cr
+#'                              \tab x_Leaf_Tree              \tab                     \tab Leaves                                                                             \cr
 #' Energy                       \tab Rn_tot                   \tab MJ m-2 d-1          \tab System net radiation                                                               \cr
 #'                              \tab Rn_Tree                  \tab MJ m-2 d-1          \tab Shade tree net radiation                                                           \cr
 #'                              \tab Rn_Coffee                \tab MJ m-2 d-1          \tab Coffee net radiation                                                               \cr
@@ -131,7 +131,7 @@
 #'                              \tab CrownProj_Tree           \tab m2 crown tree-1     \tab Crown projection                                                                   \cr
 #'                              \tab Stocking_Tree            \tab tree m-2            \tab Shade tree density                                                                 \cr
 #'                              \tab TimetoThin_Tree          \tab boolean             \tab Days on which tree is thinned                                                      \cr
-#'                              \tab MThinning_*_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
+#'                              \tab MThinning_x_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 #'}
 #'
 #'   \item Meteo: A data.frame of the input meteorology, potentially coming from the output of [Meteorology()]: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr

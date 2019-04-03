@@ -42,30 +42,30 @@ Default input files are provided with the package as an example parameterization
 Return invisibly a list containing three objects (Parameters, Meteo and Sim):
 \itemize{
 \item Sim: A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
-\strong{Type} \tab \strong{Var} \tab \strong{unit} \tab \strong{Definition}\cr
+\strong{Type}                \tab \strong{Var}             \tab \strong{unit}       \tab \strong{Definition}                                                                \cr
 General                      \tab Cycle                    \tab -                   \tab Plantation cycle ID                                                                \cr
 \tab Plot_Age                 \tab year                \tab Plantation age (starting at 1)                                                     \cr
 \tab Plot_Age_num             \tab year (numeric)      \tab Numeric age of plantation                                                          \cr
 \tab LAIplot                  \tab m2 leaves m-2 soil  \tab Plot (Coffee + Shade Tree if any) Leaf Area Index                                  \cr
-Suffixes for Coffee organs   \tab \emph{\emph{RE                     \tab -                   \tab Reserves                                                                           \cr
-\tab \emph{\emph{SCR                    \tab -                   \tab Stump and Coarse roots                                                             \cr
-\tab \emph{\emph{Fruit                  \tab -                   \tab Fruit                                                                              \cr
-\tab \emph{\emph{Shoot                 \tab -                   \tab Resprout wood (= branches)                                                         \cr
-\tab \emph{\emph{FRoot                  \tab -                   \tab Fine roots                                                                         \cr
-\tab \emph{\emph{Leaf                   \tab                     \tab Leaves                                                                             \cr
-Suffixes for Shade Tree org. \tab \emph{\emph{RE_Tree                \tab -                   \tab Reserves                                                                           \cr
-\tab \emph{\emph{Stem_Tree              \tab -                   \tab Stem (= trunk)                                                                     \cr
-\tab \emph{\emph{Branch_Tree            \tab -                   \tab Branches                                                                           \cr
-\tab \emph{\emph{CoarseRoot_Tree        \tab -                   \tab Coarse roots                                                                       \cr
-\tab \emph{\emph{FRoot_Tree             \tab -                   \tab Fine roots                                                                         \cr
-\tab \emph{\emph{Leaf_Tree              \tab                     \tab Leaves                                                                             \cr
+Suffixes for Coffee organs   \tab x_RE                     \tab -                   \tab Reserves                                                                           \cr
+\tab x_SCR                    \tab -                   \tab Stump and Coarse roots                                                             \cr
+\tab x_Fruit                  \tab -                   \tab Fruit                                                                              \cr
+\tab x_Shoot                  \tab -                   \tab Resprout wood (= branches)                                                         \cr
+\tab x_FRoot                  \tab -                   \tab Fine roots                                                                         \cr
+\tab x_Leaf                   \tab                     \tab Leaves                                                                             \cr
+Suffixes for Shade Tree org. \tab x_RE_Tree                \tab -                   \tab Reserves                                                                           \cr
+\tab x_Stem_Tree              \tab -                   \tab Stem (= trunk)                                                                     \cr
+\tab x_Branch_Tree            \tab -                   \tab Branches                                                                           \cr
+\tab x_CoarseRoot_Tree        \tab -                   \tab Coarse roots                                                                       \cr
+\tab x_FRoot_Tree             \tab -                   \tab Fine roots                                                                         \cr
+\tab x_Leaf_Tree              \tab                     \tab Leaves                                                                             \cr
 Energy                       \tab Rn_tot                   \tab MJ m-2 d-1          \tab System net radiation                                                               \cr
 \tab Rn_Tree                  \tab MJ m-2 d-1          \tab Shade tree net radiation                                                           \cr
 \tab Rn_Coffee                \tab MJ m-2 d-1          \tab Coffee net radiation                                                               \cr
 \tab Rn_Soil                  \tab MJ m-2 d-1          \tab Soil net radiation                                                                 \cr
 \tab Rn_Soil_SW               \tab MJ m-2 d-1          \tab Soil net radiation computed using Shuttleworth & Wallace (1985) for reference      \cr
-\tab LE}}                     \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil latent heat                                                \cr
-\tab H}}                      \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil sensible heat                                              \cr
+\tab LE_*                     \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil latent heat                                                \cr
+\tab H_*                      \tab MJ m-2 d-1          \tab System/Coffee/Tree/Soil sensible heat                                              \cr
 \tab Q_Soil                   \tab MJ m-2 d-1          \tab Soil heat transport                                                                \cr
 \tab Transmittance_Tree       \tab fraction            \tab Fraction of light transmitted by the shade trees                                   \cr
 \tab PAR_Trans_Tree           \tab MJ m-2 d-1          \tab Light transmitted by the shade trees canopy                                        \cr
@@ -76,25 +76,25 @@ Energy                       \tab Rn_tot                   \tab MJ m-2 d-1      
 \tab APAR_Dif                 \tab MJ m-2 d-1          \tab Absorbed diffuse PAR (Direct is APAR-APAR_Dif)                                     \cr
 \tab lue                      \tab gC MJ               \tab Light use efficiency                                                               \cr
 \tab Tleaf_Coffee             \tab deg C               \tab Coffee canopy temperature computed by DynACof                                      \cr
-\tab WindSpeed}}              \tab m s-1               \tab Wind speed at the center of the layer                                              \cr
-\tab TairCanopy}}             \tab deg C               \tab Air tempetature at the center of the layer                                         \cr
+\tab WindSpeed_*              \tab m s-1               \tab Wind speed at the center of the layer                                              \cr
+\tab TairCanopy_*             \tab deg C               \tab Air tempetature at the center of the layer                                         \cr
 \tab DegreeDays_Tcan          \tab deg C               \tab Growing degree days computed using Coffee Canopy Temperature                       \cr
 Carbon                       \tab GPP                      \tab gC m-2 d-1          \tab Gross primary productivity                                                         \cr
 \tab Consumption_RE           \tab gC m-2 d-1          \tab Daily reserve consumption                                                          \cr
 \tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than offer                              \cr
 \tab Rm                       \tab gC m-2 d-1          \tab Total Coffee maintenance respiration                                               \cr
-\tab Rm}}                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
+\tab Rm_*                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
 \tab Rg                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
-\tab Rg}}                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
+\tab Rg_*                     \tab gC m-2 d-1          \tab Growth respiration at organ scale                                                  \cr
 \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rg)                                      \cr
-\tab Demand}}                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
-\tab Alloc}}                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rg)                                           \cr
+\tab Demand_*                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
+\tab Alloc_*                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rg)                                           \cr
 \tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
-\tab Offer}}                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
+\tab Offer_*                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
 \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
-\tab NPP}}                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
-\tab Mnat}}                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
-\tab Mprun}}                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
+\tab NPP_*                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
+\tab Mnat_*                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
+\tab Mprun_*                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
 \tab M_ALS                     \tab gC m-2 d-1         \tab Coffee leaf mortality from American Leaf Spot                                      \cr
 \tab Mortality_*              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
 \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
@@ -148,7 +148,7 @@ Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1
 \tab CrownProj_Tree           \tab m2 crown tree-1     \tab Crown projection                                                                   \cr
 \tab Stocking_Tree            \tab tree m-2            \tab Shade tree density                                                                 \cr
 \tab TimetoThin_Tree          \tab boolean             \tab Days on which tree is thinned                                                      \cr
-\tab MThinning_*_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
+\tab MThinning_x_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 }
 
 \item Meteo: A data.frame of the input meteorology, potentially coming from the output of \code{\link[=Meteorology]{Meteorology()}}: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr

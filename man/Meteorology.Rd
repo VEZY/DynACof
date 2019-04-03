@@ -67,7 +67,7 @@ ZEN             \tab radian      \tab Solar zenithal angle at noon              
 }
 \note{
 It is highly recommended to set the system environment timezone to the one from the meteorology file. If not, the function try to use the Timezone
-from the parameter files to set it. When in doubt, set it to UTC, as for (\code{\link[=Aquiares]{Aquiares()}}): \code{Sys.setenv(TZ="UTC")}.
+from the parameter files to set it. When in doubt, set it to UTC (\code{Sys.setenv(TZ="UTC")}), as for \code{\link[=Aquiares]{Aquiares()}}.
 }
 \examples{
 \dontrun{
