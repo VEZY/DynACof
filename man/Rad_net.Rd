@@ -18,7 +18,7 @@ Rad_net(DOY, RAD, Tmax, Tmin, VPD, Rh = NULL, Latitude, Elevation,
 
 \item{VPD}{Mean daily Vapor Pressure Deficit (\eqn{hPa}), only needed if \code{Rh} is missing}
 
-\item{Rh}{Average daily relative humidity (\code{\%})}
+\item{Rh}{Average daily relative humidity (\code{\\\%})}
 
 \item{Latitude}{Latitude (\eqn{deg})}
 
@@ -35,24 +35,24 @@ Rad_net(DOY, RAD, Tmax, Tmin, VPD, Rh = NULL, Latitude, Elevation,
 }
 \description{
 Compute the daily net radiation of the system using incident radiation, air
-             temperature, wind speed, relative humidity and the albedo. A clear description
-             of this methodology can be found in Allen et al. (1998) or in An et al. (2017).
+temperature, wind speed, relative humidity and the albedo. A clear description
+of this methodology can be found in Allen et al. (1998) or in An et al. (2017).
 }
 \details{
 The daily net radiation is computed using the surface albedo. This method is only a
-         simple estimation. Several parameters (ac, bc, a1 and b1) are taken from
-         Evett et al. (2011). The net radiation is computed as:
-         \deqn{Rn=(1-\alpha)\cdot RAD-(ac\cdot\frac{RAD}{Rso}+bc)\cdot(a1+b1\cdot ea^{0.5})\cdot\sigma\cdot\frac{T_{\max}^4+T_{\min}^4}{2}}{
+simple estimation. Several parameters (ac, bc, a1 and b1) are taken from
+Evett et al. (2011). The net radiation is computed as:
+\deqn{Rn=(1-\alpha)\cdot RAD-(ac\cdot\frac{RAD}{Rso}+bc)\cdot(a1+b1\cdot ea^{0.5})\cdot\sigma\cdot\frac{T_{\max}^4+T_{\min}^4}{2}}{
          Rn= (1-albedo)*RAD-(ac*(RAD/Rso)+bc)*(a1+b1*ea^0.5)*sigma*((Tmax^4+Tmin^4)/2)}
-         And is derived from the equation :
-         \deqn{Rn= (1-\alpha)\cdot RAD-Rln}{Rn= (1-albedo)*RAD-Rln}
-         where \eqn{Rln} is the net upward longwave radiation flux, \eqn{\alpha} is the albedo, \eqn{R_{so}} the
-         daily total clear sky solar irradiance, computed as follow:
-         \deqn{R_{so}= (0.75+0.00002\cdot Elevation)\cdot R{sa}}{R_{so}= (0.75+0.00002*Elevation)*Rsa}
-         where \eqn{R_{sa}} is the daily extra-terrestrial radiation, computed using \code{\link{Rad_ext}}.
-         The actual vapor pressure \eqn{ea} can be computed using either VPD or the relative
-         humidity and the maximum and minimum daily temperature. If both are provided, Rh will
-         be used.
+And is derived from the equation :
+\deqn{Rn= (1-\alpha)\cdot RAD-Rln}{Rn= (1-albedo)*RAD-Rln}
+where \eqn{Rln} is the net upward longwave radiation flux, \eqn{\alpha} is the albedo, \eqn{R_{so}} the
+daily total clear sky solar irradiance, computed as follow:
+\deqn{R_{so}= (0.75+0.00002\cdot Elevation)\cdot R{sa}}{R_{so}= (0.75+0.00002*Elevation)*Rsa}
+where \eqn{R_{sa}} is the daily extra-terrestrial radiation, computed using \code{\link[=Rad_ext]{Rad_ext()}}.
+The actual vapor pressure \eqn{ea} can be computed using either VPD or the relative
+humidity and the maximum and minimum daily temperature. If both are provided, Rh will
+be used.
 }
 \examples{
 # Daily net radiation on january 1st at latitude 9 N :
@@ -62,6 +62,6 @@ Rad_net(DOY= 1,RAD= 5,Tmax= 16,Tmin= 10,VPD=1.05,
 }
 \references{
 An, N., S. Hemmati, and Y.-J. Cui, Assessment of the methods for determining net
-            radiation at different time-scales of meteorological variables. Journal of Rock
-            Mechanics and Geotechnical Engineering, 2017. 9(2): p. 239-246.
+radiation at different time-scales of meteorological variables. Journal of Rock
+Mechanics and Geotechnical Engineering, 2017. 9(2): p. 239-246.
 }

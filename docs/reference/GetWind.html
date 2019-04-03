@@ -34,9 +34,9 @@
 
 <meta property="og:description" content="Calculate the wind speed decrease in two steps:
 Decrease the measured wind speed from measurement height until top of the canopy
-        using the formulation of Van de Griend and Van Boxel (1989)
+using the formulation of Van de Griend and Van Boxel (1989)
 Decrease wind speed further with increasing canopy depth using an exponential
-        extinction coefficient and a cumulated LAI above the target point.
+extinction coefficient and a cumulated LAI above the target point.
 " />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
@@ -113,9 +113,9 @@ Decrease wind speed further with increasing canopy depth using an exponential
     
     <p>Calculate the wind speed decrease in two steps:</p><ol>
 <li><p>Decrease the measured wind speed from measurement height until top of the canopy
-        using the formulation of Van de Griend and Van Boxel (1989)</p></li>
+using the formulation of Van de Griend and Van Boxel (1989)</p></li>
 <li><p>Decrease wind speed further with increasing canopy depth using an exponential
-        extinction coefficient and a cumulated LAI above the target point.</p></li>
+extinction coefficient and a cumulated LAI above the target point.</p></li>
 </ol>
     
     </div>
@@ -184,19 +184,19 @@ Van de Griend et al (1989).</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function computes the average wind speed at the center of the canopy layer. It is considered
-         that the leaf distibution is homogeneous in the layer, so the <code>LAI_lay</code> parameter is used to
-         add half of the target layer to the cumulated LAI above:
-         $$WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}$$
-         with <code>Wh</code> the wind speed at top of the canopy.
-         Note: the <code>alpha</code> parameter can also be computed as:
-         $$alpha=\frac{zw-d}{Z2-d}$$</p>
+that the leaf distibution is homogeneous in the layer, so the <code>LAI_lay</code> parameter is used to
+add half of the target layer to the cumulated LAI above:
+$$WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}$$
+with <code>Wh</code> the wind speed at top of the canopy.
+Note: the <code>alpha</code> parameter can also be computed as:
+$$alpha=\frac{zw-d}{Z2-d}$$</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
-            with a multilayer canopy representation for remote sensing purposes. Water
-            Resources Research, 1989. 25(5): p. 949-971.
-            Part of the code is taken from the <a href='https://maespa.github.io'>MAESPA model</a>.</p>
+with a multilayer canopy representation for remote sensing purposes. Water
+Resources Research, 1989. 25(5): p. 949-971.
+Part of the code is taken from the <a href='https://maespa.github.io'>MAESPA model</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -227,7 +227,7 @@ Van de Griend et al (1989).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

@@ -119,9 +119,9 @@
     <tr>
       <th>file</th>
       <td><p>Either the file name to read, a shell command that preprocesses the file (e.g. fread("grep filename"))
-or the input itself as a string, see <code><a href='https://www.rdocumentation.org/packages/data.table/topics/fread'>fread</a></code>. In both cases, a length 1 character string.
+or the input itself as a string, see <code><a href='https://www.rdocumentation.org/packages/data.table/topics/fread'>data.table::fread()</a></code>. In both cases, a length 1 character string.
 A filename input is passed through path.expand for convenience and may be a URL starting http:// or file://.
-Default to <code>NULL</code> to return the <code><a href='Aquiares.html'>Aquiares</a></code> example data from the package.</p></td>
+Default to <code>NULL</code> to return the <code><a href='Aquiares.html'>Aquiares()</a></code> example data from the package.</p></td>
     </tr>
     <tr>
       <th>Period</th>
@@ -136,9 +136,9 @@ Default to <code>NULL</code> to return the <code><a href='Aquiares.html'>Aquiare
 <li><p>Latitude  : latitude of the site (degree), only needed if the diffuse fraction of light is missing</p></li>
 <li><p>WindSpeed : constant wind speed (m s-1), only needed if windspeed is missing</p></li>
 <li><p>CO2       : constant atmospheric \(CO_2\) concentration (ppm), only needed if \(CO_2\) is missing</p></li>
-<li><p>MinTT     : minimum temperature threshold for degree days computing (Celsius), see <code><a href='GDD.html'>GDD</a></code></p></li>
-<li><p>MaxTT     : maximum temperature threshold for degree days computing (Celsius), see <code><a href='GDD.html'>GDD</a></code></p></li>
-<li><p>albedo    : site shortwave surface albedo, only needed if net radiation is missing, see <code><a href='Rad_net.html'>Rad_net</a></code></p></li>
+<li><p>MinTT     : minimum temperature threshold for degree days computing (Celsius), see <code><a href='GDD.html'>GDD()</a></code></p></li>
+<li><p>MaxTT     : maximum temperature threshold for degree days computing (Celsius), see <code><a href='GDD.html'>GDD()</a></code></p></li>
+<li><p>albedo    : site shortwave surface albedo, only needed if net radiation is missing, see <code><a href='Rad_net.html'>Rad_net()</a></code></p></li>
 </ul></td>
     </tr>
     </table>
@@ -150,52 +150,52 @@ Default to <code>NULL</code> to return the <code><a href='Aquiares.html'>Aquiare
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The imported file is expected to be at daily time-step.
-         The albedo is used to compute the system net radiation that is then used to compute the soil net radiation using an
-         extinction coefficient with the plot LAI following the Shuttleworth &amp; Wallace (1985) formulation. This computation is
-         likely to be depreciated in the near future as the computation has been replaced by a metamodel. It is kept for
-         information for the moment.</p><table class='table'>
-<tr><td></td><td><strong>Var</strong></td><td></td><td></td></tr>
-<tr><td><strong>unit</strong></td><td></td><td></td><td><strong>Definition</strong></td></tr>
-<tr><td></td><td></td><td><strong>If missing</strong></td><td></td></tr>
-<tr><td></td><td>Date</td><td>POSIXct</td><td>Date in POSIXct format</td></tr>
-<tr><td>Computed from start date parameter, or set a dummy date if missing</td><td></td><td>year</td><td>year</td></tr>
-<tr><td>Year of the simulation</td><td>Computed from Date</td><td></td><td>DOY</td></tr>
-<tr><td>day</td><td>day of the year</td><td>Computed from Date</td><td></td></tr>
-<tr><td>Rain</td><td>mm</td><td>Rainfall</td><td>Assume no rain</td></tr>
-<tr><td></td><td>Tair</td><td>Celsius</td><td>Air temperature (above canopy)</td></tr>
-<tr><td>Computed from Tmax and Tmin</td><td></td><td>Tmax</td><td>Celsius</td></tr>
-<tr><td>Maximum air temperature during the day</td><td>Required (error)</td><td></td><td>Tmin</td></tr>
-<tr><td>Celsius</td><td>Minimum air temperature during the day</td><td>Required (error)</td><td></td></tr>
-<tr><td>RH</td><td>%</td><td>Relative humidity</td><td>Not used, but prefered over VPD for Rn computation</td></tr>
-<tr><td></td><td>RAD</td><td>MJ m-2 d-1</td><td>Incident shortwave radiation</td></tr>
-<tr><td>Computed from PAR</td><td></td><td>Pressure</td><td>hPa</td></tr>
-<tr><td>Atmospheric pressure</td><td>Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation.</td><td></td><td>WindSpeed</td></tr>
-<tr><td>m s-1</td><td>Wind speed</td><td>Taken as constant:</td><td><code>Parameters$WindSpeed</code></td></tr>
-<tr><td></td><td></td><td>CO2</td><td>ppm</td></tr>
-<tr><td>Atmospheric CO2 concentration</td><td>Taken as constant:</td><td><code>Parameters$CO2</code></td><td></td></tr>
-<tr><td></td><td>DegreeDays</td><td>Celsius</td><td>Growing degree days</td></tr>
-<tr><td>Computed using</td><td><code><a href='GDD.html'>GDD</a></code></td><td></td><td></td></tr>
-<tr><td>PAR</td><td>MJ m-2 d-1</td><td>Incident photosynthetically active radiation</td><td>Computed from RAD</td></tr>
-<tr><td></td><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td></tr>
-<tr><td>Computed using</td><td><code><a href='Diffuse_d.html'>Diffuse_d</a></code></td><td>using Spitters et al. (1986) formula</td><td></td></tr>
-<tr><td>VPD</td><td>hPa</td><td>Vapor pressure deficit</td><td>Computed from RH</td></tr>
-<tr><td></td><td>Rn</td><td>MJ m-2 d-1</td><td>Net radiation (will be depreciated)</td></tr>
-<tr><td>Computed using</td><td><code><a href='Rad_net.html'>Rad_net</a></code></td><td>with RH, or VPD</td><td></td></tr>
-<tr><td>DaysWithoutRain</td><td>day</td><td>Number of consecutive days with no rainfall</td><td>Computed from Rain</td></tr>
-<tr><td></td><td>Air_Density</td><td>kg m-3</td><td>Air density of moist air (</td></tr>
-<tr><td>\(\rho\)</td><td>) above canopy</td><td>Computed using</td><td><code><a href='https://www.rdocumentation.org/packages/bigleaf/topics/air.density'>air.density</a></code></td></tr>
-<tr><td></td><td></td><td>ZEN</td><td>radian</td></tr>
-<tr><td>Solar zenithal angle at noon</td><td>Computed from Date, Latitude, Longitude and Timezone</td><td></td><td><strong>Var</strong></td></tr>
+The albedo is used to compute the system net radiation that is then used to compute the soil net radiation using an
+extinction coefficient with the plot LAI following the Shuttleworth &amp; Wallace (1985) formulation. This computation is
+likely to be depreciated in the near future as the computation has been replaced by a metamodel. It is kept for
+information for the moment.</p><table class='table'>
+<tr><td></td><td></td><td><strong>Var</strong></td><td></td></tr>
+<tr><td></td><td><strong>unit</strong></td><td></td><td></td></tr>
+<tr><td><strong>Definition</strong></td><td></td><td></td><td><strong>If missing</strong></td></tr>
+<tr><td></td><td></td><td>Date</td><td>POSIXct</td></tr>
+<tr><td>Date in POSIXct format</td><td>Computed from start date parameter, or set a dummy date if missing</td><td></td><td>year</td></tr>
+<tr><td>year</td><td>Year of the simulation</td><td>Computed from Date</td><td></td></tr>
+<tr><td>DOY</td><td>day</td><td>day of the year</td><td>Computed from Date</td></tr>
+<tr><td></td><td>Rain</td><td>mm</td><td>Rainfall</td></tr>
+<tr><td>Assume no rain</td><td></td><td>Tair</td><td>Celsius</td></tr>
+<tr><td>Air temperature (above canopy)</td><td>Computed from Tmax and Tmin</td><td></td><td>Tmax</td></tr>
+<tr><td>Celsius</td><td>Maximum air temperature during the day</td><td>Required (error)</td><td></td></tr>
+<tr><td>Tmin</td><td>Celsius</td><td>Minimum air temperature during the day</td><td>Required (error)</td></tr>
+<tr><td></td><td>RH</td><td>%</td><td>Relative humidity</td></tr>
+<tr><td>Not used, but prefered over VPD for Rn computation</td><td></td><td>RAD</td><td>MJ m-2 d-1</td></tr>
+<tr><td>Incident shortwave radiation</td><td>Computed from PAR</td><td></td><td>Pressure</td></tr>
+<tr><td>hPa</td><td>Atmospheric pressure</td><td>Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation.</td><td></td></tr>
+<tr><td>WindSpeed</td><td>m s-1</td><td>Wind speed</td><td>Taken as constant:</td></tr>
+<tr><td><code>Parameters$WindSpeed</code></td><td></td><td></td><td>CO2</td></tr>
+<tr><td>ppm</td><td>Atmospheric CO2 concentration</td><td>Taken as constant:</td><td><code>Parameters$CO2</code></td></tr>
+<tr><td></td><td></td><td>DegreeDays</td><td>Celsius</td></tr>
+<tr><td>Growing degree days</td><td>Computed using</td><td><code><a href='GDD.html'>GDD()</a></code></td><td></td></tr>
+<tr><td></td><td>PAR</td><td>MJ m-2 d-1</td><td>Incident photosynthetically active radiation</td></tr>
+<tr><td>Computed from RAD</td><td></td><td>FDiff</td><td>Fraction</td></tr>
+<tr><td>Diffuse light fraction</td><td>Computed using</td><td><code><a href='Diffuse_d.html'>Diffuse_d()</a></code></td><td>using Spitters et al. (1986) formula</td></tr>
+<tr><td></td><td>VPD</td><td>hPa</td><td>Vapor pressure deficit</td></tr>
+<tr><td>Computed from RH</td><td></td><td>Rn</td><td>MJ m-2 d-1</td></tr>
+<tr><td>Net radiation (will be depreciated)</td><td>Computed using</td><td><code><a href='Rad_net.html'>Rad_net()</a></code></td><td>with RH, or VPD</td></tr>
+<tr><td></td><td>DaysWithoutRain</td><td>day</td><td>Number of consecutive days with no rainfall</td></tr>
+<tr><td>Computed from Rain</td><td></td><td>Air_Density</td><td>kg m-3</td></tr>
+<tr><td>Air density of moist air (</td><td>\(\rho\)</td><td>) above canopy</td><td>Computed using</td></tr>
+<tr><td><code><a href='https://www.rdocumentation.org/packages/bigleaf/topics/air.density'>bigleaf::air.density()</a></code></td><td></td><td></td><td>ZEN</td></tr>
+<tr><td>radian</td><td>Solar zenithal angle at noon</td><td>Computed from Date, Latitude, Longitude and Timezone</td><td></td></tr>
 </table>
     
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>It is highly recommended to set the system environment timezone to the one from the meteorology file. If not, the function try to use the Timezone
-from the parameter files to set it. When in doubt, set it to UTC, as for (<code><a href='Aquiares.html'>Aquiares</a></code>) (<code><a href='https://www.rdocumentation.org/packages/base/topics/Sys.setenv'>Sys.setenv(TZ="UTC")</a></code>).</p>
+from the parameter files to set it. When in doubt, set it to UTC, as for (<code><a href='Aquiares.html'>Aquiares()</a></code>): <code><a href='https://www.rdocumentation.org/packages/base/topics/Sys.setenv'>Sys.setenv(TZ="UTC")</a></code>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='DynACof.html'>DynACof</a></code></p></div>
+    <div class='dont-index'><p><code><a href='DynACof.html'>DynACof()</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -237,7 +237,7 @@ from the parameter files to set it. When in doubt, set it to UTC, as for (<code>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

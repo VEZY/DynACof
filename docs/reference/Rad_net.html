@@ -33,8 +33,8 @@
 <meta property="og:title" content="Daily net radiation — Rad_net" />
 
 <meta property="og:description" content="Compute the daily net radiation of the system using incident radiation, air
-             temperature, wind speed, relative humidity and the albedo. A clear description
-             of this methodology can be found in Allen et al. (1998) or in An et al. (2017)." />
+temperature, wind speed, relative humidity and the albedo. A clear description
+of this methodology can be found in Allen et al. (1998) or in An et al. (2017)." />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -109,8 +109,8 @@
     <div class="ref-description">
     
     <p>Compute the daily net radiation of the system using incident radiation, air
-             temperature, wind speed, relative humidity and the albedo. A clear description
-             of this methodology can be found in Allen et al. (1998) or in An et al. (2017).</p>
+temperature, wind speed, relative humidity and the albedo. A clear description
+of this methodology can be found in Allen et al. (1998) or in An et al. (2017).</p>
     
     </div>
 
@@ -142,7 +142,7 @@
     </tr>
     <tr>
       <th>Rh</th>
-      <td><p>Average daily relative humidity (<code>%</code>)</p></td>
+      <td><p>Average daily relative humidity (<code>\%</code>)</p></td>
     </tr>
     <tr>
       <th>Latitude</th>
@@ -173,24 +173,24 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The daily net radiation is computed using the surface albedo. This method is only a
-         simple estimation. Several parameters (ac, bc, a1 and b1) are taken from
-         Evett et al. (2011). The net radiation is computed as:
-         $$Rn=(1-\alpha)\cdot RAD-(ac\cdot\frac{RAD}{Rso}+bc)\cdot(a1+b1\cdot ea^{0.5})\cdot\sigma\cdot\frac{T_{\max}^4+T_{\min}^4}{2}$$
-         And is derived from the equation :
-         $$Rn= (1-\alpha)\cdot RAD-Rln$$
-         where \(Rln\) is the net upward longwave radiation flux, \(\alpha\) is the albedo, \(R_{so}\) the
-         daily total clear sky solar irradiance, computed as follow:
-         $$R_{so}= (0.75+0.00002\cdot Elevation)\cdot R{sa}$$
-         where \(R_{sa}\) is the daily extra-terrestrial radiation, computed using <code><a href='Rad_ext.html'>Rad_ext</a></code>.
-         The actual vapor pressure \(ea\) can be computed using either VPD or the relative
-         humidity and the maximum and minimum daily temperature. If both are provided, Rh will
-         be used.</p>
+simple estimation. Several parameters (ac, bc, a1 and b1) are taken from
+Evett et al. (2011). The net radiation is computed as:
+$$Rn=(1-\alpha)\cdot RAD-(ac\cdot\frac{RAD}{Rso}+bc)\cdot(a1+b1\cdot ea^{0.5})\cdot\sigma\cdot\frac{T_{\max}^4+T_{\min}^4}{2}$$
+And is derived from the equation :
+$$Rn= (1-\alpha)\cdot RAD-Rln$$
+where \(Rln\) is the net upward longwave radiation flux, \(\alpha\) is the albedo, \(R_{so}\) the
+daily total clear sky solar irradiance, computed as follow:
+$$R_{so}= (0.75+0.00002\cdot Elevation)\cdot R{sa}$$
+where \(R_{sa}\) is the daily extra-terrestrial radiation, computed using <code><a href='Rad_ext.html'>Rad_ext()</a></code>.
+The actual vapor pressure \(ea\) can be computed using either VPD or the relative
+humidity and the maximum and minimum daily temperature. If both are provided, Rh will
+be used.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>An, N., S. Hemmati, and Y.-J. Cui, Assessment of the methods for determining net
-            radiation at different time-scales of meteorological variables. Journal of Rock
-            Mechanics and Geotechnical Engineering, 2017. 9(2): p. 239-246.</p>
+radiation at different time-scales of meteorological variables. Journal of Rock
+Mechanics and Geotechnical Engineering, 2017. 9(2): p. 239-246.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -222,7 +222,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

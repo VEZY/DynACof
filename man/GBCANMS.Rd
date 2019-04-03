@@ -24,27 +24,27 @@ GBCANMS(WIND, ZHT, TREEH, Z0 = TREEH * 0.1, ZPD = TREEH * 0.75,
 }
 \value{
 A list of three :
-        \item{ustar}{The friction velocity (m s-1)}
-        \item{Canopy}{Atmosphere to canopy boundary layer conductance (mol m-2 s-1)}
-        \item{Soil}{Canopy to soil boundary layer conductance (mol m-2 s-1)}
+\item{ustar}{The friction velocity (m s-1)}
+\item{Canopy}{Atmosphere to canopy boundary layer conductance (mol m-2 s-1)}
+\item{Soil}{Canopy to soil boundary layer conductance (mol m-2 s-1)}
 }
 \description{
 This function is not used in the model anymore, but is still available in the package
 for compatibility with older versions. Please use other functions from the package.
 This function assumes two aerodynamic conductances in series:
 \enumerate{
-  \item from the atmosphere to the canopy, based on Van de Griend (1989). This is actually two conductances,
-  one in the inertial sublayer and one in the roughness sublayer.
-  \item within the canopy to the soil, based on Choudhury & Monteith (1988).
+\item from the atmosphere to the canopy, based on Van de Griend (1989). This is actually two conductances,
+one in the inertial sublayer and one in the roughness sublayer.
+\item within the canopy to the soil, based on Choudhury & Monteith (1988).
 }
 }
 \details{
 The defaults for Z0 and ZPD are computed very simply. Other simple formulations:
 \enumerate{
-  \item Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \code{h*}
-         is canopy height, s is the average silhouette area (projected area of the tree on a vertical plane)
-         and S the specific area, with \eqn{S= A/n}, where A is the total plot area and n the number of trees.
-  \item For ZPD, Verhoef et al. (1997) said \eqn{d= 0.67}. h is a good proxy without any prior knowledge.
+\item Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \code{h*}
+is canopy height, s is the average silhouette area (projected area of the tree on a vertical plane)
+and S the specific area, with \eqn{S= A/n}, where A is the total plot area and n the number of trees.
+\item For ZPD, Verhoef et al. (1997) said \eqn{d= 0.67}. h is a good proxy without any prior knowledge.
 }
 }
 \examples{
@@ -56,13 +56,13 @@ GBCANMS(WIND = 3, ZHT = 26, TREEH = 25)$Soil
 }
 \references{
 \itemize{
-  \item Van de Griend, A. A. and J. H. Van Boxel (1989). "Water and surface energy balance model
-        with a multilayer canopy representation for remote sensing purposes." Water Resources Research 25(5): 949-971.
-  \item Choudhury, B. and J. Monteith (1988). "A four‐layer model for the heat budget of homogeneous land surfaces.
-        " Quarterly Journal of the Royal Meteorological Society 114(480): 373-398.
+\item Van de Griend, A. A. and J. H. Van Boxel (1989). "Water and surface energy balance model
+with a multilayer canopy representation for remote sensing purposes." Water Resources Research 25(5): 949-971.
+\item Choudhury, B. and J. Monteith (1988). "A four‐layer model for the heat budget of homogeneous land surfaces.
+" Quarterly Journal of the Royal Meteorological Society 114(480): 373-398.
 }
 }
 \seealso{
-\code{\link{Gb_h}}, \code{\link{G_bulk}}, \code{\link{G_interlay}}, \code{\link{G_soilcan}},
-         \code{\link{Gb_hForced}}, \code{\link{Gb_hFree}} and \code{\link{PENMON}}
+\code{\link[=Gb_h]{Gb_h()}}, \code{\link[=G_bulk]{G_bulk()}}, \code{\link[=G_interlay]{G_interlay()}}, \code{\link[=G_soilcan]{G_soilcan()}},
+\code{\link[=Gb_hForced]{Gb_hForced()}}, \code{\link[=Gb_hFree]{Gb_hFree()}} and \code{\link[=PENMON]{PENMON()}}
 }

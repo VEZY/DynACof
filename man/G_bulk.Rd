@@ -35,33 +35,32 @@ Van de Griend et al (1989).}
 }
 \description{
 Compute the aerodynamic conductance for sensible and
-             latent heat above the canopy following Van de Griend and
-             Van Boxel (1989).
+latent heat above the canopy following Van de Griend and
+Van Boxel (1989).
 }
 \details{
 \code{alpha} can also be computed as:
-         \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
-         The bulk aerodynamic conductance \eqn{ga_{bulk}}{ga_bulk} is computed as follow:
-         \deqn{ga_{bulk}=\frac{1}{r1+r2+r3}}{ga_bulk= 1/(r1+r2+r3)}
-         where \code{r1}, \code{r2} and \code{r3} are the aerodynamic resistances of the inertial
-         sublayer, the roughness sublayer and the top layer of the canopy respectively. Because
-         wind speed measurements are more often made directly in the roughness sublayer, the
-         resistance in the inertial sublayer \code{r1} is set to \code{0} though. \code{r2} and
-         \code{r3} are computed using the equation 43 of Van de Griend and Van Boxel (refer to
-         the pdf of the \href{https://vezy.github.io/DynACof/reference/G_bulk.html}{web} version
-         of the help file for Latex rendering) :
-         \deqn{r2=\int_{zh}^{zw}\frac{1}{K''}}{r2= Integral{zh,zw}(1/K'')dz}
-         with \deqn{K''= kU_*(z_w-d)}{K''= k x Ustar x (zw-d)}
-         And:
-         \deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{z2+z1)/2,zh}(1/K''')dz}
-         with \deqn{K'''= U_z\frac{K_h}{U_h}}{K'''= Uz x (Kh/Uh)}
-
-         Integration of \code{r2} and \code{r3} equations give:
-         \deqn{\frac{(\ln(ZPD-ZW)^2-\ln(ZPD-Z2)^2)}{(2kU_*)}}{
+\deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
+The bulk aerodynamic conductance \eqn{ga_{bulk}}{ga_bulk} is computed as follow:
+\deqn{ga_{bulk}=\frac{1}{r1+r2+r3}}{ga_bulk= 1/(r1+r2+r3)}
+where \code{r1}, \code{r2} and \code{r3} are the aerodynamic resistances of the inertial
+sublayer, the roughness sublayer and the top layer of the canopy respectively. Because
+wind speed measurements are more often made directly in the roughness sublayer, the
+resistance in the inertial sublayer \code{r1} is set to \code{0} though. \code{r2} and
+\code{r3} are computed using the equation 43 of Van de Griend and Van Boxel (refer to
+the pdf of the \href{https://vezy.github.io/DynACof/reference/G_bulk.html}{web} version
+of the help file for Latex rendering) :
+\deqn{r2=\int_{zh}^{zw}\frac{1}{K''}}{r2= Integral{zh,zw}(1/K'')dz}
+with \deqn{K''= kU_*(z_w-d)}{K''= k x Ustar x (zw-d)}
+And:
+\deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{z2+z1)/2,zh}(1/K''')dz}
+with \deqn{K'''= U_z\frac{K_h}{U_h}}{K'''= Uz x (Kh/Uh)}\preformatted{     Integration of `r2` and `r3` equations give:
+     \deqn{\frac{(\ln(ZPD-ZW)^2-\ln(ZPD-Z2)^2)}{(2kU_*)}}{
          r2= (log((ZPD-ZW)^2)-log((ZPD-Z2)^2))/(2*vonkarman*Ustar)}
-         simplified in:
-         \deqn{r2= \frac{1}{kU_*}\ln(\frac{ZPD-ZW}{ZPD-Z2})}{r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z2))}
-         and finaly:  \deqn{r3= \frac{Uh}{Kh}\ln(\frac{Uh}{U_{interlayer}})}{r3= (Uh/Kh)*log(Uh/U_interlayer)}
+     simplified in:
+     \deqn{r2= \frac{1}{kU_*}\ln(\frac{ZPD-ZW}{ZPD-Z2})}{r2= (1/(vonkarman*Ustar))*log((ZPD-ZW)/(ZPD-Z2))}
+     and finaly:  \deqn{r3= \frac{Uh}{Kh}\ln(\frac{Uh}{U_{interlayer}})}{r3= (Uh/Kh)*log(Uh/U_interlayer)}
+}
 }
 \examples{
 # The bulk aerodynamic conductance for a coffee plantation managed in agroforestry system:
@@ -70,9 +69,9 @@ G_bulk(Wind=3,ZHT=25,Z_top=24,LAI = 0.5,extwind = 0.58)
 }
 \references{
 Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
-            with a multilayer canopy representation for remote sensing purposes. Water
-            Resources Research, 1989. 25(5): p. 949-971.
+with a multilayer canopy representation for remote sensing purposes. Water
+Resources Research, 1989. 25(5): p. 949-971.
 }
 \seealso{
-\code{\link{G_interlay}} and \code{\link{GetWind}}, which is used internaly.
+\code{\link[=G_interlay]{G_interlay()}} and \code{\link[=GetWind]{GetWind()}}, which is used internaly.
 }

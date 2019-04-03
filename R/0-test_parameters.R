@@ -6,8 +6,8 @@
 #'   \item{Parameter values}{Some parameter values are checked before running}
 #' }
 #'
-#' @param Parameters The full list of parameter values, generally output from \code{\link{Import_Parameters}}
-#' @param isTree       Boolean. Set to \code{TRUE} if shade trees are simulated.
+#' @param Parameters The full list of parameter values, generally output from [Import_Parameters()]
+#' @param isTree       Boolean. Set to `TRUE` if shade trees are simulated.
 #'
 #' @return An error if any issue is encountered
 #' @export

@@ -2,12 +2,12 @@
 #' Soil module subroutine
 #'
 #' @description Make all computations for soil water balance for the ith
-#'              day by modifying the \code{S} list in place.
+#'              day by modifying the `S` list in place.
 #'
 #' @param S The main simulation list to make the computation on and to modify.
 #' @param i The index of the day since the first day of the simulation.
 #'
-#' @return Modify the list of simulation \code{S} in place. See \code{\link{DynACof}} for
+#' @return Modify the list of simulation `S` in place. See [DynACof()] for
 #'         more details.
 #'
 #' @note This function shouldn't be called by the user. It is made as a subroutine so it is easier for
@@ -15,7 +15,7 @@
 #'
 #' @keywords internal
 #'
-#' @seealso \code{\link{DynACof}}
+#' @seealso [DynACof()]
 #'
 #' @export
 Soilfun= function(S,i){

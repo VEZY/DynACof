@@ -13,19 +13,19 @@ Allometries(S, i)
 }
 \value{
 Any variable that is computed by the function. Default: \code{DM_Stem_Tree}, \code{Height_Tree},
-          \code{CrownProj_Tree}, \code{CrownRad_Tree}, \code{Crown_H_Tree}, \code{Trunk_H_Tree},
-          \code{LA_Tree and LAD_Tree}.
+\code{CrownProj_Tree}, \code{CrownRad_Tree}, \code{Crown_H_Tree}, \code{Trunk_H_Tree},
+\code{LA_Tree and LAD_Tree}.
 }
 \description{
 Compute shade tree allometries, which are optional in the model.
-             The function is available to easily change or add equations, not to be called directly.
+The function is available to easily change or add equations, not to be called directly.
 }
 \details{
-This function is called from the \code{\link{Tree}} parameter functions, and then by the model.
-          In-depth details are available in \href{https://goo.gl/NVxcVp}{Vezy (2017)}
+This function is called from the \code{\link[=Tree]{Tree()}} parameter functions, and then by the model.
+In-depth details are available in \href{https://goo.gl/NVxcVp}{Vezy (2017)}
 }
 \references{
 Vezy, R., Simulation de pratiques de gestion alternatives pour l’adaptation des plantations pérennes
-            aux changements globaux, in École doctorale science de l'environnement, spécialité physique de
-            l'environnement. 2017, UNIVERSITÉ DE BORDEAUX: Bordeaux. p. 270.\href{https://goo.gl/NVxcVp}{Link}
+aux changements globaux, in École doctorale science de l'environnement, spécialité physique de
+l'environnement. 2017, UNIVERSITÉ DE BORDEAUX: Bordeaux. p. 270.\href{https://goo.gl/NVxcVp}{Link}
 }

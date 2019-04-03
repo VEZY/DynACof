@@ -12,11 +12,11 @@ A function to predict the temperature correction coefficient (see Eq. 34 from Ve
 \description{
 Make a monotone Hermite spline function (Fritsch and Carlson, 1980) fitted on Drinnan et al. (1995)
 data. This function is given as a parameter in the coffee parameter file to be further used in the model as
-`Bud_T_correction()` so the user can modify the function and give it as input.
+\code{Bud_T_correction()} so the user can modify the function and give it as input.
 }
 \details{
 As temperature increases, the number of nodes on coffee increases due to increased vegetative
-growth (see `CN()`), but the number of inflorescences per node, and the number of flowers per inflorescence
+growth (see \code{CN()}), but the number of inflorescences per node, and the number of flowers per inflorescence
 decrease. This function fits a function that return itself a temperature correction coefficient that is fitted
 on the quite unique dataset of Drinnan and Menzel (1995). The correction coefficient is applied in DynACof to the
 number of buds that break dormancy (less buds break dormancy with increasing T).
@@ -30,8 +30,8 @@ plot(Tleaf,CB()(Tleaf), pch= 19, ylab="Buds correction factor (CB)", xlab= "Leaf
 }
 \references{
 \itemize{
-  \item Fritsch, F. N. and R. E. Carlson (1980). "Monotone Piecewise Cubic Interpolation."  17(2): 238-246.
-  \item Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
-  Journal of Horticultural Science, 1995. 70(1): p. 25-34.
+\item Fritsch, F. N. and R. E. Carlson (1980). "Monotone Piecewise Cubic Interpolation."  17(2): 238-246.
+\item Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
+Journal of Horticultural Science, 1995. 70(1): p. 25-34.
 }
 }

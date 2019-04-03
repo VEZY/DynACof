@@ -18,9 +18,9 @@ Help to explain which variable is missing and/or if there are replacements
 }
 \note{
 This function helps to debug the model when some mandatory meteorological variables
-      are missing from input: either an error (default), or a warning.
-      If \code{"replacement"} is not provided in the meteorology file either, this function
-      will return an error with a hint on which variables can be provided to compute
-      \code{"Var"}
+are missing from input: either an error (default), or a warning.
+If \code{"replacement"} is not provided in the meteorology file either, this function
+will return an error with a hint on which variables can be provided to compute
+\code{"Var"}
 }
 \keyword{internal}

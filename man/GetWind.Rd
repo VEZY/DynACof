@@ -38,21 +38,21 @@ Van de Griend et al (1989).}
 \description{
 Calculate the wind speed decrease in two steps:
 \enumerate{
-  \item Decrease the measured wind speed from measurement height until top of the canopy
-        using the formulation of Van de Griend and Van Boxel (1989)
-  \item Decrease wind speed further with increasing canopy depth using an exponential
-        extinction coefficient and a cumulated LAI above the target point.
+\item Decrease the measured wind speed from measurement height until top of the canopy
+using the formulation of Van de Griend and Van Boxel (1989)
+\item Decrease wind speed further with increasing canopy depth using an exponential
+extinction coefficient and a cumulated LAI above the target point.
 }
 }
 \details{
 The function computes the average wind speed at the center of the canopy layer. It is considered
-         that the leaf distibution is homogeneous in the layer, so the \code{LAI_lay} parameter is used to
-         add half of the target layer to the cumulated LAI above:
-         \deqn{WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}}{
+that the leaf distibution is homogeneous in the layer, so the \code{LAI_lay} parameter is used to
+add half of the target layer to the cumulated LAI above:
+\deqn{WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}}{
          WindLay= Wh*e(-extwind*(LAI_abv+LAI_lay/2)}
-         with \code{Wh} the wind speed at top of the canopy.
-         Note: the \code{alpha} parameter can also be computed as:
-         \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
+with \code{Wh} the wind speed at top of the canopy.
+Note: the \code{alpha} parameter can also be computed as:
+\deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
 }
 \examples{
 # Windspeed in a coffee layer managed in agroforestry system
@@ -61,7 +61,7 @@ GetWind(Wind=3,LAI_lay=4,LAI_abv=0.3,extwind= 0.58,Z_top = 24,ZHT = 25)
 }
 \references{
 Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
-            with a multilayer canopy representation for remote sensing purposes. Water
-            Resources Research, 1989. 25(5): p. 949-971.
-            Part of the code is taken from the \href{https://maespa.github.io}{MAESPA model}.
+with a multilayer canopy representation for remote sensing purposes. Water
+Resources Research, 1989. 25(5): p. 949-971.
+Part of the code is taken from the \href{https://maespa.github.io}{MAESPA model}.
 }

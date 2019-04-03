@@ -48,3 +48,4 @@ Collate:
     '3-Metamodels.R'
     '0-test_parameters.R'
     'data.R'
+Roxygen: list(markdown = TRUE)

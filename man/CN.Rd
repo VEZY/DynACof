@@ -22,7 +22,7 @@ CN(25)
 }
 \references{
 \itemize{
-  \item Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
-  Journal of Horticultural Science, 1995. 70(1): p. 25-34.
+\item Drinnan, J. and C. Menzel, Temperature affects vegetative growth and flowering of coffee (Coffea arabica L.).
+Journal of Horticultural Science, 1995. 70(1): p. 25-34.
 }
 }

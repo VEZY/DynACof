@@ -7,7 +7,7 @@
 test_parameters(Parameters, isTree = FALSE)
 }
 \arguments{
-\item{Parameters}{The full list of parameter values, generally output from \code{\link{Import_Parameters}}}
+\item{Parameters}{The full list of parameter values, generally output from \code{\link[=Import_Parameters]{Import_Parameters()}}}
 
 \item{isTree}{Boolean. Set to \code{TRUE} if shade trees are simulated.}
 }
@@ -17,8 +17,8 @@ An error if any issue is encountered
 \description{
 Different tests for the user-inputed parameter files:
 \describe{
-  \item{Mandatory parameter}{Test if all mandatory parameters are present in the files}
-  \item{Parameter values}{Some parameter values are checked before running}
+\item{Mandatory parameter}{Test if all mandatory parameters are present in the files}
+\item{Parameter values}{Some parameter values are checked before running}
 }
 }
 \examples{

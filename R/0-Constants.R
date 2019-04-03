@@ -18,9 +18,9 @@
 #' \item{cl}{Drag coefficient per unit leaf area (\eqn{m\ s^{-1}}{m s-1})}
 #' \item{Dheat}{Molecular diffusivity for heat (\eqn{m\ s^{-1}}{m s-1})}
 #'
-#' @note Values are partly burrowed from \code{\link[bigleaf]{bigleaf.constants}}
+#' @note Values are partly burrowed from [bigleaf::bigleaf.constants()]
 #'
-#' @seealso \code{\link{DynACof}}
+#' @seealso [DynACof()]
 #'
 #' @references \itemize{
 #'   \item Allen, R. G., et al. (1998). "Crop evapotranspiration-Guidelines for computing crop water requirements-FAO Irrigation and drainage paper 56."  300(9): D05109.

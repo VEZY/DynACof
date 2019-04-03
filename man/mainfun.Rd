@@ -21,8 +21,8 @@ The simulation output as a data.frame.
 \description{
 This is the main function of the model that calls all other functions
 (meteorology, shade tree, soil) and computes the Coffea simulation. This function
-is called by \code{\link{DynACof}} under the hood, and users should always call
-\code{\link{DynACof}} instead of this function because it imports the files,
+is called by \code{\link[=DynACof]{DynACof()}} under the hood, and users should always call
+\code{\link[=DynACof]{DynACof()}} instead of this function because it imports the files,
 format the simulation inputs, checks for errors, takes care automatically
 of the computation distribution along nodes, and format the outputs.
 }

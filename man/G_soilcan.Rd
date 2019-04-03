@@ -32,21 +32,21 @@ Van de Griend et al (1989).}
 }
 \value{
 \item{\eqn{g_a0}}{The aerodynamic conductance of the air between the lowest canopy layer
-                    and the soil surface (m s-1)}
+and the soil surface (m s-1)}
 }
 \description{
 Compute the aerodynamic conductance for sensible and
-             latent heat between the center of the lowest canopy layer
-             and the soil surface following Van de Griend and Van Boxel (1989).
+latent heat between the center of the lowest canopy layer
+and the soil surface following Van de Griend and Van Boxel (1989).
 }
 \details{
 \code{alpha} can also be computed as:
-         \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
-         The aerodynamic conductance between the lowest canopy layer and the soil
-         is computed as:
-         \deqn{g_{a0}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{0})}}{g_a0= 1/((Uh/Kh)*log(U_mid/U_0))}
-         where \eqn{U_{mid}}{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
-         \eqn{U_0} the wind speed at soil surface.
+\deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
+The aerodynamic conductance between the lowest canopy layer and the soil
+is computed as:
+\deqn{g_{a0}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{0})}}{g_a0= 1/((Uh/Kh)*log(U_mid/U_0))}
+where \eqn{U_{mid}}{U_mid} is the wind speed at median cumulated LAI between the top and the soil, and
+\eqn{U_0} the wind speed at soil surface.
 }
 \examples{
 # G_a0 for a coffee plantation managed in agroforestry system:
@@ -55,9 +55,9 @@ G_soilcan(Wind= 1, ZHT= 25, Z_top= 24,LAI= 4.5, extwind= 0.58)
 }
 \references{
 Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
-            with a multilayer canopy representation for remote sensing purposes. Water
-            Resources Research, 1989. 25(5): p. 949-971.
+with a multilayer canopy representation for remote sensing purposes. Water
+Resources Research, 1989. 25(5): p. 949-971.
 }
 \seealso{
-\code{\link{G_bulk}} and \code{\link{GetWind}}, which is used internaly.
+\code{\link[=G_bulk]{G_bulk()}} and \code{\link[=GetWind]{GetWind()}}, which is used internaly.
 }

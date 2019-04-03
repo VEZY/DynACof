@@ -18,8 +18,8 @@ Rad_ext(DOY, Latitude, Gsc = Constants()$Gsc)
 }
 \description{
 Compute the daily extra-terrestrial radiation at a plane parallel to the
-             earth surface (\eqn{S0} or \eqn{H0} depending on the source)
-             following Khorasanizadeh and Mohammadi (2016).
+earth surface (\eqn{S0} or \eqn{H0} depending on the source)
+following Khorasanizadeh and Mohammadi (2016).
 }
 \examples{
 # Daily extra-terrestrial radiation on january 1st at latitude 35 N :
@@ -28,6 +28,6 @@ Rad_ext(DOY= 1,Latitude= 35)
 }
 \references{
 Khorasanizadeh, H. and K. Mohammadi, Diffuse solar radiation on a horizontal surface:
-            Reviewing and categorizing the empirical models. Renewable and Sustainable Energy Reviews,
-            2016. 53: p. 338-362.
+Reviewing and categorizing the empirical models. Renewable and Sustainable Energy Reviews,
+2016. 53: p. 338-362.
 }

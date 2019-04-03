@@ -37,18 +37,18 @@ Van de Griend et al (1989).}
 }
 \description{
 Compute the aerodynamic conductance for sensible and
-             latent heat between canopy layers following Van de Griend
-             and Van Boxel (1989).
+latent heat between canopy layers following Van de Griend
+and Van Boxel (1989).
 }
 \details{
 \code{alpha} can also be computed as:
-         \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
-         The aerodynamic conductance between canopy layers is computed as:
-         \deqn{g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}}{g_af= 1/((Uh/Kh)*log(U_mid/U_inter))}
-         where usually \eqn{U_{mid}}{U_mid} is the wind speed at (median) cumulated LAI between
-         the top and the soil, and \eqn{U_{inter}}{U_inter} the wind speed at the height between
-         the two canopy layers. In this function, \eqn{U_{mid}}{U_mid} and \eqn{U_{inter}}{U_inter} are computed
-         relative to the leaf area instead of the height of the vegetation layers.
+\deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
+The aerodynamic conductance between canopy layers is computed as:
+\deqn{g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}}{g_af= 1/((Uh/Kh)*log(U_mid/U_inter))}
+where usually \eqn{U_{mid}}{U_mid} is the wind speed at (median) cumulated LAI between
+the top and the soil, and \eqn{U_{inter}}{U_inter} the wind speed at the height between
+the two canopy layers. In this function, \eqn{U_{mid}}{U_mid} and \eqn{U_{inter}}{U_inter} are computed
+relative to the leaf area instead of the height of the vegetation layers.
 }
 \examples{
 # G_af for a coffee plantation managed in agroforestry system:
@@ -58,9 +58,9 @@ G_interlay(Wind = 3,ZHT = 25,Z_top = 2,LAI_top = 0.5,LAI_bot = 4)
 }
 \references{
 Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
-            with a multilayer canopy representation for remote sensing purposes. Water
-            Resources Research, 1989. 25(5): p. 949-971.
+with a multilayer canopy representation for remote sensing purposes. Water
+Resources Research, 1989. 25(5): p. 949-971.
 }
 \seealso{
-\code{\link{G_bulk}} and \code{\link{GetWind}}, which is used internaly.
+\code{\link[=G_bulk]{G_bulk()}} and \code{\link[=GetWind]{GetWind()}}, which is used internaly.
 }

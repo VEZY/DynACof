@@ -17,18 +17,18 @@ write.results(FinalList, output = ".RData", Simulation_Name = NULL,
 
 \item{Outpath}{The path to the folder to write on.}
 
-\item{...}{Further parameters to pass to \code{\link[data.table]{fwrite}}. Only used if
+\item{...}{Further parameters to pass to \code{\link[data.table:fwrite]{data.table::fwrite()}}. Only used if
 \code{output!=".RData"}.}
 }
 \description{
 Write the ouptut list to disk either under a unique \code{.RData} file or three separated
-             files:
+files:
 \itemize{
-  \item Model Output (csv file)
-  \item Meteoroloy output (input to the model, csv file)
-  \item Model parameters (txt file)
+\item Model Output (csv file)
+\item Meteoroloy output (input to the model, csv file)
+\item Model parameters (txt file)
 }
 }
 \details{
-To re-import the output, the user should use \code{\link[base]{readRDS}}
+To re-import the output, the user should use \code{\link[base:readRDS]{base::readRDS()}}
 }

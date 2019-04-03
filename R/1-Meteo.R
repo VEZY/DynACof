@@ -3,9 +3,9 @@
 #' @description Import the meteorology data, check its format, and eventually compute missing variables.
 #'
 #' @param file        Either the file name to read, a shell command that preprocesses the file (e.g. fread("grep filename"))
-#'                    or the input itself as a string, see \code{\link[data.table]{fread}}. In both cases, a length 1 character string.
+#'                    or the input itself as a string, see [data.table::fread()]. In both cases, a length 1 character string.
 #'                    A filename input is passed through path.expand for convenience and may be a URL starting http:// or file://.
-#'                    Default to \code{NULL} to return the \code{\link{Aquiares}} example data from the package.
+#'                    Default to `NULL` to return the [Aquiares()] example data from the package.
 #' @param Period      A vector of two POSIX dates that correspond to the min and max dates for the desired time period to be returned.
 #'
 #' @param Parameters  A list of parameters:
@@ -16,9 +16,9 @@
 #'   \item Latitude  : latitude of the site (degree), only needed if the diffuse fraction of light is missing
 #'   \item WindSpeed : constant wind speed (m s-1), only needed if windspeed is missing
 #'   \item CO2       : constant atmospheric \eqn{CO_2} concentration (ppm), only needed if \eqn{CO_2} is missing
-#'   \item MinTT     : minimum temperature threshold for degree days computing (Celsius), see \code{\link{GDD}}
-#'   \item MaxTT     : maximum temperature threshold for degree days computing (Celsius), see \code{\link{GDD}}
-#'   \item albedo    : site shortwave surface albedo, only needed if net radiation is missing, see \code{\link{Rad_net}}
+#'   \item MinTT     : minimum temperature threshold for degree days computing (Celsius), see [GDD()]
+#'   \item MaxTT     : maximum temperature threshold for degree days computing (Celsius), see [GDD()]
+#'   \item albedo    : site shortwave surface albedo, only needed if net radiation is missing, see [Rad_net()]
 #' }
 #'
 #'
@@ -39,23 +39,25 @@
 #' RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
 #' RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
 #' Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation. \cr
-#' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Taken as constant: \code{Parameters$WindSpeed} \cr
-#' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Taken as constant: \code{Parameters$CO2} \cr
-#' DegreeDays      \tab Celsius     \tab Growing degree days                          \tab Computed using \code{\link{GDD}} \cr
+#' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Taken as constant: `Parameters$WindSpeed` \cr
+#' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Taken as constant: `Parameters$CO2` \cr
+#' DegreeDays      \tab Celsius     \tab Growing degree days                          \tab Computed using [GDD()] \cr
 #' PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
-#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} using Spitters et al. (1986) formula \cr
+#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using [Diffuse_d()] using Spitters et al. (1986) formula \cr
 #' VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
-#' Rn              \tab MJ m-2 d-1  \tab Net radiation (will be depreciated)          \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
+#' Rn              \tab MJ m-2 d-1  \tab Net radiation (will be depreciated)          \tab Computed using [Rad_net()] with RH, or VPD \cr
 #' DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
-#' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf]{air.density}} \cr
-#' ZEN             \tab radian      \tab Solar zenithal angle at noon                 \tab Computed from Date, Latitude, Longitude and Timezone}
+#' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using [bigleaf::air.density()] \cr
+#' ZEN             \tab radian      \tab Solar zenithal angle at noon                 \tab Computed from Date, Latitude, Longitude and Timezone
+#'
+#' }
 #'
 #' @note It is highly recommended to set the system environment timezone to the one from the meteorology file. If not, the function try to use the Timezone
-#' from the parameter files to set it. When in doubt, set it to UTC, as for (\code{\link{Aquiares}}) (\code{Sys.setenv(TZ="UTC")}).
+#' from the parameter files to set it. When in doubt, set it to UTC, as for ([Aquiares()]): `Sys.setenv(TZ="UTC")`.
 #'
 #' @return A daily meteorology data.frame (invisibly).
 #'
-#' @seealso \code{\link{DynACof}}
+#' @seealso [DynACof()]
 #'
 #' @author R. Vezy; O. Roupsard
 #'

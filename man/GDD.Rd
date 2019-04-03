@@ -25,8 +25,8 @@ GDD(Tmax = NULL, Tmin = NULL, MinTT = 5, MaxTT = NULL, Round = T,
 }
 \description{
 Compute the physiological degree days at daily time-step
-             using the maximum and minimum daily temperature (and optionally using the
-             average daily temperature, not recommended).
+using the maximum and minimum daily temperature (and optionally using the
+average daily temperature, not recommended).
 }
 \details{
 Please keep in mind that this function gives an approximation of the degree days. GDD are

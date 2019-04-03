@@ -42,11 +42,11 @@ Values: \code{tree}, \code{row}, \code{block} or \code{NULL}.}
 }
 \description{
 Compute the percentage of \emph{Coffea} leaves dying from
-             American Leaf Spot disease, drought excluded.
+American Leaf Spot disease, drought excluded.
 }
 \note{
 It is good practice to use shade tree transmittance to compute \code{Shade} percentage
-         (\eqn{Shade= 1-Transmittance}).
+(\eqn{Shade= 1-Transmittance}).
 }
 \examples{
 # df_rain has this structure :

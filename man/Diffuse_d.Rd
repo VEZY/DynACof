@@ -24,15 +24,15 @@ Compute the daily diffuse fraction from the total daily incident radiation
 }
 \details{
 The daily extra-terrestrial radiation at a plane parallel to the earth surface
-         (\eqn{S0_d} or \eqn{H0} depending on the source) is computed following
-         Khorasanizadeh and Mohammadi (2016).
-         The daily diffuse fraction is computed following DB models from :
+(\eqn{S0_d} or \eqn{H0} depending on the source) is computed following
+Khorasanizadeh and Mohammadi (2016).
+The daily diffuse fraction is computed following DB models from :
 \itemize{
-  \item Spitters et al. (1986): used in de Bilt in Netherlands, stated that their model is
-        valid for a wide range of climate conditions
-  \item Page (1967) using the data from 10 widely-spread sites in the 40N to 40S latitude belt
-  \item Gopinathan and Soler (1995) from 40 widely distributed locations in the latitude range
-        of 36S to 60N.
+\item Spitters et al. (1986): used in de Bilt in Netherlands, stated that their model is
+valid for a wide range of climate conditions
+\item Page (1967) using the data from 10 widely-spread sites in the 40N to 40S latitude belt
+\item Gopinathan and Soler (1995) from 40 widely distributed locations in the latitude range
+of 36S to 60N.
 }
 }
 \note{
@@ -45,20 +45,20 @@ Diffuse_d(DOY= 1,RAD= 25, Latitude= 35)
 }
 \references{
 \itemize{
-  \item Duffie, J.A. and W.A. Beckman, Solar engineering of thermal processes. 2013: John Wiley & Sons.
-        Gopinathan, K. and A. Soler, Diffuse radiation models and monthly-average, daily, diffuse data for
-        a wide latitude range. Energy, 1995. 20(7): p. 657-667.
-  \item Kalogirou, S.A., Solar energy engineering: processes and systems. 2013: Academic Press.
-        Khorasanizadeh, H. and K. Mohammadi, Diffuse solar radiation on a horizontal surface:
-        Reviewing and categorizing the empirical models. Renewable and Sustainable Energy Reviews,
-        2016. 53: p. 338-362.
-  \item Liu, B.Y.H. and R.C. Jordan, The interrelationship and characteristic distribution of direct,
-        diffuse and total solar radiation. Solar Energy, 1960. 4(3): p. 1-19.
-  \item Page, J. The estimation of monthly mean values of daily total short wave radiation on vertical
-        and inclined surfaces from sunshine records 40S-40N. in Proceedings of the United Nations
-        Conference on New Sources of Energy: Solar Energy, Wind Power and Geothermal Energy, Rome, Italy. 1967.
-  \item Spitters, C.J.T., H.A.J.M. Toussaint, and J. Goudriaan, Separating the diffuse and direct
-        component of global radiation and its implications for modeling canopy photosynthesis Part I.
-        Components of incoming radiation. Agricultural and Forest Meteorology, 1986. 38(1): p. 217-229.
+\item Duffie, J.A. and W.A. Beckman, Solar engineering of thermal processes. 2013: John Wiley & Sons.
+Gopinathan, K. and A. Soler, Diffuse radiation models and monthly-average, daily, diffuse data for
+a wide latitude range. Energy, 1995. 20(7): p. 657-667.
+\item Kalogirou, S.A., Solar energy engineering: processes and systems. 2013: Academic Press.
+Khorasanizadeh, H. and K. Mohammadi, Diffuse solar radiation on a horizontal surface:
+Reviewing and categorizing the empirical models. Renewable and Sustainable Energy Reviews,
+2016. 53: p. 338-362.
+\item Liu, B.Y.H. and R.C. Jordan, The interrelationship and characteristic distribution of direct,
+diffuse and total solar radiation. Solar Energy, 1960. 4(3): p. 1-19.
+\item Page, J. The estimation of monthly mean values of daily total short wave radiation on vertical
+and inclined surfaces from sunshine records 40S-40N. in Proceedings of the United Nations
+Conference on New Sources of Energy: Solar Energy, Wind Power and Geothermal Energy, Rome, Italy. 1967.
+\item Spitters, C.J.T., H.A.J.M. Toussaint, and J. Goudriaan, Separating the diffuse and direct
+component of global radiation and its implications for modeling canopy photosynthesis Part I.
+Components of incoming radiation. Agricultural and Forest Meteorology, 1986. 38(1): p. 217-229.
 }
 }

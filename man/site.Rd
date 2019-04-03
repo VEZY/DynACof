@@ -20,7 +20,7 @@ A list of parameters needed for a DynACof simulation.
 }
 \description{
 These functions return the default parameter values for DynACof.
-They are mainly used invisibly as defaults from \code{\link{Import_Parameters}}, but can still be
+They are mainly used invisibly as defaults from \code{\link[=Import_Parameters]{Import_Parameters()}}, but can still be
 called by the user for conveniance (but not needed for a model run). The parameters are divided into
 four functions: \code{site()}, \code{soil()}, \code{coffee()}, and \code{Tree()}.
 }
@@ -28,7 +28,7 @@ four functions: \code{site()}, \code{soil()}, \code{coffee()}, and \code{Tree()}
 These input functions are stored into R-script that can be customized at will by the user to fit
 new conditions. In that case, the user have to write the resulting functions to separate files
 corresponding to the site, the soil, the coffee layer and the tree layer.
-Then \code{\link{DynACof}} read them using the \code{Inpath} and \code{FileName} parameters.
+Then \code{\link[=DynACof]{DynACof()}} read them using the \code{Inpath} and \code{FileName} parameters.
 File templates with default parameter values and an example use are available from this separate
 \href{https://github.com/VEZY/DynACof_inputs}{github repository}
 }
@@ -53,8 +53,8 @@ The default soil parameters.
 \section{coffee}{
 
 The default coffee parameters. It is essentially a high density plantation (6666 coffee plants
- per hectares) of \emph{Coffea arabica var. Caturra} that are pruned every year to sustain
- three resprouts per stump in average.
+per hectares) of \emph{Coffea arabica var. Caturra} that are pruned every year to sustain
+three resprouts per stump in average.
 }
 
 \section{Tree}{
@@ -68,5 +68,5 @@ for monospecific coffee plantations.
 }
 
 \seealso{
-\code{\link{DynACof}}
+\code{\link[=DynACof]{DynACof()}}
 }

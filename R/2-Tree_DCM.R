@@ -2,17 +2,17 @@
 #' Shade Tree subroutine
 #'
 #' @description Make all computations for shade trees (similar to coffee, but no fruits) for the ith
-#'              day by modifying the \code{S} list in place.
+#'              day by modifying the `S` list in place.
 #'
 #' @param S The simulation list of class "Simulation".
 #' @param i The index of the day since the first day of the simulation.
 #'
-#' @return Nothing, modify the list of simulation \code{S} in place. See \code{\link{DynACof}} for
+#' @return Nothing, modify the list of simulation `S` in place. See [DynACof()] for
 #'         more details.
 #'
 #' @note This function shouldn't be called by the user. It is made as a subroutine so it is easier for
 #'       advanced users to modify the code.
-#'       \code{No_Shade()} is used as an empty function that is called when there are no shade trees.
+#'       `No_Shade()` is used as an empty function that is called when there are no shade trees.
 #'
 #' @aliases No_Shade
 #'
@@ -20,7 +20,7 @@
 #'
 #' @importFrom utils tail
 #'
-#' @seealso \code{\link{DynACof}}
+#' @seealso [DynACof()]
 #'
 #' @export
 Shade.Tree= function(S,i){

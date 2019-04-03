@@ -26,10 +26,10 @@ atan_deg(x)
 }
 \description{
 These functions give the obvious trigonometric functions.
-             They respectively compute the cosine, sine, tangent,
-             arc-cosine, arc-sine, arc-tangent as in the base functions
-             \code{\link[base]{Trig}}, but use input in degree instead
-             of radian.
+They respectively compute the cosine, sine, tangent,
+arc-cosine, arc-sine, arc-tangent as in the base functions
+\code{\link[base:Trig]{base::Trig()}}, but use input in degree instead
+of radian.
 }
 \details{
 The conversions between radian to degree is:

@@ -15,19 +15,19 @@ No_Shade(...)
 \item{i}{The index of the day since the first day of the simulation.}
 }
 \value{
-Nothing, modify the list of simulation \code{S} in place. See \code{\link{DynACof}} for
-        more details.
+Nothing, modify the list of simulation \code{S} in place. See \code{\link[=DynACof]{DynACof()}} for
+more details.
 }
 \description{
 Make all computations for shade trees (similar to coffee, but no fruits) for the ith
-             day by modifying the \code{S} list in place.
+day by modifying the \code{S} list in place.
 }
 \note{
 This function shouldn't be called by the user. It is made as a subroutine so it is easier for
-      advanced users to modify the code.
-      \code{No_Shade()} is used as an empty function that is called when there are no shade trees.
+advanced users to modify the code.
+\code{No_Shade()} is used as an empty function that is called when there are no shade trees.
 }
 \seealso{
-\code{\link{DynACof}}
+\code{\link[=DynACof]{DynACof()}}
 }
 \keyword{internal}

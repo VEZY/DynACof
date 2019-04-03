@@ -30,12 +30,12 @@ PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind = 0,
 
 \item{wleaf}{Average leaf width (m)}
 
-\item{Parameters}{Constant parameters, default to \code{\link{Constants}}, if different values are needed:
-                   \describe{
-                     \item{Cp}{specific heat of air for constant pressure (J K-1 kg-1)}
-                     \item{Rgas}{universal gas constant (J mol-1 K-1)}
-                     \item{Kelvin}{conversion degree Celsius to Kelvin}
-                     \item{H2OMW}{conversion from kg to mol for H2O (kg mol-1)}
+\item{Parameters}{Constant parameters, default to \code{\link[=Constants]{Constants()}}, if different values are needed:
+\describe{
+\item{Cp}{specific heat of air for constant pressure (J K-1 kg-1)}
+\item{Rgas}{universal gas constant (J mol-1 K-1)}
+\item{Kelvin}{conversion degree Celsius to Kelvin}
+\item{H2OMW}{conversion from kg to mol for H2O (kg mol-1)}
 }}
 }
 \value{
@@ -43,18 +43,18 @@ PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind = 0,
 }
 \description{
 Compute the daily evaporation or transpiration of the surface using the
-             Penman-Monteith equation.
+Penman-Monteith equation.
 }
 \details{
 The daily evapotranspiration is computed using the Penman-Monteith equation, and a
-         set of conductances as :
-         \deqn{ET=\frac{\Delta\cdot Rn\cdot10^6+\rho\cdot Cp\cdot\frac{VPD}{10\ }\cdot GH}{\ \Delta+\frac{\gamma}{\lambda\ }\cdot(1+\frac{GH}{GV})}\ }{
+set of conductances as :
+\deqn{ET=\frac{\Delta\cdot Rn\cdot10^6+\rho\cdot Cp\cdot\frac{VPD}{10\ }\cdot GH}{\ \Delta+\frac{\gamma}{\lambda\ }\cdot(1+\frac{GH}{GV})}\ }{
          ET= (Delta * Rn*10^6 + rho * Cp * (VPD/10) * GH) / (Delta + gamma * (1 + GH / GV))/\lambda}
-         where \eqn{\Delta} is the slope of the saturation vapor pressure curve (kPa K-1),
-         \eqn{\rho} is the air density (kg m-3), \eqn{GH} the canopy boundary layer conductance (m s-1),
-         \eqn{\gamma} the psychrometric constant (kPa K-1) and \eqn{GV} the boundary + stomatal
-         conductance to water vapour (m s-1). To simulate evaporation, the input stomatal conductance
-         \eqn{Gs} can be set to nearly infinite (e.g. \eqn{Gs= 1\cdot e^9}).
+where \eqn{\Delta} is the slope of the saturation vapor pressure curve (kPa K-1),
+\eqn{\rho} is the air density (kg m-3), \eqn{GH} the canopy boundary layer conductance (m s-1),
+\eqn{\gamma} the psychrometric constant (kPa K-1) and \eqn{GV} the boundary + stomatal
+conductance to water vapour (m s-1). To simulate evaporation, the input stomatal conductance
+\eqn{Gs} can be set to nearly infinite (e.g. \eqn{Gs= 1\cdot e^9}).
 }
 \note{
 If \code{wind=0}, it is replaced by a low value of \code{0.01}
@@ -67,9 +67,9 @@ PENMON(Rn= 12, Wind= 0.5, Tair= 16, ZHT= 26, Z_top= 25, Pressure= 900, Gs = 1E09
 }
 \references{
 Allen R.G., Pereira L.S., Raes D., Smith M., 1998: Crop evapotranspiration -
-             Guidelines for computing crop water requirements - FAO Irrigation and drainage
-             paper 56.
+Guidelines for computing crop water requirements - FAO Irrigation and drainage
+paper 56.
 }
 \seealso{
-\code{\link[bigleaf]{potential.ET}} and \href{https://maespa.github.io/}{MAESPA model}
+\code{\link[bigleaf:potential.ET]{bigleaf::potential.ET()}} and \href{https://maespa.github.io/}{MAESPA model}
 }

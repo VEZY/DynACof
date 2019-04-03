@@ -1,6 +1,6 @@
 #' American Leaf Spot
 #'
-#' @description Compute the percentage of \emph{Coffea} leaves dying from
+#' @description Compute the percentage of *Coffea* leaves dying from
 #'              American Leaf Spot disease, drought excluded.
 #'
 #' @param Elevation           Site elevation       (m.a.s.l)
@@ -18,10 +18,10 @@
 #'                                                 \item{5}{No shade (Full sun)}
 #'                                                 }
 #' @param CoffeePruning       Character specifying the pruning management.
-#'                            Values: \code{tree}, \code{row}, \code{block} or \code{NULL}.
+#'                            Values: `tree`, `row`, `block` or `NULL`.
 #' @param df_rain             Data frame with DOY, year and Rain (mm) values
 #'
-#' @note It is good practice to use shade tree transmittance to compute \code{Shade} percentage
+#' @note It is good practice to use shade tree transmittance to compute `Shade` percentage
 #'          (\eqn{Shade= 1-Transmittance}).
 #'
 #'

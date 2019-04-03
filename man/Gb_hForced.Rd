@@ -22,11 +22,11 @@ Gb_hFree(Tair, Tleaf, wleaf = 0.068, Dheat = Constants()$Dheat)
 }
 \value{
 \item{\eqn{Gb_hForced}}{Leaf boundary layer conductance for heat under forced convection (m s-1)}
-        \item{\eqn{Gb_hFree}}{Leaf boundary layer conductance for heat under free convection (m s-1)}
+\item{\eqn{Gb_hFree}}{Leaf boundary layer conductance for heat under free convection (m s-1)}
 }
 \description{
 Compute the boundary layer conductance for heat - single sided, forced or
-             free convection using the Leuning et al. (1995) equations.
+free convection using the Leuning et al. (1995) equations.
 }
 \examples{
 Gb_hForced(Wind=3)
@@ -35,10 +35,10 @@ Gb_hFree(Tair= 25,Tleaf= 26)
 }
 \references{
 Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration: scaling from
-            leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
+leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
 }
 \seealso{
 The \href{https://maespa.github.io/}{MAESPA model}, from which both functions were taken (FORTRAN code) and
-         translated into R.
-         The function from which both are usually called internally in DynACof: \code{\link{Gb_h}}
+translated into R.
+The function from which both are usually called internally in DynACof: \code{\link[=Gb_h]{Gb_h()}}
 }

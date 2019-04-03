@@ -19,8 +19,8 @@ A list of all input parameters for DynACof
 Import the parameters from local files, or from default (from package data)
 }
 \details{
-For the full list of parameters and the format of the parameter files, see \code{\link{site}}.
-         The function return the parameter files path in the list, to access it, see example.
+For the full list of parameters and the format of the parameter files, see \code{\link[=site]{site()}}.
+The function return the parameter files path in the list, to access it, see example.
 }
 \examples{
 # Importing defaults:
@@ -30,5 +30,5 @@ Parameters$files
 
 }
 \seealso{
-\code{\link{DynACof}} \code{\link{site}}
+\code{\link[=DynACof]{DynACof()}} \code{\link[=site]{site()}}
 }

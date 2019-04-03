@@ -55,7 +55,7 @@ after= function(x,ref){
 
 #' Write output results to disk
 #'
-#' @description Write the ouptut list to disk either under a unique \code{.RData} file or three separated
+#' @description Write the ouptut list to disk either under a unique `.RData` file or three separated
 #'              files:
 #' \itemize{
 #'   \item Model Output (csv file)
@@ -63,15 +63,15 @@ after= function(x,ref){
 #'   \item Model parameters (txt file)
 #' }
 #'
-#' @details To re-import the output, the user should use \code{\link[base]{readRDS}}
+#' @details To re-import the output, the user should use [base::readRDS()]
 #'
 #' @param FinalList        The model output list
-#' @param output           Output format. Character. \code{".RData"} if single file, or anything else for
-#'                         3 separate file. Default: \code{".RData"}
-#' @param Simulation_Name  The name of the simulation. Used for the name of the outputs. Default: \code{NULL}.
+#' @param output           Output format. Character. `".RData"` if single file, or anything else for
+#'                         3 separate file. Default: `".RData"`
+#' @param Simulation_Name  The name of the simulation. Used for the name of the outputs. Default: `NULL`.
 #' @param Outpath          The path to the folder to write on.
-#' @param ...              Further parameters to pass to \code{\link[data.table]{fwrite}}. Only used if
-#'                         \code{output!=".RData"}.
+#' @param ...              Further parameters to pass to [data.table::fwrite()]. Only used if
+#'                         `output!=".RData"`.
 #'
 #' @export
 write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath= "Outputs",...){
@@ -101,13 +101,13 @@ write.results= function(FinalList,output=".RData",Simulation_Name= NULL,Outpath=
 #' @description Help to explain which variable is missing and/or if there are replacements
 #'
 #' @param Var            Input variable name
-#' @param replacement    Replacement variable that is used to compute \code{"Var"}
+#' @param replacement    Replacement variable that is used to compute `"Var"`
 #' @param type           Type of error to return : either
 #' @note This function helps to debug the model when some mandatory meteorological variables
 #'       are missing from input: either an error (default), or a warning.
-#'       If \code{"replacement"} is not provided in the meteorology file either, this function
+#'       If `"replacement"` is not provided in the meteorology file either, this function
 #'       will return an error with a hint on which variables can be provided to compute
-#'       \code{"Var"}
+#'       `"Var"`
 #'
 #' @keywords internal
 #'
@@ -129,7 +129,7 @@ warn.var= function(Var,replacement,type="error"){
 #' @description These functions give the obvious trigonometric functions.
 #'              They respectively compute the cosine, sine, tangent,
 #'              arc-cosine, arc-sine, arc-tangent as in the base functions
-#'              \code{\link[base]{Trig}}, but use input in degree instead
+#'              [base::Trig()], but use input in degree instead
 #'              of radian.
 #'
 #' @aliases sin_deg tan_deg acos_deg asin_deg atan_deg
@@ -194,7 +194,7 @@ atan_deg= function(x){
 #' @param Tmin    Minimum daily temperature (Celsius degree)
 #' @param MinTT   Minimum temperature threshold, also called base temperature (Celsius degree), default to 5.
 #' @param MaxTT   Maximum temperature threshold (Celsius degree), optional, default to NULL
-#' @param Round   Boolean. /!\ Important: round the result to 2 decimal, with default to \code{TRUE}.
+#' @param Round   Boolean. /!\ Important: round the result to 2 decimal, with default to `TRUE`.
 #' @param Tmean   Optional. Average daily temperature (Celsius degree). Only needed if Tmax and Tmin are missing.
 #'
 #' @details
@@ -235,7 +235,7 @@ GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
 #' @param DOY         Day Of Year from 1st January (day)
 #' @param RAD         Incident total radiation (MJ m-2 d-1)
 #' @param Latitude    Latitude (deg)
-#' @param type        Model type, one of \code{Spitters}, \code{Page} or \code{Gopinathan}
+#' @param type        Model type, one of `Spitters`, `Page` or `Gopinathan`
 #'
 #' @details The daily extra-terrestrial radiation at a plane parallel to the earth surface
 #'          (\eqn{S0_d} or \eqn{H0} depending on the source) is computed following
@@ -249,7 +249,7 @@ GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
 #'         of 36S to 60N.
 #' }
 #'
-#' @note This function force \eqn{S_0= S_g} when \eqn{S_0= 0} to avoid the production of \code{NA}'s.
+#' @note This function force \eqn{S_0= S_g} when \eqn{S_0= 0} to avoid the production of `NA`'s.
 #'
 #' @return \item{\eqn{Hd/H}}{Daily diffuse fraction of light (\%)}
 #'
@@ -310,7 +310,7 @@ Diffuse_d= function(DOY, RAD, Latitude= 35, type=c("Spitters","Page","Gopinathan
 #'
 #' @param DOY         Ordinal date (integer): day of year from 1st January (day)
 #' @param Latitude    Latitude (deg)
-#' @param Gsc         The solar constant (W m-2), default to \code{Constants()$Gsc} (= 1367).
+#' @param Gsc         The solar constant (W m-2), default to `Constants()$Gsc` (= 1367).
 #'
 #'
 #' @return \eqn{S0}, the daily extra-terrestrial radiation (\eqn{MJ\ m^{-2}\ d^{-1}}{MJ m-2 d-1})
@@ -347,13 +347,13 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 #' @param RAD         Incident daily total radiation (\eqn{MJ\ m^{-2} d^{-1}}{MJ m-2 d-1})
 #' @param Tmax        Maximum daily air temperature (celsius degree)
 #' @param Tmin        Minimum daily air temperature (celsius degree)
-#' @param Rh          Average daily relative humidity (\code{\%})
-#' @param VPD         Mean daily Vapor Pressure Deficit (\eqn{hPa}), only needed if \code{Rh} is missing
+#' @param Rh          Average daily relative humidity (`\%`)
+#' @param VPD         Mean daily Vapor Pressure Deficit (\eqn{hPa}), only needed if `Rh` is missing
 #' @param Latitude    Latitude (\eqn{deg})
 #' @param Elevation   Elevation (\eqn{m})
 #' @param albedo      Shortwave surface albedo (-)
-#' @param sigma       Stefan-Boltzmann constant (\eqn{W\ m^{-2} K^{-4}}{W m-2 K-4}), default to \code{Constants()$sigma}.
-#' @param Gsc         Solar constant (\eqn{W\ m^{-2}}{W m-2}), default to \code{Constants()$Gsc} (= 1367).
+#' @param sigma       Stefan-Boltzmann constant (\eqn{W\ m^{-2} K^{-4}}{W m-2 K-4}), default to `Constants()$sigma`.
+#' @param Gsc         Solar constant (\eqn{W\ m^{-2}}{W m-2}), default to `Constants()$Gsc` (= 1367).
 #'
 #' @details The daily net radiation is computed using the surface albedo. This method is only a
 #'          simple estimation. Several parameters (ac, bc, a1 and b1) are taken from
@@ -365,7 +365,7 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 #'          where \eqn{Rln} is the net upward longwave radiation flux, \eqn{\alpha} is the albedo, \eqn{R_{so}} the
 #'          daily total clear sky solar irradiance, computed as follow:
 #'          \deqn{R_{so}= (0.75+0.00002\cdot Elevation)\cdot R{sa}}{R_{so}= (0.75+0.00002*Elevation)*Rsa}
-#'          where \eqn{R_{sa}} is the daily extra-terrestrial radiation, computed using \code{\link{Rad_ext}}.
+#'          where \eqn{R_{sa}} is the daily extra-terrestrial radiation, computed using [Rad_ext()].
 #'          The actual vapor pressure \eqn{ea} can be computed using either VPD or the relative
 #'          humidity and the maximum and minimum daily temperature. If both are provided, Rh will
 #'          be used.
@@ -424,9 +424,9 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 #' @param Gs          Stomatal conductance (mol m-2 s-1)
 #' @param VPD         Vapor pressure deficit (kPa)
 #' @param LAI         Leaf area index of the upper layer (m2 leaf m-2 soil)
-#' @param extwind     Extinction coefficient. Default: \code{0}, no extinction.
+#' @param extwind     Extinction coefficient. Default: `0`, no extinction.
 #' @param wleaf       Average leaf width (m)
-#' @param Parameters  Constant parameters, default to \code{\link{Constants}}, if different values are needed:
+#' @param Parameters  Constant parameters, default to [Constants()], if different values are needed:
 #'                    \describe{
 #'                      \item{Cp}{specific heat of air for constant pressure (J K-1 kg-1)}
 #'                      \item{Rgas}{universal gas constant (J mol-1 K-1)}
@@ -444,14 +444,14 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 #'          conductance to water vapour (m s-1). To simulate evaporation, the input stomatal conductance
 #'          \eqn{Gs} can be set to nearly infinite (e.g. \eqn{Gs= 1\cdot e^9}).
 #'
-#' @note If \code{wind=0}, it is replaced by a low value of \code{0.01}
+#' @note If `wind=0`, it is replaced by a low value of `0.01`
 #' @return \eqn{ET}, the daily (evapo|transpi)ration (mm d-1)
 #'
 #' @references Allen R.G., Pereira L.S., Raes D., Smith M., 1998: Crop evapotranspiration -
 #'              Guidelines for computing crop water requirements - FAO Irrigation and drainage
 #'              paper 56.
 #'
-#' @seealso \code{\link[bigleaf]{potential.ET}} and \href{https://maespa.github.io/}{MAESPA model}
+#' @seealso [bigleaf::potential.ET()] and \href{https://maespa.github.io/}{MAESPA model}
 #'
 #' @importFrom bigleaf psychrometric.constant Esat.slope air.density LE.to.ET
 #'
@@ -505,11 +505,11 @@ PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind=0,wleaf=0.06
 #' @param Z0          Roughness length (m), default to 0.1*TREEH
 #' @param ZPD         Zero-plane displacement (m), defaults to 0.75*TREEH
 #' @param GBCANMS1MIN Minimum allowed atmosphere to canopy conductance (mol m-2 s-1), default to 0.0123
-#' @param VONKARMAN   Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
+#' @param VONKARMAN   Von Karman constant, default to `Constants()$vonkarman`, 0.41.
 #'
 #' @details The defaults for Z0 and ZPD are computed very simply. Other simple formulations:
 #' \enumerate{
-#'   \item Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \code{h*}
+#'   \item Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where `h*`
 #'          is canopy height, s is the average silhouette area (projected area of the tree on a vertical plane)
 #'          and S the specific area, with \eqn{S= A/n}, where A is the total plot area and n the number of trees.
 #'   \item For ZPD, Verhoef et al. (1997) said \eqn{d= 0.67}. h is a good proxy without any prior knowledge.
@@ -527,8 +527,8 @@ PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind=0,wleaf=0.06
 #'         " Quarterly Journal of the Royal Meteorological Society 114(480): 373-398.
 #' }
 #'
-#' @seealso \code{\link{Gb_h}}, \code{\link{G_bulk}}, \code{\link{G_interlay}}, \code{\link{G_soilcan}},
-#'          \code{\link{Gb_hForced}}, \code{\link{Gb_hFree}} and \code{\link{PENMON}}
+#' @seealso [Gb_h()], [G_bulk()], [G_interlay()], [G_soilcan()],
+#'          [Gb_hForced()], [Gb_hFree()] and [PENMON()]
 #'
 #' @examples
 #' # Canop conductance of a forest:
@@ -606,23 +606,23 @@ GBCANMS= function(WIND,ZHT,TREEH,Z0=TREEH*0.1,ZPD=TREEH*0.75,GBCANMS1MIN = 0.012
 #' @param Wind      Above canopy wind speed (m s-1)
 #' @param LAI_lay   Leaf area index of the layer (m2 leaves m-2 soil)
 #' @param LAI_abv   Cumulated leaf area index above the layer (m2 leaves m-2 soil)
-#' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
+#' @param extwind   Extinction coefficient. Default: `0`, no extinction.
 #' @param Z_top     Average canopy height of the taller crop (m)
 #' @param ZHT       Wind measurement height (m)
-#' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
-#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
-#' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
+#' @param Z0        Roughness length (m). Default: `0.1*Z_top`
+#' @param ZPD       Zero-plane displacement (m), Default: `0.75*Z_top`
+#' @param alpha     Constant for diffusivity at top canopy. Default: `1.5` following
 #'                  Van de Griend et al (1989).
-#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z2-ZPD)}
-#' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
+#' @param ZW        Top height of the roughness sublayer (m). Default: `ZPD+alpha*(Z2-ZPD)`
+#' @param vonkarman Von Karman constant, default to `Constants()$vonkarman`, 0.41.
 #'
 #' @details The function computes the average wind speed at the center of the canopy layer. It is considered
-#'          that the leaf distibution is homogeneous in the layer, so the \code{LAI_lay} parameter is used to
+#'          that the leaf distibution is homogeneous in the layer, so the `LAI_lay` parameter is used to
 #'          add half of the target layer to the cumulated LAI above:
 #'          \deqn{WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\right)}}}{
 #'          WindLay= Wh*e(-extwind*(LAI_abv+LAI_lay/2)}
-#'          with \code{Wh} the wind speed at top of the canopy.
-#'          Note: the \code{alpha} parameter can also be computed as:
+#'          with `Wh` the wind speed at top of the canopy.
+#'          Note: the `alpha` parameter can also be computed as:
 #'          \deqn{alpha=\frac{zw-d}{Z2-d}}{alpha= (zw-d)/(Z2-d)}
 #' @return \item{WindLay}{The winspeed at the center of the layer (m s-1)}
 #'
@@ -665,24 +665,24 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
 #' @param Z_top     Average canopy height of the taller crop (m)
-#' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
-#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
-#' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
+#' @param Z0        Roughness length (m). Default: `0.1*Z_top`
+#' @param ZPD       Zero-plane displacement (m), Default: `0.75*Z_top`
+#' @param alpha     Constant for diffusivity at top canopy. Default: `1.5` following
 #'                  Van de Griend et al (1989).
-#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
+#' @param ZW        Top height of the roughness sublayer (m). Default: `ZPD+alpha*(Z_top-ZPD)`
 #' @param LAI       Leaf area index of the upper layer (m2 leaf m-2 soil)
-#' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
-#' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
+#' @param extwind   Extinction coefficient. Default: `0`, no extinction.
+#' @param vonkarman Von Karman constant, default to `Constants()$vonkarman`, 0.41.
 
-#' @details \code{alpha} can also be computed as:
+#' @details `alpha` can also be computed as:
 #'          \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
 #'          The bulk aerodynamic conductance \eqn{ga_{bulk}}{ga_bulk} is computed as follow:
 #'          \deqn{ga_{bulk}=\frac{1}{r1+r2+r3}}{ga_bulk= 1/(r1+r2+r3)}
-#'          where \code{r1}, \code{r2} and \code{r3} are the aerodynamic resistances of the inertial
+#'          where `r1`, `r2` and `r3` are the aerodynamic resistances of the inertial
 #'          sublayer, the roughness sublayer and the top layer of the canopy respectively. Because
 #'          wind speed measurements are more often made directly in the roughness sublayer, the
-#'          resistance in the inertial sublayer \code{r1} is set to \code{0} though. \code{r2} and
-#'          \code{r3} are computed using the equation 43 of Van de Griend and Van Boxel (refer to
+#'          resistance in the inertial sublayer `r1` is set to `0` though. `r2` and
+#'          `r3` are computed using the equation 43 of Van de Griend and Van Boxel (refer to
 #'          the pdf of the \href{https://vezy.github.io/DynACof/reference/G_bulk.html}{web} version
 #'          of the help file for Latex rendering) :
 #'          \deqn{r2=\int_{zh}^{zw}\frac{1}{K''}}{r2= Integral{zh,zw}(1/K'')dz}
@@ -691,7 +691,7 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
 #'          \deqn{r3=\int_{(z2+z1)/2}^{zh}\frac{1}{K'''}\mathrm{d}z}{r3= Integral{z2+z1)/2,zh}(1/K''')dz}
 #'          with \deqn{K'''= U_z\frac{K_h}{U_h}}{K'''= Uz x (Kh/Uh)}
 #'
-#'          Integration of \code{r2} and \code{r3} equations give:
+#'          Integration of `r2` and `r3` equations give:
 #'          \deqn{\frac{(\ln(ZPD-ZW)^2-\ln(ZPD-Z2)^2)}{(2kU_*)}}{
 #'          r2= (log((ZPD-ZW)^2)-log((ZPD-Z2)^2))/(2*vonkarman*Ustar)}
 #'          simplified in:
@@ -704,7 +704,7 @@ GetWind= function(Wind,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,Z0=Z_top*0.1,
 #'             with a multilayer canopy representation for remote sensing purposes. Water
 #'             Resources Research, 1989. 25(5): p. 949-971.
 #'
-#' @seealso \code{\link{G_interlay}} and \code{\link{GetWind}}, which is used internaly.
+#' @seealso [G_interlay()] and [GetWind()], which is used internaly.
 #'
 #' @examples
 #' # The bulk aerodynamic conductance for a coffee plantation managed in agroforestry system:
@@ -749,17 +749,17 @@ G_bulk= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alp
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
 #' @param Z_top     Average canopy height of the taller crop (m)
-#' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
-#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
-#' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
+#' @param Z0        Roughness length (m). Default: `0.1*Z_top`
+#' @param ZPD       Zero-plane displacement (m), Default: `0.75*Z_top`
+#' @param alpha     Constant for diffusivity at top canopy. Default: `1.5` following
 #'                  Van de Griend et al (1989).
-#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
+#' @param ZW        Top height of the roughness sublayer (m). Default: `ZPD+alpha*(Z_top-ZPD)`
 #' @param LAI_top   Leaf area index of the upper layer (m2 leaf m-2 soil).
 #' @param LAI_bot   Leaf area index of the layer below the upper layer (m2 leaf m-2 soil).
-#' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
-#' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
+#' @param extwind   Extinction coefficient. Default: `0`, no extinction.
+#' @param vonkarman Von Karman constant, default to `Constants()$vonkarman`, 0.41.
 
-#' @details \code{alpha} can also be computed as:
+#' @details `alpha` can also be computed as:
 #'          \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
 #'          The aerodynamic conductance between canopy layers is computed as:
 #'          \deqn{g_{af}= \frac{1}{\frac{U_h}{K_h}\ln(U_{mid}/U_{inter})}}{g_af= 1/((Uh/Kh)*log(U_mid/U_inter))}
@@ -774,7 +774,7 @@ G_bulk= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+alp
 #'             with a multilayer canopy representation for remote sensing purposes. Water
 #'             Resources Research, 1989. 25(5): p. 949-971.
 #'
-#' @seealso \code{\link{G_bulk}} and \code{\link{GetWind}}, which is used internaly.
+#' @seealso [G_bulk()] and [GetWind()], which is used internaly.
 #'
 #' @examples
 #' # G_af for a coffee plantation managed in agroforestry system:
@@ -818,16 +818,16 @@ G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD
 #' @param Wind      Average daily wind speed above canopy (m s-1)
 #' @param ZHT       Wind measurement height (m)
 #' @param Z_top     Average canopy height of the taller crop (m)
-#' @param Z0        Roughness length (m). Default: \code{0.1*Z_top}
-#' @param ZPD       Zero-plane displacement (m), Default: \code{0.75*Z_top}
-#' @param alpha     Constant for diffusivity at top canopy. Default: \code{1.5} following
+#' @param Z0        Roughness length (m). Default: `0.1*Z_top`
+#' @param ZPD       Zero-plane displacement (m), Default: `0.75*Z_top`
+#' @param alpha     Constant for diffusivity at top canopy. Default: `1.5` following
 #'                  Van de Griend et al (1989).
-#' @param ZW        Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
+#' @param ZW        Top height of the roughness sublayer (m). Default: `ZPD+alpha*(Z_top-ZPD)`
 #' @param LAI       Total leaf area index above the soil (m2 leaf m-2 soil).
-#' @param extwind   Extinction coefficient. Default: \code{0}, no extinction.
-#' @param vonkarman Von Karman constant, default to \code{Constants()$vonkarman}, 0.41.
+#' @param extwind   Extinction coefficient. Default: `0`, no extinction.
+#' @param vonkarman Von Karman constant, default to `Constants()$vonkarman`, 0.41.
 
-#' @details \code{alpha} can also be computed as:
+#' @details `alpha` can also be computed as:
 #'          \deqn{alpha=\frac{zw-d}{Z_{top}-d}}{alpha= (zw-d)/(Z_top-d)}
 #'          The aerodynamic conductance between the lowest canopy layer and the soil
 #'          is computed as:
@@ -841,7 +841,7 @@ G_interlay= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD
 #'             with a multilayer canopy representation for remote sensing purposes. Water
 #'             Resources Research, 1989. 25(5): p. 949-971.
 #'
-#' @seealso \code{\link{G_bulk}} and \code{\link{GetWind}}, which is used internaly.
+#' @seealso [G_bulk()] and [GetWind()], which is used internaly.
 #'
 #' @examples
 #' # G_a0 for a coffee plantation managed in agroforestry system:
@@ -882,18 +882,18 @@ G_soilcan= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+
 #' @param wleaf       Average leaf width (m)
 #' @param LAI_lay     Leaf area index of the layer (m2 leaves m-2 soil)
 #' @param LAI_abv     Cumulated leaf area index above the layer (m2 leaves m-2 soil)
-#' @param extwind     Extinction coefficient. Default: \code{0}, no extinction.
+#' @param extwind     Extinction coefficient. Default: `0`, no extinction.
 #' @param Z_top          Average canopy height of the taller crop (m)
 #' @param ZHT         Wind measurement height (m)
-#' @param Z0          Roughness length (m). Default: \code{0.1*Z_top}
-#' @param ZPD         Zero-plane displacement (m), Default: \code{0.75*Z_top}
-#' @param alpha       Constant for diffusivity at top canopy. Default: \code{1.5} following
+#' @param Z0          Roughness length (m). Default: `0.1*Z_top`
+#' @param ZPD         Zero-plane displacement (m), Default: `0.75*Z_top`
+#' @param alpha       Constant for diffusivity at top canopy. Default: `1.5` following
 #'                    Van de Griend et al (1989).
-#' @param ZW          Top height of the roughness sublayer (m). Default: \code{ZPD+alpha*(Z_top-ZPD)}
-#' @param Tleaf       Leaf temperature (deg C). Only needed if \code{formulation="Leuning_1995"}
-#' @param Tair        Canopy air temperature (deg C). Only needed if \code{formulation="Leuning_1995"}
-#' @param Dheat       Molecular diffusivity for heat (m2 s-1). Default to \code{Constants()$Dheat}.
-#'                    Only needed if \code{formulation="Leuning_1995"}
+#' @param ZW          Top height of the roughness sublayer (m). Default: `ZPD+alpha*(Z_top-ZPD)`
+#' @param Tleaf       Leaf temperature (deg C). Only needed if `formulation="Leuning_1995"`
+#' @param Tair        Canopy air temperature (deg C). Only needed if `formulation="Leuning_1995"`
+#' @param Dheat       Molecular diffusivity for heat (m2 s-1). Default to `Constants()$Dheat`.
+#'                    Only needed if `formulation="Leuning_1995"`
 #' @param formulation The formulation used to compute \eqn{Gb_h}
 
 #' @details The leaf boundary layer conductance for heat can be transformed into leaf boundary
@@ -912,8 +912,8 @@ G_soilcan= function(Wind,ZHT,Z_top,Z0=Z_top*0.1,ZPD=Z_top*0.75,alpha=1.5,ZW=ZPD+
 #'         49(2): p. 1107-1122.
 #' }
 #'
-#' @seealso \code{\link{G_bulk}}, \code{\link{G_soilcan}}, \code{\link{G_interlay}} and
-#'          \code{\link{GetWind}}, which is used internaly.
+#' @seealso [G_bulk()], [G_soilcan()], [G_interlay()] and
+#'          [GetWind()], which is used internaly.
 #'
 #' @examples
 #' # Gb for a coffee plantation managed in agroforestry system:
@@ -949,8 +949,8 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
 #' @param Tair   Average daily air temperature (deg C)
 #' @param Tleaf  Average daily leaf temperature (deg C)
 #' @param Wind   Wind speed (m s-1)
-#' @param wleaf  Leaf width (m). Default to \code{0.068}
-#' @param Dheat  Molecular diffusivity for heat (m2 s-1). Default to: \code{Constants()$Dheat}.
+#' @param wleaf  Leaf width (m). Default to `0.068`
+#' @param Dheat  Molecular diffusivity for heat (m2 s-1). Default to: `Constants()$Dheat`.
 #'
 #' @aliases Gb_hForced Gb_hFree
 #'
@@ -961,7 +961,7 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
 #'
 #' @seealso The \href{https://maespa.github.io/}{MAESPA model}, from which both functions were taken (FORTRAN code) and
 #'          translated into R.
-#'          The function from which both are usually called internally in DynACof: \code{\link{Gb_h}}
+#'          The function from which both are usually called internally in DynACof: [Gb_h()]
 #'
 #' @examples
 #' Gb_hForced(Wind=3)

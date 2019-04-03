@@ -16,7 +16,7 @@ Find the ith previous index while avoiding 0 or negative indexes.
 }
 \details{
 This function is used to find the nth previous index without making an error with negative
-         or 0 index.
+or 0 index.
 }
 \examples{
 # Find the 10th index before 15:

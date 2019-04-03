@@ -23,7 +23,7 @@ Computes the percentage of living tissue in the organ according to age
 }
 \details{
 The percentage of living tissue is computed as follows:
- \deqn{P_{End}+\left((P_{Start}-P_{End})\cdot e^{seq(0,-k,length.out=Age_{Max})}\right)}{
+\deqn{P_{End}+\left((P_{Start}-P_{End})\cdot e^{seq(0,-k,length.out=Age_{Max})}\right)}{
        P_End+((P_Start-P_End)*exp(seq(0,-k,length.out = Age_Max)))}
 }
 \examples{

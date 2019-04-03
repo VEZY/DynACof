@@ -13,7 +13,7 @@ after(x, ref)
 }
 \description{
 Test if the x index falls before or after the reference index. If it is after, return 1,
-             if before, return 0.
+if before, return 0.
 }
 \examples{
 # Is 5 before 2 ?

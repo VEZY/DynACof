@@ -19,46 +19,46 @@ Metamodels_soil(S, i)
 }
 \value{
 \item{\eqn{K_Dif_Tree}{K_{dif_{Tree}}}}{Shade tree diffuse light coefficient}
-        \item{\eqn{K_Dir_Tree}{K_{dir_{Tree}}}}{Shade tree direct light coefficient}
-        \item{\eqn{lue_Tree}{lue_{Tree}}}{Light use efficiency (gC MJ-1)}
-        \item{\eqn{T_Tree}{T_{Tree}}}{Transpiration (mm d-1)}
-        \item{\eqn{H_Tree}{H_{Tree}}}{Sensible heat (MJ m-2 d-1)}
+\item{\eqn{K_Dir_Tree}{K_{dir_{Tree}}}}{Shade tree direct light coefficient}
+\item{\eqn{lue_Tree}{lue_{Tree}}}{Light use efficiency (gC MJ-1)}
+\item{\eqn{T_Tree}{T_{Tree}}}{Transpiration (mm d-1)}
+\item{\eqn{H_Tree}{H_{Tree}}}{Sensible heat (MJ m-2 d-1)}
 }
 \description{
 Several variables can be highly impacted by the 3D canopy structure. Hence, some variables are
-             computed using metamodels from the MAESPA model (see details). These functions are example functions
-             for metamodels and allometries. They are imported by the parameter files for a default simulation.
-             Any simulation on different conditions than the one used as in the package default should
-             have custom metamodels, and/or allometries. The user can write the customized functions directly
-             in the parameter files were these functions are called. For example, to replace the light extinction
-             coefficient computation, the user should write a customized function instead of the call to
-             \code{Light_extinction_K()} on the line \code{k= Light_extinction_K}.
-             These functions are helper functions available to the user to use as a template,
-             but not to call them directly.
+computed using metamodels from the MAESPA model (see details). These functions are example functions
+for metamodels and allometries. They are imported by the parameter files for a default simulation.
+Any simulation on different conditions than the one used as in the package default should
+have custom metamodels, and/or allometries. The user can write the customized functions directly
+in the parameter files were these functions are called. For example, to replace the light extinction
+coefficient computation, the user should write a customized function instead of the call to
+\code{Light_extinction_K()} on the line \code{k= Light_extinction_K}.
+These functions are helper functions available to the user to use as a template,
+but not to call them directly.
 }
 \details{
 The purpose of using metamodels in DynACof is to make this two-layer dynamic crop model able to consider
-          the 3D canopy heterogeneity effect on fundamental processes, as if it was with a MAESPA-growth model
-          coupling. The main process impacted by canopy complexity is the light absorbed by the plants
-          (Charbonnier et al., 2013). Indeed, in dynamic crop models, the absorbed photosynthetically active
-          radiation (APAR) by the canopy is often computed using the simple Beer-Lambert’s law or a derivative,
-          with a variable leaf area index in time, but a constant extinction coefficient (Van Oijen et al., 2010b).
-          However, heterogeneous canopies such as the shade trees in AFS coffee plantations tends to violate the
-          assumption of a constant value for the diffuse (\eqn{K_{dif_{Tree}}}{K_dif_Tree}) and direct (\eqn{K_{dir_{Tree}}})
-          light extinction coefficients, because the spatial distribution of the leaf area is not uniform (high gap fraction)
-          and because the leaf area density can change along time with foliage aggregation (Sampson and Smith,
-          1993;Sinoquet et al., 2007). Secondly, a comparison between coffee planted in monoculture and under
-          agroforestry system showed that canopy complexity affected canopy temperature, water, and energy
-          partitioning (Vezy et al., 2018), and probably photosynthesis because it is related to light interception
-          and transpiration through stomatal conductance. Therefore, we derived metamodels from MAESPA for the
-          diffuse (\eqn{K_{dif_{Tree}}}{K_dif_Tree}) and the direct (\eqn{K_{dir_{Tree}}}{K_dir_Tree}) shade tree light
-          extinction coefficients, the light use efficiency (LUE, gC MJ-1), the coffee canopy temperature (Tcan, deg Celsius)
-          and leaf water potential (MPa), the transpiration (T_\*, mm) and plant sensible heat flux (H_\*). The coffee layer was
-          considered homogeneous enough to compute constant extinction coefficients derived from the MAESPA simulation,
-          and the partitioning parameter between soil sensible and latent flux was also adjusted using MAESPA outputs.
-          MAESPA is a 3D explicit model for energy, carbon and water fluxes simulation, for further details, see:
-          \href{https://www.researchgate.net/publication/323398728_Measuring_and_modelling_energy_partitioning_in_canopies_of_varying_complexity_using_MAESPA_model}{Vezy et al. (2018)},
-          or the \href{https://maespa.github.io/}{MAESPA website}.
+the 3D canopy heterogeneity effect on fundamental processes, as if it was with a MAESPA-growth model
+coupling. The main process impacted by canopy complexity is the light absorbed by the plants
+(Charbonnier et al., 2013). Indeed, in dynamic crop models, the absorbed photosynthetically active
+radiation (APAR) by the canopy is often computed using the simple Beer-Lambert’s law or a derivative,
+with a variable leaf area index in time, but a constant extinction coefficient (Van Oijen et al., 2010b).
+However, heterogeneous canopies such as the shade trees in AFS coffee plantations tends to violate the
+assumption of a constant value for the diffuse (\eqn{K_{dif_{Tree}}}{K_dif_Tree}) and direct (\eqn{K_{dir_{Tree}}})
+light extinction coefficients, because the spatial distribution of the leaf area is not uniform (high gap fraction)
+and because the leaf area density can change along time with foliage aggregation (Sampson and Smith,
+1993;Sinoquet et al., 2007). Secondly, a comparison between coffee planted in monoculture and under
+agroforestry system showed that canopy complexity affected canopy temperature, water, and energy
+partitioning (Vezy et al., 2018), and probably photosynthesis because it is related to light interception
+and transpiration through stomatal conductance. Therefore, we derived metamodels from MAESPA for the
+diffuse (\eqn{K_{dif_{Tree}}}{K_dif_Tree}) and the direct (\eqn{K_{dir_{Tree}}}{K_dir_Tree}) shade tree light
+extinction coefficients, the light use efficiency (LUE, gC MJ-1), the coffee canopy temperature (Tcan, deg Celsius)
+and leaf water potential (MPa), the transpiration (T_*, mm) and plant sensible heat flux (H_*). The coffee layer was
+considered homogeneous enough to compute constant extinction coefficients derived from the MAESPA simulation,
+and the partitioning parameter between soil sensible and latent flux was also adjusted using MAESPA outputs.
+MAESPA is a 3D explicit model for energy, carbon and water fluxes simulation, for further details, see:
+\href{https://www.researchgate.net/publication/323398728_Measuring_and_modelling_energy_partitioning_in_canopies_of_varying_complexity_using_MAESPA_model}{Vezy et al. (2018)},
+or the \href{https://maespa.github.io/}{MAESPA website}.
 }
 \examples{
 # Creating a dummy list for use:
@@ -72,5 +72,5 @@ Light_extinction_K(S,1:10)
 See \href{https://goo.gl/NVxcVp}{Vezy (2017)}
 }
 \seealso{
-\code{\link{DynACof}}
+\code{\link[=DynACof]{DynACof()}}
 }

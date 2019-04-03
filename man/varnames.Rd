@@ -6,9 +6,9 @@
 \title{Output variables}
 \format{A data frame with three columns:
 \describe{
-  \item{Type}{Variable name}
-  \item{Unit}{unit of the variable}
-  \item{Definition}{a brief definition of the variable}
+\item{Type}{Variable name}
+\item{Unit}{unit of the variable}
+\item{Definition}{a brief definition of the variable}
 }
 For the moment the model has 246 output variables (without meteorological variables).}
 \usage{

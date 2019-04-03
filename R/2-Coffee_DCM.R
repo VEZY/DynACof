@@ -3,22 +3,22 @@
 #'                energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
 #'                metamodels from the 3D process-based model \href{https://maespa.github.io/}{MAESPA}. The model also uses cohorts for
 #'                the development of the coffee buds and fruits to better represent fruit carbon demand distribution along the year.
-#' @param Period   Period of time to be simulated, see details. Default: \code{NULL}
-#' @param WriteIt  If \code{TRUE}, write the outputs to disk using \code{\link{write.results}}, see details. Default: \code{FALSE}
+#' @param Period   Period of time to be simulated, see details. Default: `NULL`
+#' @param WriteIt  If `TRUE`, write the outputs to disk using [write.results()], see details. Default: `FALSE`
 #' @param parallel Boolean. Parallelize the computation over crop rotations.
-#' @param ...      Further arguments to pass to \code{\link{write.results}}.
-#' @param output_f Output format. If \code{output_f = ".RData"}, the output list will be saved as a unique \code{.RData} file. Any other value:
-#'                 write the output list in several \code{.csv} and \code{.txt} files. Default: \code{.RData}
-#' @param Inpath   Path to the input parameter list folder, Default: \code{"1-Input/Default"}
-#' @param Outpath  Path pointing to the folder were the results will be writen, Default: \code{Outpath = Inpath}
-#' @param Simulation_Name Character name of the simulation file name if \code{WriteIt = T}. Default: \code{"DynACof"}
+#' @param ...      Further arguments to pass to [write.results()].
+#' @param output_f Output format. If `output_f = ".RData"`, the output list will be saved as a unique `.RData` file. Any other value:
+#'                 write the output list in several `.csv` and `.txt` files. Default: `.RData`
+#' @param Inpath   Path to the input parameter list folder, Default: `"1-Input/Default"`
+#' @param Outpath  Path pointing to the folder were the results will be writen, Default: `Outpath = Inpath`
+#' @param Simulation_Name Character name of the simulation file name if `WriteIt = T`. Default: `"DynACof"`
 #' @param FileName A list of input file names :
 #' \describe{
-#'   \item{Site}{Site parameters file name, see details. Default: \code{'1-Site.R'}}
-#'   \item{Meteo}{Meteo parameters file name, see details. Default: \code{'2-Meteorology.txt'}}
-#'   \item{Soil}{Soil parameters file name, see details. Default: \code{'3-Soil.R'}}
-#'   \item{Coffee}{Coffee parameters file name, see details. Default: \code{'4-Coffee.R'}}
-#'   \item{Tree}{Shade tree parameters file name, see details. Default: \code{NULL}}
+#'   \item{Site}{Site parameters file name, see details. Default: `'1-Site.R'`}
+#'   \item{Meteo}{Meteo parameters file name, see details. Default: `'2-Meteorology.txt'`}
+#'   \item{Soil}{Soil parameters file name, see details. Default: `'3-Soil.R'`}
+#'   \item{Coffee}{Coffee parameters file name, see details. Default: `'4-Coffee.R'`}
+#'   \item{Tree}{Shade tree parameters file name, see details. Default: `NULL`}
 #' }
 #' Default input files are provided with the package as an example parameterization.
 #'
@@ -134,7 +134,7 @@
 #'                              \tab MThinning_*_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 #'}
 #'
-#'   \item Meteo: A data.frame of the input meteorology, potentially coming from the output of \code{\link{Meteorology}}: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
+#'   \item Meteo: A data.frame of the input meteorology, potentially coming from the output of [Meteorology()]: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
 #' Date            \tab POSIXct date\tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
 #' year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
 #' DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
@@ -145,29 +145,29 @@
 #' RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
 #' RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
 #' Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Try to compute from VPD, Tair and Elevation, or Tair and Elevation. \cr
-#' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Try to set it to constant: \code{Parameters$WindSpeed} \cr
-#' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Try to set it to constant: \code{Parameters$CO2}\cr
-#' DegreeDays      \tab deg C       \tab Growing degree days                          \tab Computed using \code{\link{GDD}} \cr
+#' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Try to set it to constant: `Parameters$WindSpeed` \cr
+#' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Try to set it to constant: `Parameters$CO2`\cr
+#' DegreeDays      \tab deg C       \tab Growing degree days                          \tab Computed using [GDD()] \cr
 #' PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
-#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link{Diffuse_d}} using Spitters formula \cr
+#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using [Diffuse_d()] using Spitters formula \cr
 #' VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
-#' Rn (!=Rn_tot)    \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using \code{\link{Rad_net}} with RH, or VPD \cr
+#' Rn (!=Rn_tot)    \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using [Rad_net()] with RH, or VPD \cr
 #' DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
-#' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf]{air.density}}}
-#'   \item Parameters: A list of the input parameters (see \code{\link{site}})
+#' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using [bigleaf::air.density()]}
+#'   \item Parameters: A list of the input parameters (see [site()])
 #' }
 #'
-#' @details The user can import a simulation using \code{\link[base]{readRDS}}.
+#' @details The user can import a simulation using [base::readRDS()].
 #'          Almost all variables for coffee exist also for shade trees with the suffix
-#'          \code{_Tree} after the name of the variable, e.g. : LAI = coffee LAI,
+#'          `_Tree` after the name of the variable, e.g. : LAI = coffee LAI,
 #'          LAI_Tree = shade tree LAI.
 #'          Special shade tree variables (see return section) are only optional,
 #'          and it may have more variables upon parameterization because variables can be added in
-#'          the metamodels parameter file in \strong{\code{\link[=Light_extinction_K]{Metamodels}}} or
-#'          \strong{\code{\link{Allometries}}}.
+#'          the metamodels parameter file in \strong{[=Light_extinction_K::Metamodels()]} or
+#'          \strong{[Allometries()]}.
 #'          Important :
 #'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
-#'          For example the default meteorology file (\code{\link{Aquiares}}) has to be set to \code{Sys.setenv(TZ="UTC")}.
+#'          For example the default meteorology file ([Aquiares()]) has to be set to `Sys.setenv(TZ="UTC")`.
 #'
 #' @note All variable units are available as attributes (see example)
 #'
@@ -185,7 +185,7 @@
 #'  }
 #' }
 #' @export
-#' @seealso \code{\link{Meteorology}} \code{\link{site}}
+#' @seealso [Meteorology()] [site()]
 #' @importFrom bigleaf air.density
 #' @importFrom dplyr n
 #' @importFrom foreach %dopar%
@@ -283,8 +283,8 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
 #'
 #' @description This is the main function of the model that calls all other functions
 #' (meteorology, shade tree, soil) and computes the Coffea simulation. This function
-#' is called by \code{\link{DynACof}} under the hood, and users should always call
-#' \code{\link{DynACof}} instead of this function because it imports the files,
+#' is called by [DynACof()] under the hood, and users should always call
+#' [DynACof()] instead of this function because it imports the files,
 #' format the simulation inputs, checks for errors, takes care automatically
 #' of the computation distribution along nodes, and format the outputs.
 #'
@@ -293,7 +293,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
 #' @param Meteo      Meteorology data.frame
 #' @param Parameters Simulation parameters
 #'
-#' @details The Direction \code{data.frame} has to contain at least one column
+#' @details The Direction `data.frame` has to contain at least one column
 #' named Cycle that denotes the crop rotation, Plot_Age, an integer for the plot age,
 #' Plot_Age_num for the plot age as a continuous variable (see example).
 #'

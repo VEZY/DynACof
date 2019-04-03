@@ -2,10 +2,10 @@
 #'
 #' @description Import the parameters from local files, or from default (from package data)
 #'
-#' @param path   The path to the parameter files folder. If \code{NULL}, take the default files from the package
-#' @param Names  List of the file names. Default: \code{list(Site="Site.R",Soil="Soil.R",Coffee="Coffee.R",Tree=NULL)}
+#' @param path   The path to the parameter files folder. If `NULL`, take the default files from the package
+#' @param Names  List of the file names. Default: `list(Site="Site.R",Soil="Soil.R",Coffee="Coffee.R",Tree=NULL)`
 #'
-#' @details For the full list of parameters and the format of the parameter files, see \code{\link{site}}.
+#' @details For the full list of parameters and the format of the parameter files, see [site()].
 #'          The function return the parameter files path in the list, to access it, see example.
 #'
 #' @return A list of all input parameters for DynACof
@@ -16,7 +16,7 @@
 #' # Parameters files path:
 #' Parameters$files
 #'
-#' @seealso \code{\link{DynACof}} \code{\link{site}}
+#' @seealso [DynACof()] [site()]
 #'
 #' @export
 Import_Parameters= function(path= NULL,

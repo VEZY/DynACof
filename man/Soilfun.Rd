@@ -12,18 +12,18 @@ Soilfun(S, i)
 \item{i}{The index of the day since the first day of the simulation.}
 }
 \value{
-Modify the list of simulation \code{S} in place. See \code{\link{DynACof}} for
-        more details.
+Modify the list of simulation \code{S} in place. See \code{\link[=DynACof]{DynACof()}} for
+more details.
 }
 \description{
 Make all computations for soil water balance for the ith
-             day by modifying the \code{S} list in place.
+day by modifying the \code{S} list in place.
 }
 \note{
 This function shouldn't be called by the user. It is made as a subroutine so it is easier for
-      advanced users to modify the code.
+advanced users to modify the code.
 }
 \seealso{
-\code{\link{DynACof}}
+\code{\link[=DynACof]{DynACof()}}
 }
 \keyword{internal}

@@ -48,15 +48,15 @@ Only needed if \code{formulation="Leuning_1995"}}
 }
 \description{
 Compute the bulk leaf boundary layer conductance for heat using
-             the wind speed, the leaf dimension, and leaf area distribution
-             following Jones (1992) or Leuning et al. (1995).
+the wind speed, the leaf dimension, and leaf area distribution
+following Jones (1992) or Leuning et al. (1995).
 }
 \details{
 The leaf boundary layer conductance for heat can be transformed into leaf boundary
-         layer conductance for water vapour as follow:
-         \deqn{Gb_w= 1.075*gb_h}
-         Note that \eqn{Gb_w} should be doubled for amphistomatous plants (stomata on
-         both sides of the leaves).
+layer conductance for water vapour as follow:
+\deqn{Gb_w= 1.075*gb_h}
+Note that \eqn{Gb_w} should be doubled for amphistomatous plants (stomata on
+both sides of the leaves).
 }
 \examples{
 # Gb for a coffee plantation managed in agroforestry system:
@@ -65,14 +65,14 @@ Gb_h(Wind=3,wleaf=0.068,LAI_lay=4,LAI_abv=0.5,ZHT=25,Z_top=24,extwind=0.58)
 }
 \references{
 \itemize{
-  \item Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration:
-        scaling from leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
-  \item Mahat, V., D.G. Tarboton, and N.P. Molotch, Testing above‐ and below‐canopy represetations
-        of turbulent fluxes in an energy balance snowmelt model. Water Resources Research, 2013.
-        49(2): p. 1107-1122.
+\item Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration:
+scaling from leaves to canopies. Plant, Cell & Environment, 1995. 18(10): p. 1183-1200.
+\item Mahat, V., D.G. Tarboton, and N.P. Molotch, Testing above‐ and below‐canopy represetations
+of turbulent fluxes in an energy balance snowmelt model. Water Resources Research, 2013.
+49(2): p. 1107-1122.
 }
 }
 \seealso{
-\code{\link{G_bulk}}, \code{\link{G_soilcan}}, \code{\link{G_interlay}} and
-         \code{\link{GetWind}}, which is used internaly.
+\code{\link[=G_bulk]{G_bulk()}}, \code{\link[=G_soilcan]{G_soilcan()}}, \code{\link[=G_interlay]{G_interlay()}} and
+\code{\link[=GetWind]{GetWind()}}, which is used internaly.
 }

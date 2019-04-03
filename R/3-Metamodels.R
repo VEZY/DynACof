@@ -7,7 +7,7 @@
 #'              have custom metamodels, and/or allometries. The user can write the customized functions directly
 #'              in the parameter files were these functions are called. For example, to replace the light extinction
 #'              coefficient computation, the user should write a customized function instead of the call to
-#'              \code{Light_extinction_K()} on the line \code{k= Light_extinction_K}.
+#'              `Light_extinction_K()` on the line `k= Light_extinction_K`.
 #'              These functions are helper functions available to the user to use as a template,
 #'              but not to call them directly.
 #'
@@ -54,7 +54,7 @@
 #'
 #' @aliases Metamodels
 #'
-#' @seealso \code{\link{DynACof}}
+#' @seealso [DynACof()]
 #'
 #' @export
 Light_extinction_K= function(S,i){
@@ -102,11 +102,11 @@ Metamodels_soil= function(S,i){
 #'
 #' @param S  The list of class "Simulation" used by the DynACof model.
 #' @param i  The index of the day.
-#' @details  This function is called from the \code{\link{Tree}} parameter functions, and then by the model.
+#' @details  This function is called from the [Tree()] parameter functions, and then by the model.
 #'           In-depth details are available in \href{https://goo.gl/NVxcVp}{Vezy (2017)}
-#' @return   Any variable that is computed by the function. Default: \code{DM_Stem_Tree}, \code{Height_Tree},
-#'           \code{CrownProj_Tree}, \code{CrownRad_Tree}, \code{Crown_H_Tree}, \code{Trunk_H_Tree},
-#'           \code{LA_Tree and LAD_Tree}.
+#' @return   Any variable that is computed by the function. Default: `DM_Stem_Tree`, `Height_Tree`,
+#'           `CrownProj_Tree`, `CrownRad_Tree`, `Crown_H_Tree`, `Trunk_H_Tree`,
+#'           `LA_Tree and LAD_Tree`.
 #'
 #' @references Vezy, R., Simulation de pratiques de gestion alternatives pour l’adaptation des plantations pérennes
 #'             aux changements globaux, in École doctorale science de l'environnement, spécialité physique de

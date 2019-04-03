@@ -18,7 +18,7 @@ logistic_deriv(xi, u_log, s_log)
 }
 \value{
 \item{logistic}{Logistic function}
-        \item{logistic_deriv}{Derivative of the Logistic function}
+\item{logistic_deriv}{Derivative of the Logistic function}
 }
 \description{
 Compute a logistic function or its derivative
@@ -30,5 +30,5 @@ logistic_deriv(1:10,5,0.1)
 }
 \seealso{
 More informations can be found in \href{https://en.wikipedia.org/wiki/Logistic_function}{
-            the wikipedia page}
+the wikipedia page}
 }
