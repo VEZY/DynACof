@@ -180,54 +180,54 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 <tr><td></td><td>Plot_Age</td><td>year</td><td>Plantation age (starting at 1)</td></tr>
 <tr><td></td><td>Plot_Age_num</td><td>year (numeric)</td><td>Numeric age of plantation</td></tr>
 <tr><td></td><td>LAIplot</td><td>m2 leaves m-2 soil</td><td>Plot (Coffee + Shade Tree if any) Leaf Area Index</td></tr>
-<tr><td>Suffixes for Coffee organs</td><td><em><em>RE                      -                    Reserves                                                                           <br />
- <em><em>SCR                     -                    Stump and Coarse roots                                                             <br />
- <em><em>Fruit                   -                    Fruit                                                                              <br />
- <em><em>Shoot                  -                    Resprout wood (= branches)                                                         <br />
- <em><em>FRoot                   -                    Fine roots                                                                         <br />
- <em><em>Leaf                                         Leaves                                                                             <br />
-Suffixes for Shade Tree org.  <em><em>RE_Tree                 -                    Reserves                                                                           <br />
- <em><em>Stem_Tree               -                    Stem (= trunk)                                                                     <br />
- <em><em>Branch_Tree             -                    Branches                                                                           <br />
- <em><em>CoarseRoot_Tree         -                    Coarse roots                                                                       <br />
- <em><em>FRoot_Tree              -                    Fine roots                                                                         <br />
- <em><em>Leaf_Tree                                    Leaves                                                                             <br />
-Energy                        Rn_tot                    MJ m-2 d-1           System net radiation                                                               <br />
- Rn_Tree                   MJ m-2 d-1           Shade tree net radiation                                                           <br />
- Rn_Coffee                 MJ m-2 d-1           Coffee net radiation                                                               <br />
- Rn_Soil                   MJ m-2 d-1           Soil net radiation                                                                 <br />
- Rn_Soil_SW                MJ m-2 d-1           Soil net radiation computed using Shuttleworth &amp; Wallace (1985) for reference      <br />
- LE</em></em>                      MJ m-2 d-1           System/Coffee/Tree/Soil latent heat                                                <br />
- H</em></em>                       MJ m-2 d-1           System/Coffee/Tree/Soil sensible heat                                              <br />
- Q_Soil                    MJ m-2 d-1           Soil heat transport                                                                <br />
- Transmittance_Tree        fraction             Fraction of light transmitted by the shade trees                                   <br />
- PAR_Trans_Tree            MJ m-2 d-1           Light transmitted by the shade trees canopy                                        <br />
- PAR_Trans                 MJ m-2 d-1           Light transmitted by the Coffea canopy                                             <br />
- K_Dir                     -                    Direct light extinction coefficient                                                <br />
- K_Dif                     -                    Diffuse light extinction coefficient                                               <br />
- APAR                      MJ m-2 d-1           Absorbed PAR by the plant                                                          <br />
- APAR_Dif                  MJ m-2 d-1           Absorbed diffuse PAR (Direct is APAR-APAR_Dif)                                     <br />
- lue                       gC MJ                Light use efficiency                                                               <br />
- Tleaf_Coffee              deg C                Coffee canopy temperature computed by DynACof                                      <br />
- WindSpeed</em></em>               m s-1                Wind speed at the center of the layer                                              <br />
- TairCanopy</em></em>              deg C                Air tempetature at the center of the layer                                         <br />
- DegreeDays_Tcan           deg C                Growing degree days computed using Coffee Canopy Temperature                       <br />
-Carbon                        GPP                       gC m-2 d-1           Gross primary productivity                                                         <br />
- Consumption_RE            gC m-2 d-1           Daily reserve consumption                                                          <br />
- Carbon_Lack_Mortality     gC m-2 d-1           Mortality from a higher carbon consumption than offer                              <br />
- Rm                        gC m-2 d-1           Total Coffee maintenance respiration                                               <br />
- Rm</em></em>                      gC m-2 d-1           Maintenance respiration at organ scale                                             <br />
- Rg                        gC m-2 d-1           Total Coffee growth respiration                                                    <br />
- Rg</em></em>                      gC m-2 d-1           Growth respiration at organ scale                                                  <br />
- Ra                        gC m-2 d-1           Coffee layer autotrophic respiration (=Rm+Rg)                                      <br />
- Demand</em></em>                  gC m-2 d-1           C demand at organ scale (fruit, leaf and fine root only)                           <br />
- Alloc</em></em>                   gC m-2 d-1           C allocation to organ net of Rm (NPP+Rg)                                           <br />
- Offer                     gC m-2 d-1           C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     <br />
- Offer</em></em>                   gC m-2 d-1           C offer to organ, net of Rm                                                        <br />
- NPP                       gC m-2 d-1           Net primary productivity at layer scale                                            <br />
- NPP</em></em>                     gC m-2 d-1           Net primary productivity at organ scale                                            <br />
- Mnat</em></em>                    gC m-2 d-1           Organ natural mortality (= due to lifespan)                                        <br />
- Mprun</em></em></td><td>gC m-2 d-1</td><td>Organ mortality due to pruning</td></tr>
+<tr><td>Suffixes for Coffee organs</td><td>x_RE</td><td>-</td><td>Reserves</td></tr>
+<tr><td></td><td>x_SCR</td><td>-</td><td>Stump and Coarse roots</td></tr>
+<tr><td></td><td>x_Fruit</td><td>-</td><td>Fruit</td></tr>
+<tr><td></td><td>x_Shoot</td><td>-</td><td>Resprout wood (= branches)</td></tr>
+<tr><td></td><td>x_FRoot</td><td>-</td><td>Fine roots</td></tr>
+<tr><td></td><td>x_Leaf</td><td></td><td>Leaves</td></tr>
+<tr><td>Suffixes for Shade Tree org.</td><td>x_RE_Tree</td><td>-</td><td>Reserves</td></tr>
+<tr><td></td><td>x_Stem_Tree</td><td>-</td><td>Stem (= trunk)</td></tr>
+<tr><td></td><td>x_Branch_Tree</td><td>-</td><td>Branches</td></tr>
+<tr><td></td><td>x_CoarseRoot_Tree</td><td>-</td><td>Coarse roots</td></tr>
+<tr><td></td><td>x_FRoot_Tree</td><td>-</td><td>Fine roots</td></tr>
+<tr><td></td><td>x_Leaf_Tree</td><td></td><td>Leaves</td></tr>
+<tr><td>Energy</td><td>Rn_tot</td><td>MJ m-2 d-1</td><td>System net radiation</td></tr>
+<tr><td></td><td>Rn_Tree</td><td>MJ m-2 d-1</td><td>Shade tree net radiation</td></tr>
+<tr><td></td><td>Rn_Coffee</td><td>MJ m-2 d-1</td><td>Coffee net radiation</td></tr>
+<tr><td></td><td>Rn_Soil</td><td>MJ m-2 d-1</td><td>Soil net radiation</td></tr>
+<tr><td></td><td>Rn_Soil_SW</td><td>MJ m-2 d-1</td><td>Soil net radiation computed using Shuttleworth &amp; Wallace (1985) for reference</td></tr>
+<tr><td></td><td>LE_*</td><td>MJ m-2 d-1</td><td>System/Coffee/Tree/Soil latent heat</td></tr>
+<tr><td></td><td>H_*</td><td>MJ m-2 d-1</td><td>System/Coffee/Tree/Soil sensible heat</td></tr>
+<tr><td></td><td>Q_Soil</td><td>MJ m-2 d-1</td><td>Soil heat transport</td></tr>
+<tr><td></td><td>Transmittance_Tree</td><td>fraction</td><td>Fraction of light transmitted by the shade trees</td></tr>
+<tr><td></td><td>PAR_Trans_Tree</td><td>MJ m-2 d-1</td><td>Light transmitted by the shade trees canopy</td></tr>
+<tr><td></td><td>PAR_Trans</td><td>MJ m-2 d-1</td><td>Light transmitted by the Coffea canopy</td></tr>
+<tr><td></td><td>K_Dir</td><td>-</td><td>Direct light extinction coefficient</td></tr>
+<tr><td></td><td>K_Dif</td><td>-</td><td>Diffuse light extinction coefficient</td></tr>
+<tr><td></td><td>APAR</td><td>MJ m-2 d-1</td><td>Absorbed PAR by the plant</td></tr>
+<tr><td></td><td>APAR_Dif</td><td>MJ m-2 d-1</td><td>Absorbed diffuse PAR (Direct is APAR-APAR_Dif)</td></tr>
+<tr><td></td><td>lue</td><td>gC MJ</td><td>Light use efficiency</td></tr>
+<tr><td></td><td>Tleaf_Coffee</td><td>deg C</td><td>Coffee canopy temperature computed by DynACof</td></tr>
+<tr><td></td><td>WindSpeed_*</td><td>m s-1</td><td>Wind speed at the center of the layer</td></tr>
+<tr><td></td><td>TairCanopy_*</td><td>deg C</td><td>Air tempetature at the center of the layer</td></tr>
+<tr><td></td><td>DegreeDays_Tcan</td><td>deg C</td><td>Growing degree days computed using Coffee Canopy Temperature</td></tr>
+<tr><td>Carbon</td><td>GPP</td><td>gC m-2 d-1</td><td>Gross primary productivity</td></tr>
+<tr><td></td><td>Consumption_RE</td><td>gC m-2 d-1</td><td>Daily reserve consumption</td></tr>
+<tr><td></td><td>Carbon_Lack_Mortality</td><td>gC m-2 d-1</td><td>Mortality from a higher carbon consumption than offer</td></tr>
+<tr><td></td><td>Rm</td><td>gC m-2 d-1</td><td>Total Coffee maintenance respiration</td></tr>
+<tr><td></td><td>Rm_*</td><td>gC m-2 d-1</td><td>Maintenance respiration at organ scale</td></tr>
+<tr><td></td><td>Rg</td><td>gC m-2 d-1</td><td>Total Coffee growth respiration</td></tr>
+<tr><td></td><td>Rg_*</td><td>gC m-2 d-1</td><td>Growth respiration at organ scale</td></tr>
+<tr><td></td><td>Ra</td><td>gC m-2 d-1</td><td>Coffee layer autotrophic respiration (=Rm+Rg)</td></tr>
+<tr><td></td><td>Demand_*</td><td>gC m-2 d-1</td><td>C demand at organ scale (fruit, leaf and fine root only)</td></tr>
+<tr><td></td><td>Alloc_*</td><td>gC m-2 d-1</td><td>C allocation to organ net of Rm (NPP+Rg)</td></tr>
+<tr><td></td><td>Offer</td><td>gC m-2 d-1</td><td>C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)</td></tr>
+<tr><td></td><td>Offer_*</td><td>gC m-2 d-1</td><td>C offer to organ, net of Rm</td></tr>
+<tr><td></td><td>NPP</td><td>gC m-2 d-1</td><td>Net primary productivity at layer scale</td></tr>
+<tr><td></td><td>NPP_*</td><td>gC m-2 d-1</td><td>Net primary productivity at organ scale</td></tr>
+<tr><td></td><td>Mnat_*</td><td>gC m-2 d-1</td><td>Organ natural mortality (= due to lifespan)</td></tr>
+<tr><td></td><td>Mprun_*</td><td>gC m-2 d-1</td><td>Organ mortality due to pruning</td></tr>
 <tr><td></td><td>M_ALS</td><td>gC m-2 d-1</td><td>Coffee leaf mortality from American Leaf Spot</td></tr>
 <tr><td></td><td>Mortality_*</td><td>gC m-2 d-1</td><td>Total organ mortality</td></tr>
 <tr><td></td><td>LAI</td><td>m2 leaves m-2 soil</td><td>Leaf Area Index</td></tr>
@@ -281,7 +281,7 @@ Carbon                        GPP                       gC m-2 d-1           Gro
 <tr><td></td><td>CrownProj_Tree</td><td>m2 crown tree-1</td><td>Crown projection</td></tr>
 <tr><td></td><td>Stocking_Tree</td><td>tree m-2</td><td>Shade tree density</td></tr>
 <tr><td></td><td>TimetoThin_Tree</td><td>boolean</td><td>Days on which tree is thinned</td></tr>
-<tr><td></td><td>MThinning_*_Tree</td><td>gc m-2 d-1</td><td>Mortality due to thining at organ scale</td></tr>
+<tr><td></td><td>MThinning_x_Tree</td><td>gc m-2 d-1</td><td>Mortality due to thining at organ scale</td></tr>
 </table>
 </li>
 <li><p>Meteo: A data.frame of the input meteorology, potentially coming from the output of <code><a href='Meteorology.html'>Meteorology()</a></code>:</p><table class='table'>
