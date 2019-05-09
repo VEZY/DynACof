@@ -29,7 +29,8 @@ Imports:
     magrittr,
     lubridate,
     bigleaf,
-    crayon
+    crayon,
+    solartime
 RoxygenNote: 6.1.1
 Collate: 
     '0-Constants.R'

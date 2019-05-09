@@ -64,7 +64,7 @@
 #'                              \tab DegreeDays_Tcan          \tab deg C               \tab Growing degree days computed using Coffee Canopy Temperature                       \cr
 #' Carbon                       \tab GPP                      \tab gC m-2 d-1          \tab Gross primary productivity                                                         \cr
 #'                              \tab Consumption_RE           \tab gC m-2 d-1          \tab Daily reserve consumption                                                          \cr
-#'                              \tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than offer                              \cr
+#'                              \tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than Supply                             \cr
 #'                              \tab Rm                       \tab gC m-2 d-1          \tab Total Coffee maintenance respiration                                               \cr
 #'                              \tab Rm_x                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
 #'                              \tab Rg                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
@@ -72,13 +72,13 @@
 #'                              \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rg)                                      \cr
 #'                              \tab Demand_x                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
 #'                              \tab Alloc_x                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rg)                                           \cr
-#'                              \tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
-#'                              \tab Offer_x                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
+#'                              \tab Supply                   \tab gC m-2 d-1          \tab C supply at the begining of the day at layer scale (GPP+Reserve consumption-Rm)    \cr
+#'                              \tab Supply_x                 \tab gC m-2 d-1          \tab C supply to organ, net of Rm                                                       \cr
 #'                              \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
 #'                              \tab NPP_x                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
 #'                              \tab Mnat_x                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
 #'                              \tab Mprun_x                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
-#'                              \tab M_ALS                     \tab gC m-2 d-1         \tab Coffee leaf mortality from American Leaf Spot                                      \cr
+#'                              \tab M_ALS                    \tab gC m-2 d-1          \tab Coffee leaf mortality from American Leaf Spot                                      \cr
 #'                              \tab Mortality_x              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
 #'                              \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
 #'                              \tab CM_x                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
@@ -105,16 +105,16 @@
 #'                              \tab TotSuperficialRunoff     \tab mm                  \tab Sum of discharge+ExcessRunoff                                                      \cr
 #'                              \tab InfilCapa                \tab mm                  \tab Superficial water infiltration capacity to first layer of soil                     \cr
 #'                              \tab Infiltration             \tab mm                  \tab Superficial water infiltration to first layer of soil                              \cr
-#'                              \tab Drain_[1-3]              \tab mm                  \tab Water drainage from soil layer 1, 2 or 3                                           \cr
+#'                              \tab Drain_\[1-3\]            \tab mm                  \tab Water drainage from soil layer 1, 2 or 3                                           \cr
 #'                              \tab WSurfaceRes              \tab mm                  \tab Soil water content from the surface layer                                          \cr
 #'                              \tab W_tot                    \tab mm                  \tab Total soil profile water content                                                   \cr
-#'                              \tab W_[1-3]                  \tab mm                  \tab Soil water content from the layer 1, 2 or 3                                        \cr
+#'                              \tab W_\[1-3\]                \tab mm                  \tab Soil water content from the layer 1, 2 or 3                                        \cr
 #'                              \tab REW_tot                  \tab -                   \tab Relative extractable water from the soil                                           \cr
-#'                              \tab REW_[1-3]                \tab -                   \tab Relative extractable water from the layer 1, 2 or 3                                \cr
+#'                              \tab REW_\[1-3\]              \tab -                   \tab Relative extractable water from the layer 1, 2 or 3                                \cr
 #'                              \tab EW_tot                   \tab mm                  \tab Extractable water from the soil                                                    \cr
-#'                              \tab EW_[1-3]                 \tab mm                  \tab Extractable water from the layer 1, 2 or 3                                         \cr
+#'                              \tab EW_\[1-3\]               \tab mm                  \tab Extractable water from the layer 1, 2 or 3                                         \cr
 #'                              \tab SWD                      \tab mm                  \tab soil water deficit                                                                 \cr
-#'                              \tab RootWaterExtract_[1-3]   \tab mm                  \tab Root water extraction for soil layer 1 to 3                                        \cr
+#'                              \tab RootWaterExtract_\[1-3\] \tab mm                  \tab Root water extraction for soil layer 1 to 3                                        \cr
 #'                              \tab IntercRevapor            \tab mm                  \tab Evaporation by canopy                                                              \cr
 #'                              \tab T_x                      \tab mm                  \tab Transpiration at system/Coffee/Tree scale                                          \cr
 #'                              \tab E_Soil                   \tab mm                  \tab Soil evaporation                                                                   \cr
@@ -163,7 +163,7 @@
 #'          LAI_Tree = shade tree LAI.
 #'          Special shade tree variables (see return section) are only optional,
 #'          and it may have more variables upon parameterization because variables can be added in
-#'          the metamodels parameter file in \strong{[=Light_extinction_K::Metamodels()]} or
+#'          the metamodels parameter file in \strong{[Metamodels()][Light_extinction_K()]} or
 #'          \strong{[Allometries()]}.
 #'          Important :
 #'          It is highly recommended to set the system environment timezone to the one from the meteorology file.
@@ -587,8 +587,8 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     S$Sim$Consumption_RE[i]=
       S$Parameters$kres*S$Sim$CM_RE[previous_i(i,1)]
 
-    # Offer function
-    S$Sim$Offer[i]=
+    # Supply function
+    S$Sim$Supply[i]=
       max(S$Sim$GPP[i]-S$Sim$Rm[i]+S$Sim$Consumption_RE[i],0)
 
     # If the respiration is greater than the GPP + reserves use, then take this carbon
@@ -598,7 +598,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     # 1-Resprout wood ---------------------------------------------------------
     # Allocation priority 1, see Charbonnier 2012.
-    S$Sim$Alloc_Shoot[i]= S$Parameters$lambda_Shoot*S$Sim$Offer[i]
+    S$Sim$Alloc_Shoot[i]= S$Parameters$lambda_Shoot*S$Sim$Supply[i]
     S$Sim$NPP_Shoot[i]= S$Sim$Alloc_Shoot[i]/S$Parameters$epsilon_Shoot
     S$Sim$Rg_Shoot[i]= S$Sim$Alloc_Shoot[i]-S$Sim$NPP_Shoot[i]
     S$Sim$Mnat_Shoot[i]=
@@ -614,7 +614,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
           S$Sim$CM_Shoot[previous_i(i,1)])
 
     # 2-Stump and coarse roots (perennial wood) ------------------------------
-    S$Sim$Alloc_SCR[i]= S$Parameters$lambda_SCR*S$Sim$Offer[i]
+    S$Sim$Alloc_SCR[i]= S$Parameters$lambda_SCR*S$Sim$Supply[i]
     S$Sim$NPP_SCR[i]= S$Sim$Alloc_SCR[i]/S$Parameters$epsilon_SCR
     S$Sim$Rg_SCR[i]= S$Sim$Alloc_SCR[i]-S$Sim$NPP_SCR[i]
     S$Sim$Mnat_SCR[i]=
@@ -714,14 +714,14 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     Demand_Fruit_Cohort_Period[is.na(Demand_Fruit_Cohort_Period)]= 0
     # Total C demand of the fruits :
     S$Sim$Demand_Fruit[i]= sum(Demand_Fruit_Cohort_Period)
-    # C offer to Fruits (i.e. what is left from Offer after removing the consumption
+    # C supply to Fruits (i.e. what is left from Supply after removing the consumption
     # by previous compartments and Rm):
-    S$Sim$Offer_Fruit[i]=
-      S$Sim$Offer[i]-S$Sim$Alloc_Shoot[i]-
+    S$Sim$Supply_Fruit[i]=
+      S$Sim$Supply[i]-S$Sim$Alloc_Shoot[i]-
       S$Sim$Alloc_SCR[i]
 
     # Total C allocation to all fruits on day i :
-    S$Sim$Alloc_Fruit[i]= min(S$Sim$Demand_Fruit[i],S$Sim$Offer_Fruit[i])
+    S$Sim$Alloc_Fruit[i]= min(S$Sim$Demand_Fruit[i],S$Sim$Supply_Fruit[i])
     # Allocation to each cohort, relative to each cohort demand :
     Rel_DE= Demand_Fruit_Cohort_Period/S$Sim$Demand_Fruit[i]
     Rel_DE[is.nan(Rel_DE)]= 0
@@ -802,23 +802,23 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     # Leaves ------------------------------------------------------------------
 
-    S$Sim$Offer_Leaf[i]=
+    S$Sim$Supply_Leaf[i]=
       S$Parameters$lambda_Leaf_remain*
-      (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
+      (S$Sim$Supply[i]-S$Sim$Alloc_Fruit[i]-
          S$Sim$Alloc_Shoot[i]-S$Sim$Alloc_SCR[i])
 
     S$Sim$Alloc_Leaf[i]=
       min(S$Parameters$DELM*(S$Parameters$Stocking_Coffee/10000)*
             ((S$Parameters$LAI_max-S$Sim$LAI[i])/
                (S$Sim$LAI[i]+S$Parameters$LAI_max)),
-          S$Sim$Offer_Leaf[i])
+          S$Sim$Supply_Leaf[i])
 
 
     S$Sim$NPP_Leaf[i]= S$Sim$Alloc_Leaf[i]/S$Parameters$epsilon_Leaf
     S$Sim$Rg_Leaf[i]= S$Sim$Alloc_Leaf[i]-S$Sim$NPP_Leaf[i]
     S$Sim$Mnat_Leaf[i]=S$Sim$CM_Leaf[previous_i(i,1)]/S$Parameters$lifespan_Leaf
 
-    S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_Leaf[i]-S$Sim$Alloc_Leaf[i])
+    S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Supply_Leaf[i]-S$Sim$Alloc_Leaf[i])
 
     S$Sim$M_ALS[i]=
       after(i,2)*max(0,S$Sim$CM_Leaf[previous_i(i,1)]*S$Sim$ALS[i])
@@ -834,18 +834,18 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     # Fine Roots --------------------------------------------------------------
 
-    S$Sim$Offer_FRoot[i]=
+    S$Sim$Supply_FRoot[i]=
       S$Parameters$lambda_FRoot_remain*
-      (S$Sim$Offer[i]-S$Sim$Alloc_Fruit[i]-
+      (S$Sim$Supply[i]-S$Sim$Alloc_Fruit[i]-
          S$Sim$Alloc_Shoot[i]-S$Sim$Alloc_SCR[i])
 
-    S$Sim$Alloc_FRoot[i]=max(0,min(S$Sim$Alloc_Leaf[i],S$Sim$Offer_FRoot[i]))
+    S$Sim$Alloc_FRoot[i]=max(0,min(S$Sim$Alloc_Leaf[i],S$Sim$Supply_FRoot[i]))
 
     S$Sim$NPP_FRoot[i]= S$Sim$Alloc_FRoot[i]/S$Parameters$epsilon_FRoot
 
     S$Sim$Rg_FRoot[i]= S$Sim$Alloc_FRoot[i]-S$Sim$NPP_FRoot[i]
 
-    S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Offer_FRoot[i]-S$Sim$Alloc_FRoot[i])
+    S$Sim$NPP_RE[i]= S$Sim$NPP_RE[i]+(S$Sim$Supply_FRoot[i]-S$Sim$Alloc_FRoot[i])
 
     S$Sim$Mnat_FRoot[i]= S$Sim$CM_FRoot[previous_i(i,1)]/S$Parameters$lifespan_FRoot
     S$Sim$Mprun_FRoot[i]= S$Parameters$m_FRoot*S$Sim$Mprun_Leaf[i]

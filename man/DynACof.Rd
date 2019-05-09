@@ -81,7 +81,7 @@ Energy                       \tab Rn_tot                   \tab MJ m-2 d-1      
 \tab DegreeDays_Tcan          \tab deg C               \tab Growing degree days computed using Coffee Canopy Temperature                       \cr
 Carbon                       \tab GPP                      \tab gC m-2 d-1          \tab Gross primary productivity                                                         \cr
 \tab Consumption_RE           \tab gC m-2 d-1          \tab Daily reserve consumption                                                          \cr
-\tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than offer                              \cr
+\tab Carbon_Lack_Mortality    \tab gC m-2 d-1          \tab Mortality from a higher carbon consumption than Supply                             \cr
 \tab Rm                       \tab gC m-2 d-1          \tab Total Coffee maintenance respiration                                               \cr
 \tab Rm_x                     \tab gC m-2 d-1          \tab Maintenance respiration at organ scale                                             \cr
 \tab Rg                       \tab gC m-2 d-1          \tab Total Coffee growth respiration                                                    \cr
@@ -89,13 +89,13 @@ Carbon                       \tab GPP                      \tab gC m-2 d-1      
 \tab Ra                       \tab gC m-2 d-1          \tab Coffee layer autotrophic respiration (=Rm+Rg)                                      \cr
 \tab Demand_x                 \tab gC m-2 d-1          \tab C demand at organ scale (fruit, leaf and fine root only)                           \cr
 \tab Alloc_x                  \tab gC m-2 d-1          \tab C allocation to organ net of Rm (NPP+Rg)                                           \cr
-\tab Offer                    \tab gC m-2 d-1          \tab C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)     \cr
-\tab Offer_x                  \tab gC m-2 d-1          \tab C offer to organ, net of Rm                                                        \cr
+\tab Supply                   \tab gC m-2 d-1          \tab C supply at the begining of the day at layer scale (GPP+Reserve consumption-Rm)    \cr
+\tab Supply_x                 \tab gC m-2 d-1          \tab C supply to organ, net of Rm                                                       \cr
 \tab NPP                      \tab gC m-2 d-1          \tab Net primary productivity at layer scale                                            \cr
 \tab NPP_x                    \tab gC m-2 d-1          \tab Net primary productivity at organ scale                                            \cr
 \tab Mnat_x                   \tab gC m-2 d-1          \tab Organ natural mortality (= due to lifespan)                                        \cr
 \tab Mprun_x                  \tab gC m-2 d-1          \tab Organ mortality due to pruning                                                     \cr
-\tab M_ALS                     \tab gC m-2 d-1         \tab Coffee leaf mortality from American Leaf Spot                                      \cr
+\tab M_ALS                    \tab gC m-2 d-1          \tab Coffee leaf mortality from American Leaf Spot                                      \cr
 \tab Mortality_x              \tab gC m-2 d-1          \tab Total organ mortality                                                              \cr
 \tab LAI                      \tab m2 leaves m-2 soil  \tab Leaf Area Index                                                                    \cr
 \tab CM_x                     \tab gC m-2 d-1          \tab Organ C mass                                                                       \cr
@@ -122,16 +122,16 @@ Water                        \tab IntercMax                \tab mm              
 \tab TotSuperficialRunoff     \tab mm                  \tab Sum of discharge+ExcessRunoff                                                      \cr
 \tab InfilCapa                \tab mm                  \tab Superficial water infiltration capacity to first layer of soil                     \cr
 \tab Infiltration             \tab mm                  \tab Superficial water infiltration to first layer of soil                              \cr
-\tab Drain_\link{1-3}              \tab mm                  \tab Water drainage from soil layer 1, 2 or 3                                           \cr
+\tab Drain_[1-3]            \tab mm                  \tab Water drainage from soil layer 1, 2 or 3                                           \cr
 \tab WSurfaceRes              \tab mm                  \tab Soil water content from the surface layer                                          \cr
 \tab W_tot                    \tab mm                  \tab Total soil profile water content                                                   \cr
-\tab W_\link{1-3}                  \tab mm                  \tab Soil water content from the layer 1, 2 or 3                                        \cr
+\tab W_[1-3]                \tab mm                  \tab Soil water content from the layer 1, 2 or 3                                        \cr
 \tab REW_tot                  \tab -                   \tab Relative extractable water from the soil                                           \cr
-\tab REW_\link{1-3}                \tab -                   \tab Relative extractable water from the layer 1, 2 or 3                                \cr
+\tab REW_[1-3]              \tab -                   \tab Relative extractable water from the layer 1, 2 or 3                                \cr
 \tab EW_tot                   \tab mm                  \tab Extractable water from the soil                                                    \cr
-\tab EW_\link{1-3}                 \tab mm                  \tab Extractable water from the layer 1, 2 or 3                                         \cr
+\tab EW_[1-3]               \tab mm                  \tab Extractable water from the layer 1, 2 or 3                                         \cr
 \tab SWD                      \tab mm                  \tab soil water deficit                                                                 \cr
-\tab RootWaterExtract_\link{1-3}   \tab mm                  \tab Root water extraction for soil layer 1 to 3                                        \cr
+\tab RootWaterExtract_[1-3] \tab mm                  \tab Root water extraction for soil layer 1 to 3                                        \cr
 \tab IntercRevapor            \tab mm                  \tab Evaporation by canopy                                                              \cr
 \tab T_x                      \tab mm                  \tab Transpiration at system/Coffee/Tree scale                                          \cr
 \tab E_Soil                   \tab mm                  \tab Soil evaporation                                                                   \cr
@@ -187,7 +187,7 @@ Almost all variables for coffee exist also for shade trees with the suffix
 LAI_Tree = shade tree LAI.
 Special shade tree variables (see return section) are only optional,
 and it may have more variables upon parameterization because variables can be added in
-the metamodels parameter file in \strong{\code{\link[=Light_extinction_K:Metamodels]{=Light_extinction_K::Metamodels()}}} or
+the metamodels parameter file in \strong{\link[=Light_extinction_K]{Metamodels()}} or
 \strong{\code{\link[=Allometries]{Allometries()}}}.
 Important :
 It is highly recommended to set the system environment timezone to the one from the meteorology file.

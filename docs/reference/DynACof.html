@@ -214,7 +214,7 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 <tr><td></td><td>DegreeDays_Tcan</td><td>deg C</td><td>Growing degree days computed using Coffee Canopy Temperature</td></tr>
 <tr><td>Carbon</td><td>GPP</td><td>gC m-2 d-1</td><td>Gross primary productivity</td></tr>
 <tr><td></td><td>Consumption_RE</td><td>gC m-2 d-1</td><td>Daily reserve consumption</td></tr>
-<tr><td></td><td>Carbon_Lack_Mortality</td><td>gC m-2 d-1</td><td>Mortality from a higher carbon consumption than offer</td></tr>
+<tr><td></td><td>Carbon_Lack_Mortality</td><td>gC m-2 d-1</td><td>Mortality from a higher carbon consumption than Supply</td></tr>
 <tr><td></td><td>Rm</td><td>gC m-2 d-1</td><td>Total Coffee maintenance respiration</td></tr>
 <tr><td></td><td>Rm_x</td><td>gC m-2 d-1</td><td>Maintenance respiration at organ scale</td></tr>
 <tr><td></td><td>Rg</td><td>gC m-2 d-1</td><td>Total Coffee growth respiration</td></tr>
@@ -222,8 +222,8 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 <tr><td></td><td>Ra</td><td>gC m-2 d-1</td><td>Coffee layer autotrophic respiration (=Rm+Rg)</td></tr>
 <tr><td></td><td>Demand_x</td><td>gC m-2 d-1</td><td>C demand at organ scale (fruit, leaf and fine root only)</td></tr>
 <tr><td></td><td>Alloc_x</td><td>gC m-2 d-1</td><td>C allocation to organ net of Rm (NPP+Rg)</td></tr>
-<tr><td></td><td>Offer</td><td>gC m-2 d-1</td><td>C offer at the begining of the day at layer scale (GPP+Reserve consumption-Rm)</td></tr>
-<tr><td></td><td>Offer_x</td><td>gC m-2 d-1</td><td>C offer to organ, net of Rm</td></tr>
+<tr><td></td><td>Supply</td><td>gC m-2 d-1</td><td>C supply at the begining of the day at layer scale (GPP+Reserve consumption-Rm)</td></tr>
+<tr><td></td><td>Supply_x</td><td>gC m-2 d-1</td><td>C supply to organ, net of Rm</td></tr>
 <tr><td></td><td>NPP</td><td>gC m-2 d-1</td><td>Net primary productivity at layer scale</td></tr>
 <tr><td></td><td>NPP_x</td><td>gC m-2 d-1</td><td>Net primary productivity at organ scale</td></tr>
 <tr><td></td><td>Mnat_x</td><td>gC m-2 d-1</td><td>Organ natural mortality (= due to lifespan)</td></tr>
@@ -255,16 +255,16 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 <tr><td></td><td>TotSuperficialRunoff</td><td>mm</td><td>Sum of discharge+ExcessRunoff</td></tr>
 <tr><td></td><td>InfilCapa</td><td>mm</td><td>Superficial water infiltration capacity to first layer of soil</td></tr>
 <tr><td></td><td>Infiltration</td><td>mm</td><td>Superficial water infiltration to first layer of soil</td></tr>
-<tr><td></td><td>Drain_1-3</td><td>mm</td><td>Water drainage from soil layer 1, 2 or 3</td></tr>
+<tr><td></td><td>Drain_[1-3]</td><td>mm</td><td>Water drainage from soil layer 1, 2 or 3</td></tr>
 <tr><td></td><td>WSurfaceRes</td><td>mm</td><td>Soil water content from the surface layer</td></tr>
 <tr><td></td><td>W_tot</td><td>mm</td><td>Total soil profile water content</td></tr>
-<tr><td></td><td>W_1-3</td><td>mm</td><td>Soil water content from the layer 1, 2 or 3</td></tr>
+<tr><td></td><td>W_[1-3]</td><td>mm</td><td>Soil water content from the layer 1, 2 or 3</td></tr>
 <tr><td></td><td>REW_tot</td><td>-</td><td>Relative extractable water from the soil</td></tr>
-<tr><td></td><td>REW_1-3</td><td>-</td><td>Relative extractable water from the layer 1, 2 or 3</td></tr>
+<tr><td></td><td>REW_[1-3]</td><td>-</td><td>Relative extractable water from the layer 1, 2 or 3</td></tr>
 <tr><td></td><td>EW_tot</td><td>mm</td><td>Extractable water from the soil</td></tr>
-<tr><td></td><td>EW_1-3</td><td>mm</td><td>Extractable water from the layer 1, 2 or 3</td></tr>
+<tr><td></td><td>EW_[1-3]</td><td>mm</td><td>Extractable water from the layer 1, 2 or 3</td></tr>
 <tr><td></td><td>SWD</td><td>mm</td><td>soil water deficit</td></tr>
-<tr><td></td><td>RootWaterExtract_1-3</td><td>mm</td><td>Root water extraction for soil layer 1 to 3</td></tr>
+<tr><td></td><td>RootWaterExtract_[1-3]</td><td>mm</td><td>Root water extraction for soil layer 1 to 3</td></tr>
 <tr><td></td><td>IntercRevapor</td><td>mm</td><td>Evaporation by canopy</td></tr>
 <tr><td></td><td>T_x</td><td>mm</td><td>Transpiration at system/Coffee/Tree scale</td></tr>
 <tr><td></td><td>E_Soil</td><td>mm</td><td>Soil evaporation</td></tr>
@@ -319,7 +319,7 @@ Almost all variables for coffee exist also for shade trees with the suffix
 LAI_Tree = shade tree LAI.
 Special shade tree variables (see return section) are only optional,
 and it may have more variables upon parameterization because variables can be added in
-the metamodels parameter file in <strong><code>=Light_extinction_K::Metamodels()</code></strong> or
+the metamodels parameter file in <strong><a href='Light_extinction_K.html'>Metamodels()</a></strong> or
 <strong><code><a href='Allometries.html'>Allometries()</a></code></strong>.
 Important :
 It is highly recommended to set the system environment timezone to the one from the meteorology file.

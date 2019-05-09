@@ -80,6 +80,8 @@
 #'
 #' @export
 Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
+  .= NULL # for R CMD check
+
   if(is.null(file)){
     Aquiares= NULL
     data("Aquiares", envir = environment())
@@ -242,7 +244,7 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
 
   # Solar zenithal angle at noon (radian):
   MetData$ZEN=
-    solartime::computeSunPosition(timestamp = MetData$Date[i]+60*60*12+cor_tz,
+    solartime::computeSunPosition(timestamp = MetData$Date+60*60*12+cor_tz,
                                   latDeg = Parameters$Latitude,
                                   longDeg = Parameters$Longitude)%>%
     as.data.frame()%>%{sin(.$elevation)}%>%acos(.)

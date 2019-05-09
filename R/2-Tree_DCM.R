@@ -133,31 +133,31 @@ Shade.Tree= function(S,i){
       max(0,min(S$Sim$CM_RE_Tree[previous_i(i,1)],S$Parameters$kres_max_Tree*S$Sim$Rm_Tree[i]))
   }
 
-  S$Sim$Offer_Total_Tree[i]=
+  S$Sim$Supply_Total_Tree[i]=
     S$Sim$GPP_Tree[i]-S$Sim$Rm_Tree[i]+S$Sim$Consumption_RE_Tree[i]
-  # If the offer is negative (Rm>GPP+RE), there is mortality. This mortality is shared between
+  # If the supply is negative (Rm>GPP+RE), there is mortality. This mortality is shared between
   # the organs according to their potential carbon allocation (it is a deficit in carbon
   # allocation)
 
-  if(S$Sim$Offer_Total_Tree[i]<0){
+  if(S$Sim$Supply_Total_Tree[i]<0){
     # Make it positive to cumulate in mortality:
-    S$Sim$Offer_Total_Tree[i]= -S$Sim$Offer_Total_Tree[i]
+    S$Sim$Supply_Total_Tree[i]= -S$Sim$Supply_Total_Tree[i]
     # Allocate carbon deficit to each organ:
     S$Sim$M_Rm_Stem_Tree[i]=
-      S$Parameters$lambda_Stem_Tree*S$Sim$Offer_Total_Tree[i]
+      S$Parameters$lambda_Stem_Tree*S$Sim$Supply_Total_Tree[i]
     S$Sim$M_Rm_CR_Tree[i]=
-      S$Parameters$lambda_CR_Tree*S$Sim$Offer_Total_Tree[i]
+      S$Parameters$lambda_CR_Tree*S$Sim$Supply_Total_Tree[i]
     S$Sim$M_Rm_Branch_Tree[i]=
-      S$Parameters$lambda_Branch_Tree*S$Sim$Offer_Total_Tree[i]
+      S$Parameters$lambda_Branch_Tree*S$Sim$Supply_Total_Tree[i]
     S$Sim$M_Rm_Leaf_Tree[i]=
       min(S$Parameters$DELM_Tree*S$Sim$Stocking_Tree[i]*
             ((S$Parameters$LAI_max_Tree-S$Sim$LAI_Tree[previous_i(i,1)])/
                (S$Sim$LAI_Tree[previous_i(i,1)]+S$Parameters$LAI_max_Tree)),
-          S$Parameters$lambda_Leaf_Tree*S$Sim$Offer_Total_Tree[i])
+          S$Parameters$lambda_Leaf_Tree*S$Sim$Supply_Total_Tree[i])
     S$Sim$M_Rm_FRoot_Tree[i]=
-      S$Parameters$lambda_FRoot_Tree*S$Sim$Offer_Total_Tree[i]
+      S$Parameters$lambda_FRoot_Tree*S$Sim$Supply_Total_Tree[i]
     S$Sim$M_Rm_RE_Tree[i]=
-      S$Sim$Offer_Total_Tree[i]-
+      S$Sim$Supply_Total_Tree[i]-
       (S$Sim$M_Rm_FRoot_Tree[i]+S$Sim$M_Rm_Leaf_Tree[i]+
          S$Sim$M_Rm_Branch_Tree[i]+S$Sim$M_Rm_CR_Tree[i]+
          S$Sim$M_Rm_Stem_Tree[i])
@@ -179,27 +179,27 @@ Shade.Tree= function(S,i){
         C_overdeficit_RE*(S$Parameters$lambda_Stem_Tree/S$Parameters$Wood_alloc)
       S$Sim$M_Rm_RE_Tree[i]= S$Sim$M_Rm_RE_Tree[i]-C_overdeficit_RE
     }
-    # NB : M_Rm_RE_Tree is regarded as an extra reserve consumption as offer is not met.
-    S$Sim$Offer_Total_Tree[i]= 0
+    # NB : M_Rm_RE_Tree is regarded as an extra reserve consumption as supply is not met.
+    S$Sim$Supply_Total_Tree[i]= 0
   }
 
   # Allocation to each compartment :
   S$Sim$Alloc_Stem_Tree[i]=
-    S$Parameters$lambda_Stem_Tree*S$Sim$Offer_Total_Tree[i]
+    S$Parameters$lambda_Stem_Tree*S$Sim$Supply_Total_Tree[i]
   S$Sim$Alloc_CR_Tree[i]=
-    S$Parameters$lambda_CR_Tree*S$Sim$Offer_Total_Tree[i]
+    S$Parameters$lambda_CR_Tree*S$Sim$Supply_Total_Tree[i]
   S$Sim$Alloc_Branch_Tree[i]=
-    S$Parameters$lambda_Branch_Tree*S$Sim$Offer_Total_Tree[i]
+    S$Parameters$lambda_Branch_Tree*S$Sim$Supply_Total_Tree[i]
   S$Sim$Alloc_Leaf_Tree[i]=
     min(S$Parameters$DELM_Tree*S$Sim$Stocking_Tree[i]*
           ((S$Parameters$LAI_max_Tree-S$Sim$LAI_Tree[previous_i(i,1)])/
              (S$Sim$LAI_Tree[previous_i(i,1)]+S$Parameters$LAI_max_Tree)),
-        S$Parameters$lambda_Leaf_Tree*S$Sim$Offer_Total_Tree[i])
+        S$Parameters$lambda_Leaf_Tree*S$Sim$Supply_Total_Tree[i])
   S$Sim$Alloc_FRoot_Tree[i]=
-    S$Parameters$lambda_FRoot_Tree*S$Sim$Offer_Total_Tree[i]
-  # Allocation to reserves (Offer - all other allocations):
+    S$Parameters$lambda_FRoot_Tree*S$Sim$Supply_Total_Tree[i]
+  # Allocation to reserves (Supply - all other allocations):
   S$Sim$Alloc_RE_Tree[i]=
-    S$Sim$Offer_Total_Tree[i]-
+    S$Sim$Supply_Total_Tree[i]-
     (S$Sim$Alloc_FRoot_Tree[i]+S$Sim$Alloc_Leaf_Tree[i]+
        S$Sim$Alloc_Branch_Tree[i]+S$Sim$Alloc_CR_Tree[i]+
        S$Sim$Alloc_Stem_Tree[i])
@@ -376,7 +376,7 @@ Shade.Tree= function(S,i){
 
   # Daily C balance that should be nil every day:
   S$Sim$Cbalance_Tree[i]=
-    S$Sim$Offer_Total_Tree[i]-(S$Sim$NPP_Tree[i]+S$Sim$Rg_Tree[i])
+    S$Sim$Supply_Total_Tree[i]-(S$Sim$NPP_Tree[i]+S$Sim$Rg_Tree[i])
 
   S$Sim$LAI_Tree[i]= S$Sim$DM_Leaf_Tree[i]*(S$Parameters$SLA_Tree/1000)
 
