@@ -1,7 +1,7 @@
 #' Constants used in the DynACof package
 #'
 #' @return This function defines the following constants:
-#' \item{Cp}{specific heat of air for constant pressure (\eqn{MJ\ K^{-1}\ kg^{-1}}{MJ K-1 kg-1}), Source: Allen 1998 FAO Eq. 8 p. 32}
+#' \item{Cp}{specific heat of air for constant pressure (\eqn{J\ K^{-1}\ kg^{-1}}{J K-1 kg-1}), Source: Allen 1998 FAO Eq. 8 p. 32}
 #' \item{pressure0}{reference atmospheric pressure at sea level (\eqn{Pa}{Pa})}
 #' \item{FPAR}{Fraction of global radiation that is PAR (source: MAESPA model)}
 #' \item{g}{gravitational acceleration (\eqn{m\ s^{-2}}{m s-2})}

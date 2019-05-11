@@ -7,8 +7,7 @@
 DynACof(Period = NULL, WriteIt = F, ..., parallel = TRUE,
   output_f = ".RData", Inpath = NULL, Outpath = Inpath,
   Simulation_Name = "DynACof", FileName = list(Site = "1-Site.R", Meteo
-  = "2-Meteorology.txt", Soil = "3-Soil.R", Coffee = "4-Coffee.R", Tree =
-  NULL))
+  = NULL, Soil = "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}

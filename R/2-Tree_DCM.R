@@ -59,17 +59,13 @@ Shade.Tree= function(S,i){
   # computed in G_bulk (until top of canopy).
 
   S$Sim$Tleaf_Tree[i]=
-    S$Met_c$Tair[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
+    S$Met_c$TairCanopy_Tree[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
     (S$Met_c$Air_Density[i]*S$Parameters$Cp*
-       1/(1/G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
-                   LAI= S$Sim$LAI_Tree[previous_i(i,1)],
-                   extwind= S$Parameters$extwind,
-                   Z_top= S$Sim$Height_Tree[previous_i(i,1)])+
-            1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf_Tree,
-                   LAI_lay= S$Sim$LAI_Tree[previous_i(i,1)],
-                   LAI_abv= 0,ZHT = S$Parameters$ZHT,
-                   Z_top = S$Sim$Height_Tree[previous_i(i,1)],
-                   extwind= S$Parameters$extwind)))
+       Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf_Tree,
+            LAI_lay= S$Sim$LAI_Tree[previous_i(i,1)],
+            LAI_abv= 0,ZHT = S$Parameters$ZHT,
+            Z_top = S$Sim$Height_Tree[previous_i(i,1)],
+            extwind= S$Parameters$extwind))
 
   S$Sim$GPP_Tree[i]= S$Sim$lue_Tree[i]*S$Sim$APAR_Tree[i]
 

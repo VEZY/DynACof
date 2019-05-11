@@ -196,7 +196,7 @@
 #'
 DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
                   output_f=".RData",Inpath=NULL,Outpath=Inpath,Simulation_Name="DynACof",
-                  FileName= list(Site="1-Site.R",Meteo="2-Meteorology.txt",Soil="3-Soil.R",
+                  FileName= list(Site="1-Site.R",Meteo=NULL,Soil="3-Soil.R",
                                  Coffee="4-Coffee.R",Tree=NULL)){
 
   Cycle= Plot_Age= cy= varnames= NULL # to avoid check notes
@@ -208,8 +208,14 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
   test_parameters(Parameters, isTree= !is.null(FileName$Tree))
 
   # Importing the meteo -----------------------------------------------------
+  meteo_path=
+    if(!is.null(FileName$Meteo)){
+      file.path(Inpath,FileName$Meteo)
+    }else{
+        NULL
+      }
 
-  Meteo= Meteorology(file= file.path(Inpath,FileName$Meteo),Period= Period,Parameters= Parameters)
+  Meteo= Meteorology(file= meteo_path, Period= Period,Parameters= Parameters)
   Parameters$files$Meteorology= file.path(Inpath,FileName$Meteo) # save the meteo file path
 
 
@@ -456,7 +462,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     if(S$Sim$Height_Tree[i]>S$Parameters$Height_Coffee){
 
       S$Sim$TairCanopy[i]=
-        S$Sim$TairCanopy_Tree[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*Parameters$MJ_to_W)/
+        S$Sim$TairCanopy_Tree[i]+((S$Sim$H_Coffee[i]+S$Sim$H_Soil[i])*S$Parameters$MJ_to_W)/
         (bigleaf::air.density(S$Sim$TairCanopy_Tree[i],S$Met_c$Pressure[i]/10)*
            S$Parameters$Cp*
            G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
@@ -469,17 +475,12 @@ mainfun= function(cy,Direction,Meteo,Parameters){
         S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
         (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
            S$Parameters$Cp*
-           1/(1/G_interlay(Wind= S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                           LAI_top= S$Sim$LAI_Tree[i],
-                           LAI_bot= S$Sim$LAI[i],
-                           Z_top= S$Sim$Height_Tree[i],
-                           extwind = S$Parameters$extwind)+
-                1/Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
-                       LAI_lay=S$Sim$LAI[i],
-                       LAI_abv=S$Sim$LAI_Tree[i],
-                       ZHT = S$Parameters$ZHT,
-                       Z_top = S$Sim$Height_Tree[i],
-                       extwind= S$Parameters$extwind)))
+           Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
+                LAI_lay=S$Sim$LAI[i],
+                LAI_abv=S$Sim$LAI_Tree[i],
+                ZHT = S$Parameters$ZHT,
+                Z_top = S$Sim$Height_Tree[i],
+                extwind= S$Parameters$extwind))
 
     }else{
 
@@ -495,17 +496,13 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       S$Sim$Tleaf_Coffee[i]=
         S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
         (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
-           S$Parameters$Cp*
-           1/(1/G_bulk(Wind = S$Met_c$WindSpeed[i], ZHT = S$Parameters$ZHT,
-                       Z_top = S$Parameters$Height_Coffee,
-                       LAI = S$Sim$LAI[i],
-                       extwind = S$Parameters$extwind)+
-                1/Gb_h(Wind= S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
-                       LAI_lay= S$Sim$LAI[i],
-                       LAI_abv= S$Sim$LAI_Tree[i],
-                       ZHT= S$Parameters$ZHT,
-                       Z_top= S$Parameters$Height_Coffee,
-                       extwind= S$Parameters$extwind)))
+           S$Parameters$Cp *
+           Gb_h(Wind= S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,
+                LAI_lay= S$Sim$LAI[i],
+                LAI_abv= S$Sim$LAI_Tree[i],
+                ZHT= S$Parameters$ZHT,
+                Z_top= S$Parameters$Height_Coffee,
+                extwind= S$Parameters$extwind))
     }
     # NB: if no trees, TairCanopy_Tree= Tair
 
