@@ -208,7 +208,6 @@ Soilfun= function(S,i){
   # 9/ Soil Water potential, Campbell (1974) equation
   S$Sim$SoilWaterPot[i]=
     S$Parameters$PSIE*(((S$Sim$W_1[i]+S$Sim$W_2[i]+
-
                            S$Sim$W_3[i])/(S$Parameters$TotalDepth*1000))/
                          S$Parameters$PoreFrac)^(-S$Parameters$B)
 
