@@ -59,7 +59,7 @@ Shade.Tree= function(S,i){
   # computed in G_bulk (until top of canopy).
 
   S$Sim$Tleaf_Tree[i]=
-    S$Met_c$TairCanopy_Tree[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
+    S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
     (S$Met_c$Air_Density[i]*S$Parameters$Cp*
        Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf_Tree,
             LAI_lay= S$Sim$LAI_Tree[previous_i(i,1)],
