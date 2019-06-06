@@ -168,14 +168,16 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
       if(!is.null(MetData$VPD)){
         bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
                                          Tair = MetData$Tair,
-                                         VPD = MetData$VPD)
+                                         VPD = MetData$VPD)*10
+        # Return in kPa
         warn.var(Var= "Pressure",
                  replacement=paste("Elevation, Tair and VPD",
                                    "using bigleaf::pressure.from.elevation"),
                  type='warn')
       }else{
         bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
-                                         Tair = MetData$Tair)
+                                         Tair = MetData$Tair)*10
+        # Return in kPa
         warn.var(Var= "Pressure",
                  replacement=paste("Elevation and Tair",
                                    "using bigleaf::pressure.from.elevation"),

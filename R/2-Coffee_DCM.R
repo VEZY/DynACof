@@ -851,20 +851,25 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     # Biomass -----------------------------------------------------------------
 
+    CM_tot=
+      S$Sim$CM_Leaf[previous_i(i,1)] + S$Sim$CM_Shoot[previous_i(i,1)] +
+      S$Sim$CM_SCR[previous_i(i,1)] + S$Sim$CM_FRoot[previous_i(i,1)]
+
+    S$Sim$CM_Leaf[i]/CM_tot
     S$Sim$CM_Leaf[i]= S$Sim$CM_Leaf[previous_i(i,1)]+
       S$Sim$NPP_Leaf[i]-S$Sim$Mortality_Leaf[i]-
-      S$Sim$Carbon_Lack_Mortality[i]*0.25
+      S$Sim$Carbon_Lack_Mortality[i]*S$Sim$CM_Leaf[previous_i(i,1)]/CM_tot
     S$Sim$CM_Shoot[i]= S$Sim$CM_Shoot[previous_i(i,1)]+
       S$Sim$NPP_Shoot[i]-S$Sim$Mortality_Shoot[i]-
-      S$Sim$Carbon_Lack_Mortality[i]*0.25
+      S$Sim$Carbon_Lack_Mortality[i]*S$Sim$CM_Shoot[previous_i(i,1)]/CM_tot
     S$Sim$CM_Fruit[i]=S$Sim$CM_Fruit[previous_i(i,1)]+
       S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
     S$Sim$CM_SCR[i]= S$Sim$CM_SCR[previous_i(i,1)]+
       S$Sim$NPP_SCR[i]-S$Sim$Mortality_SCR[i]-
-      S$Sim$Carbon_Lack_Mortality[i]*0.25
+      S$Sim$Carbon_Lack_Mortality[i]*S$Sim$CM_SCR[previous_i(i,1)]/CM_tot
     S$Sim$CM_FRoot[i]= S$Sim$CM_FRoot[previous_i(i,1)]+
       S$Sim$NPP_FRoot[i]-S$Sim$Mortality_FRoot[i]-
-      S$Sim$Carbon_Lack_Mortality[i]*0.25
+      S$Sim$Carbon_Lack_Mortality[i]*S$Sim$CM_FRoot[previous_i(i,1)]/CM_tot
     S$Sim$CM_RE[i]=S$Sim$CM_RE[previous_i(i,1)]+S$Sim$NPP_RE[i]-
       S$Sim$Consumption_RE[i]
 
