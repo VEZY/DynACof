@@ -2,9 +2,9 @@
 #' @export
 coffee= function(){
   list(
-    Stocking_Coffee   = 6666,       # Coffee density at planting (plant ha-1)
+    Stocking_Coffee   = 5580,       # Coffee density at planting (plant ha-1)
     AgeCoffeeMin      = 1,          # minimum coffee stand age
-    AgeCoffeeMax      = 41,         # maximum coffee stand age (start a new rotation after)
+    AgeCoffeeMax      = 40,         # maximum coffee stand age (start a new rotation after)
     SLA               = 10.97,      # Specific Leaf Area (m-2 kg-1 dry mass)
     wleaf             = 0.068,      # Leaf width (m)
     DELM              = 7,          # Max leaf carbon demand (gC plant-1 d-1)
@@ -16,7 +16,7 @@ coffee= function(){
     WoodPruningRate   = 1/3,        # how much branches wood are pruned (ratio)
     k_Dif             = 0.4289,     # Light extinction coefficient for diffuse light (-), computed from MAESPA
     k_Dir             = 0.3579,     # Light extinction coefficient for direct light (-), computed from MAESPA
-    kres              = 0.33,       # Maximum carbon proportion extracted from reserves mass per day
+    kres              = 0.08,       # Maximum carbon proportion extracted from reserves mass per day
     DVG1              = 105,        # Day of year for the beginning of the Vegetative Growing Season
     DVG2              = 244,        # Day of year for the end of the Vegetative Growing Season
     MinTT             = 10,         # Minimum temperature threshold (deg C) for degree days computation
@@ -25,7 +25,7 @@ coffee= function(){
     VF_Flowering      = 5500,       # Very first flowering (dd), source: Rodriguez et al. (2001)
     F_buds1           = 840,        # Bud development stage 1 (2), source: PhD Louise Meylan p.58.
     F_buds2           = 2562,       # Bud development stage 2 (dd)
-    a_bud             = 0.004,    # Parameter for bud initiation from Eq. 12 in Rodriguez et al. (2001)
+    a_bud             = 0.004,      # Parameter for bud initiation from Eq. 12 in Rodriguez et al. (2001)
     b_bud             = -0.0000041, # Parameter for bud initiation from Eq. 12 in Rodriguez et al. (2001)
     F_Tffb            = 4000,       # Time of first floral buds (Rodriguez et al., 2001).
     a_p               = 5.78,       # Parameter for bud dormancy break from Rodriguez et al. (2011)
