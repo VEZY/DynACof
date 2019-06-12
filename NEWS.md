@@ -1,3 +1,16 @@
+# DynACof 1.1.2
+
+* Externalize coffee metamodels to parameter file + remove Tcan_MAESPA_Coffee as it is computed by the model now
+* Add tests for user-defined input parameter  
+* Add option for model parallelization over crop rotations  
+* Add ZEN to meteo  
+* Fix issue on Tleaf_Tree + unit of DELM  
+* Simplify writing of equations for Tleaf_*
+* Use markdown in package documentation
+* Update CB with flowers per inflorescences + its doc (+ doc for CN)
+* Several bugs/typos fix: e.g. VPD unit when not read from meteo file + 
+* Update parameter values to match those from the article
+
 # DynACof 1.1.1
 
 * Add Temperature-dependent correction for buds (CB) as a function  
