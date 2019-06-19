@@ -930,8 +930,9 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
     Gb= 0.01*sqrt(U_z/wleaf)
     # Gb= (0.02/extwind)*sqrt(U_h/wleaf)*(1-exp(-extwind/2)) # integrated over the profile
   }else{
-    Gb= 1/(1/Gb_hFree(Tair= Tair, Tleaf= Tleaf, wleaf= wleaf, Dheat= Dheat))+
-      (1/Gb_hForced(Wind = Wind, wleaf = wleaf))
+    Gb=
+      Gb_hFree(Tair= Tair, Tleaf= Tleaf, wleaf= wleaf, Dheat= Dheat)+
+      Gb_hForced(Wind = Wind, wleaf = wleaf)
   }
 
   return(Gb)
