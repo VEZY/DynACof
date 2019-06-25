@@ -89,10 +89,6 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
   }else{
     MetData= data.table::fread(file,data.table = F)
   }
-
-  MetData$Date= lubridate::fast_strptime(MetData$Date, "%Y-%m-%d",lt=F)
-
-
   # Missing Date:
   if(is.null(MetData$Date)){
     if(!is.null(Parameters$Start_Date)){
@@ -105,6 +101,10 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
       warn.var(Var= "Date","dummy 2000/01/01",type='warn')
     }
   }
+
+  MetData$Date= lubridate::fast_strptime(MetData$Date, "%Y-%m-%d",lt=F)
+  MetData$year= lubridate::year(MetData$Date)
+  MetData$DOY= lubridate::yday(MetData$Date)
 
   if(!is.null(Period)){
     if(Period[1]<min(MetData$Date)|Period[2]>max(MetData$Date)){
@@ -166,17 +166,17 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
   if(is.null(MetData$Pressure)){
     if(!is.null(Parameters$Elevation)){
       if(!is.null(MetData$VPD)){
-        bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
-                                         Tair = MetData$Tair,
-                                         VPD = MetData$VPD)*10
+        MetData$Pressure= bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
+                                                           Tair = MetData$Tair,
+                                                           VPD = MetData$VPD)*10
         # Return in kPa
         warn.var(Var= "Pressure",
                  replacement=paste("Elevation, Tair and VPD",
                                    "using bigleaf::pressure.from.elevation"),
                  type='warn')
       }else{
-        bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
-                                         Tair = MetData$Tair)*10
+        MetData$Pressure= bigleaf::pressure.from.elevation(elev = Parameters$Elevation,
+                                                           Tair = MetData$Tair)*10
         # Return in kPa
         warn.var(Var= "Pressure",
                  replacement=paste("Elevation and Tair",
@@ -230,10 +230,6 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
     warn.var(Var= "FDiff","DOY, RAD and Latitude using Diffuse_d()",type='warn')
   }
 
-
-  MetData$year= lubridate::year(MetData$Date)
-  MetData$DOY= lubridate::yday(MetData$Date)
-
   # Correct the noon hour by the Timezone if the user use TZ="UTC":
   if(Sys.timezone()=="UTC"|Sys.timezone()=="GMT"){
     cor_tz= Parameters$TimezoneCF*60*60
@@ -266,7 +262,7 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
   }
 
   DaysWithoutRain= Rain= NULL # To avoid notes by check
-  MetData= as.data.table(MetData)
+  MetData= data.table::as.data.table(MetData)
   MetData[, DaysWithoutRain := 0]; MetData[Rain > 0, DaysWithoutRain := 1]
   MetData$DaysWithoutRain= sequence(MetData[,.N,cumsum(DaysWithoutRain)]$N)-1
   MetData= as.data.frame(MetData)
