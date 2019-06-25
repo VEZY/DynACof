@@ -100,9 +100,10 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
                         length.out= nrow(MetData), by="day")
       warn.var(Var= "Date","dummy 2000/01/01",type='warn')
     }
+  }else{
+    MetData$Date= lubridate::fast_strptime(MetData$Date, "%Y-%m-%d",lt=F)
   }
 
-  MetData$Date= lubridate::fast_strptime(MetData$Date, "%Y-%m-%d",lt=F)
   MetData$year= lubridate::year(MetData$Date)
   MetData$DOY= lubridate::yday(MetData$Date)
 
@@ -273,7 +274,7 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
   Varnames= c('year','DOY','Date','Rain','Tair','RH','RAD','Pressure',
               'WindSpeed','CO2','DegreeDays','PAR','FDiff',
               'VPD','Rn','Tmax','Tmin','DaysWithoutRain','Air_Density','ZEN')
-  MetData= MetData[colnames(MetData)%in%Varnames]
+  MetData= MetData[match(Varnames, colnames(MetData))]
   MetData[,-c(1:3)]= round(MetData[,-c(1:3)],4)
 
   attr(MetData,"unit")=
