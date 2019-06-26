@@ -367,16 +367,6 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     Treefun= Shade.Tree
   }
 
-  # American Leaf Spot:
-  S$Sim$ALS=
-    suppressMessages(ALS(Elevation= S$Parameters$Elevation, SlopeAzimut= S$Parameters$SlopeAzimut,
-                         Slope= S$Parameters$Slope, RowDistance= S$Parameters$RowDistance,
-                         Shade= S$Parameters$Shade, CanopyHeight.Coffee= S$Parameters$Height_Coffee,
-                         Fertilization= S$Parameters$Fertilization, ShadeType= S$Parameters$ShadeType,
-                         CoffeePruning= S$Parameters$CoffeePruning,
-                         df_rain= data.frame(year=S$Met_c$year,DOY=S$Met_c$DOY,Rain=S$Met_c$Rain)))
-
-
   # Main Loop -----------------------------------------------------------------------------------
 
   pb= txtProgressBar(max= length(S$Sim$LAI), style=3)
@@ -388,6 +378,15 @@ mainfun= function(cy,Direction,Meteo,Parameters){
     Treefun(S,i)
     # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
     # LE_Tree (sum of transpiration + leaf evap)
+
+    # American Leaf Spot:
+    S$Sim$ALS[i]=
+      suppressMessages(ALS(Elevation= S$Parameters$Elevation, SlopeAzimut= S$Parameters$SlopeAzimut,
+                           Slope= S$Parameters$Slope, RowDistance= S$Parameters$RowDistance,
+                           Shade= 1-S$Sim$Transmittance_Tree[i], CanopyHeight.Coffee= S$Parameters$Height_Coffee,
+                           Fertilization= S$Parameters$Fertilization, ShadeType= S$Parameters$ShadeType,
+                           CoffeePruning= S$Parameters$CoffeePruning,
+                           df_rain= data.frame(year=S$Met_c$year[i],DOY=S$Met_c$DOY[i],Rain=S$Met_c$Rain[i])))
 
     # Coffea computation:
 
@@ -827,7 +826,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       S$Sim$Mprun_Leaf[i]= 0
     }
 
-    S$Sim$Mortality_Leaf[i]= S$Sim$Mnat_Leaf[i] + S$Sim$Mprun_Leaf[i]+S$Sim$M_ALS[i]
+    S$Sim$Mortality_Leaf[i]= S$Sim$Mnat_Leaf[i] + S$Sim$Mprun_Leaf[i]+ S$Sim$M_ALS[i]
 
     # Fine Roots --------------------------------------------------------------
 
