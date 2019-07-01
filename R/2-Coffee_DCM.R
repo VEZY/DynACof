@@ -471,7 +471,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
                       extwind = S$Parameters$extwind))
 
       S$Sim$Tleaf_Coffee[i]=
-        S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*Parameters$MJ_to_W)/
+        S$Sim$TairCanopy[i]+(S$Sim$H_Coffee[i]*S$Parameters$MJ_to_W)/
         (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
            S$Parameters$Cp*
            Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf,

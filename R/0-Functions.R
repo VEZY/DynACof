@@ -930,9 +930,12 @@ Gb_h= function(Wind,wleaf=0.068,LAI_lay,LAI_abv,extwind=0,Z_top,ZHT,
     Gb= 0.01*sqrt(U_z/wleaf)
     # Gb= (0.02/extwind)*sqrt(U_h/wleaf)*(1-exp(-extwind/2)) # integrated over the profile
   }else{
+    if(is.null(Tair)|is.null(Tleaf)){
+      stop("Need Tair and Tleaf for Leuning_1995 formulation")
+    }
     Gb=
       Gb_hFree(Tair= Tair, Tleaf= Tleaf, wleaf= wleaf, Dheat= Dheat)+
-      Gb_hForced(Wind = Wind, wleaf = wleaf)
+      Gb_hForced(Wind = U_z, wleaf = wleaf)
   }
 
   return(Gb)
