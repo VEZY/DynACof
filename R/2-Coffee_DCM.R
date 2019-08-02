@@ -853,7 +853,6 @@ mainfun= function(cy,Direction,Meteo,Parameters){
       S$Sim$CM_Leaf[previous_i(i,1)] + S$Sim$CM_Shoot[previous_i(i,1)] +
       S$Sim$CM_SCR[previous_i(i,1)] + S$Sim$CM_FRoot[previous_i(i,1)]
 
-    S$Sim$CM_Leaf[i]/CM_tot
     S$Sim$CM_Leaf[i]= S$Sim$CM_Leaf[previous_i(i,1)]+
       S$Sim$NPP_Leaf[i]-S$Sim$Mortality_Leaf[i]-
       S$Sim$Carbon_Lack_Mortality[i]*S$Sim$CM_Leaf[previous_i(i,1)]/CM_tot
