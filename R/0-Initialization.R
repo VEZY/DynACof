@@ -202,7 +202,6 @@ No_Shade.init= function(S){
     S$Sim$LE_Tree=
     S$Sim$Height_Tree=
     rep_len(0,length(S$Sim$Cycle))
-  S$Sim$WindSpeed_Tree= S$Met_c$WindSpeed
   S$Sim$TairCanopy_Tree= S$Met_c$Tair
 }
 
@@ -330,6 +329,5 @@ Tree.init= function(S){
   S$Sim$TimetoPrun_Tree[S$Sim$Plot_Age%in%S$Parameters$Pruning_Age_Tree&
                           S$Met_c$DOY%in%S$Parameters$D_pruning_Tree]= TRUE
 
-  S$Sim$WindSpeed_Tree= S$Met_c$WindSpeed
   S$Sim$TairCanopy_Tree= S$Met_c$Tair
 }

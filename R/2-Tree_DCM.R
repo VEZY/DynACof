@@ -55,8 +55,7 @@ Shade.Tree= function(S,i){
               LAI= S$Sim$LAI_Tree[previous_i(i,1)],
               extwind= S$Parameters$extwind,
               Z_top= S$Sim$Height_Tree[previous_i(i,1)]))
-  # NB : using WindSpeed and not WindSpeed_Tree because wind extinction is already
-  # computed in G_bulk (until top of canopy).
+  # NB : using WindSpeed because wind extinction is already computed in G_bulk (until top of canopy).
 
   S$Sim$Tleaf_Tree[i]=
     S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
