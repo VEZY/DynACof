@@ -28,11 +28,10 @@ options(tibble.print_min = 5, tibble.print_max = 5)
 
 ## Overview
 
-The [DynACof](https://vezy.github.io/DynACof) process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield,
-energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
-metamodels from the 3D process-based [MAESPA](https://maespa.github.io/). The model also uses coffee bud and fruit cohorts for reproductive
-development to better represent fruit carbon demand distribution along the year.
+The [DynACof](https://vezy.github.io/DynACof) process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield, energy, and water balance of coffee plantations according to management, while accounting for spatial effects using metamodels from the 3D process-based [MAESPA](https://maespa.github.io/). The model also uses coffee bud and fruit cohorts for reproductive development to better represent fruit carbon demand distribution along the year.
 Its official website is available [here](https://vezy.github.io/DynACof).
+
+DynACof is also available as a [Julia](https://julialang.org/) package. Use this one for better performance (~100x). Its repository is available [here](https://github.com/VEZY/DynACof.jl), and the documentation is available [here](https://vezy.github.io/DynACof.jl/dev/).
 
 ## Installation
 

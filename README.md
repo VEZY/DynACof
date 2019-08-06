@@ -27,6 +27,12 @@ uses coffee bud and fruit cohorts for reproductive development to better
 represent fruit carbon demand distribution along the year. Its official
 website is available [here](https://vezy.github.io/DynACof).
 
+DynACof is also available as a [Julia](https://julialang.org/) package.
+Use this one for better performance (\~100x). Its repository is
+available [here](https://github.com/VEZY/DynACof.jl), and the
+documentation is available
+[here](https://vezy.github.io/DynACof.jl/dev/).
+
 ## Installation
 
 The development version from [GitHub](https://github.com/) can be
