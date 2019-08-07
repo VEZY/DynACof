@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Soil module subroutine — Soilfun • DynACof</title>
+<title>Step-by-step DynACof — dynacof_i • DynACof</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -16,8 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -31,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Soil module subroutine — Soilfun" />
+<meta property="og:title" content="Step-by-step DynACof — dynacof_i" />
 
-<meta property="og:description" content="Make all computations for soil water balance for the ith
-day by modifying the S list in place." />
+<meta property="og:description" content="Using DynACof one iteration after another. Allows to run a DynACof simulation with starting
+at age &amp;gt; 0 with initializations." />
 
 <meta property="og:image" content="https://vezy.github.io/sticRs/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -75,7 +74,7 @@ day by modifying the S list in place." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -101,48 +100,61 @@ day by modifying the S list in place." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Soil module subroutine</h1>
+    <h1>Step-by-step DynACof</h1>
     
-    <div class="hidden name"><code>Soilfun.Rd</code></div>
+    <div class="hidden name"><code>dynacof_i.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Make all computations for soil water balance for the ith
-day by modifying the <code>S</code> list in place.</p>
+    <p>Using DynACof one iteration after another. Allows to run a DynACof simulation with starting
+at age &gt; 0 with initializations.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>Soilfun</span>(<span class='no'>S</span>, <span class='no'>i</span>)</pre>
+    <pre class="usage"><span class='fu'>dynacof_i</span>(<span class='no'>i</span>, <span class='no'>S</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>S</th>
-      <td><p>The main simulation list to make the computation on and to modify.</p></td>
+      <th>i</th>
+      <td><p>Either an integer, or a range giving the day of simulation needed. Match the row index, so <code>i=1</code> make
+a simulation for the first row of Sim and Met.</p></td>
     </tr>
     <tr>
-      <th>i</th>
-      <td><p>The index of the day since the first day of the simulation.</p></td>
+      <th>S</th>
+      <td><p>The simulation list (see <code><a href='DynACof.html'>DynACof()</a></code>).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Modify the list of simulation <code>S</code> in place. See <code><a href='DynACof.html'>DynACof()</a></code> for
-more details.</p>
-    
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>This function shouldn't be called by the user. It is made as a subroutine so it is easier for
-advanced users to modify the code.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='DynACof.html'>DynACof()</a></code></p></div>
+    <p>The modified simulation list <code>S</code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"># NOT RUN {
+Making a regular simulation using example data:
+S= DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
+
+# Value of the maintenance respiration for coffee on day i=100:
+i= 100
+S$Sim$Rm[i]
+
+# Changing the value of Tair in the meteorology for day 100:
+S$Meteo$Tair[i]= S$Meteo$Tair[i]+10.0
+
+S= dynacof_i(i,S)
+
+# New value of the maintenance respiration for coffee:
+S$Sim$Rm[i]
+
+# To re-run DynACof for several days, use a range for `i`:
+S= dynacof_i(i:(i+10),S)
+
+# }
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -150,11 +162,9 @@ advanced users to modify the code.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#note">Note</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
@@ -165,7 +175,7 @@ advanced users to modify the code.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

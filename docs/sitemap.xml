@@ -16,10 +16,19 @@
     <loc>https://vezy.github.io/sticRs//reference/Aquiares.html</loc>
   </url>
   <url>
+    <loc>https://vezy.github.io/sticRs//reference/balance_model.html</loc>
+  </url>
+  <url>
+    <loc>https://vezy.github.io/sticRs//reference/bud_init_period.html</loc>
+  </url>
+  <url>
     <loc>https://vezy.github.io/sticRs//reference/CB.html</loc>
   </url>
   <url>
     <loc>https://vezy.github.io/sticRs//reference/CN.html</loc>
+  </url>
+  <url>
+    <loc>https://vezy.github.io/sticRs//reference/coffee_model.html</loc>
   </url>
   <url>
     <loc>https://vezy.github.io/sticRs//reference/Constants.html</loc>
@@ -32,6 +41,9 @@
   </url>
   <url>
     <loc>https://vezy.github.io/sticRs//reference/DynACof.html</loc>
+  </url>
+  <url>
+    <loc>https://vezy.github.io/sticRs//reference/dynacof_i.html</loc>
   </url>
   <url>
     <loc>https://vezy.github.io/sticRs//reference/GBCANMS.html</loc>
@@ -100,7 +112,7 @@
     <loc>https://vezy.github.io/sticRs//reference/site.html</loc>
   </url>
   <url>
-    <loc>https://vezy.github.io/sticRs//reference/Soilfun.html</loc>
+    <loc>https://vezy.github.io/sticRs//reference/soil_model.html</loc>
   </url>
   <url>
     <loc>https://vezy.github.io/sticRs//reference/Sucrose_cont_perc.html</loc>

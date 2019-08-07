@@ -109,7 +109,7 @@ coffee= function(){
     # Leaf Water Potential:
     LeafWaterPotential= function(S,i){
       0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*S$Sim$PAR_Trans_Tree[i] +
-        2.676284*S$Sim$SoilWaterPot[i]
+        2.676284*S$Sim$SoilWaterPot[previous_i(i,1)]
     },
     # Transpiration:
     T_Coffee= function(S,i){

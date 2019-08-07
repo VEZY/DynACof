@@ -18,7 +18,7 @@
 #' @seealso [DynACof()]
 #'
 #' @export
-Soilfun= function(S,i){
+soil_model= function(S,i){
 
   # Rn understorey using Shuttleworth & Wallace, 1985, eq. 21 for reference
   S$Sim$Rn_Soil_SW[i]=

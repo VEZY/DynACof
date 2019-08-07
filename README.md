@@ -90,6 +90,15 @@ DynACof(WriteIt = T, Period = as.POSIXct(c("1979-01-01", "1980-12-31")),
 Note that the Meteo file can be of any regular format because the model
 uses the `data.table::fread` function internally.
 
+## Notes
+
+The model first computes the shade tree, then the coffee and then the
+soil. So if you need to update the metamodels, please keep in mind that
+the state of soil of a given day is only accessible on the next day for
+the tree and the coffee, unless the code is updated too. The model is
+implemented like this for simplicity, based on the hypothesis that the
+soil has a rather slow dynamic compared to plants dynamics.
+
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of

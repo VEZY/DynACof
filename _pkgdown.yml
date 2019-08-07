@@ -13,6 +13,7 @@ reference:
     desc: Call to the DynACof model
     contents:
       - DynACof
+      - dynacof_i
       - mainfun
 
   - title: "Imports"
