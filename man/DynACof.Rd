@@ -21,7 +21,7 @@ DynACof(Period = NULL, WriteIt = F, ..., parallel = TRUE,
 \item{output_f}{Output format. If \code{output_f = ".RData"}, the output list will be saved as a unique \code{.RData} file. Any other value:
 write the output list in several \code{.csv} and \code{.txt} files. Default: \code{.RData}}
 
-\item{Inpath}{Path to the input parameter list folder, Default: \code{"1-Input/Default"}}
+\item{Inpath}{Path to the input parameter list folder, Default: \code{NULL} (take package values)}
 
 \item{Outpath}{Path pointing to the folder were the results will be writen, Default: \code{Outpath = Inpath}}
 

@@ -10,11 +10,18 @@ authors:
 
 reference:
   - title: "Main function"
-    desc: Call to the DynACof model
+    desc: Call to the DynACof model (either in pure R or in Julia)
     contents:
       - DynACof
       - dynacof_i
-      - mainfun
+      - dynacof.jl
+      - dynacof_i.jl
+
+  - title: "Julia version utilities"
+    desc: Functions used to instantiate Julia + DynACof.jl
+    contents:
+      - dynacof.jl_setup
+      - dynacof.jl_update
 
   - title: "Imports"
     desc: Imports values from files or default, check consistancy, and compute missing variables if needed

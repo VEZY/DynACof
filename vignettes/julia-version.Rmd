@@ -1,0 +1,168 @@
+---
+title: "Using the Julia version"
+author: "Rémi Vezy"
+output: rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Using the Julia version}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+DynACof is available as an R package (this one), but also as a [Julia](https://julialang.org/) package for better performance (more than ~100x). The Julia package is available on [this repository](https://github.com/VEZY/DynACof.jl), and the documentation is available [here](https://vezy.github.io/DynACof.jl/dev/).
+
+
+It is possible to use the Julia version from R with approximately the same command as it is for using the R version. Here we explain the different steps to get there.
+
+## Install Julia
+
+The first step is to install Julia on your computer. Follow this [link](https://julialang.org/downloads/), and install the current stable release (or at least > v1.1). If you don't know how, just click on "help" after the name of your OS and follow the instructions (e.g. [here](https://julialang.org/downloads/platform.html#windows) for windows).
+After this operation, check that Julia is in your path. To do so, the simplest way is to open a terminal (or a cmd) and to simply type `julia`. If Julia is starting, then it must be in your path, else please [go to the internet](http://letmegooglethat.com/?q=add+program+to+path) to find the way.
+
+## Setup Julia from R
+
+
+### Setup
+
+Open R (or better, Rstudio), and load the DynACof R package: 
+
+```{r setup}
+library(DynACof)
+```
+
+Then, setup the Julia environment using `dynacof.jl_setup()`:
+
+```{r setupjulia}
+dynacof.jl_setup()
+```
+
+This command instantiate julia, download the required Julia packages, and precompile them. This step can take a while, especially if you have a slow connection and/or computer. You can expect to wait for 2-3 minutes the first time you execute this function, but next time the packages will be in your computer and precompiled already, so it is less time-consuming after the first time.
+
+When you already ran `dynacof.jl_setup()` once on your computer, you can add `install=FALSE` to avoid unecessary computations: 
+
+```{r eval=FALSE}
+dynacof.jl_setup(install=FALSE)
+```
+
+### Troubleshooting
+
+If you have some trouble executing the last step, you can do two things: 
+
+- If you changed your version of R try to run `dynacof.jl_setup(rebuild=TRUE)`;
+- If you have more troubles, try to install the Julia packages from Julia (see below).
+
+To install manually Julia packages, open Julia in a terminal (and not from an IDE like JuliaPro), and copy/paste these lines of code (and press enter):
+
+```{julia}
+using Pkg
+Pkg.add(["RCall","Suppressor","DynACof"])
+```
+
+This command download the packages needed for a simulation. Then, execute this line of code:
+
+```{julia}
+using RCall, Suppressor, DynACof
+```
+
+It will pre-compile the packages on your computer, and will be much more informative than from R if it fails.
+If it fails, try to follow the indications (e.g. install other packages using `Pkg.add("Name of the package")`).
+
+
+### Some details about `JuliaCall`
+
+If the previous step succeeded, R is now talking to Julia using the [JuliaCall](https://non-contradiction.github.io/JuliaCall/index.html) package. You can check for fun that Julia is working by executing the following command: 
+
+```{r}
+JuliaCall::julia_command("a= 1+1")
+```
+
+If it returns 2, it means that R sent the `"1+1"` command to Julia, that Julia evaluated it, and returned 2. Now we can ask to Julia to send back the value to R: 
+
+```{r}
+b= JuliaCall::julia_eval("a")
+b
+```
+
+Now R has the object `b` with a value of `2`.
+
+
+## Making a DynACof simulation
+
+### Setting up the parameters and the meteorolorgy
+
+We can use the example data to make a simulation. In `DynACof.jl`, the default parameter values in the model are the ones from Vezy et al. (2019), and we can download the meteorology from Github using these commands:
+
+```{r}
+met_file= tempfile()
+download.file("https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt",met_file)
+```
+
+Now the meteorology file from Vezy et al. (2019) is downloaded on a temporary file.
+
+### Calling DynACof
+
+To make a simulation using `DynACof.jl`, use these commands: 
+
+```{r}
+S= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),Soil="package",Coffee="package",Tree=NULL))
+```
+
+This command is making a simulation using the default parameters from the model, and the meteorology that we just downloaded. We can plot the LAI of the coffee now: 
+
+```{r}
+plot(S$Meteo$Date,S$Sim$LAI)
+```
+
+## Microbenchmark
+
+The R version takes usually about 9 or 10 minutes to execute the full example. Let's see how much time it takes in average to make a simulation with the Julia version (making 10 simulations): 
+
+```{r}
+library(microbenchmark)
+library(ggplot2)
+
+a= microbenchmark(DynaCof= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),Soil="package",Coffee="package",Tree=NULL)), times= 10)
+
+autoplot(a)
+```
+
+Incredible! It makes a simulation in less than 5 seconds in average! It is more than 100x faster than the pure R version.
+
+
+## Calling DynACof step by step
+
+By default DynACof starts a simulation from seedlings, but sometimes it is usefull to intialize a simulation at a given state. To do so, we can use the function `dynacof_i.jl()`. This function takes a pre-initialized simulation in input, and make a simulation for given days only. 
+
+Given the large number of variables to initialize, the simplest way to initialize a simulation is to make a dummy one with the same parameters and meteorology than desired. For that matter, let's use our previous simulation output: `S` (see "Calling DynACof").
+
+Let's say that the first 99 days of simulation correspond to what we needed, but that we want to simulate an event of disease on day 100 by reducing the LAI. What we can do is to take the previous simulation `S`, remove some leaf mass (`CM_Leaf`) on day 100, and re-do the computation for one day: 
+
+```{r}
+S$Sim$CM_Leaf[100]
+```
+
+The LAI is equal to `r S$Sim$CM_Leaf[100]`. Let's reduce it by 25%: 
+
+```{r}
+S$Sim$CM_Leaf[100]= S$Sim$CM_Leaf[100] * (1.0 - 0.25)
+```
+
+Now the leaf C mass is equal to `r S$Sim$CM_Leaf[100]`. But all other variables are impacted by this one on the next day because it is used to compute the `LAI` that helps compute many things afterwards (light interception, then GPP...) ! 
+
+Let's see what is the impact of this disease on the coffee plant:
+
+```{r}
+S$Sim$CM_Leaf[100]= S$Sim$CM_Leaf[100] * (1.0 - 0.25)
+```
+
+
+
+
+

@@ -9,7 +9,7 @@
 #' @param ...      Further arguments to pass to [write.results()].
 #' @param output_f Output format. If `output_f = ".RData"`, the output list will be saved as a unique `.RData` file. Any other value:
 #'                 write the output list in several `.csv` and `.txt` files. Default: `.RData`
-#' @param Inpath   Path to the input parameter list folder, Default: `"1-Input/Default"`
+#' @param Inpath   Path to the input parameter list folder, Default: `NULL` (take package values)
 #' @param Outpath  Path pointing to the folder were the results will be writen, Default: `Outpath = Inpath`
 #' @param Simulation_Name Character name of the simulation file name if `WriteIt = T`. Default: `"DynACof"`
 #' @param FileName A list of input file names :
@@ -307,7 +307,6 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
 #'
 #' @return The simulation output as a data.frame.
 #'
-#' @export
 mainfun= function(cy,Direction,Meteo,Parameters){
 
   .= NULL

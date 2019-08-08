@@ -30,6 +30,11 @@ Imports:
     lubridate,
     bigleaf,
     crayon,
-    solartime
+    solartime,
+    JuliaCall
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
