@@ -153,7 +153,7 @@ Let's say that the first 99 days of simulation correspond to what we needed, but
 S$Sim$CM_Leaf[100]
 ```
 
-The LAI is equal to `r S$Sim$CM_Leaf[100]`. Let's reduce it by 25%: 
+The leaf C mass is equal to `r S$Sim$CM_Leaf[100]`. Let's reduce it by 25%: 
 
 ```{r}
 S$Sim$CM_Leaf[100]= S$Sim$CM_Leaf[100] * (1.0 - 0.25)

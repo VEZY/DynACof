@@ -221,7 +221,7 @@
 <p>Let’s say that the first 99 days of simulation correspond to what we needed, but that we want to simulate an event of disease on day 100 by reducing the LAI. What we can do is to take the previous simulation <code>S</code>, remove some leaf mass (<code>CM_Leaf</code>) on day 100, and re-do the computation for one day:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">S<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">100</span>]</a>
 <a class="sourceLine" id="cb12-2" title="2"><span class="co">#&gt; [1] 13.16375</span></a></code></pre></div>
-<p>The LAI is equal to 13.1637482. Let’s reduce it by 25%:</p>
+<p>The leaf C mass is equal to 13.1637482. Let’s reduce it by 25%:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">S<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">100</span>]=<span class="st"> </span>S<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">100</span>] <span class="op">*</span><span class="st"> </span>(<span class="fl">1.0</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.25</span>)</a></code></pre></div>
 <p>Now the leaf C mass is equal to 9.8728111. But all other variables are impacted by this one on the next day because it is used to compute the <code>LAI</code> that helps compute many things afterwards (light interception, then GPP…) !</p>
 <p>Before running the new simulation, the LAI on day 101 is equal to 0.3118927 and CM_Leaf is equal to: 13.3427444.</p>
