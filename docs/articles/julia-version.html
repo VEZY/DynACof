@@ -211,7 +211,7 @@
 <a class="sourceLine" id="cb11-35" title="35"><span class="kw">autoplot</span>(a)</a>
 <a class="sourceLine" id="cb11-36" title="36"><span class="co">#&gt; Coordinate system already present. Adding new coordinate system, which will replace the existing one.</span></a></code></pre></div>
 <p><img src="julia-version_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
-<p>Incredible! It makes a simulation in less than 5 seconds in average! It is more than 100x faster than the pure R version.</p>
+<p>Incredible! It makes a simulation in about 3 seconds in average! It is more than 100x faster than the pure R version.</p>
 </div>
 <div id="calling-dynacof-step-by-step" class="section level2">
 <h2 class="hasAnchor">
@@ -228,10 +228,10 @@
 <p>Let’s see what is the impact of this disease on the coffee plant by re-simulating the day 101:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">S_disease=<span class="st"> </span><span class="kw"><a href="../reference/dynacof_i.jl.html">dynacof_i.jl</a></span>(<span class="dt">i =</span> <span class="dv">101</span>, <span class="dt">S =</span> S)</a></code></pre></div>
 <p>Well now here are the results:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">S<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">101</span>]</a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt; [1] 13.34274</span></a></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">S<span class="op">$</span>Sim<span class="op">$</span>CM_LAI[<span class="dv">101</span>]</a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">S_disease<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">101</span>]</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co">#&gt; [1] 10.00102</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">S_disease<span class="op">$</span>Sim<span class="op">$</span>LAI[<span class="dv">101</span>]</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="co">#&gt; [1] 0.2339195</span></a></code></pre></div>
 <p>If we want to see the impact of the disease on this day, we can put the results in a new object and plot the results against the first simulation outputs:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">S=<span class="st"> </span><span class="kw"><a href="../reference/dynacof.jl.html">dynacof.jl</a></span>(<span class="dt">Inpath=</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/basename">dirname</a></span>(met_file),<span class="dt">FileName=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">Site=</span><span class="st">"package"</span>,<span class="dt">Meteo=</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/basename">basename</a></span>(met_file),<span class="dt">Soil=</span><span class="st">"package"</span>,<span class="dt">Coffee=</span><span class="st">"package"</span>,<span class="dt">Tree=</span><span class="ot">NULL</span>))</a>
 <a class="sourceLine" id="cb17-2" title="2"><span class="co">#&gt; </span></a>
@@ -248,7 +248,7 @@
 <a class="sourceLine" id="cb17-13" title="13"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span> LAI_disease,<span class="dt">color=</span> <span class="st">"Disease event on day 100"</span>))<span class="op">+</span></a>
 <a class="sourceLine" id="cb17-14" title="14"><span class="st">  </span><span class="kw">theme_tufte</span>()</a></code></pre></div>
 <p><img src="julia-version_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
-<p>The coffee with the disease is plotted in red, while the other is plotted in black. The result is quite obvious: the disease impacted the LAI of the coffee by decreasing its value rapidly on day 101, and then the coffee grew again but its LAI remained lower than the other.</p>
+<p>The result is quite obvious: the disease impacted the LAI of the coffee by decreasing its value rapidly on day 101, and then the coffee grew again but its LAI remained lower than the other.</p>
 </div>
   </div>
 

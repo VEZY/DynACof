@@ -129,7 +129,7 @@ bind_cols(Date= S$Meteo$Date,LAI= S$Sim$LAI)%>%
 
 The R version takes usually about 9 or 10 minutes to execute the full example. Let's see how much time it takes in average to make a simulation with the Julia version (making 10 simulations): 
 
-```{r}
+```{r, cache = TRUE}
 library(microbenchmark)
 library(ggplot2)
 
@@ -138,7 +138,7 @@ a= microbenchmark(DynaCof= dynacof.jl(Inpath= dirname(met_file), FileName=list(S
 autoplot(a)
 ```
 
-Incredible! It makes a simulation in less than 5 seconds in average! It is more than 100x faster than the pure R version.
+Incredible! It makes a simulation in about `r round(mean(a$time)*10^-9,0)` seconds in average! It is more than 100x faster than the pure R version.
 
 
 ## Calling DynACof step by step
@@ -171,11 +171,11 @@ S_disease= dynacof_i.jl(i = 101, S = S)
 
 Well now here are the results: 
 ```{r}
-S$Sim$CM_Leaf[101]
+S_disease$Sim$CM_Leaf[101]
 ```
 
 ```{r}
-S$Sim$CM_LAI[101]
+S_disease$Sim$LAI[101]
 ```
 
 If we want to see the impact of the disease on this day, we can put the results in a new object and plot the results against the first simulation outputs: 
@@ -195,7 +195,7 @@ bind_cols(Date= S$Meteo$Date,LAI= S$Sim$LAI,LAI_disease= S_disease$Sim$LAI)%>%
   theme_tufte()
 ```
 
-The coffee with the disease is plotted in red, while the other is plotted in black. The result is quite obvious: the disease impacted the LAI of the coffee by decreasing its value rapidly on day 101, and then the coffee grew again but its LAI remained lower than the other. 
+The result is quite obvious: the disease impacted the LAI of the coffee by decreasing its value rapidly on day 101, and then the coffee grew again but its LAI remained lower than the other. 
 
 
 ```{r include=FALSE}
