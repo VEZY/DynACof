@@ -1016,7 +1016,8 @@ logistic= function(xi,u_log,s_log){1/(1+exp(-((xi-u_log)/s_log)))}
 #' @rdname logistic
 #' @export
 logistic_deriv= function(xi,u_log,s_log){
-  logistic(xi,u_log,s_log) * (1.0 - logistic(xi,u_log,s_log))
+  res= c(0,diff(xi))
+  (exp(-((xi-u_log)/s_log))/(s_log*(1+exp(-((xi-u_log)/s_log)))^2))*res
 }
 
 #' Fruit sucrose accumulation

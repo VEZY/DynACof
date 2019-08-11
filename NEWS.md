@@ -1,3 +1,9 @@
+# DynACof 1.2.0
+
+* Reformat the code so the shade tree, coffee, soil and energy balance are made by separate functions sequentially  
+* Add dynacof_i to be able to change a simulation from one (or several) time step to another  
+* Add DynACof.jl compatibility: now the user can use the Julia version of DynACof directly from the R using the R version of the package. This functionnality require Julia (v > 1.1) to be installed on the computer and available in the path.  
+
 # DynACof 1.1.2
 
 * Externalize coffee metamodels to parameter file + remove Tcan_MAESPA_Coffee as it is computed by the model now
