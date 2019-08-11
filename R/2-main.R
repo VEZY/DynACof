@@ -171,7 +171,7 @@
 #'
 #' @note All variable units are available as attributes (see example).
 #'
-#' For simulations with custom initialisations (*e.g.* at age > 0), or running a simulation day by day, see [DynACof_i()].
+#' For simulations with custom initialisations (*e.g.* at age > 0), or running a simulation day by day, see [dynacof_i()].
 #'
 #' @examples
 #' \dontrun{

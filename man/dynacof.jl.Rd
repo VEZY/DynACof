@@ -53,10 +53,11 @@ dynacof.jl_setup()
 # Running a simulation:
 # First, downloading an example meteorology file:
 met_file= tempfile()
-download.file("https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt",met_file)
+m= "https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt"
+download.file(m,met_file)
 
-
-S= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),Soil="package",Coffee="package",Tree=NULL))
+S= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),
+                                                       Soil="package",Coffee="package",Tree=NULL))
 unlink(met_file)
 # Plotting the coffee LAI along the simulation:
 plot(S$Meteo$Date,S$Sim$LAI)

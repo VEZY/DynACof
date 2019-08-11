@@ -8,7 +8,7 @@
 #' @return Nothing, modify the list of simulation `S` in place. See [DynACof()] for more details.
 #'
 coffee_model= function(S,i){
-
+  .= NULL
   # Coffea computation:
 
   # CM is in gC m-2soil, so use C content to transform in dry mass

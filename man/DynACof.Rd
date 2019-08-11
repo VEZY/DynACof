@@ -195,7 +195,7 @@ For example the default meteorology file (\code{\link[=Aquiares]{Aquiares()}}) h
 \note{
 All variable units are available as attributes (see example).
 
-For simulations with custom initialisations (\emph{e.g.} at age > 0), or running a simulation day by day, see \code{\link[=DynACof_i]{DynACof_i()}}.
+For simulations with custom initialisations (\emph{e.g.} at age > 0), or running a simulation day by day, see \code{\link[=dynacof_i]{dynacof_i()}}.
 }
 \examples{
 \dontrun{

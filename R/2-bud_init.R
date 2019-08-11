@@ -7,7 +7,7 @@
 #' and set the vector BudInitPeriod to TRUE between the two dates. So buds will appear
 #' between plant F_Tffb parameter and the first flowering day only.
 #'
-#' @param S
+#' @param S The list of simulation
 #'
 #' @return Nothing, modify the list of simulation `S` in place. See [DynACof()] for more details.
 #'

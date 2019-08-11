@@ -7,7 +7,7 @@
 bud_init_period(S)
 }
 \arguments{
-\item{S}{}
+\item{S}{The list of simulation}
 }
 \value{
 Nothing, modify the list of simulation \code{S} in place. See \code{\link[=DynACof]{DynACof()}} for more details.

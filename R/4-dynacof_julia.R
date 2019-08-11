@@ -12,7 +12,7 @@
 #' @note If you run into issues at this step, try to install the development version of `JuliaCall`:
 #' `remotes::install_github("Non-Contradiction/JuliaCall")`. If it does not work either, try to open
 #' Julia from the terminal, and run this command: `use Pkg; Pkg.add(["RCall","Suppressor","DynACof"])`
-#' If you are using a new version of R, please use the argument `rebuild= TRUE` (see [JuliaCall::julia_setup ()]).
+#' If you are using a new version of R, please use the argument `rebuild= TRUE` (see [JuliaCall::julia_setup()]).
 #'
 #' @param ... Parameters are passed down to [JuliaCall::julia_setup()]
 #'
@@ -97,10 +97,11 @@ dynacof.jl_update= function (){
 #' # Running a simulation:
 #' # First, downloading an example meteorology file:
 #' met_file= tempfile()
-#' download.file("https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt",met_file)
+#' m= "https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt"
+#' download.file(m,met_file)
 #'
-#'
-#' S= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),Soil="package",Coffee="package",Tree=NULL))
+#' S= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),
+#'                                                        Soil="package",Coffee="package",Tree=NULL))
 #' unlink(met_file)
 #' # Plotting the coffee LAI along the simulation:
 #' plot(S$Meteo$Date,S$Sim$LAI)
@@ -175,10 +176,12 @@ dynacof.jl= function(Period=NULL,WriteIt=FALSE,Inpath=NULL,output_f=".RData",
 #' Making a regular simulation using example data:
 #' # First, downloading an example meteorology file:
 #' met_file= tempfile()
-#' download.file("https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt",met_file)
+#' m= "https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt"
+#' download.file(m,met_file)
 #'
 #'
-#' S= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),Soil="package",Coffee="package",Tree=NULL))
+#' S= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),
+#'                                                        Soil="package",Coffee="package",Tree=NULL))
 #' unlink(met_file)
 #'
 #' # Value of the maintenance respiration for coffee on day i=100:
