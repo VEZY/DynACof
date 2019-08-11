@@ -31,7 +31,10 @@ DynACof is also available as a [Julia](https://julialang.org/) package.
 Use this one for better performance (\~100x). Its repository is
 available [here](https://github.com/VEZY/DynACof.jl), and the
 documentation is available
-[here](https://vezy.github.io/DynACof.jl/dev/).
+[here](https://vezy.github.io/DynACof.jl/dev/). The Julia version is
+also available from the R package. See [the
+vignette](https://vezy.github.io/DynACof/articles/julia-version.html)
+for more details.
 
 ## Installation
 

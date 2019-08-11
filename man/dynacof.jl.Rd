@@ -41,14 +41,9 @@ Return invisibly a list containing three objects (Parameters, Meteo and Sim). Se
 Make a simulation using the julia version of DynACof, \href{https://github.com/VEZY/DynACof.jl}{DynACof.jl}.
 This implementation is much faster, with run-times ~100x faster. Need Julia installed on the computer and in the path.
 }
-\section{Fields}{
-
-\describe{
-\item{\code{Careful}}{Always call \code{\link[=dynacof.jl_setup]{dynacof.jl_setup()}} before runnning \code{dynacof.jl}. See example.}
-}}
-
 \note{
-If the user needs default values from the package for FileName names, put their values to "package".
+If the user needs default values from the package for FileName names, put their values to "package". Careful:
+Always call \code{\link[=dynacof.jl_setup]{dynacof.jl_setup()}} before runnning \code{dynacof.jl}. See example.
 }
 \examples{
 \dontrun{

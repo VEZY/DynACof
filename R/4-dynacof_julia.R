@@ -38,6 +38,7 @@ dynacof.jl_setup= function (...){
   JuliaCall::julia_command('Pkg.add(PackageSpec(url="https://github.com/VEZY/DynACof.jl"))')
   # JuliaCall::julia_install_package_if_needed("DynACof")
   JuliaCall::julia_library("DynACof")
+  JuliaCall::julia_library("NamedTupleTools")
   message(crayon::green$bold$underline('Julia + DynACof.jl successfully instantiated'))
 }
 
@@ -137,6 +138,7 @@ dynacof.jl= function(Period=NULL,WriteIt=FALSE,Inpath=NULL,output_f=".RData",
   Param_names= gsub("cp","Cp",Param_names)
   Parameters= JuliaCall::julia_eval("collect(Parameters)",need_return="R")
   names(Parameters)= Param_names
+  Parameters$Bud_T_correction= JuliaCall::julia_eval("Parameters.Bud_T_correction", need_return = "Julia")
 
   message(paste("\n", crayon::green$bold$underline("Simulation completed successfully"),"\n"))
   FinalList= list(Sim= Sim,Meteo= Meteo,Parameters= Parameters)
@@ -197,19 +199,22 @@ dynacof.jl= function(Period=NULL,WriteIt=FALSE,Inpath=NULL,output_f=".RData",
 dynacof_i.jl= function(i,S){
   # NB: S has to come from a dynacof.jl call because the Parameters contain functions coded either in R (DynACof()) or Julia (dynacof.jl)
 
-  JuliaCall::julia_assign("i", i)
+  JuliaCall::julia_assign("i", as.integer(i))
   JuliaCall::julia_assign("Sim", S$Sim)
   JuliaCall::julia_assign("Meteo", S$Meteo)
-  JuliaCall::julia_assign("Param_names", names(S$Parameters))
-  JuliaCall::julia_assign("Param_values", S$Parameters)
+  names(S$Parameters)= gsub("Cp","cp",names(S$Parameters))
+  JuliaCall::julia_assign("Parameters", S$Parameters)
 
-
-
-  # JuliaCall::julia_assign("Parameters", S$Parameters)
-
+  # Making Parameters into a named tuple (using NamedTupleTools):
+  JuliaCall::julia_command('Param_names= collect(keys(Parameters));')
+  JuliaCall::julia_command("Param_values= collect(values(Parameters));")
+  JuliaCall::julia_command("Parameters= namedtuple(Param_names)(Param_values);")
 
   # Running the simulation:
   JuliaCall::julia_command("dynacof_i!(i,Sim,Meteo,Parameters);")
   # Get the values of the outputs:
-  S$Sim[i,]= JuliaCall::julia_eval("Sim[i,:]")
+  # S$Sim[i,]= JuliaCall::julia_eval("Sim[i,:]")
+  S$Sim= JuliaCall::julia_eval("Sim")
+  names(S$Parameters)= gsub("cp","Cp",names(S$Parameters))
+  S
 }

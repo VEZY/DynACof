@@ -1,8 +1,7 @@
 ---
 title: "Using the Julia version"
 author: "Rémi Vezy"
-output: rmarkdown::html_vignette:
-    fig_caption: yes
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Using the Julia version}
   %\VignetteEngine{knitr::rmarkdown}
@@ -14,6 +13,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(ggplot2)
+library(tidyverse)
+library(ggthemes)
 ```
 
 DynACof is available as an R package (this one), but also as a [Julia](https://julialang.org/) package for better performance (more than ~100x). The Julia package is available on [this repository](https://github.com/VEZY/DynACof.jl), and the documentation is available [here](https://vezy.github.io/DynACof.jl/dev/).
@@ -117,7 +119,10 @@ S= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=base
 This command is making a simulation using the default parameters from the model, and the meteorology that we just downloaded. We can plot the LAI of the coffee now: 
 
 ```{r}
-plot(S$Meteo$Date,S$Sim$LAI)
+bind_cols(Date= S$Meteo$Date,LAI= S$Sim$LAI)%>%
+  ggplot()+
+  geom_line(aes(y= LAI, x= Date))+
+  theme_tufte()
 ```
 
 ## Microbenchmark
@@ -156,13 +161,44 @@ S$Sim$CM_Leaf[100]= S$Sim$CM_Leaf[100] * (1.0 - 0.25)
 
 Now the leaf C mass is equal to `r S$Sim$CM_Leaf[100]`. But all other variables are impacted by this one on the next day because it is used to compute the `LAI` that helps compute many things afterwards (light interception, then GPP...) ! 
 
-Let's see what is the impact of this disease on the coffee plant:
+Before running the new simulation, the LAI on day 101 is equal to `r S$Sim$LAI[101]` and CM_Leaf is equal to: `r S$Sim$CM_Leaf[101]`. 
+
+Let's see what is the impact of this disease on the coffee plant by re-simulating the day 101:
 
 ```{r}
-S$Sim$CM_Leaf[100]= S$Sim$CM_Leaf[100] * (1.0 - 0.25)
+S_disease= dynacof_i.jl(i = 101, S = S)
 ```
 
+Well now here are the results: 
+```{r}
+S$Sim$CM_Leaf[101]
+```
+
+```{r}
+S$Sim$CM_LAI[101]
+```
+
+If we want to see the impact of the disease on this day, we can put the results in a new object and plot the results against the first simulation outputs: 
+
+```{r}
+S= dynacof.jl(Inpath= dirname(met_file),FileName=list(Site="package",Meteo=basename(met_file),Soil="package",Coffee="package",Tree=NULL))
+
+S_disease= S
+S_disease$Sim$CM_Leaf[100]= S_disease$Sim$CM_Leaf[100] * (1.0 - 0.25)
+S_disease= dynacof_i.jl(i = 101:200, S = S_disease)
+
+bind_cols(Date= S$Meteo$Date,LAI= S$Sim$LAI,LAI_disease= S_disease$Sim$LAI)%>%
+  slice(50:200)%>%
+  ggplot(aes(y= LAI, x= Date))+
+  geom_line(aes(color= "no disease"))+
+  geom_line(aes(y= LAI_disease,color= "Disease event on day 100"))+
+  theme_tufte()
+```
+
+The coffee with the disease is plotted in red, while the other is plotted in black. The result is quite obvious: the disease impacted the LAI of the coffee by decreasing its value rapidly on day 101, and then the coffee grew again but its LAI remained lower than the other. 
 
 
-
+```{r include=FALSE}
+rm(met_file)
+```
 
