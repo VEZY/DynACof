@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# [DynACof](https://vezy.github.io/DynACof): The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" alt="logo" width="300" align="right" />
+# [DynACof](https://vezy.github.io/DynACof): The Dynamic Agroforestry Coffee Crop Model <img src="man/figures/logo.png" alt="" width="300" align="right" />
 
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively

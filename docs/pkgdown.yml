@@ -4,6 +4,6 @@ pkgdown_sha: ~
 articles:
   julia-version: julia-version.html
 urls:
-  reference: https://vezy.github.io/sticRs//reference
-  article: https://vezy.github.io/sticRs//articles
+  reference: https://vezy.github.io/DynACof//reference
+  article: https://vezy.github.io/DynACof//articles
 
