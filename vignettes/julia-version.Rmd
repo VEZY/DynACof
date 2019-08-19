@@ -125,6 +125,27 @@ bind_cols(Date= S$Meteo$Date,LAI= S$Sim$LAI)%>%
   theme_tufte()
 ```
 
+
+## Use custom input files
+
+Custom input files are available from the [DynACof.jl_inputs](https://github.com/VEZY/DynACof.jl_inputs) repository. 
+You can make a custom simulation after cloning the repository.
+
+* Cloning into a temporary file (clone into a more permanent folder if you plan to use them more than once): 
+```{r eval=FALSE}
+# install.packages("git2r")
+dynacof_data= normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
+git2r::clone("https://github.com/VEZY/DynACof.jl_inputs.git",dynacof_data)
+```
+
+* Making a simulation using the parameter files:
+```{r eval=FALSE}
+sim= dynacof.jl(Period = as.POSIXct(c("1979-01-01", "1980-12-31")),
+                   Inpath = dynacof_data, Simulation_Name = "Test1",
+                   FileName = list(Site = "site.jl", Meteo ="meteorology.txt",
+                                   Soil = "soil.jl",Coffee = "coffee.jl", Tree = NULL))
+```
+
 ## Microbenchmark
 
 The R version takes usually about 9 or 10 minutes to execute the full example. Let's see how much time it takes in average to make a simulation with the Julia version (making 10 simulations): 
@@ -135,7 +156,7 @@ library(ggplot2)
 
 a= microbenchmark(DynaCof= dynacof.jl(Inpath= dirname(met_file), FileName=list(Site="package",Meteo=basename(met_file),Soil="package",Coffee="package",Tree=NULL)), times= 10)
 
-autoplot(a)
+autoplot(a) + ylim(2.0,4.0)
 ```
 
 Incredible! It makes a simulation in about `r round(mean(a$time)*10^-9,0)` seconds in average! It is more than 100x faster than the pure R version.

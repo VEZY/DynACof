@@ -34,7 +34,10 @@ documentation is available
 [here](https://vezy.github.io/DynACof.jl/dev/). The Julia version is
 also available from the R package. See [the
 vignette](https://vezy.github.io/DynACof/articles/julia-version.html)
-for more details.
+for more details. Note that the input parameter files are different from
+the R-version. They are accessible in the
+[DynACof.jl\_inputs](https://github.com/VEZY/DynACof.jl_inputs)
+repository.
 
 ## Installation
 

@@ -31,7 +31,8 @@ Imports:
     bigleaf,
     crayon,
     solartime,
-    JuliaCall
+    JuliaCall,
+    rstudioapi
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Suggests: 
