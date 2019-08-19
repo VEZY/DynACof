@@ -205,7 +205,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
 
   # Importing the parameters ------------------------------------------------
 
-  Parameters= Import_Parameters(path = Inpath, Names= FileName[-grep("Meteo",FileName)])
+  Parameters= Import_Parameters(path = Inpath, Names= FileName[-grep("Meteo",names(FileName))])
 
   test_parameters(Parameters, isTree= !is.null(FileName$Tree))
 
