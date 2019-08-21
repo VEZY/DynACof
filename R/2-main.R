@@ -256,21 +256,21 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
     cl= parallel::makeCluster(min(NbCores,NCycles))
     doParallel::registerDoParallel(cl)
 
-    CycleList= foreach::foreach(cy= 1:NCycles,.combine=rbind,
-                                .packages = c("dplyr","zoo")) %dopar% {
+    Table= foreach::foreach(cy= 1:NCycles,.combine=rbind,
+                            .packages = c("dplyr","zoo")) %dopar% {
 
-                                  mainfun(cy,Direction,Meteo,Parameters)
+                              mainfun(cy,Direction,Meteo,Parameters)
 
-                                }
+                            }
     parallel::stopCluster(cl)
   }else{
     CycleList=
       lapply(1:NCycles, function(x){
         mainfun(x,Direction,Meteo,Parameters)
       })
+    Table= do.call(rbind, CycleList[c(1:NCycles)])
   }
 
-  Table= do.call(rbind, CycleList[c(1:NCycles)])
   UnwantedVarnames= c('.Fruit_Cohort',"Bud_available","BudBreak_cohort")
   Table= Table[,!colnames(Table)%in%UnwantedVarnames]
 
