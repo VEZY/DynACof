@@ -263,6 +263,7 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
 
                             }
     parallel::stopCluster(cl)
+
   }else{
     CycleList=
       lapply(1:NCycles, function(x){
@@ -322,14 +323,6 @@ mainfun= function(cy,Direction,Meteo,Parameters){
   Init_Sim(S)
   bud_init_period(S)
 
-
-  # Search for the species specific tree function:
-  if(S$Parameters$Tree_Species=="No_Shade"){
-    tree_model= No_Shade
-  }else{
-    tree_model= Shade.Tree
-  }
-
   S$Sim$ALS=
     suppressMessages(ALS(Elevation= S$Parameters$Elevation, SlopeAzimut= S$Parameters$SlopeAzimut,
                          Slope= S$Parameters$Slope, RowDistance= S$Parameters$RowDistance,
@@ -343,10 +336,14 @@ mainfun= function(cy,Direction,Meteo,Parameters){
   pb= txtProgressBar(max= length(S$Sim$LAI), style=3)
 
   for (i in 1:length(S$Sim$LAI)){
+
     setTxtProgressBar(pb, i)
     # Shade Tree computation if any
-    tree_model(S,i)  # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
-    # LE_Tree (sum of transpiration + leaf evap)
+    if (S$Sim$Stocking_Tree[i] > 0.0){
+      tree_model(S,i)  # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
+      # LE_Tree (sum of transpiration + leaf evap)
+    }
+
     coffee_model(S,i)
     # soil (+canopy evap) water balance ---------------------------------------
     soil_model(S,i)
@@ -397,12 +394,6 @@ dynacof_i= function(i,S){
   Z$Sim= as.list(S$Sim)
   Z$Met_c= as.list(S$Meteo)
 
-  # Search for the species specific tree function:
-  if(Z$Parameters$Tree_Species=="No_Shade"){
-    tree_model= No_Shade
-  }else{
-    tree_model= Shade.Tree
-  }
   # Main Loop -----------------------------------------------------------------------------------
 
   pb= txtProgressBar(max= max(i), style=3)

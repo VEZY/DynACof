@@ -21,7 +21,7 @@ SimulationClass= setRefClass("Simulation",
 #'
 #' @export
 Init_Sim= function(S){
-  S$Sim$LAI= rep_len(0.1,length(S$Sim$Cycle))
+  S$Sim$LAI= 0.0
   S$Sim$LAIplot= rep_len(0,length(S$Sim$Cycle))
   #Leaf Area per Plant location, to convert per ha using density,cannot be zero at beginning,
   # otherwise, GPP does not start and nothing grows
@@ -203,6 +203,7 @@ No_Shade.init= function(S){
     S$Sim$Height_Tree=
     rep_len(0,length(S$Sim$Cycle))
   S$Sim$TairCanopy_Tree= S$Met_c$Tair
+  S$Sim$Stocking_Tree= 0.0
 }
 
 #' @rdname Init_Sim
@@ -216,6 +217,10 @@ Tree.init= function(S){
     S$Sim$CM_CR_Tree= rep_len(0.01,length(S$Sim$Cycle))
   S$Sim$CM_RE_Tree= rep_len(0.15,length(S$Sim$Cycle))
 
+  S$Sim$DM_Leaf_Tree= 0.0
+  S$Sim.DM_Leaf_Tree[1]= S$Sim$CM_Leaf_Tree[1] / S$Parameters$CC_Leaf_Tree
+
+
   S$Sim$LAI_Tree=
     S$Sim$CM_Leaf_Tree*(S$Parameters$SLA_Tree/1000)/
     S$Parameters$CC_Leaf_Tree
@@ -224,7 +229,6 @@ Tree.init= function(S){
     S$Sim$Crown_H_Tree=
     S$Sim$Height_Tree=
     S$Sim$LA_Tree=
-    S$Sim$DM_Leaf_Tree=
     S$Sim$DM_Branch_Tree=
     S$Sim$DM_Stem_Tree=
     S$Sim$DM_CR_Tree=
