@@ -135,7 +135,7 @@ It is time-consuming for the first time of execution because of the precompilati
     
     </div>
 
-    <pre class="usage"><span class='fu'>dynacof.jl_setup</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>dynacof.jl_setup</span>(<span class='no'>...</span>, <span class='kw'>dynacof_dev</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,6 +143,11 @@ It is time-consuming for the first time of execution because of the precompilati
     <tr>
       <th>...</th>
       <td><p>Parameters are passed down to <code><a href='https://rdrr.io/pkg/JuliaCall/man/julia_setup.html'>JuliaCall::julia_setup()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>dynacof_dev</th>
+      <td><p>If a dev version of DynACof.jl is to be used and its path is not in <code>LOAD_PATH</code>, the path to
+the <code>dev</code> location, <em>e.g.</em> "C:/Users/&lt;User&gt;/.julia/dev".</p></td>
     </tr>
     </table>
     

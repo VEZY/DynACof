@@ -4,10 +4,13 @@
 \alias{dynacof.jl_setup}
 \title{Setup Julia call}
 \usage{
-dynacof.jl_setup(...)
+dynacof.jl_setup(..., dynacof_dev = NULL)
 }
 \arguments{
 \item{...}{Parameters are passed down to \code{\link[JuliaCall:julia_setup]{JuliaCall::julia_setup()}}}
+
+\item{dynacof_dev}{If a dev version of DynACof.jl is to be used and its path is not in \code{LOAD_PATH}, the path to
+the \code{dev} location, \emph{e.g.} "C:/Users/<User>/.julia/dev".}
 }
 \description{
 This function initializes Julia and the \href{https://github.com/VEZY/DynACof.jl}{DynACof.jl} package.

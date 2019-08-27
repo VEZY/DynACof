@@ -110,11 +110,7 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DynACof)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="co">#&gt; Learn DynACof at: https://vezy.github.io/DynACof/</span></a></code></pre></div>
 <p>Then, setup the Julia environment using <code><a href="../reference/dynacof.jl_setup.html">dynacof.jl_setup()</a></code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="../reference/dynacof.jl_setup.html">dynacof.jl_setup</a></span>()</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; Julia version 1.1.1 at location C:\Users\vezy\AppData\Local\Julia-1.1.1\bin will be used.</span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="co">#&gt; Loading setup script for JuliaCall...</span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt; Finish loading setup script for JuliaCall.</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt; Julia + DynACof.jl successfully instantiated</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="../reference/dynacof.jl_setup.html">dynacof.jl_setup</a></span>()</a></code></pre></div>
 <p>This command instantiate julia, download the required Julia packages, and precompile them. This step can take a while, especially if you have a slow connection and/or computer. You can expect to wait for 2-3 minutes the first time you execute this function, but next time the packages will be in your computer and precompiled already, so it is less time-consuming after the first time.</p>
 <p>When you already ran <code><a href="../reference/dynacof.jl_setup.html">dynacof.jl_setup()</a></code> once on your computer, you can add <code>install=FALSE</code> to avoid unecessary computations:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../reference/dynacof.jl_setup.html">dynacof.jl_setup</a></span>(<span class="dt">install=</span><span class="ot">FALSE</span>)</a></code></pre></div>
@@ -176,7 +172,7 @@
 <a class="sourceLine" id="cb10-2" title="2"><span class="st">  </span><span class="kw">ggplot</span>()<span class="op">+</span></a>
 <a class="sourceLine" id="cb10-3" title="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span> LAI, <span class="dt">x=</span> Date))<span class="op">+</span></a>
 <a class="sourceLine" id="cb10-4" title="4"><span class="st">  </span><span class="kw">theme_tufte</span>()</a></code></pre></div>
-<p><img src="julia-version_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
+<p><img src="julia-version_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 </div>
 <div id="use-custom-input-files" class="section level2">
@@ -187,15 +183,15 @@
 <li>Cloning into a temporary file (clone into a more permanent folder if you plan to use them more than once):</li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># install.packages("git2r")</span></a>
-<a class="sourceLine" id="cb11-2" title="2">dynacof_data=<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="dt">winslash =</span> <span class="st">"/"</span>, <span class="dt">mustWork =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-2" title="2">dynacof_data=<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(<span class="dt">check =</span> <span class="ot">FALSE</span>),<span class="st">"repo"</span>), <span class="dt">winslash =</span> <span class="st">"/"</span>, <span class="dt">mustWork =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb11-3" title="3">git2r<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/git2r/man/clone.html">clone</a></span>(<span class="st">"https://github.com/VEZY/DynACof.jl_inputs.git"</span>,dynacof_data)</a></code></pre></div>
 <ul>
 <li>Making a simulation using the parameter files:</li>
 </ul>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">sim=<span class="st"> </span><span class="kw"><a href="../reference/dynacof.jl.html">dynacof.jl</a></span>(<span class="dt">Period =</span> <span class="kw"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1979-01-01"</span>, <span class="st">"1980-12-31"</span>)),</a>
-<a class="sourceLine" id="cb12-2" title="2">                   <span class="dt">Inpath =</span> dynacof_data, <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,</a>
-<a class="sourceLine" id="cb12-3" title="3">                   <span class="dt">FileName =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">Site =</span> <span class="st">"site.jl"</span>, <span class="dt">Meteo =</span><span class="st">"meteorology.txt"</span>,</a>
-<a class="sourceLine" id="cb12-4" title="4">                                   <span class="dt">Soil =</span> <span class="st">"soil.jl"</span>,<span class="dt">Coffee =</span> <span class="st">"coffee.jl"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</a></code></pre></div>
+<a class="sourceLine" id="cb12-2" title="2">                <span class="dt">Inpath =</span> dynacof_data, <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,</a>
+<a class="sourceLine" id="cb12-3" title="3">                <span class="dt">FileName =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">Site =</span> <span class="st">"site.jl"</span>, <span class="dt">Meteo =</span><span class="st">"meteorology.txt"</span>,</a>
+<a class="sourceLine" id="cb12-4" title="4">                                <span class="dt">Soil =</span> <span class="st">"soil.jl"</span>,<span class="dt">Coffee =</span> <span class="st">"coffee.jl"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</a></code></pre></div>
 </div>
 <div id="microbenchmark" class="section level2">
 <h2 class="hasAnchor">
@@ -239,7 +235,7 @@
 <a class="sourceLine" id="cb13-36" title="36"><span class="co">#&gt; Coordinate system already present. Adding new coordinate system, which will replace the existing one.</span></a>
 <a class="sourceLine" id="cb13-37" title="37"><span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which</span></a>
 <a class="sourceLine" id="cb13-38" title="38"><span class="co">#&gt; will replace the existing scale.</span></a></code></pre></div>
-<p><img src="julia-version_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="julia-version_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
 <p>Incredible! It makes a simulation in about 3 seconds in average! It is more than 100x faster than the pure R version.</p>
 </div>
 <div id="calling-dynacof-step-by-step" class="section level2">
@@ -276,7 +272,7 @@
 <a class="sourceLine" id="cb19-12" title="12"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">color=</span> <span class="st">"no disease"</span>))<span class="op">+</span></a>
 <a class="sourceLine" id="cb19-13" title="13"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span> LAI_disease,<span class="dt">color=</span> <span class="st">"Disease event on day 100"</span>))<span class="op">+</span></a>
 <a class="sourceLine" id="cb19-14" title="14"><span class="st">  </span><span class="kw">theme_tufte</span>()</a></code></pre></div>
-<p><img src="julia-version_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="julia-version_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 <p>The result is quite obvious: the disease impacted the LAI of the coffee by decreasing its value rapidly on day 101, and then the coffee grew again but its LAI remained lower than the other.</p>
 </div>
   </div>
