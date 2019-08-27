@@ -269,11 +269,8 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
       lapply(1:NCycles, function(x){
         mainfun(x,Direction,Meteo,Parameters)
       })
-    Table= do.call(rbind, CycleList[c(1:NCycles)])
+    Table= dplyr::bind_rows(CycleList)
   }
-
-  UnwantedVarnames= c('.Fruit_Cohort',"Bud_available","BudBreak_cohort")
-  Table= Table[,!colnames(Table)%in%UnwantedVarnames]
 
   attr(Table,"unit")= data.frame(varnames)
 
@@ -362,6 +359,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 #' @param i Either an integer, or a range giving the day of simulation needed. Match the row index, so `i=1` make
 #' a simulation for the first row of Sim and Met.
 #' @param S The simulation list (see [DynACof()]).
+#' @param verbose Boolean. Prints progress bar if `TRUE` (default).
 #'
 #' @return The modified simulation list `S`
 #' @export
@@ -387,7 +385,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 #' S= dynacof_i(i:(i+10),S)
 #'
 #'}
-dynacof_i= function(i,S){
+dynacof_i= function(i,S,verbose= TRUE){
 
   Z= SimulationClass$new()
   Z$Parameters= S$Parameters
@@ -396,12 +394,15 @@ dynacof_i= function(i,S){
 
   # Main Loop -----------------------------------------------------------------------------------
 
-  pb= txtProgressBar(max= max(i), style=3)
+  if(verbose){pb= txtProgressBar(max= max(i), style=3)}
 
   for (j in i){
-    setTxtProgressBar(pb, j)
+    if(verbose){setTxtProgressBar(pb, j)}
     # Shade Tree computation if any
-    tree_model(Z,j)  # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
+    if(S$Sim$Stocking_Tree[i] > 0.0){
+      tree_model(Z,j)  # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
+      # LE_Tree (sum of transpiration + leaf evap)
+    }
     # LE_Tree (sum of transpiration + leaf evap)
     coffee_model(Z,j)
     # soil (+canopy evap) water balance ---------------------------------------

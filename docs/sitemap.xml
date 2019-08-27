@@ -115,9 +115,6 @@
     <loc>https://vezy.github.io/DynACof//reference/Rad_net.html</loc>
   </url>
   <url>
-    <loc>https://vezy.github.io/DynACof//reference/Shade.Tree.html</loc>
-  </url>
-  <url>
     <loc>https://vezy.github.io/DynACof//reference/Simulation-class.html</loc>
   </url>
   <url>
@@ -131,6 +128,9 @@
   </url>
   <url>
     <loc>https://vezy.github.io/DynACof//reference/test_parameters.html</loc>
+  </url>
+  <url>
+    <loc>https://vezy.github.io/DynACof//reference/tree_model.html</loc>
   </url>
   <url>
     <loc>https://vezy.github.io/DynACof//reference/varnames.html</loc>

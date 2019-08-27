@@ -9,12 +9,15 @@
 #' first time you use it. If you encounter some issue, you can browe the issues from the [JuliaCall](https://github.com/Non-Contradiction/JuliaCall#juliacall-for-r-package-developers)
 #' package, or fill one in the [DynACof](https://github.com/VEZY/DynACof.jl/issues) repository.
 #'
+#'
 #' @note If you run into issues at this step, try to install the development version of `JuliaCall`:
 #' `remotes::install_github("Non-Contradiction/JuliaCall")`. If it does not work either, try to open
 #' Julia from the terminal, and run this command: `use Pkg; Pkg.add(["RCall","Suppressor","DynACof"])`
 #' If you are using a new version of R, please use the argument `rebuild= TRUE` (see [JuliaCall::julia_setup()]).
 #'
 #' @param ... Parameters are passed down to [JuliaCall::julia_setup()]
+#' @param dynacof_dev If a dev version of DynACof.jl is to be used and its path is not in `LOAD_PATH`, the path to
+#' the `dev` location, *e.g.* "C:/Users/<User>/.julia/dev".
 #'
 #' @examples
 #' \dontrun{
@@ -23,7 +26,7 @@
 #' }
 #'
 #' @export
-dynacof.jl_setup= function (...){
+dynacof.jl_setup= function (..., dynacof_dev= NULL){
   tryCatch(expr = {
     julia= JuliaCall::julia_setup(...)
   },
@@ -37,7 +40,12 @@ dynacof.jl_setup= function (...){
 
   JuliaCall::julia_command('Pkg.add(PackageSpec(url="https://github.com/VEZY/DynACof.jl"))')
   # JuliaCall::julia_install_package_if_needed("DynACof")
-  JuliaCall::julia_library("DynACof")
+  if(!is.null(dynacof_dev)){
+    JuliaCall::julia_command(paste0('push!(LOAD_PATH,"',dynacof_dev,'")'))
+    JuliaCall::julia_command("using DynACof")
+  }else{
+    JuliaCall::julia_library("DynACof")
+  }
   JuliaCall::julia_library("NamedTupleTools")
   message(crayon::green$bold$underline('Julia + DynACof.jl successfully instantiated'))
 }

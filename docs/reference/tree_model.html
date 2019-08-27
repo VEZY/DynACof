@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Step-by-step DynACof — dynacof_i • DynACof</title>
+<title>Shade Tree subroutine — tree_model • DynACof</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="Step-by-step DynACof — dynacof_i" />
+<meta property="og:title" content="Shade Tree subroutine — tree_model" />
 
-<meta property="og:description" content="Using DynACof one iteration after another. Allows to run a DynACof simulation with starting
-at age &amp;gt; 0 with initializations." />
+<meta property="og:description" content="Make all computations for shade trees (similar to coffee, but no fruits) for the ith
+day by modifying the S list in place." />
 
 <meta property="og:image" content="https://vezy.github.io/DynACof/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -123,65 +123,49 @@ at age &amp;gt; 0 with initializations." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Step-by-step DynACof</h1>
+    <h1>Shade Tree subroutine</h1>
     
-    <div class="hidden name"><code>dynacof_i.Rd</code></div>
+    <div class="hidden name"><code>tree_model.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Using DynACof one iteration after another. Allows to run a DynACof simulation with starting
-at age &gt; 0 with initializations.</p>
+    <p>Make all computations for shade trees (similar to coffee, but no fruits) for the ith
+day by modifying the <code>S</code> list in place.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>dynacof_i</span>(<span class='no'>i</span>, <span class='no'>S</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>tree_model</span>(<span class='no'>S</span>, <span class='no'>i</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>i</th>
-      <td><p>Either an integer, or a range giving the day of simulation needed. Match the row index, so <code>i=1</code> make
-a simulation for the first row of Sim and Met.</p></td>
-    </tr>
-    <tr>
       <th>S</th>
-      <td><p>The simulation list (see <code><a href='DynACof.html'>DynACof()</a></code>).</p></td>
+      <td><p>The simulation list of class "Simulation".</p></td>
     </tr>
     <tr>
-      <th>verbose</th>
-      <td><p>Boolean. Prints progress bar if <code>TRUE</code> (default).</p></td>
+      <th>i</th>
+      <td><p>The index of the day since the first day of the simulation.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The modified simulation list <code>S</code></p>
+    <p>Nothing, modify the list of simulation <code>S</code> in place. See <code><a href='DynACof.html'>DynACof()</a></code> for
+more details.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>This function shouldn't be called by the user. It is made as a subroutine so it is easier for
+advanced users to modify the code.
+<code>No_Shade()</code> is used as an empty function that is called when there are no shade trees.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='DynACof.html'>DynACof()</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"># NOT RUN {
-Making a regular simulation using example data:
-S= DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
-
-# Value of the maintenance respiration for coffee on day i=100:
-i= 100
-S$Sim$Rm[i]
-
-# Changing the value of Tair in the meteorology for day 100:
-S$Meteo$Tair[i]= S$Meteo$Tair[i]+10.0
-
-S= dynacof_i(i,S)
-
-# New value of the maintenance respiration for coffee:
-S$Sim$Rm[i]
-
-# To re-run DynACof for several days, use a range for `i`:
-S= dynacof_i(i:(i+10),S)
-
-# }
-</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -189,9 +173,11 @@ S= dynacof_i(i:(i+10),S)
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+
+      <li><a href="#note">Note</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

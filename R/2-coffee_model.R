@@ -478,5 +478,4 @@ coffee_model= function(S,i){
   S$Sim$Ra[i]=S$Sim$Rm[i]+S$Sim$Rg[i]
   S$Sim$NPP[i]=S$Sim$NPP_Shoot[i]+S$Sim$NPP_SCR[i]+
     S$Sim$NPP_Fruit[i]+S$Sim$NPP_Leaf[i]+S$Sim$NPP_FRoot[i]
-  S
 }

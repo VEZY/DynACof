@@ -41,8 +41,13 @@ library(DynACof)
 
 Then, setup the Julia environment using `dynacof.jl_setup()`:
 
-```{r setupjulia}
+```{r eval=FALSE}
 dynacof.jl_setup()
+```
+
+```{r include=FALSE}
+# We use the dev version instead for the moment
+dynacof.jl_setup(dynacof_dev = "C:/Users/vezy/.julia/dev")
 ```
 
 This command instantiate julia, download the required Julia packages, and precompile them. This step can take a while, especially if you have a slow connection and/or computer. You can expect to wait for 2-3 minutes the first time you execute this function, but next time the packages will be in your computer and precompiled already, so it is less time-consuming after the first time.
@@ -134,16 +139,16 @@ You can make a custom simulation after cloning the repository.
 * Cloning into a temporary file (clone into a more permanent folder if you plan to use them more than once): 
 ```{r eval=FALSE}
 # install.packages("git2r")
-dynacof_data= normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
+dynacof_data= normalizePath(file.path(tempdir(check = FALSE),"repo"), winslash = "/", mustWork = FALSE)
 git2r::clone("https://github.com/VEZY/DynACof.jl_inputs.git",dynacof_data)
 ```
 
 * Making a simulation using the parameter files:
 ```{r eval=FALSE}
 sim= dynacof.jl(Period = as.POSIXct(c("1979-01-01", "1980-12-31")),
-                   Inpath = dynacof_data, Simulation_Name = "Test1",
-                   FileName = list(Site = "site.jl", Meteo ="meteorology.txt",
-                                   Soil = "soil.jl",Coffee = "coffee.jl", Tree = NULL))
+                Inpath = dynacof_data, Simulation_Name = "Test1",
+                FileName = list(Site = "site.jl", Meteo ="meteorology.txt",
+                                Soil = "soil.jl",Coffee = "coffee.jl", Tree = NULL))
 ```
 
 ## Microbenchmark
@@ -220,6 +225,6 @@ The result is quite obvious: the disease impacted the LAI of the coffee by decre
 
 
 ```{r include=FALSE}
-rm(met_file)
+unlink(met_file)
 ```
 

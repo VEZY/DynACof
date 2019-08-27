@@ -21,8 +21,8 @@ SimulationClass= setRefClass("Simulation",
 #'
 #' @export
 Init_Sim= function(S){
-  S$Sim$LAI= 0.0
-  S$Sim$LAIplot= rep_len(0,length(S$Sim$Cycle))
+  S$Sim$LAI= rep_len(0.0,length(S$Sim$Cycle))
+  S$Sim$LAIplot= rep_len(0.0,length(S$Sim$Cycle))
   #Leaf Area per Plant location, to convert per ha using density,cannot be zero at beginning,
   # otherwise, GPP does not start and nothing grows
   S$Sim$CM_RE=
@@ -203,7 +203,7 @@ No_Shade.init= function(S){
     S$Sim$Height_Tree=
     rep_len(0,length(S$Sim$Cycle))
   S$Sim$TairCanopy_Tree= S$Met_c$Tair
-  S$Sim$Stocking_Tree= 0.0
+  S$Sim$Stocking_Tree= rep_len(0.0,length(S$Sim$Cycle))
 }
 
 #' @rdname Init_Sim
@@ -217,7 +217,7 @@ Tree.init= function(S){
     S$Sim$CM_CR_Tree= rep_len(0.01,length(S$Sim$Cycle))
   S$Sim$CM_RE_Tree= rep_len(0.15,length(S$Sim$Cycle))
 
-  S$Sim$DM_Leaf_Tree= 0.0
+  S$Sim$DM_Leaf_Tree= rep_len(0.0,length(S$Sim$Cycle))
   S$Sim.DM_Leaf_Tree[1]= S$Sim$CM_Leaf_Tree[1] / S$Parameters$CC_Leaf_Tree
 
 
@@ -313,7 +313,8 @@ Tree.init= function(S){
     S$Sim$Rn_tot=
     S$Sim$Rn_Tree=
     rep_len(0,length(S$Sim$Cycle))
-  S$Sim$Height_Tree[1]= 0.001 # because G_bulk doesn't allow heights of 0
+  S$Sim$Height_Tree[1]= rep_len(0.001,length(S$Sim$Cycle)) # because G_bulk doesn't allow
+  # heights of 0
   # Pre-computation of some variables / parameters:
   S$Sim$Stocking_Tree= rep_len(S$Parameters$StockingTree_treeha1/10000,
                                      length(S$Sim$Cycle))

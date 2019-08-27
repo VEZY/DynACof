@@ -4,13 +4,15 @@
 \alias{dynacof_i}
 \title{Step-by-step DynACof}
 \usage{
-dynacof_i(i, S)
+dynacof_i(i, S, verbose = TRUE)
 }
 \arguments{
 \item{i}{Either an integer, or a range giving the day of simulation needed. Match the row index, so \code{i=1} make
 a simulation for the first row of Sim and Met.}
 
 \item{S}{The simulation list (see \code{\link[=DynACof]{DynACof()}}).}
+
+\item{verbose}{Boolean. Prints progress bar if \code{TRUE} (default).}
 }
 \value{
 The modified simulation list \code{S}
