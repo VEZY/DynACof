@@ -108,7 +108,7 @@ coffee_model= function(S,i){
                  extwind= S$Parameters$extwind))
 
   S$Sim$DegreeDays_Tcan[i]=
-    GDD(Tmean = S$Sim$Tleaf_Coffee[i],MinTT = S$Parameters$MinTT,
+    GDD(Tmean = S$Sim$TairCanopy[i],MinTT = S$Parameters$MinTT,
         MaxTT = S$Parameters$MaxTT)
 
   # Metamodel LUE coffee:
@@ -219,9 +219,9 @@ coffee_model= function(S,i){
   # GUTIERREZ et al. (1998)
   if(S$Met_c$DOY[i]==S$Parameters$DVG2){
     S$Sim$ratioNodestoLAI[S$Met_c$year>=S$Met_c$year[i]]=
-      mean(S$Sim$Tleaf_Coffee[S$Met_c$year==S$Met_c$year[i]&
-                                S$Met_c$DOY>=S$Parameters$DVG1&
-                                S$Met_c$DOY <= S$Parameters$DVG2])%>%
+      mean(S$Sim$TairCanopy[S$Met_c$year==S$Met_c$year[i]&
+                              S$Met_c$DOY>=S$Parameters$DVG1&
+                              S$Met_c$DOY <= S$Parameters$DVG2])%>%
       {S$Parameters$RNL_base*CN(.)}
   }
 
@@ -468,7 +468,6 @@ coffee_model= function(S,i){
     S$Parameters$CC_SCR
   S$Sim$DM_FRoot[i]= S$Sim$CM_FRoot[i]/S$Parameters$CC_FRoots
   S$Sim$DM_RE[i]=S$Sim$CM_RE[i]/S$Parameters$CC_SCR
-
 
   # Total Respiration and NPP -----------------------------------------------
 
