@@ -432,6 +432,7 @@ Rad_net= function(DOY,RAD,Tmax,Tmin,VPD,Rh=NULL,Latitude,Elevation,albedo,
 #'                      \item{Rgas}{universal gas constant (J mol-1 K-1)}
 #'                      \item{Kelvin}{conversion degree Celsius to Kelvin}
 #'                      \item{H2OMW}{conversion from kg to mol for H2O (kg mol-1)}
+#'                      \item{GBVGBH}{conversion from water conductance to heat conductance}
 #' }
 #'
 #' @details The daily evapotranspiration is computed using the Penman-Monteith equation, and a
@@ -473,17 +474,17 @@ PENMON= function(Rn,Wind,Tair,ZHT,Z_top,Pressure,Gs,VPD,LAI,extwind=0,wleaf=0.06
 
   GH = GB
 
-  GV = 1./(1./(Gs) + 1./GB)
+  GV = 1. / (1. / (Gs) + 1. / (GB / Parameters$GBVGBH))
 
   gamma  = bigleaf::psychrometric.constant(Tair = Tair,pressure = Pressure/10)
   Delta  = bigleaf::Esat.slope(Tair = Tair)[,"Delta"]
   rho    = bigleaf::air.density(Tair = Tair,pressure = Pressure/10)
 
-  LE_ref =
-    (Delta * Rn*10^6 + rho * Parameters$Cp * (VPD/10) * GH) /
-    (Delta + gamma * (1 + GH / GV))
+  gamma_star= 2.0 * gamma * GH / GV
 
-  ET_ref = bigleaf::LE.to.ET(LE_ref,Tair = Tair)
+  LE_ref= (Delta * Rn*10^6 + rho * Parameters$Cp * (VPD/10) * GH) / (Delta + gamma_star)
+
+  ET_ref= bigleaf::LE.to.ET(LE_ref,Tair = Tair)
   return(ET_ref)
 }
 
