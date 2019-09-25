@@ -219,7 +219,7 @@ Tree.init= function(S){
   S$Sim$CM_RE_Tree= rep_len(0.15,length(S$Sim$Cycle))
 
   S$Sim$DM_Leaf_Tree= rep_len(0.0,length(S$Sim$Cycle))
-  S$Sim.DM_Leaf_Tree[1]= S$Sim$CM_Leaf_Tree[1] / S$Parameters$CC_Leaf_Tree
+  S$Sim$DM_Leaf_Tree[1]= S$Sim$CM_Leaf_Tree[1] / S$Parameters$CC_Leaf_Tree
 
 
   S$Sim$LAI_Tree=

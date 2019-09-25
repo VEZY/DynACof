@@ -38,12 +38,12 @@ dynacof.jl_setup= function (..., dynacof_dev= NULL){
     message(cond)
   })
 
-  JuliaCall::julia_command('Pkg.add(PackageSpec(url="https://github.com/VEZY/DynACof.jl"))')
-  # JuliaCall::julia_install_package_if_needed("DynACof")
   if(!is.null(dynacof_dev)){
     JuliaCall::julia_command(paste0('push!(LOAD_PATH,"',dynacof_dev,'")'))
     JuliaCall::julia_command("using DynACof")
   }else{
+    JuliaCall::julia_install_package_if_needed("DynACof")
+    # JuliaCall::julia_command('Pkg.add(PackageSpec(url="https://github.com/VEZY/DynACof.jl"))')
     JuliaCall::julia_library("DynACof")
   }
   JuliaCall::julia_library("NamedTupleTools")

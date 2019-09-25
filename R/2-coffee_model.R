@@ -332,8 +332,7 @@ coffee_model= function(S,i){
   S$Sim$CM_Fruit_Cohort_remain[previous_i(overriped_day,0:10)]= 0.0
 
   # Duration of the maturation of each cohort born in the ith day (in days):
-  S$Sim$Maturation_duration[FruitingPeriod]=
-    seq_along(FruitingPeriod)
+  S$Sim$Maturation_duration[FruitingPeriod]= seq_along(FruitingPeriod)
   # Sucrose content of each cohort:
   S$Sim$SC[FruitingPeriod]=
     Sucrose_cont_perc(S$Sim$Maturation_duration[FruitingPeriod],
@@ -390,7 +389,8 @@ coffee_model= function(S,i){
       S$Sim$CM_Fruit[i-1]+S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
     S$Sim$Harvest_Maturity[i]= S$Sim$Harvest_Maturity_Pot[i]
     S$Sim$CM_Fruit[i-1]= S$Sim$NPP_Fruit[i]= S$Sim$Overriped_Fruit[i]= 0
-    S$Sim$CM_Fruit_Cohort= rep(0,length(S$Sim$CM_Fruit_Cohort))
+    S$Sim$CM_Fruit_Cohort=
+      S$Sim$CM_Fruit_Cohort_remain= rep(0,length(S$Sim$CM_Fruit_Cohort))
     # RV: could harvest mature fruits only (To do).
   }else{
     S$Sim$Harvest_Fruit[i]= NA_real_
