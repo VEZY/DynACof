@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,8 +41,8 @@
 
 
 
-<meta property="og:title" content="Get the average wind speed at center of canopy layer — GetWind" />
 
+<meta property="og:title" content="Get the average wind speed at center of canopy layer — GetWind" />
 <meta property="og:description" content="Calculate the wind speed decrease in two steps:
 Decrease the measured wind speed from measurement height until top of the canopy
 using the formulation of Van de Griend and Van Boxel (1989)
@@ -48,9 +50,9 @@ Decrease wind speed further with increasing canopy depth using an exponential
 extinction coefficient and a cumulated LAI above the target point.
 
 " />
-
 <meta property="og:image" content="https://vezy.github.io/DynACof/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -112,7 +114,6 @@ extinction coefficient and a cumulated LAI above the target point.
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -134,7 +135,6 @@ extinction coefficient and a cumulated LAI above the target point.
     </div>
 
     <div class="ref-description">
-    
     <p>Calculate the wind speed decrease in two steps:</p><ol>
 <li><p>Decrease the measured wind speed from measurement height until top of the canopy
 using the formulation of Van de Griend and Van Boxel (1989)</p></li>
@@ -142,13 +142,12 @@ using the formulation of Van de Griend and Van Boxel (1989)</p></li>
 extinction coefficient and a cumulated LAI above the target point.</p></li>
 </ol>
 
-    
     </div>
 
     <pre class="usage"><span class='fu'>GetWind</span>(<span class='no'>Wind</span>, <span class='no'>LAI_lay</span>, <span class='no'>LAI_abv</span>, <span class='kw'>extwind</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>Z_top</span>, <span class='no'>ZHT</span>, <span class='kw'>Z0</span> <span class='kw'>=</span> <span class='no'>Z_top</span> *
   <span class='fl'>0.1</span>, <span class='kw'>ZPD</span> <span class='kw'>=</span> <span class='no'>Z_top</span> * <span class='fl'>0.75</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>ZW</span> <span class='kw'>=</span> <span class='no'>ZPD</span> + <span class='no'>alpha</span> * (<span class='no'>Z_top</span> -
   <span class='no'>ZPD</span>), <span class='kw'>vonkarman</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>Constants</a></span>()$<span class='no'>vonkarman</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -198,14 +197,13 @@ Van de Griend et al (1989).</p></td>
       <td><p>Von Karman constant, default to <code>Constants()$vonkarman</code>, 0.41.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     
 
 <dt>WindLay</dt><dd><p>The winspeed at the center of the layer (m s-1)</p></dd>
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function computes the average wind speed at the center of the canopy layer. It is considered
@@ -215,14 +213,12 @@ $$WindLay=Wh*e^{^{\left(-extwind*\left(LAI_{abv}+\frac{LAI_{lay}}{2}\right)\righ
 with <code>Wh</code> the wind speed at top of the canopy.
 Note: the <code>alpha</code> parameter can also be computed as:
 $$alpha=\frac{zw-d}{Z2-d}$$</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Van de Griend, A.A. and J.H. Van Boxel, Water and surface energy balance model
 with a multilayer canopy representation for remote sensing purposes. Water
 Resources Research, 1989. 25(5): p. 949-971.
 Part of the code is taken from the <a href='https://maespa.github.io'>MAESPA model</a>.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Windspeed in a coffee layer managed in agroforestry system</span>
@@ -233,13 +229,9 @@ Part of the code is taken from the <a href='https://maespa.github.io'>MAESPA mod
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -253,7 +245,7 @@ Part of the code is taken from the <a href='https://maespa.github.io'>MAESPA mod
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

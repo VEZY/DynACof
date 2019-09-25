@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,15 +41,15 @@
 
 
 
-<meta property="og:title" content="Default (example) parameter functions — coffee" />
 
+<meta property="og:title" content="Default (example) parameter functions — coffee" />
 <meta property="og:description" content="These functions return the default parameter values for DynACof.
 They are mainly used invisibly as defaults from Import_Parameters(), but can still be
 called by the user for conveniance (but not needed for a model run). The parameters are divided into
 four functions: site(), soil(), coffee(), and Tree()." />
-
 <meta property="og:image" content="https://vezy.github.io/DynACof/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -109,7 +111,6 @@ four functions: site(), soil(), coffee(), and Tree()." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -131,12 +132,10 @@ four functions: site(), soil(), coffee(), and Tree()." />
     </div>
 
     <div class="ref-description">
-    
     <p>These functions return the default parameter values for DynACof.
 They are mainly used invisibly as defaults from <code><a href='Import_Parameters.html'>Import_Parameters()</a></code>, but can still be
 called by the user for conveniance (but not needed for a model run). The parameters are divided into
 four functions: <code>site()</code>, <code>soil()</code>, <code>coffee()</code>, and <code>Tree()</code>.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>coffee</span>()
@@ -146,11 +145,11 @@ four functions: <code>site()</code>, <code>soil()</code>, <code>coffee()</code>,
 <span class='fu'>soil</span>()
 
 <span class='fu'>Tree</span>()</pre>
-        
+
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of parameters needed for a DynACof simulation.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>These input functions are stored into R-script that can be customized at will by the user to fit
@@ -159,12 +158,10 @@ corresponding to the site, the soil, the coffee layer and the tree layer.
 Then <code><a href='DynACof.html'>DynACof()</a></code> read them using the <code>Inpath</code> and <code>FileName</code> parameters.
 File templates with default parameter values and an example use are available from this separate
 <a href='https://github.com/VEZY/DynACof_inputs'>github repository</a></p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>The Tree parameter file is optional. All other parameter files should have the same structure as
 the one from the default parameter files. Other parameters can be added to the files though.</p>
-    
     <h2 class="hasAnchor" id="site"><a class="anchor" href="#site"></a>site</h2>
 
     
@@ -174,13 +171,11 @@ plantation in agroforestry management under <em>Erythrina poeppigiana</em> shade
 at this <a href='https://goo.gl/7FRNXg'>address</a>, and a full desciption is available
 <a href='https://www.researchgate.net/publication/323398728_Measuring_and_modelling_energy_partitioning_in_canopies_of_varying_complexity_using_MAESPA_model'>here</a>
 and <a href='https://www.researchgate.net/publication/323469257_Simulation_de_pratiques_de_gestion_alternatives_pour_l'adaptation_des_plantations_perennes_aux_changements_globaux'>here</a>.</p>
-    
     <h2 class="hasAnchor" id="soil"><a class="anchor" href="#soil"></a>soil</h2>
 
     
 
 <p>The default soil parameters.</p>
-    
     <h2 class="hasAnchor" id="coffee"><a class="anchor" href="#coffee"></a>coffee</h2>
 
     
@@ -188,7 +183,6 @@ and <a href='https://www.researchgate.net/publication/323469257_Simulation_de_pr
 <p>The default coffee parameters. It is essentially a high density plantation (6666 coffee plants
 per hectares) of <em>Coffea arabica var. Caturra</em> that are pruned every year to sustain
 three resprouts per stump in average.</p>
-    
     <h2 class="hasAnchor" id="tree"><a class="anchor" href="#tree"></a>Tree</h2>
 
     
@@ -199,33 +193,23 @@ and were depressed in 2000 to a low density of ~7.4 trees ha-1.
 From 2000, these trees made a relatively large crown with an average height of 26 m in 2018
 on this site. NB: the Tree parameter file is optional, and not needed
 for monospecific coffee plantations.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='DynACof.html'>DynACof()</a></code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#note">Note</a></li>
-
       <li><a href="#site">site</a></li>
-
       <li><a href="#soil">soil</a></li>
-
       <li><a href="#coffee">coffee</a></li>
-
       <li><a href="#tree">Tree</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
@@ -237,7 +221,7 @@ for monospecific coffee plantations.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

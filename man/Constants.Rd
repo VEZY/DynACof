@@ -24,6 +24,8 @@ This function defines the following constants:
 \item{\eqn{\lambda}(lambda)}{Latent heat of vaporization (\eqn{MJ\ kg_{H2O}^{-1}}{MJ kgH2O-1})}
 \item{cl}{Drag coefficient per unit leaf area (\eqn{m\ s^{-1}}{m s-1})}
 \item{Dheat}{Molecular diffusivity for heat (\eqn{m\ s^{-1}}{m s-1})}
+\item{GBVGBH}{Conversion factor from conductance to water to conductance to heat.}
+\item{M_H20}{H2O molar mass (\eqn{kg\\ mol^{-1}})}
 }
 \description{
 Constants used in the DynACof package

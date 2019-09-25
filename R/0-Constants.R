@@ -18,6 +18,7 @@
 #' \item{cl}{Drag coefficient per unit leaf area (\eqn{m\ s^{-1}}{m s-1})}
 #' \item{Dheat}{Molecular diffusivity for heat (\eqn{m\ s^{-1}}{m s-1})}
 #' \item{GBVGBH}{Conversion factor from conductance to water to conductance to heat.}
+#' \item{M_H20}{H2O molar mass (\eqn{kg\\ mol^{-1}})}
 #'
 #' @note Values are partly burrowed from [bigleaf::bigleaf.constants()]
 #'
@@ -48,6 +49,7 @@ Constants= function(){
     lambda    = 2.45,
     cl        = 0.4,
     Dheat     = 21.5e-6,
-    GBVGBH    = 1.075
+    GBVGBH    = 1.075,
+    M_H20     = 0.01801528
     )
 }

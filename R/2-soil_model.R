@@ -159,9 +159,9 @@ soil_model= function(S,i){
   }
 
   # 6/ Root Water Extraction by soil layer, source Granier et al., 1999
-  S$Sim$RootWaterExtract_1[i]= S$Sim$T_tot[i]*S$Parameters$RootFraction1
-  S$Sim$RootWaterExtract_2[i]= S$Sim$T_tot[i]*S$Parameters$RootFraction2
-  S$Sim$RootWaterExtract_3[i]= S$Sim$T_tot[i]*S$Parameters$RootFraction3
+  S$Sim$RootWaterExtract_1[i]= S$Sim$T_tot[previous_i(i,1)]*S$Parameters$RootFraction1
+  S$Sim$RootWaterExtract_2[i]= S$Sim$T_tot[previous_i(i,1)]*S$Parameters$RootFraction2
+  S$Sim$RootWaterExtract_3[i]= S$Sim$T_tot[previous_i(i,1)]*S$Parameters$RootFraction3
   # Avoiding depleting Wx below Wmx, and udating Wx after retrieving actual RootWaterExtract
   if((S$Sim$W_1[i]-S$Sim$RootWaterExtract_1[i])>=S$Parameters$Wm1){
     S$Sim$W_1[i]= S$Sim$W_1[i]-S$Sim$RootWaterExtract_1[i]

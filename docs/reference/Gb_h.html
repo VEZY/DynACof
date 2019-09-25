@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,14 +41,14 @@
 
 
 
-<meta property="og:title" content="Leaf boundary layer conductance for heat — Gb_h" />
 
+<meta property="og:title" content="Leaf boundary layer conductance for heat — Gb_h" />
 <meta property="og:description" content="Compute the bulk leaf boundary layer conductance for heat using
 the wind speed, the leaf dimension, and leaf area distribution
 following Jones (1992) or Leuning et al. (1995)." />
-
 <meta property="og:image" content="https://vezy.github.io/DynACof/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -108,7 +110,6 @@ following Jones (1992) or Leuning et al. (1995)." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -130,11 +131,9 @@ following Jones (1992) or Leuning et al. (1995)." />
     </div>
 
     <div class="ref-description">
-    
     <p>Compute the bulk leaf boundary layer conductance for heat using
 the wind speed, the leaf dimension, and leaf area distribution
 following Jones (1992) or Leuning et al. (1995).</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>Gb_h</span>(<span class='no'>Wind</span>, <span class='kw'>wleaf</span> <span class='kw'>=</span> <span class='fl'>0.068</span>, <span class='no'>LAI_lay</span>, <span class='no'>LAI_abv</span>, <span class='kw'>extwind</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>Z_top</span>, <span class='no'>ZHT</span>,
@@ -142,7 +141,7 @@ following Jones (1992) or Leuning et al. (1995).</p>
   <span class='no'>alpha</span> * (<span class='no'>Z_top</span> - <span class='no'>ZPD</span>), <span class='kw'>Tleaf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Tair</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>Dheat</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>Constants</a></span>()$<span class='no'>Dheat</span>, <span class='kw'>formulation</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Jones_1992"</span>,
   <span class='st'>"Leuning_1995"</span>))</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -209,14 +208,13 @@ Only needed if <code>formulation="Leuning_1995"</code></p></td>
       <td><p>The formulation used to compute \(Gb_h\)</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     
 
 <dt>Gb</dt><dd><p>The leaf boundary layer conductance for heat (m s-1)</p></dd>
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The leaf boundary layer conductance for heat can be transformed into leaf boundary
@@ -224,7 +222,6 @@ layer conductance for water vapour as follow:
 $$Gb_w= 1.075*gb_h$$
 Note that \(Gb_w\) should be doubled for amphistomatous plants (stomata on
 both sides of the leaves).</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -236,12 +233,10 @@ of turbulent fluxes in an energy balance snowmelt model. Water Resources Researc
 49(2): p. 1107-1122.</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='G_bulk.html'>G_bulk()</a></code>, <code><a href='G_soilcan.html'>G_soilcan()</a></code>, <code><a href='G_interlay.html'>G_interlay()</a></code> and
 <code><a href='GetWind.html'>GetWind()</a></code>, which is used internaly.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Gb for a coffee plantation managed in agroforestry system:</span>
@@ -252,15 +247,10 @@ of turbulent fluxes in an energy balance snowmelt model. Water Resources Researc
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -274,7 +264,7 @@ of turbulent fluxes in an energy balance snowmelt model. Water Resources Researc
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

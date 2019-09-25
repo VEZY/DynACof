@@ -184,7 +184,7 @@
 </ul>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># install.packages("git2r")</span></a>
 <a class="sourceLine" id="cb11-2" title="2">dynacof_data=<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/normalizePath.html">normalizePath</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(<span class="dt">check =</span> <span class="ot">FALSE</span>),<span class="st">"repo"</span>), <span class="dt">winslash =</span> <span class="st">"/"</span>, <span class="dt">mustWork =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb11-3" title="3">git2r<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/git2r/man/clone.html">clone</a></span>(<span class="st">"https://github.com/VEZY/DynACof.jl_inputs.git"</span>,dynacof_data)</a></code></pre></div>
+<a class="sourceLine" id="cb11-3" title="3">git2r<span class="op">::</span><span class="kw"><a href="https://docs.ropensci.org/git2r/reference/clone.html">clone</a></span>(<span class="st">"https://github.com/VEZY/DynACof.jl_inputs.git"</span>,dynacof_data)</a></code></pre></div>
 <ul>
 <li>Making a simulation using the parameter files:</li>
 </ul>
@@ -245,18 +245,18 @@
 <p>Given the large number of variables to initialize, the simplest way to initialize a simulation is to make a dummy one with the same parameters and meteorology than desired. For that matter, let’s use our previous simulation output: <code>S</code> (see “Calling DynACof”).</p>
 <p>Let’s say that the first 99 days of simulation correspond to what we needed, but that we want to simulate an event of disease on day 100 by reducing the LAI. What we can do is to take the previous simulation <code>S</code>, remove some leaf mass (<code>CM_Leaf</code>) on day 100, and re-do the computation for one day:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">S<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">100</span>]</a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt; [1] 13.16375</span></a></code></pre></div>
-<p>The leaf C mass is equal to 13.1637482. Let’s reduce it by 25%:</p>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt; [1] 12.998</span></a></code></pre></div>
+<p>The leaf C mass is equal to 12.9979959. Let’s reduce it by 25%:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">S<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">100</span>]=<span class="st"> </span>S<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">100</span>] <span class="op">*</span><span class="st"> </span>(<span class="fl">1.0</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.25</span>)</a></code></pre></div>
-<p>Now the leaf C mass is equal to 9.8728111. But all other variables are impacted by this one on the next day because it is used to compute the <code>LAI</code> that helps compute many things afterwards (light interception, then GPP…) !</p>
-<p>Before running the new simulation, the LAI on day 101 is equal to 0.3118927 and CM_Leaf is equal to: 13.3427444.</p>
+<p>Now the leaf C mass is equal to 9.7484969. But all other variables are impacted by this one on the next day because it is used to compute the <code>LAI</code> that helps compute many things afterwards (light interception, then GPP…) !</p>
+<p>Before running the new simulation, the LAI on day 101 is equal to 0.3079655 and CM_Leaf is equal to: 13.1735623.</p>
 <p>Let’s see what is the impact of this disease on the coffee plant by re-simulating the day 101:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">S_disease=<span class="st"> </span><span class="kw"><a href="../reference/dynacof_i.jl.html">dynacof_i.jl</a></span>(<span class="dt">i =</span> <span class="dv">101</span>, <span class="dt">S =</span> S)</a></code></pre></div>
 <p>Well now here are the results:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">S_disease<span class="op">$</span>Sim<span class="op">$</span>CM_Leaf[<span class="dv">101</span>]</a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="co">#&gt; [1] 10.00102</span></a></code></pre></div>
+<a class="sourceLine" id="cb17-2" title="2"><span class="co">#&gt; [1] 9.873828</span></a></code></pre></div>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">S_disease<span class="op">$</span>Sim<span class="op">$</span>LAI[<span class="dv">101</span>]</a>
-<a class="sourceLine" id="cb18-2" title="2"><span class="co">#&gt; [1] 0.2339195</span></a></code></pre></div>
+<a class="sourceLine" id="cb18-2" title="2"><span class="co">#&gt; [1] 0.2309741</span></a></code></pre></div>
 <p>If we want to see the impact of the disease on this day, we can put the results in a new object and plot the results against the first simulation outputs:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">S=<span class="st"> </span><span class="kw"><a href="../reference/dynacof.jl.html">dynacof.jl</a></span>(<span class="dt">Inpath=</span> <span class="kw"><a href="https://rdrr.io/r/base/basename.html">dirname</a></span>(met_file),<span class="dt">FileName=</span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">Site=</span><span class="st">"package"</span>,<span class="dt">Meteo=</span><span class="kw"><a href="https://rdrr.io/r/base/basename.html">basename</a></span>(met_file),<span class="dt">Soil=</span><span class="st">"package"</span>,<span class="dt">Coffee=</span><span class="st">"package"</span>,<span class="dt">Tree=</span><span class="ot">NULL</span>))</a>
 <a class="sourceLine" id="cb19-2" title="2"><span class="co">#&gt; </span></a>
@@ -278,6 +278,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -301,7 +302,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,16 +41,17 @@
 
 
 
-<meta property="og:title" content="Tests on input parameters — test_parameters" />
 
+<meta property="og:title" content="Tests on input parameters — test_parameters" />
 <meta property="og:description" content="Different tests for the user-inputed parameter files:
 Mandatory parameterTest if all mandatory parameters are present in the files
 Parameter valuesSome parameter values are checked before running
 
-" />
 
+" />
 <meta property="og:image" content="https://vezy.github.io/DynACof/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -110,7 +113,6 @@ Parameter valuesSome parameter values are checked before running
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -132,17 +134,16 @@ Parameter valuesSome parameter values are checked before running
     </div>
 
     <div class="ref-description">
-    
     <p>Different tests for the user-inputed parameter files:</p><dl class='dl-horizontal'>
 <dt>Mandatory parameter</dt><dd><p>Test if all mandatory parameters are present in the files</p></dd>
 <dt>Parameter values</dt><dd><p>Some parameter values are checked before running</p></dd>
+
 </dl>
 
-    
     </div>
 
     <pre class="usage"><span class='fu'>test_parameters</span>(<span class='no'>Parameters</span>, <span class='kw'>isTree</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -155,26 +156,27 @@ Parameter valuesSome parameter values are checked before running
       <td><p>Boolean. Set to <code>TRUE</code> if shade trees are simulated.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An error if any issue is encountered</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># No error:</span>
-<span class='fu'>test_parameters</span>(<span class='kw'>Parameters</span><span class='kw'>=</span> <span class='fu'><a href='Import_Parameters.html'>Import_Parameters</a></span>())</div><div class='input'> <span class='co'># Removing a mandatory parameter from the soil:</span>
+<span class='fu'>test_parameters</span>(<span class='kw'>Parameters</span><span class='kw'>=</span> <span class='fu'><a href='Import_Parameters.html'>Import_Parameters</a></span>())
+
+<span class='co'># \donttest{</span>
+ <span class='co'># Removing a mandatory parameter from the soil:</span>
  <span class='no'>params</span><span class='kw'>=</span> <span class='fu'><a href='Import_Parameters.html'>Import_Parameters</a></span>()
  <span class='no'>params</span>$<span class='no'>REWc</span><span class='kw'>=</span> <span class='kw'>NULL</span>
- <span class='fu'>test_parameters</span>(<span class='kw'>Parameters</span><span class='kw'>=</span> <span class='no'>params</span>)</div><div class='output co'>#&gt; <span class='error'>Error: Missing parameter in soil parameter file:  REWc</span></div></pre>
+ <span class='fu'>test_parameters</span>(<span class='kw'>Parameters</span><span class='kw'>=</span> <span class='no'>params</span>)</div><div class='output co'>#&gt; <span class='error'>Error: Missing parameter in soil parameter file:  REWc</span></div><div class='input'># }
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -188,7 +190,7 @@ Parameter valuesSome parameter values are checked before running
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,13 +41,13 @@
 
 
 
-<meta property="og:title" content="Leaf boundary layer conductance for heat under forced and free convection — Gb_hForced" />
 
+<meta property="og:title" content="Leaf boundary layer conductance for heat under forced and free convection — Gb_hForced" />
 <meta property="og:description" content="Compute the boundary layer conductance for heat - single sided, forced or
 free convection using the Leuning et al. (1995) equations." />
-
 <meta property="og:image" content="https://vezy.github.io/DynACof/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -107,7 +109,6 @@ free convection using the Leuning et al. (1995) equations." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -129,16 +130,14 @@ free convection using the Leuning et al. (1995) equations." />
     </div>
 
     <div class="ref-description">
-    
     <p>Compute the boundary layer conductance for heat - single sided, forced or
 free convection using the Leuning et al. (1995) equations.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>Gb_hForced</span>(<span class='no'>Wind</span>, <span class='kw'>wleaf</span> <span class='kw'>=</span> <span class='fl'>0.068</span>)
 
 <span class='fu'>Gb_hFree</span>(<span class='no'>Tair</span>, <span class='no'>Tleaf</span>, <span class='kw'>wleaf</span> <span class='kw'>=</span> <span class='fl'>0.068</span>, <span class='kw'>Dheat</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>Constants</a></span>()$<span class='no'>Dheat</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -163,7 +162,7 @@ free convection using the Leuning et al. (1995) equations.</p>
       <td><p>Molecular diffusivity for heat (m2 s-1). Default to: <code>Constants()$Dheat</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     
@@ -171,18 +170,15 @@ free convection using the Leuning et al. (1995) equations.</p>
 <dt>\(Gb_hForced\)</dt><dd><p>Leaf boundary layer conductance for heat under forced convection (m s-1)</p></dd>
 <dt>\(Gb_hFree\)</dt><dd><p>Leaf boundary layer conductance for heat under free convection (m s-1)</p></dd>
 
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Leuning, R., et al., Leaf nitrogen, photosynthesis, conductance and transpiration: scaling from
 leaves to canopies. Plant, Cell &amp; Environment, 1995. 18(10): p. 1183-1200.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>The <a href='https://maespa.github.io/'>MAESPA model</a>, from which both functions were taken (FORTRAN code) and
 translated into R.
 The function from which both are usually called internally in DynACof: <code><a href='Gb_h.html'>Gb_h()</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>Gb_hForced</span>(<span class='kw'>Wind</span><span class='kw'>=</span><span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] 0.01992633</div><div class='input'><span class='fu'>Gb_hFree</span>(<span class='kw'>Tair</span><span class='kw'>=</span> <span class='fl'>25</span>,<span class='kw'>Tleaf</span><span class='kw'>=</span> <span class='fl'>26</span>)</div><div class='output co'>#&gt; [1] 0.002367616</div><div class='input'>
@@ -192,13 +188,9 @@ The function from which both are usually called internally in DynACof: <code><a 
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -212,7 +204,7 @@ The function from which both are usually called internally in DynACof: <code><a 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

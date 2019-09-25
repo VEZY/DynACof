@@ -29,7 +29,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-article">
+    <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -50,7 +50,7 @@
 <li>
   <a href="index.html">
     <span class="fas fa fas fa-home fa-lg"></span>
-
+     
   </a>
 </li>
 <li>
@@ -59,7 +59,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
-
+     
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -80,20 +80,15 @@
 </div>
 <!--/.navbar -->
 
-
+      
 
       </header><div class="row">
-  <div class="col-md-9 contents">
-
-
-
-
-<p><!-- README.md is generated from README.Rmd. Please edit that file --></p>
-<div id="dynacof-the-dynamic-agroforestry-coffee-crop-model" class="section level1">
+  <div class="contents col-md-9">
+<div id="dynacof-the-dynamic-agroforestry-coffee-crop-model-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#dynacof-the-dynamic-agroforestry-coffee-crop-model" class="anchor"></a><a href="https://vezy.github.io/DynACof">DynACof</a>: The Dynamic Agroforestry Coffee Crop Model <img src="reference/figures/logo.png" alt="" width="300" align="right">
+<a href="#dynacof-the-dynamic-agroforestry-coffee-crop-model-" class="anchor"></a><a href="https://vezy.github.io/DynACof">DynACof</a>: The Dynamic Agroforestry Coffee Crop Model <img src="reference/figures/logo.png" alt="" width="300" align="right">
 </h1></div>
-<p><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a> <a href="https://travis-ci.com/VEZY/DynACof"><img src="https://travis-ci.com/VEZY/DynACof.svg?branch=master" alt="Travis Build Status"></a> <a href="https://ci.appveyor.com/project/VEZY/DynACof"><img src="https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a> <a href="https://gitter.im/DynACof/Lobby?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&amp;branch=master" alt="Join the chat at https://gitter.im/DynACof/Lobby#"></a> <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a> <a href="https://doi.org/10.5281/zenodo.1256816"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1256816.svg" alt="DOI"></a></p>
+
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -105,7 +100,7 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>The development version from <a href="https://github.com/">GitHub</a> can be installed with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</a></code></pre></div>
 <p>Or using the lightweight <a href="https://github.com/r-lib/remotes#readme">remotes</a> package:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># install.packages("remotes")</span></a>
 <a class="sourceLine" id="cb2-2" title="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"VEZY/DynACof"</span>)</a></code></pre></div>
@@ -143,19 +138,16 @@
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
-<p>The DynACof model was mainly developed thanks to the MACCAC project<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by CIRAD<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and INRA<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. The authors are grateful for the support of the <a href="https://aquiares.com/">Aquiares farm</a> and the CATIE<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure <a href="http://www.anaee-france.fr/fr/">ANAEE-F</a>; the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.</p>
+<p>The DynACof model was mainly developed thanks to the MACCAC project[1], which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by CIRAD[2] and INRA[3]. The authors are grateful for the support of the <a href="https://aquiares.com/">Aquiares farm</a> and the CATIE[4] for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure <a href="http://www.anaee-france.fr/fr/">ANAEE-F</a>; the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.</p>
 <hr>
 <p><sub>The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> </sub></p>
-</div>
-</div>
-<div class="footnotes">
-<hr>
 <ol>
-<li id="fn1"><p><strong>MACACC project ANR-13-AGRO-0005</strong>, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux AGROBIOSPHERE 2013 program<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>Centre de Coopération Internationale en Recherche Agronomique pour le Développement<a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p>Institut National de la Recherche Agronomique<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>Centro Agronómico Tropical de Investigación y Enseñanza<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li><p><strong>MACACC project ANR-13-AGRO-0005</strong>, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux AGROBIOSPHERE 2013 program</p></li>
+<li><p>Centre de Coopération Internationale en Recherche Agronomique pour le Développement</p></li>
+<li><p>Institut National de la Recherche Agronomique</p></li>
+<li><p>Centro Agronómico Tropical de Investigación y Enseñanza</p></li>
 </ol>
+</div>
 </div>
   </div>
 
@@ -192,10 +184,19 @@
 </ul>
 </div>
 
-      </div>
-
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed."></a></li>
+<li><a href="https://travis-ci.com/VEZY/DynACof"><img src="https://travis-ci.com/VEZY/DynACof.svg?branch=master" alt="Travis Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/VEZY/DynACof"><img src="https://ci.appveyor.com/api/projects/status/github/VEZY/DynACof?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
+<li><a href="https://gitter.im/DynACof/Lobby?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/DynACof/Lobby.svg?token=1d2e733532f5122f05de&amp;branch=master" alt="Join the chat at https://gitter.im/DynACof/Lobby#"></a></li>
+<li><a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPL%20v3-blue.svg" alt="License: GPL v3"></a></li>
+<li><a href="https://doi.org/10.5281/zenodo.1256816"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1256816.svg" alt="DOI"></a></li>
+</ul>
 </div>
-
+</div>
+</div>
 
 
       <footer><div class="copyright">
@@ -203,13 +204,13 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>
 </div>
 
-
+  
 
 
   </body>

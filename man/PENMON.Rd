@@ -36,6 +36,7 @@ PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind = 0,
 \item{Rgas}{universal gas constant (J mol-1 K-1)}
 \item{Kelvin}{conversion degree Celsius to Kelvin}
 \item{H2OMW}{conversion from kg to mol for H2O (kg mol-1)}
+\item{GBVGBH}{conversion from water conductance to heat conductance}
 }}
 }
 \value{

@@ -34,8 +34,9 @@ coffee_model= function(S,i){
   S$Sim$PAR_Trans[i]= S$Sim$PAR_Trans_Tree[i]-S$Sim$APAR[i] # PAR above soil layer
 
   # Metamodel Coffee leaf water potential
-  S$Sim$LeafWaterPotential[i]= S$Parameters$LeafWaterPotential(S,i)
-
+  S$Sim$LeafWaterPotential[i]=
+    S$Sim$SoilWaterPot[previous_i(i,1)] -
+    (S$Sim$T_Coffee[i] / S$Parameters$M_H20) / S$Parameters$KTOT
 
   # Energy balance ----------------------------------------------------------
 

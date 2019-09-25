@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,13 +41,13 @@
 
 
 
-<meta property="og:title" content="Setup Julia call — dynacof.jl_setup" />
 
+<meta property="og:title" content="Setup Julia call — dynacof.jl_setup" />
 <meta property="og:description" content="This function initializes Julia and the DynACof.jl package.
 It is time-consuming for the first time of execution because of the precompilation." />
-
 <meta property="og:image" content="https://vezy.github.io/DynACof/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -107,7 +109,6 @@ It is time-consuming for the first time of execution because of the precompilati
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -129,14 +130,12 @@ It is time-consuming for the first time of execution because of the precompilati
     </div>
 
     <div class="ref-description">
-    
     <p>This function initializes Julia and the <a href='https://github.com/VEZY/DynACof.jl'>DynACof.jl</a> package.
 It is time-consuming for the first time of execution because of the precompilation.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>dynacof.jl_setup</span>(<span class='no'>...</span>, <span class='kw'>dynacof_dev</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -150,7 +149,7 @@ It is time-consuming for the first time of execution because of the precompilati
 the <code>dev</code> location, <em>e.g.</em> "C:/Users/&lt;User&gt;/.julia/dev".</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function requires Julia to be installed on your computer, and to be present in your path (i.e.
@@ -158,31 +157,25 @@ callable from anywhere using a terminal). The function will test if the <a href=
 is installed in Julia, and if not, it will install it for you. This process can take some time, so be patient the
 first time you use it. If you encounter some issue, you can browe the issues from the <a href='https://github.com/Non-Contradiction/JuliaCall#juliacall-for-r-package-developers'>JuliaCall</a>
 package, or fill one in the <a href='https://github.com/VEZY/DynACof.jl/issues'>DynACof</a> repository.</p>
-    
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>If you run into issues at this step, try to install the development version of <code>JuliaCall</code>:
 <code><a href='https://rdrr.io/pkg/remotes/man/install_github.html'>remotes::install_github("Non-Contradiction/JuliaCall")</a></code>. If it does not work either, try to open
 Julia from the terminal, and run this command: <code>use Pkg; Pkg.add(["RCall","Suppressor","DynACof"])</code>
 If you are using a new version of R, please use the argument <code>rebuild= TRUE</code> (see <code><a href='https://rdrr.io/pkg/JuliaCall/man/julia_setup.html'>JuliaCall::julia_setup()</a></code>).</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># Can be time-consuming the first time. Requires Julia + DynACof.jl</span>
 <span class='kw pkg'>DynACof</span><span class='kw ns'>::</span><span class='fu'><a href='https://vezy.github.io/DynACof//reference/dynacof.jl_setup.html'>dynacof.jl_setup</a></span>()
-<span class='co'># }</span><div class='input'>
-</div></pre>
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#note">Note</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -196,7 +189,7 @@ If you are using a new version of R, please use the argument <code>rebuild= TRUE
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

@@ -15,11 +15,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -39,14 +41,14 @@
 
 
 
-<meta property="og:title" content="Daily net radiation — Rad_net" />
 
+<meta property="og:title" content="Daily net radiation — Rad_net" />
 <meta property="og:description" content="Compute the daily net radiation of the system using incident radiation, air
 temperature, wind speed, relative humidity and the albedo. A clear description
 of this methodology can be found in Allen et al. (1998) or in An et al. (2017)." />
-
 <meta property="og:image" content="https://vezy.github.io/DynACof/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -108,7 +110,6 @@ of this methodology can be found in Allen et al. (1998) or in An et al. (2017)."
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -130,16 +131,14 @@ of this methodology can be found in Allen et al. (1998) or in An et al. (2017)."
     </div>
 
     <div class="ref-description">
-    
     <p>Compute the daily net radiation of the system using incident radiation, air
 temperature, wind speed, relative humidity and the albedo. A clear description
 of this methodology can be found in Allen et al. (1998) or in An et al. (2017).</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>Rad_net</span>(<span class='no'>DOY</span>, <span class='no'>RAD</span>, <span class='no'>Tmax</span>, <span class='no'>Tmin</span>, <span class='no'>VPD</span>, <span class='kw'>Rh</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>Latitude</span>, <span class='no'>Elevation</span>,
   <span class='no'>albedo</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>Constants</a></span>()$<span class='no'>sigma</span>, <span class='kw'>Gsc</span> <span class='kw'>=</span> <span class='fu'><a href='Constants.html'>Constants</a></span>()$<span class='no'>Gsc</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -188,11 +187,10 @@ of this methodology can be found in Allen et al. (1998) or in An et al. (2017).<
       <td><p>Solar constant (\(W\ m^{-2}\)), default to <code>Constants()$Gsc</code> (= 1367).</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>\(Rn\), the daily net radiation (\(MJ\ m^{-2} d^{-1}\))</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The daily net radiation is computed using the surface albedo. This method is only a
@@ -208,13 +206,11 @@ where \(R_{sa}\) is the daily extra-terrestrial radiation, computed using <code>
 The actual vapor pressure \(ea\) can be computed using either VPD or the relative
 humidity and the maximum and minimum daily temperature. If both are provided, Rh will
 be used.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>An, N., S. Hemmati, and Y.-J. Cui, Assessment of the methods for determining net
 radiation at different time-scales of meteorological variables. Journal of Rock
 Mechanics and Geotechnical Engineering, 2017. 9(2): p. 239-246.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Daily net radiation on january 1st at latitude 9 N :</span>
@@ -226,13 +222,9 @@ Mechanics and Geotechnical Engineering, 2017. 9(2): p. 239-246.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -246,7 +238,7 @@ Mechanics and Geotechnical Engineering, 2017. 9(2): p. 239-246.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>
