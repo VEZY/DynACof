@@ -33,11 +33,6 @@ coffee_model= function(S,i){
   S$Sim$APAR[i]= APAR_Dir+S$Sim$APAR_Dif[i]
   S$Sim$PAR_Trans[i]= S$Sim$PAR_Trans_Tree[i]-S$Sim$APAR[i] # PAR above soil layer
 
-  # Metamodel Coffee leaf water potential
-  S$Sim$LeafWaterPotential[i]=
-    S$Sim$SoilWaterPot[previous_i(i,1)] -
-    (S$Sim$T_Coffee[i] / S$Parameters$M_H20) / S$Parameters$KTOT
-
   # Energy balance ----------------------------------------------------------
 
   # Transpiration Coffee
@@ -45,7 +40,10 @@ coffee_model= function(S,i){
 
   S$Sim$H_Coffee[i]= S$Parameters$H_Coffee(S,i)
 
-
+  # Metamodel Coffee leaf water potential
+  S$Sim$LeafWaterPotential[i]=
+    S$Sim$SoilWaterPot[previous_i(i,1)] -
+    (S$Sim$T_Coffee[i] / S$Parameters$M_H20) / S$Parameters$KTOT
 
   # Tcanopy Coffee : using bulk conductance if no trees, interlayer conductance if trees
   # Source: Van de Griend and Van Boxel 1989.
