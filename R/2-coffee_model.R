@@ -320,9 +320,16 @@ coffee_model= function(S,i){
     S$Sim$NPP_Fruit_Cohort[FruitingPeriod]
   S$Sim$DM_Fruit_Cohort[FruitingPeriod]=
     S$Sim$CM_Fruit_Cohort[FruitingPeriod]/S$Parameters$CC_Fruit
+
   # Overriped fruits that fall onto the ground (= to mass of the cohort that overripe) :
-  S$Sim$Overriped_Fruit[i]= S$Sim$CM_Fruit_Cohort[max(min(FruitingPeriod)-1,1)]
-  # S$Sim$Overriped_Fruit[i]= S$Sim$CM_Fruit_Cohort[min(FruitingPeriod)-1]*S$Parameters$epsilon_Fruit
+  # Using CM_Fruit_Cohort_remain to keep track of the fruit mass that is created, but it is updated by removing the overriped
+  # fruits then, so the overriped fruits can only be removed once.
+  S$Sim$CM_Fruit_Cohort_remain[FruitingPeriod]=
+    S$Sim$CM_Fruit_Cohort_remain[FruitingPeriod] + S$Sim$NPP_Fruit_Cohort[FruitingPeriod]
+  # Overriped fruits that fall onto the ground (= to mass of the cohort that overripe) :
+  overriped_day= max(min(FruitingPeriod)-1,1)
+  S$Sim$Overriped_Fruit[i]= sum(S$Sim$CM_Fruit_Cohort_remain[previous_i(overriped_day,0:10)])
+  S$Sim$CM_Fruit_Cohort_remain[previous_i(overriped_day,0:10)]= 0.0
 
   # Duration of the maturation of each cohort born in the ith day (in days):
   S$Sim$Maturation_duration[FruitingPeriod]=
@@ -365,12 +372,14 @@ coffee_model= function(S,i){
     # This option is the best one when fruit maturation is not well known or when the
     # harvest is made throughout several days or weeks with the assumption that fruits
     # are harvested when mature.
-  }else{
+  }else if(S$Parameters$harvest=="quality"){
     is_harvest=
       S$Sim$Plot_Age[i]>=S$Parameters$ageMaturity &
       mean(S$Sim$Harvest_Maturity_Pot[previous_i(i,0:9)])<
       mean(S$Sim$Harvest_Maturity_Pot[previous_i(i,10:19)])
     # Made as soon as the overall fruit maturation is optimal (all fruits are mature)
+  }else{
+    is_harvest= FALSE
   }
 
 
@@ -451,7 +460,7 @@ coffee_model= function(S,i){
   S$Sim$CM_Shoot[i]= S$Sim$CM_Shoot[previous_i(i,1)]+
     S$Sim$NPP_Shoot[i]-S$Sim$Mortality_Shoot[i]-
     S$Sim$Carbon_Lack_Mortality[i]*S$Sim$CM_Shoot[previous_i(i,1)]/CM_tot
-  S$Sim$CM_Fruit[i]=S$Sim$CM_Fruit[previous_i(i,1)]+
+  S$Sim$CM_Fruit[i]= S$Sim$CM_Fruit[previous_i(i,1)]+
     S$Sim$NPP_Fruit[i]-S$Sim$Overriped_Fruit[i]
   S$Sim$CM_SCR[i]= S$Sim$CM_SCR[previous_i(i,1)]+
     S$Sim$NPP_SCR[i]-S$Sim$Mortality_SCR[i]-

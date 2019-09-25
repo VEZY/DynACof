@@ -56,6 +56,7 @@ Init_Sim= function(S){
     S$Sim$Alloc_Fruit_Cohort=
     S$Sim$NPP_Fruit_Cohort=
     S$Sim$CM_Fruit_Cohort=
+    S$Sim$CM_Fruit_Cohort_remain=
     S$Sim$Maturation_duration=
     S$Sim$SC= rep_len(0,length(S$Sim$Cycle))
   S$Sim$Temp_cor_Bud= rep_len(1,length(S$Sim$Cycle))
