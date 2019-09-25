@@ -150,11 +150,18 @@ soil_model= function(S,i){
 
   # 5/ Evaporation of the Understorey, E_Soil (from W_1 only)
   S$Sim$E_Soil[i]= S$Sim$Rn_Soil[i]*S$Parameters$Soil_LE_p/S$Parameters$lambda
-  # Evaporation is from the surface layer only, but it cannot be bigger than the available water:
-  if(S$Sim$WSurfaceRes[i] - S$Sim$E_Soil[i] >= 0.0){
+  # Evaporation is from the surface layer first:
+  if(S$Sim$E_Soil[i] <= S$Sim$WSurfaceRes[i]){
+    # E_Soil <= WSurfaceRes, we take it on the surface layer
     S$Sim$WSurfaceRes[i]= S$Sim$WSurfaceRes[i] - S$Sim$E_Soil[i]
+  }else if((S$Sim$E_Soil[i]-S$Sim$WSurfaceRes[i]) <= S$Sim$W_1[i]){
+    # E_Soil >= WSurfaceRes, we take all the water in WSurfaceRes, and either take the remainder in W_1.
+    S$Sim$W_1[i]= S$Sim$E_Soil[i]-S$Sim$WSurfaceRes[i]
+    S$Sim$WSurfaceRes[i]= 0.0
   }else{
-    S$Sim$E_Soil[i]= S$Sim$WSurfaceRes[i]
+    # Or if the remaining water <= W_1 we take it in W_1, else we reduce E_Soil.
+    S$Sim$E_Soil[i]= S$Sim$W_1[i] + S$Sim$WSurfaceRes[i]
+    S$Sim$W_1[i]= 0.0
     S$Sim$WSurfaceRes[i]= 0.0
   }
 
