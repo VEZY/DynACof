@@ -158,6 +158,15 @@ soil_model= function(S,i){
     S$Sim$W_1[i]= S$Parameters$Wm1
   }
 
+  # Evaporation is from the surface layer only, but it cannot be bigger than the available water:
+  if(S$Sim$WSurfaceRes[i] - S$Sim$E_Soil[i] >= 0.0){
+    S$Sim$WSurfaceRes[i]= S$Sim$WSurfaceRes[i] - S$Sim$E_Soil[i]
+  }else{
+    S$Sim$E_Soil[i]= S$Sim$WSurfaceRes[i]
+    S$Sim$WSurfaceRes[i]= 0.0
+  }
+
+
   # 6/ Root Water Extraction by soil layer, source Granier et al., 1999
   S$Sim$RootWaterExtract_1[i]= S$Sim$T_tot[previous_i(i,1)]*S$Parameters$RootFraction1
   S$Sim$RootWaterExtract_2[i]= S$Sim$T_tot[previous_i(i,1)]*S$Parameters$RootFraction2
@@ -207,13 +216,12 @@ soil_model= function(S,i){
 
   # 9/ Soil Water potential, Campbell (1974) equation
   S$Sim$SoilWaterPot[i]=
-    S$Parameters$PSIE*(((S$Sim$W_1[i]+S$Sim$W_2[i]+
-                           S$Sim$W_3[i])/(S$Parameters$TotalDepth*1000))/
+    S$Parameters$PSIE*((S$Sim$W_tot[i]/(S$Parameters$TotalDepth*1000))/
                          S$Parameters$PoreFrac)^(-S$Parameters$B)
 
   # 10/ Energy balance
   S$Sim$LE_Soil[i]= S$Sim$E_Soil[i]*S$Parameters$lambda
-  S$Sim$H_Soil[i]= S$Sim$Rn_Soil[i]*(1-S$Parameters$Soil_LE_p)
+  S$Sim$H_Soil[i]= S$Sim$Rn_Soil[i] - S$Sim$LE_Soil[i]
   S$Sim$Q_Soil[i]= 0
   # RV: Q_Soil is negligible at yearly time-step, and equilibrate between several
   # days anyway.
