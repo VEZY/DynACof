@@ -12,12 +12,11 @@
 #'
 #' @note If you run into issues at this step, try to install the development version of `JuliaCall`:
 #' `remotes::install_github("Non-Contradiction/JuliaCall")`. If it does not work either, try to open
-#' Julia from the terminal, and run this command: `use Pkg; Pkg.add(["RCall","Suppressor","DynACof"])`
+#' Julia from the terminal, and run this command: `using Pkg; Pkg.add(["RCall","Suppressor","DynACof"])`
 #' If you are using a new version of R, please use the argument `rebuild= TRUE` (see [JuliaCall::julia_setup()]).
 #'
 #' @param ... Parameters are passed down to [JuliaCall::julia_setup()]
-#' @param dynacof_dev If a dev version of DynACof.jl is to be used and its path is not in `LOAD_PATH`, the path to
-#' the `dev` location, *e.g.* "C:/Users/<User>/.julia/dev".
+#' @param dev_path the path to the `dev` folder location (*e.g.* "C:/Users/<User>/.julia/dev") if a dev version of `DynACof.jl` has to be used.
 #'
 #' @examples
 #' \dontrun{
@@ -26,7 +25,7 @@
 #' }
 #'
 #' @export
-dynacof.jl_setup= function (..., dynacof_dev= NULL){
+dynacof.jl_setup= function (..., dev_path= NULL){
   tryCatch(expr = {
     julia= JuliaCall::julia_setup(...)
   },
@@ -38,9 +37,15 @@ dynacof.jl_setup= function (..., dynacof_dev= NULL){
     message(cond)
   })
 
-  if(!is.null(dynacof_dev)){
-    JuliaCall::julia_command(paste0('push!(LOAD_PATH,"',dynacof_dev,'")'))
+  if(!is.null(dev_path)){
+    JuliaCall::julia_command(paste0('push!(LOAD_PATH,"',dev_path,'")'))
+    JuliaCall::julia_command("using Pkg")
+    JuliaCall::julia_command('Pkg.develop("DynACof")')
     JuliaCall::julia_command("using DynACof")
+    reg.finalizer(julia, function(e) {
+      message("Freeing development version of DynACof.")
+      JuliaCall::julia_command('Pkg.free("DynACof")')
+    }, onexit = TRUE)
   }else{
     JuliaCall::julia_install_package_if_needed("DynACof")
     # JuliaCall::julia_command('Pkg.add(PackageSpec(url="https://github.com/VEZY/DynACof.jl"))')
