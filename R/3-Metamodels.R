@@ -39,9 +39,7 @@
 #'
 #' @return \item{\eqn{K_Dif_Tree}{K_{dif_{Tree}}}}{Shade tree diffuse light coefficient}
 #'         \item{\eqn{K_Dir_Tree}{K_{dir_{Tree}}}}{Shade tree direct light coefficient}
-#'         \item{\eqn{lue_Tree}{lue_{Tree}}}{Light use efficiency (gC MJ-1)}
-#'         \item{\eqn{T_Tree}{T_{Tree}}}{Transpiration (mm d-1)}
-#'         \item{\eqn{H_Tree}{H_{Tree}}}{Sensible heat (MJ m-2 d-1)}
+#'         \item{\eqn{Rn_Soil}{Rn{Soil}}}{Soil net radiation (MJ m-2 d-1)}
 #'
 #' @references See \href{https://goo.gl/NVxcVp}{Vezy (2017)}
 #'
@@ -65,27 +63,6 @@ Light_extinction_K= function(S,i){
   S$Sim$K_Dir_Tree[i]= 0.4721 - 0.3973*S$Sim$LAD_Tree[previous_i(i,1)]
 }
 
-
-#' @rdname Light_extinction_K
-#' @export
-Metamodels= function(S,i){
-  S$Sim$lue_Tree[i]= 2.87743 + 0.07595*S$Met_c$Tair[i] -
-    0.03390*S$Met_c$VPD[i] - 0.24565*S$Met_c$PAR[i]
-
-  S$Sim$T_Tree[i]=
-    -0.2366 + 0.6591*S$Sim$APAR_Tree[i] +0.1324*S$Sim$LAI_Tree[i]
-  # 0.021820*S$Met_c$VPD[i] - 0.016112*S$Met_c$Tair[i] + 0.942021*S$Sim$APAR_Tree[i]-
-  # 1.397349*(1-S$Met_c$FDiff[i]) + 0.004328*S$Sim$LAI_Tree[i]
-  S$Sim$T_Tree[i][S$Sim$T_Tree[i]<0]= 0 #to discard negative values
-
-  S$Sim$H_Tree[i]=
-    0.34062 + 0.82001*S$Sim$APAR_Dir_Tree[i] + 0.32883*S$Sim$APAR_Dif_Tree[i]-
-    0.75801*S$Sim$LAI_Tree[i] - 0.57135*S$Sim$T_Tree[i] -
-    0.03033*S$Met_c$VPD[i]
-    # 0.34975 + 0.81448*S$Sim$APAR_Dir_Tree[i] + 0.29321*S$Sim$APAR_Dif_Tree[i]-
-    # 0.75987*S$Sim$LAI_Tree[i] - 0.55724*S$Sim$T_Tree[i] -
-    # 0.02898*S$Met_c$VPD[i]
-}
 
 #' @rdname Light_extinction_K
 #' @export

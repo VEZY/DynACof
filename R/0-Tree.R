@@ -64,7 +64,18 @@ Tree= function(){
     pa_Leaf_Tree         = 1,                         # Leaf living tissue (fraction)
     pa_FRoot_Tree        = 1,                         # Fine root living tissue (fraction)
     k                    = Light_extinction_K,        # Light extinction coefficient (call external function)
-    Metamodels           = Metamodels,                # Idem for lue, transpiration and sensible heat flux using MAESPA metamodels
+    T_Tree               = function(S,i){             # Metamodel for tree transpiration
+      Transp= -0.2366 + 0.6591* S$Sim$APAR_Tree[i] + 0.1324*S$Sim$LAI_Tree[i]
+      Transp[Transp<0]= 0 #to discard negative values
+    },
+    H_Tree               = function(S,i){             # Metamodel for tree sensible heat
+      0.34062 + 0.82001*S$Sim$APAR_Dir_Tree[i] + 0.32883*S$Sim$APAR_Dif_Tree[i]-
+        0.75801*S$Sim$LAI_Tree[i] - 0.57135*S$Sim$T_Tree[i] -
+        0.03033*S$Met_c$VPD[i]
+    },
+    lue_Tree             = function(S,i){             # Metamodel for tree lue
+      2.87743 + 0.07595*S$Met_c$Tair[i] - 0.03390*S$Met_c$VPD[i] - 0.24565*S$Met_c$PAR[i]
+    },
     Allometries          = Allometries                # Idem for allometric equations (optional, any kind of variable can be added here).
   )
 }

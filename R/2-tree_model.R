@@ -28,45 +28,9 @@ tree_model= function(S,i){
   # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
   # LE_Tree (sum of transpiration + leaf evap)
   # And via allometries: Height_Tree for canopy boundary layer conductance
+  n_i= length(S$Sim$LAI)
 
-  S$Sim$LAI_Tree[i]= S$Sim$DM_Leaf_Tree[previous_i(i,1)]*(S$Parameters$SLA_Tree/1000)
-
-  # Metamodel for kdif and kdir
-  S$Parameters$k(S,i)
-
-  S$Sim$APAR_Dif_Tree[i]=
-    (S$Met_c$PAR[i]*S$Met_c$FDiff[i])*
-    (1-exp(-S$Sim$K_Dif_Tree[i]*S$Sim$LAI_Tree[i]))
-  S$Sim$APAR_Dir_Tree[i]= (S$Met_c$PAR[i]*(1-S$Met_c$FDiff[i]))*
-    (1-exp(-S$Sim$K_Dir_Tree[i]*S$Sim$LAI_Tree[i]))
-
-  S$Sim$APAR_Tree[i]= max(0,S$Sim$APAR_Dir_Tree[i]+S$Sim$APAR_Dif_Tree[i])
-
-  S$Sim$Transmittance_Tree[i]=
-    1-(S$Sim$APAR_Tree[i]/S$Met_c$PAR[i])
-  S$Sim$Transmittance_Tree[i][is.nan(S$Sim$Transmittance_Tree[i])]= 1
-
-  # Calling the metamodels for LUE, Transpiration and sensible heat flux :
-  S$Parameters$Metamodels(S,i)
-
-  # Computing the air temperature in the shade tree layer:
-  S$Sim$TairCanopy_Tree[i]=
-    S$Met_c$Tair[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
-    (S$Met_c$Air_Density[i]*S$Parameters$Cp*
-       G_bulk(Wind= S$Met_c$WindSpeed[i], ZHT= S$Parameters$ZHT,
-              LAI= S$Sim$LAI_Tree[i],
-              extwind= S$Parameters$extwind,
-              Z_top= S$Sim$Height_Tree[previous_i(i,1)]))
-  # NB : using WindSpeed because wind extinction is already computed in G_bulk (until top of canopy).
-
-  S$Sim$Tleaf_Tree[i]=
-    S$Sim$TairCanopy_Tree[i]+(S$Sim$H_Tree[i]*S$Parameters$MJ_to_W)/
-    (S$Met_c$Air_Density[i]*S$Parameters$Cp*
-       Gb_h(Wind = S$Met_c$WindSpeed[i], wleaf= S$Parameters$wleaf_Tree,
-            LAI_lay= S$Sim$LAI_Tree[i],
-            LAI_abv= 0,ZHT = S$Parameters$ZHT,
-            Z_top = S$Sim$Height_Tree[previous_i(i,1)],
-            extwind= S$Parameters$extwind))
+  S$Sim$lue_Tree[i]= S$Parameters$lue_Tree(S,i)
 
   S$Sim$GPP_Tree[i]= S$Sim$lue_Tree[i]*S$Sim$APAR_Tree[i]
 
@@ -287,7 +251,7 @@ tree_model= function(S,i){
 
   if(S$Sim$TimetoThin_Tree[i]){
     # First, reduce stocking by the predefined rate of thining:
-    S$Sim$Stocking_Tree[i:length(S$Sim$LAI)]=
+    S$Sim$Stocking_Tree[i:n_i]=
       S$Sim$Stocking_Tree[i-1]*(1-S$Parameters$RateThinning_Tree)
     # Then add mortality (removing) due to thining :
     S$Sim$MThinning_Stem_Tree[i]=
@@ -378,7 +342,7 @@ tree_model= function(S,i){
   # Allometries ------------------------------------------------------------
   S$Parameters$Allometries(S,i)
 
-  S$Sim$LAIplot[i]= S$Sim$LAIplot[i] + S$Sim$LAI_Tree[i]
+  S$Sim$LAI_Tree[min(i+1,n_i)]= S$Sim$DM_Leaf_Tree[i]*(S$Parameters$SLA_Tree/1000)
+  S$Sim$LAIplot[min(i+1,n_i)]= S$Sim$LAIplot[min(i+1,n_i)] + S$Sim$LAI_Tree[min(i+1,n_i)]
+  S$Sim$Height_Canopy[min(i+1,n_i)]= max(S$Sim$Height_Tree[i], S$Parameters$Height_Coffee)
 }
-
-

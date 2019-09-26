@@ -227,16 +227,5 @@ soil_model= function(S,i){
   S$Sim$Rn_Soil[i]=
     S$Sim$H_Soil[i] + S$Sim$LE_Soil[i] + S$Sim$Q_Soil[i]
 
-  # 11/ Soil temperature
-
-  S$Sim$TSoil[i]=
-    S$Sim$TairCanopy[i]+(S$Sim$H_Soil[i]*S$Parameters$MJ_to_W)/
-    (bigleaf::air.density(S$Sim$TairCanopy[i],S$Met_c$Pressure[i]/10)*
-       S$Parameters$Cp*
-       G_soilcan(Wind= S$Met_c$WindSpeed[i], ZHT=S$Parameters$ZHT,
-                 Z_top= max(S$Sim$Height_Tree[i],
-                            S$Parameters$Height_Coffee, na.rm = T),
-                 LAI = S$Sim$LAI_Tree[i] + S$Sim$LAI[i],
-                 extwind= S$Parameters$extwind))
-
+  # TSoil is computed outside because we need Taircanopy (coffee is computed after the soil).
 }

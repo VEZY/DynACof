@@ -335,16 +335,13 @@ mainfun= function(cy,Direction,Meteo,Parameters){
   for (i in 1:length(S$Sim$LAI)){
 
     setTxtProgressBar(pb, i)
+
+    energy_water_models(Sim,i) # the soil is in here also
     # Shade Tree computation if any
     if (S$Sim$Stocking_Tree[i] > 0.0){
-      tree_model(S,i)  # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
-      # LE_Tree (sum of transpiration + leaf evap)
+      tree_model(S,i)
     }
-
     coffee_model(S,i)
-    # soil (+canopy evap) water balance ---------------------------------------
-    soil_model(S,i)
-    balance_model(S,i) # Energy balance
   }
   return(S$Sim%>%as.data.frame)
 }

@@ -103,7 +103,7 @@ coffee= function(){
     # 4	fruit and forest tree only; 5	no shade
     CoffeePruning= "tree",           # Coffee pruning management type:
     # tree ; row ; 3 by block ; 4 NULL (no pruning)
-    KTOT         = 800.0,      # soil to leaf hydrolic conducance (mol m-2 s-1 MPa-1)
+    KTOT         = 80.0,            # soil to leaf hydrolic conducance (mol m-2 s-1 MPa-1)
     # Metamodels (or subroutines):
 
     # Leaf Water Potential:

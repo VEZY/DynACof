@@ -8,8 +8,6 @@
 \usage{
 Light_extinction_K(S, i)
 
-Metamodels(S, i)
-
 Metamodels_soil(S, i)
 }
 \arguments{
@@ -20,9 +18,7 @@ Metamodels_soil(S, i)
 \value{
 \item{\eqn{K_Dif_Tree}{K_{dif_{Tree}}}}{Shade tree diffuse light coefficient}
 \item{\eqn{K_Dir_Tree}{K_{dir_{Tree}}}}{Shade tree direct light coefficient}
-\item{\eqn{lue_Tree}{lue_{Tree}}}{Light use efficiency (gC MJ-1)}
-\item{\eqn{T_Tree}{T_{Tree}}}{Transpiration (mm d-1)}
-\item{\eqn{H_Tree}{H_{Tree}}}{Sensible heat (MJ m-2 d-1)}
+\item{\eqn{Rn_Soil}{Rn{Soil}}}{Soil net radiation (MJ m-2 d-1)}
 }
 \description{
 Several variables can be highly impacted by the 3D canopy structure. Hence, some variables are
