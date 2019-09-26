@@ -1,7 +1,14 @@
 #' Energy and water models
 #'
 #' @description Computes the energy and water related variables for the shade tree (if any), the coffee
-#' and the soil.
+#' and the soil. Call different sub-models:
+#'
+#' * [`light_model_tree()`] for the light interception of the shade tree
+#' * [`light_model_coffee()`] for the light interception of the coffee
+#' * [`energy_model_tree()`] for the energy fluxes of the tree (H, LE, Tleaf...)
+#' * [`energy_model_coffee()`] for the energy fluxes of the coffee (H, LE, Tleaf...)
+#' * [`soil_model()`] the full soil model (water transport, H, T Soil...)
+#' * [`balance_model()`] the energy balance at plot scale model (H, LE, Rn...)
 #'
 #' @param S The simulation list
 #' @param i The day index.
@@ -26,7 +33,7 @@ energy_water_models= function(S,i){
   # Soil temperature: we have to know TairCanopy to compute it, but we have to know H_Soil in energy_model_coffee!
   # so we have to compute the soil before the coffee.
   S$Sim$TSoil[i]= S$Sim$TairCanopy[i] + (S$Sim$H_Soil[i] * S$Parameters$MJ_to_W) /
-    (air_density(S$Sim$TairCanopy[i], S$Met_c$Pressure[i]/10.0) * S$Parameters$cp *
+    (bigleaf::air.density(S$Sim$TairCanopy[i], S$Met_c$Pressure[i]/10.0) * S$Parameters$Cp *
        G_soilcan(Wind= S$Met_c$WindSpeed[i], ZHT=S$Parameters$ZHT, Z_top= max(S$Sim$Height_Tree[i], S$Parameters$Height_Coffee),
                  LAI = S$Sim$LAI_Tree[i]  +  S$Sim$LAI[i], extwind= S$Parameters$extwind))
 
@@ -34,7 +41,21 @@ energy_water_models= function(S,i){
 }
 
 
-light_model_tree= function(Sim,i){
+#' Light interception models
+#'
+#' @description Computes the light interception (and transmission) for the shade tree or the coffee.
+#'
+#' @param S The simulation list
+#' @param i The day index.
+#'
+#' @return Nothing, modify the list of simulation `S` in place. See [`DynACof()`] for more details.
+#'
+#' @aliases light_model_coffee
+#'
+#' @seealso [`energy_water_models()`]
+#' @export
+#'
+light_model_tree= function(S,i){
   # Metamodel for kdif and kdir
   S$Parameters$k(S,i)
   S$Sim$APAR_Dif_Tree[i]=
@@ -51,8 +72,9 @@ light_model_tree= function(Sim,i){
 }
 
 
-
-light_model_coffee= function(Sim,i){
+#' @rdname light_model_tree
+#' @export
+light_model_coffee= function(S,i){
   # Light interception ------------------------------------------------------
 
   S$Sim$K_Dif[i]= S$Parameters$k_Dif
@@ -72,7 +94,21 @@ light_model_coffee= function(Sim,i){
 }
 
 
-energy_model_coffee= function(Sim,i){
+#' Energy fluxes models
+#'
+#' @description Computes the energy-related variables such as H, LE, Tleaf for the shade tree or the coffee.
+#'
+#' @param S The simulation list
+#' @param i The day index.
+#'
+#' @return Nothing, modify the list of simulation `S` in place. See [`DynACof()`] for more details.
+#'
+#' @aliases energy_model_tree
+#'
+#' @seealso [`energy_water_models()`]
+#' @export
+#'
+energy_model_coffee= function(S,i){
   # Energy balance ----------------------------------------------------------
 
   # Transpiration Coffee
@@ -151,8 +187,9 @@ energy_model_coffee= function(Sim,i){
 
 }
 
-
-energy_model_tree= function(Sim,i){
+#' @rdname energy_model_coffee
+#' @export
+energy_model_tree= function(S,i){
   # Transpiration Tree
   S$Sim$T_Tree[i]= S$Parameters$T_Tree(S,i)
   # Sensible heat Tree

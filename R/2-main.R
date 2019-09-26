@@ -336,7 +336,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
     setTxtProgressBar(pb, i)
 
-    energy_water_models(Sim,i) # the soil is in here also
+    energy_water_models(S,i) # the soil is in here also
     # Shade Tree computation if any
     if (S$Sim$Stocking_Tree[i] > 0.0){
       tree_model(S,i)
@@ -395,16 +395,13 @@ dynacof_i= function(i,S,verbose= TRUE){
 
   for (j in i){
     if(verbose){setTxtProgressBar(pb, j)}
+    energy_water_models(Z,i) # the soil is in here also
     # Shade Tree computation if any
     if(S$Sim$Stocking_Tree[i] > 0.0){
-      tree_model(Z,j)  # Should output at least APAR_Tree, LAI_Tree, T_Tree, Rn_Tree, H_Tree,
-      # LE_Tree (sum of transpiration + leaf evap)
+      tree_model(Z,j)
     }
     # LE_Tree (sum of transpiration + leaf evap)
     coffee_model(Z,j)
-    # soil (+canopy evap) water balance ---------------------------------------
-    soil_model(Z,j)
-    balance_model(Z,j) # Energy balance
   }
 
   S$Sim= as.data.frame(Z$Sim)

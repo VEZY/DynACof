@@ -134,7 +134,7 @@ It is time-consuming for the first time of execution because of the precompilati
 It is time-consuming for the first time of execution because of the precompilation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>dynacof.jl_setup</span>(<span class='no'>...</span>, <span class='kw'>dynacof_dev</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>dynacof.jl_setup</span>(<span class='no'>...</span>, <span class='kw'>dev_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,9 +144,8 @@ It is time-consuming for the first time of execution because of the precompilati
       <td><p>Parameters are passed down to <code><a href='https://rdrr.io/pkg/JuliaCall/man/julia_setup.html'>JuliaCall::julia_setup()</a></code></p></td>
     </tr>
     <tr>
-      <th>dynacof_dev</th>
-      <td><p>If a dev version of DynACof.jl is to be used and its path is not in <code>LOAD_PATH</code>, the path to
-the <code>dev</code> location, <em>e.g.</em> "C:/Users/&lt;User&gt;/.julia/dev".</p></td>
+      <th>dev_path</th>
+      <td><p>the path to the <code>dev</code> folder location (<em>e.g.</em> "C:/Users/&lt;User&gt;/.julia/dev") if a dev version of <code>DynACof.jl</code> has to be used.</p></td>
     </tr>
     </table>
 
@@ -161,7 +160,7 @@ package, or fill one in the <a href='https://github.com/VEZY/DynACof.jl/issues'>
 
     <p>If you run into issues at this step, try to install the development version of <code>JuliaCall</code>:
 <code><a href='https://rdrr.io/pkg/remotes/man/install_github.html'>remotes::install_github("Non-Contradiction/JuliaCall")</a></code>. If it does not work either, try to open
-Julia from the terminal, and run this command: <code>use Pkg; Pkg.add(["RCall","Suppressor","DynACof"])</code>
+Julia from the terminal, and run this command: <code>using Pkg; Pkg.add(["RCall","Suppressor","DynACof"])</code>
 If you are using a new version of R, please use the argument <code>rebuild= TRUE</code> (see <code><a href='https://rdrr.io/pkg/JuliaCall/man/julia_setup.html'>JuliaCall::julia_setup()</a></code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

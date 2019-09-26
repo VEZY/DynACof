@@ -303,8 +303,10 @@ coffee_model= function(S,i){
        S$Sim$Alloc_Shoot[i]-S$Sim$Alloc_SCR[i])
 
   S$Sim$Alloc_Leaf[i]=
-    min(S$Parameters$DELM*(S$Parameters$Stocking_Coffee/10000),S$Sim$Supply_Leaf[i])
-
+    min(S$Parameters$DELM*(S$Parameters$Stocking_Coffee/10000)*
+          ((S$Parameters$LAI_max-S$Sim$LAI[i])/
+             (S$Sim$LAI[i]+S$Parameters$LAI_max)),
+        S$Sim$Supply_Leaf[i])
 
   S$Sim$NPP_Leaf[i]= S$Sim$Alloc_Leaf[i]/S$Parameters$epsilon_Leaf
   S$Sim$Rg_Leaf[i]= S$Sim$Alloc_Leaf[i]-S$Sim$NPP_Leaf[i]

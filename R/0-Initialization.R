@@ -318,7 +318,7 @@ Tree.init= function(S){
     S$Sim$Rn_tot=
     S$Sim$Rn_Tree=
     rep_len(0,length(S$Sim$Cycle))
-  S$Sim$Height_Tree[1]= rep_len(0.001,length(S$Sim$Cycle)) # because G_bulk doesn't allow
+  S$Sim$Height_Tree[1]= 0.001 # because G_bulk doesn't allow
   # heights of 0
   # Pre-computation of some variables / parameters:
   S$Sim$Stocking_Tree= rep_len(S$Parameters$StockingTree_treeha1/10000,

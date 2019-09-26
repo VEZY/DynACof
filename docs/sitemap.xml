@@ -58,6 +58,12 @@
     <loc>https://vezy.github.io/DynACof//reference/dynacof_i.html</loc>
   </url>
   <url>
+    <loc>https://vezy.github.io/DynACof//reference/energy_model_coffee.html</loc>
+  </url>
+  <url>
+    <loc>https://vezy.github.io/DynACof//reference/energy_water_models.html</loc>
+  </url>
+  <url>
     <loc>https://vezy.github.io/DynACof//reference/GBCANMS.html</loc>
   </url>
   <url>
@@ -89,6 +95,9 @@
   </url>
   <url>
     <loc>https://vezy.github.io/DynACof//reference/Light_extinction_K.html</loc>
+  </url>
+  <url>
+    <loc>https://vezy.github.io/DynACof//reference/light_model_tree.html</loc>
   </url>
   <url>
     <loc>https://vezy.github.io/DynACof//reference/logistic.html</loc>

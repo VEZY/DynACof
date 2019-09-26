@@ -47,7 +47,7 @@ dynacof.jl_setup()
 
 ```{r include=FALSE}
 # We use the dev version instead for the moment
-dynacof.jl_setup(dynacof_dev = "C:/Users/vezy/.julia/dev")
+dynacof.jl_setup(dev_path = "C:/Users/vezy/.julia/dev")
 ```
 
 This command instantiate julia, download the required Julia packages, and precompile them. This step can take a while, especially if you have a slow connection and/or computer. You can expect to wait for 2-3 minutes the first time you execute this function, but next time the packages will be in your computer and precompiled already, so it is less time-consuming after the first time.
@@ -206,7 +206,7 @@ S_disease$Sim$LAI[101]
 
 If we want to see the impact of the disease on this day, we can put the results in a new object and plot the results against the first simulation outputs: 
 
-```{r}
+```{r, cache = TRUE}
 S= dynacof.jl(Inpath= dirname(met_file),FileName=list(Site="package",Meteo=basename(met_file),Soil="package",Coffee="package",Tree=NULL))
 
 S_disease= S
