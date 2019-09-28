@@ -117,7 +117,7 @@ energy_model_coffee= function(S,i){
   S$Sim$H_Coffee[i]= S$Parameters$H_Coffee(S,i)
 
   # Metamodel Coffee leaf water potential
-  S$Sim$LeafWaterPotential[i]=
+  S$Sim$PSIL[i]=
     S$Sim$SoilWaterPot[previous_i(i,1)] -
     (S$Sim$T_Coffee[i] / S$Parameters$M_H20) / S$Parameters$KTOT
 
@@ -194,6 +194,10 @@ energy_model_tree= function(S,i){
   S$Sim$T_Tree[i]= S$Parameters$T_Tree(S,i)
   # Sensible heat Tree
   S$Sim$H_Tree[i]= S$Parameters$H_Tree(S,i)
+
+  S$Sim$PSIL_Tree[i]=
+    S$Sim$SoilWaterPot[previous_i(i,1)] -
+    (S$Sim$T_Tree[i] / S$Parameters$M_H20) / S$Parameters$KTOT_Tree
 
   # Computing the air temperature in the shade tree layer:
   S$Sim$TairCanopy_Tree[i]=

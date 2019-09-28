@@ -166,7 +166,7 @@ coffee_model= function(S,i){
   S$Sim$Temp_cor_Bud[i][S$Sim$Temp_cor_Bud[i]>1]= 1
 
   # (7) Bud dormancy break, Source, Drinnan 1992 and Rodriguez et al., 2011 eq. 13
-  S$Sim$pbreak[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*S$Sim$LeafWaterPotential[i]))
+  S$Sim$pbreak[i]= 1/(1+exp(S$Parameters$a_p+S$Parameters$b_p*S$Sim$PSIL[i]))
   # (8) Compute the number of buds that effectively break dormancy in each cohort:
   S$Sim$BudBreak_cohort[DormancyBreakPeriod]=
     pmin(S$Sim$Bud_available[DormancyBreakPeriod],
@@ -303,9 +303,7 @@ coffee_model= function(S,i){
        S$Sim$Alloc_Shoot[i]-S$Sim$Alloc_SCR[i])
 
   S$Sim$Alloc_Leaf[i]=
-    min(S$Parameters$DELM*(S$Parameters$Stocking_Coffee/10000)*
-          ((S$Parameters$LAI_max-S$Sim$LAI[i])/
-             (S$Sim$LAI[i]+S$Parameters$LAI_max)),
+    min(S$Parameters$DELM*(S$Parameters$Stocking_Coffee/10000),
         S$Sim$Supply_Leaf[i])
 
   S$Sim$NPP_Leaf[i]= S$Sim$Alloc_Leaf[i]/S$Parameters$epsilon_Leaf

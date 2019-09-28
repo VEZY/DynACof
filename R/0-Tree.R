@@ -64,6 +64,7 @@ Tree= function(){
     pa_Leaf_Tree         = 1,                         # Leaf living tissue (fraction)
     pa_FRoot_Tree        = 1,                         # Fine root living tissue (fraction)
     k                    = Light_extinction_K,        # Light extinction coefficient (call external function)
+    KTOT_Tree            = 80.0,                      # soil to leaf hydrolic conducance (mol m-2 s-1 MPa-1)
     T_Tree               = function(S,i){             # Metamodel for tree transpiration
       Transp= -0.2366 + 0.6591* S$Sim$APAR_Tree[i] + 0.1324*S$Sim$LAI_Tree[i]
       Transp[Transp<0]= 0 #to discard negative values

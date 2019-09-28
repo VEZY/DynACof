@@ -8,7 +8,6 @@ coffee= function(){
     SLA               = 10.97,      # Specific Leaf Area (m-2 kg-1 dry mass)
     wleaf             = 0.068,      # Leaf width (m)
     DELM              = 7,          # Max leaf carbon demand (gC plant-1 d-1)
-    LAI_max           = 6,          # Max measured LAI to compute leaf demand. (measured= 5.56)
     Height_Coffee     = 2,          # Average coffee canopy height (m), used for aerodynamic conductance.
     D_pruning         = 74,         # day of year of pruning
     MeanAgePruning    = 5,          # Age of first pruning (year)
@@ -104,13 +103,6 @@ coffee= function(){
     CoffeePruning= "tree",           # Coffee pruning management type:
     # tree ; row ; 3 by block ; 4 NULL (no pruning)
     KTOT         = 80.0,            # soil to leaf hydrolic conducance (mol m-2 s-1 MPa-1)
-    # Metamodels (or subroutines):
-
-    # Leaf Water Potential:
-    LeafWaterPotential= function(S,i){
-      0.040730 - 0.005074*S$Met_c$VPD[i] - 0.037518*S$Sim$PAR_Trans_Tree[i] +
-        2.676284*S$Sim$SoilWaterPot[previous_i(i,1)]
-    },
     # Transpiration:
     T_Coffee= function(S,i){
       T_Coffee=

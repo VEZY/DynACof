@@ -136,7 +136,7 @@ Water                        \tab IntercMax                \tab mm              
 \tab E_Soil                   \tab mm                  \tab Soil evaporation                                                                   \cr
 \tab ETR                      \tab mm                  \tab System evapotranspiration                                                          \cr
 \tab SoilWaterPot             \tab MPa                 \tab Soil water potential                                                               \cr
-\tab LeafWaterPotential       \tab Mpa                 \tab Coffee leaf water potential                                                        \cr
+\tab PSIL                     \tab Mpa                 \tab Coffee leaf water potential                                                        \cr
 Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1    \tab shade tree leaf area                                                               \cr
 \tab Crown_H_Tree             \tab m                   \tab Crown height                                                                       \cr
 \tab Trunk_H_Tree             \tab m                   \tab Trunk height                                                                       \cr
