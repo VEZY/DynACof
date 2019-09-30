@@ -128,11 +128,14 @@
 <a class="sourceLine" id="cb4-2" title="2">Pkg.add([<span class="st">"RCall"</span>,<span class="st">"Suppressor"</span>,<span class="st">"DynACof"</span>])</a>
 <a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt;   Updating registry at `C:\Users\vezy\.julia\registries\General`</span></a>
 <a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt;   Updating git-repo `https://github.com/JuliaRegistries/General.git`</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; [?25l[2K[?25h Resolving package versions...</span></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt;   Updating `C:\Users\vezy\.julia\environments\v1.1\Project.toml`</span></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt;  [no changes]</span></a>
-<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt;   Updating `C:\Users\vezy\.julia\environments\v1.1\Manifest.toml`</span></a>
-<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt;  [no changes]</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt; [?25l    Fetching: [&gt;                                        ]  0.0 %</span></a>
+<a class="sourceLine" id="cb4-6" title="6">[<span class="fl">2</span>K[?<span class="fl">25</span>h Resolving package versions...</a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt;  Installed TimeZones ─ v0.10.1</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt;   Updating `C:\Users\vezy\.julia\environments\v1.1\Project.toml`</span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt;  [no changes]</span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt;   Updating `C:\Users\vezy\.julia\environments\v1.1\Manifest.toml`</span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt;   [f269a46b] ↑ TimeZones v0.10.0 ⇒ v0.10.1</span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt;   Building TimeZones → `C:\Users\vezy\.julia\packages\TimeZones\QbymI\deps\build.log`</span></a></code></pre></div>
 <p>This command download the packages needed for a simulation. Then, execute this line of code:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb5-1" title="1">using RCall, Suppressor, DynACof</a></code></pre></div>
 <p>It will pre-compile the packages on your computer, and will be much more informative than from R if it fails. If it fails, try to follow the indications (e.g. install other packages using <code>Pkg.add("Name of the package")</code>).</p>

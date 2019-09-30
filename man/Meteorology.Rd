@@ -24,7 +24,6 @@ Default to \code{NULL} to return the \code{\link[=Aquiares]{Aquiares()}} example
 \item WindSpeed : constant wind speed (m s-1), only needed if windspeed is missing
 \item CO2       : constant atmospheric \eqn{CO_2} concentration (ppm), only needed if \eqn{CO_2} is missing
 \item MinTT     : minimum temperature threshold for degree days computing (Celsius), see \code{\link[=GDD]{GDD()}}
-\item MaxTT     : maximum temperature threshold for degree days computing (Celsius), see \code{\link[=GDD]{GDD()}}
 \item albedo    : site shortwave surface albedo, only needed if net radiation is missing, see \code{\link[=Rad_net]{Rad_net()}}
 }}
 }

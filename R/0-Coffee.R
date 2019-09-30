@@ -19,7 +19,6 @@ coffee= function(){
     DVG1              = 105,        # Day of year for the beginning of the Vegetative Growing Season
     DVG2              = 244,        # Day of year for the end of the Vegetative Growing Season
     MinTT             = 10,         # Minimum temperature threshold (deg C) for degree days computation
-    MaxTT             = 40,         # Maximum temperature threshold (deg C) for degree days computation (if any)
     RNL_base          = 91.2,       # Nodes per LAI unit at the reference 20 Celsius degrees following Drinnan & Menzel (1995)
     VF_Flowering      = 5500,       # Very first flowering (dd), source: Rodriguez et al. (2001)
     F_buds1           = 840,        # Bud development stage 1 (2), source: PhD Louise Meylan p.58.

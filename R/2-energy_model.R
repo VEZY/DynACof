@@ -182,8 +182,7 @@ energy_model_coffee= function(S,i){
                  extwind= S$Parameters$extwind))
 
   S$Sim$DegreeDays_Tcan[i]=
-    GDD(Tmean = S$Sim$TairCanopy[i],MinTT = S$Parameters$MinTT,
-        MaxTT = S$Parameters$MaxTT)
+    GDD(Tmean = S$Sim$TairCanopy[i],MinTT = S$Parameters$MinTT)
 
 }
 

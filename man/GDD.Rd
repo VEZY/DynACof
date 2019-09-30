@@ -4,8 +4,7 @@
 \alias{GDD}
 \title{Daily growing degree days (GDD)}
 \usage{
-GDD(Tmax = NULL, Tmin = NULL, MinTT = 5, MaxTT = NULL, Round = T,
-  Tmean = NULL)
+GDD(Tmax = NULL, Tmin = NULL, MinTT = 5, Round = T, Tmean = NULL)
 }
 \arguments{
 \item{Tmax}{Maximum daily temperature (Celsius degree)}
@@ -13,8 +12,6 @@ GDD(Tmax = NULL, Tmin = NULL, MinTT = 5, MaxTT = NULL, Round = T,
 \item{Tmin}{Minimum daily temperature (Celsius degree)}
 
 \item{MinTT}{Minimum temperature threshold, also called base temperature (Celsius degree), default to 5.}
-
-\item{MaxTT}{Maximum temperature threshold (Celsius degree), optional, default to NULL}
 
 \item{Round}{Boolean. /!\ Important: round the result to 2 decimal, with default to \code{TRUE}.}
 
@@ -41,6 +38,6 @@ Caution, use Tmean only if Tmax and Tmin are not available because it tends to g
 set.seed(1)
 GDD(Tmax = rnorm(n = 10, mean = 30, sd = 1),
     Tmin = rnorm(n = 10, mean = 10, sd = 1),
-    MinTT = 10, MaxTT = 32)
+    MinTT = 10)
 
 }

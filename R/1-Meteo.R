@@ -17,7 +17,6 @@
 #'   \item WindSpeed : constant wind speed (m s-1), only needed if windspeed is missing
 #'   \item CO2       : constant atmospheric \eqn{CO_2} concentration (ppm), only needed if \eqn{CO_2} is missing
 #'   \item MinTT     : minimum temperature threshold for degree days computing (Celsius), see [GDD()]
-#'   \item MaxTT     : maximum temperature threshold for degree days computing (Celsius), see [GDD()]
 #'   \item albedo    : site shortwave surface albedo, only needed if net radiation is missing, see [Rad_net()]
 #' }
 #'
@@ -218,8 +217,7 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
   # Missing DegreeDays:
   if(is.null(MetData$DegreeDays)){
     MetData$DegreeDays=
-      GDD(Tmax= MetData$Tmax,Tmin= MetData$Tmin, MinTT= Parameters$MinTT,
-          MaxTT = Parameters$MaxTT)
+      GDD(Tmax= MetData$Tmax,Tmin= MetData$Tmin, MinTT= Parameters$MinTT)
     warn.var(Var= "DegreeDays","Tmax, Tmin and MinTT",type='warn')
   }
 

@@ -193,7 +193,6 @@ atan_deg= function(x){
 #' @param Tmax    Maximum daily temperature (Celsius degree)
 #' @param Tmin    Minimum daily temperature (Celsius degree)
 #' @param MinTT   Minimum temperature threshold, also called base temperature (Celsius degree), default to 5.
-#' @param MaxTT   Maximum temperature threshold (Celsius degree), optional, default to NULL
 #' @param Round   Boolean. /!\ Important: round the result to 2 decimal, with default to `TRUE`.
 #' @param Tmean   Optional. Average daily temperature (Celsius degree). Only needed if Tmax and Tmin are missing.
 #'
@@ -213,16 +212,14 @@ atan_deg= function(x){
 #' set.seed(1)
 #' GDD(Tmax = rnorm(n = 10, mean = 30, sd = 1),
 #'     Tmin = rnorm(n = 10, mean = 10, sd = 1),
-#'     MinTT = 10, MaxTT = 32)
+#'     MinTT = 10)
 #'
 #' @export
-GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,MaxTT=NULL,Round=T,Tmean=NULL){
+GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,Round=T,Tmean=NULL){
   if(!is.null(Tmax)&!is.null(Tmin)){
     DD= (Tmax+Tmin)/2-MinTT
-    DD[((Tmax+Tmin)/2)>MaxTT]= 0
   }else if(!is.null(Tmean)){
     DD= Tmean-MinTT
-    DD[Tmean>MaxTT]= 0
   }
   DD[DD<0]= 0
   return(if(Round){round(DD,2)}else{DD})

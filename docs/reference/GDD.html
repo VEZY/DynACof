@@ -136,8 +136,7 @@ using the maximum and minimum daily temperature (and optionally using the
 average daily temperature, not recommended).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>GDD</span>(<span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Tmin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>MinTT</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>MaxTT</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Round</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>Tmean</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>GDD</span>(<span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Tmin</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>MinTT</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>Round</span> <span class='kw'>=</span> <span class='no'>T</span>, <span class='kw'>Tmean</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,10 +152,6 @@ average daily temperature, not recommended).</p>
     <tr>
       <th>MinTT</th>
       <td><p>Minimum temperature threshold, also called base temperature (Celsius degree), default to 5.</p></td>
-    </tr>
-    <tr>
-      <th>MaxTT</th>
-      <td><p>Maximum temperature threshold (Celsius degree), optional, default to NULL</p></td>
     </tr>
     <tr>
       <th>Round</th>
@@ -188,7 +183,7 @@ Caution, use Tmean only if Tmax and Tmin are not available because it tends to g
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>1</span>)
 <span class='fu'>GDD</span>(<span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>1</span>),
     <span class='kw'>Tmin</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>1</span>),
-    <span class='kw'>MinTT</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>MaxTT</span> <span class='kw'>=</span> <span class='fl'>32</span>)</div><div class='output co'>#&gt;  [1] 10.44 10.29  9.27  9.69 10.73  9.57 10.24 10.84 10.70 10.14</div><div class='input'>
+    <span class='kw'>MinTT</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] 10.44 10.29  9.27  9.69 10.73  9.57 10.24 10.84 10.70 10.14</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
