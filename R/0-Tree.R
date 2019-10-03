@@ -24,13 +24,13 @@ Tree= function(){
     # k_Dif_Tree           = 0.305,                   # Light extinction coefficient for diffuse light. Now computed by metamodels
     # k_Dir_Tree           = 0.304,                   # Light extinction coefficient for direct light. Now computed by metamodels
     # lue_Tree             = 1.1375,                  # Light-use efficiency (gc MJ-1). Now computed by metamodels
-    lambda_Stem_Tree     = 0.20,                      # Allocation coefficient to the stem. Source: Litton (2007)
+    lambda_Stem_Tree     = 0.19,                      # Allocation coefficient to the stem. Source: Litton (2007)
     lambda_Branch_Tree   = 0.25,                      # Allocation coefficient to the branches wood. Source: Litton (2007)
     lambda_CR_Tree       = 0.10,                      # Allocation coefficient to the coarse roots. Source: Litton (2007)
     lambda_Leaf_Tree     = 0.26,                      # Allocation coefficient to the Leaves. Source: Litton (2007)
     lambda_FRoot_Tree    = 0.05,                      # Allocation coefficient to the fine roots. Source: Litton (2007)
     kres_max_Tree        = 1.2,                       # Maximum carbon extracted from reserves compared to maintenance respiration
-    Res_max_Tree         = 150,                       # Maximum reserve until Tree always use it for growth
+    Res_max_Tree         = 500,                       # Maximum reserve until Tree always use it for growth
     CC_Leaf_Tree         = 0.47,                      # Leaf carbon content in gC gDM-1. Source: Van Oijen et al. (2010)
     CC_wood_Tree         = 0.47,                      # Wood carbon content in gC gDM-1. Source: Van Oijen et al. (2010)
     epsilon_Branch_Tree  = 1.2,                       # Branch growth cost coefficient (gC.gC-1). Source: This study
@@ -58,24 +58,25 @@ Tree= function(){
     Q10CR_Tree           = 2.1,                       # Coarse root Q10 (-)
     Q10Leaf_Tree         = 1.896,                     # Leaf Q10 (-), see 1-DATA/Erythrina/Respiration.docx
     Q10FRoot_Tree        = 1.4,                       # Fine root Q10 (-). Source: Van Oijen et al (2010,I)
-    pa_Branch_Tree       = Paliv_dis(40,0.4,0.05,5),  # Branch living tissue (fraction). Not used (replaced by pa_Stem_Tree).
-    pa_Stem_Tree         = Paliv_dis(40,0.3,0.05,5),  # Computation of living tissue at each age (do not modify)
+    pa_Branch_Tree       = Paliv_dis(41,0.4,0.03,5),  # Branch living tissue (fraction). Not used (replaced by pa_Stem_Tree).
+    pa_Stem_Tree         = Paliv_dis(41,0.3,0.03,5),  # Computation of living tissue at each age (do not modify)
     pa_CR_Tree           = 0.21,                      # Coarse roots living tissue (fraction)
     pa_Leaf_Tree         = 1,                         # Leaf living tissue (fraction)
     pa_FRoot_Tree        = 1,                         # Fine root living tissue (fraction)
     k                    = Light_extinction_K,        # Light extinction coefficient (call external function)
     KTOT_Tree            = 80.0,                      # soil to leaf hydrolic conducance (mol m-2 s-1 MPa-1)
     T_Tree               = function(S,i){             # Metamodel for tree transpiration
-      Transp= -0.2366 + 0.6591* S$Sim$APAR_Tree[i] + 0.1324*S$Sim$LAI_Tree[i]
+      Transp=
+        -0.54141773 + 0.01775386 * S$Met_c$Tair[i] + 0.01619095 * S$Met_c$VPD[i] +
+        0.16202098 * S$Sim$LAI_Tree[i] + 0.50673098 * S$Sim$APAR_Tree[i]
       Transp[Transp<0]= 0 #to discard negative values
     },
     H_Tree               = function(S,i){             # Metamodel for tree sensible heat
-      0.34062 + 0.82001*S$Sim$APAR_Dir_Tree[i] + 0.32883*S$Sim$APAR_Dif_Tree[i]-
-        0.75801*S$Sim$LAI_Tree[i] - 0.57135*S$Sim$T_Tree[i] -
-        0.03033*S$Met_c$VPD[i]
+      0.15311742  +  0.74344303 * S$Sim$APAR_Tree[i] -  0.73439407 * S$Sim$LAI_Tree[i] -  0.71071620 * S$Sim$T_Tree[i] -  0.03509675 * S$Met_c$VPD[i] +
+        0.09494137 * S$Met_c$WindSpeed[i]
     },
     lue_Tree             = function(S,i){             # Metamodel for tree lue
-      2.87743 + 0.07595*S$Met_c$Tair[i] - 0.03390*S$Met_c$VPD[i] - 0.24565*S$Met_c$PAR[i]
+      2.83661957 + 0.07542358 * S$Met_c$Tair[i] - 0.03009240 * S$Met_c$VPD[i] - 0.24074124 * S$Met_c$PAR[i]
     },
     Allometries          = Allometries                # Idem for allometric equations (optional, any kind of variable can be added here).
   )

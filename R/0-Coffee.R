@@ -4,17 +4,17 @@ coffee= function(){
   list(
     Stocking_Coffee   = 5580,       # Coffee density at planting (plant ha-1)
     AgeCoffeeMin      = 1,          # minimum coffee stand age
-    AgeCoffeeMax      = 40,         # maximum coffee stand age (start a new rotation after)
+    AgeCoffeeMax      = 41,         # maximum coffee stand age (start a new rotation after)
     SLA               = 10.97,      # Specific Leaf Area (m-2 kg-1 dry mass)
     wleaf             = 0.068,      # Leaf width (m)
-    DELM              = 7,          # Max leaf carbon demand (gC plant-1 d-1)
+    DELM              = 2.0,        # Max leaf carbon demand (gC plant-1 d-1)
     Height_Coffee     = 2,          # Average coffee canopy height (m), used for aerodynamic conductance.
     D_pruning         = 74,         # day of year of pruning
     MeanAgePruning    = 5,          # Age of first pruning (year)
     LeafPruningRate   = 0.6,        # how much leaves are pruned (ratio)
     WoodPruningRate   = 1/3,        # how much branches wood are pruned (ratio)
-    k_Dif             = 0.4289,     # Light extinction coefficient for diffuse light (-), computed from MAESPA
-    k_Dir             = 0.3579,     # Light extinction coefficient for direct light (-), computed from MAESPA
+    k_Dif             = 0.3905968,  # Light extinction coefficient for diffuse light (-), computed from MAESPA
+    k_Dir             = 0.3409511,  # Light extinction coefficient for direct light (-), computed from MAESPA
     kres              = 0.08,       # Maximum carbon proportion extracted from reserves mass per day
     DVG1              = 105,        # Day of year for the beginning of the Vegetative Growing Season
     DVG2              = 244,        # Day of year for the end of the Vegetative Growing Season
@@ -47,8 +47,8 @@ coffee= function(){
                                     # NB: "quality" requires a well-set maturation module. Put "no" if no harvest.
     Min_Fruit_CM      = 20,         # Minimum fruit carbon mass below which harvest cannot be triggered
     FtS               = 0.63,       # Fruit to seed ratio (g g-1). Source: Wintgens
-    lambda_Shoot      = 0.14,       # Allocation coefficient to resprout wood
-    lambda_SCR        = 0.075,      # Allocation coefficient to stump and coarse roots.
+    lambda_Shoot      = 0.12,       # Allocation coefficient to resprout wood
+    lambda_SCR        = 0.08,       # Allocation coefficient to stump and coarse roots.
     lambda_Leaf_remain= 0.85,       # Allocation coefficient to allocate the remaining carbon to leaves and fine roots
     lambda_FRoot_remain= 0.15,      # Idem, remain carbon: (1-lambda_Shoot-lambda_SCR-Fruit_Allocation)
     lifespan_Leaf     = 265,        # Leaf life span. Source: Charbonnier et al. (2017)
@@ -99,26 +99,23 @@ coffee= function(){
     ShadeType         = 1,          # Shade type:
     # 1 Legume only; 2	bananas and legume only;3	bananas and other plants;
     # 4	fruit and forest tree only; 5	no shade
-    CoffeePruning= "tree",           # Coffee pruning management type:
+    CoffeePruning= "tree",          # Coffee pruning management type:
     # tree ; row ; 3 by block ; 4 NULL (no pruning)
     KTOT         = 80.0,            # soil to leaf hydrolic conducance (mol m-2 s-1 MPa-1)
     # Transpiration:
     T_Coffee= function(S,i){
       T_Coffee=
-        -0.72080 + 0.07319*S$Met_c$VPD[i] -0.76984*(1-S$Met_c$FDiff[i]) +
-        0.13646*S$Sim$LAI[i] + 0.12910*S$Sim$PAR_Trans_Tree[i]
+        -0.86408239  +  0.03342774 * S$Met_c$Tair[i] +  0.16334697 * S$Sim$APAR[i] +  0.06270258 * S$Met_c$VPD[i]
       T_Coffee[T_Coffee<0]= 0
       T_Coffee
     },
     # Sensible heat flux:
     H_Coffee= function(S,i){
-      1.2560 - 0.2886*S$Met_c$VPD[i] - 3.6280*S$Met_c$FDiff[i] +
-        2.6480*S$Sim$T_Coffee[i] + 0.4389*S$Sim$PAR_Trans_Tree[i]
+      -0.8770245  +  0.5671539 * S$Sim$PAR_Trans_Tree[i] -  0.3032931 * S$Met_c$VPD[i] +  2.5925547 * S$Sim$T_Coffee[i]
     },
     # Light use efficiency:
     lue= function(S,i){
-      2.784288 + 0.009667*S$Met_c$Tair[i] + 0.010561*S$Met_c$VPD[i] -
-        0.710361*sqrt(S$Sim$PAR_Trans_Tree[i])
+      2.738690562  +  0.011330972 * S$Met_c$Tair[i] -  0.705428477 * sqrt(S$Sim$PAR_Trans_Tree[i]) +  0.009245904 * S$Met_c$VPD[i]
     }
   )
 }
