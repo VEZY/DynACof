@@ -72,7 +72,7 @@ tree_model= function(S,i){
     S$Sim$DM_FRoot_Tree[previous_i(i,1)]*
     S$Parameters$MRN*S$Parameters$NC_FRoot_Tree*
     S$Parameters$Q10FRoot_Tree^(
-      (S$Sim$TairCanopy_Tree[i]-S$Parameters$TMR)/10)
+      (S$Sim$TSoil[i]-S$Parameters$TMR)/10)
 
   S$Sim$Rm_Tree[i]=
     S$Sim$Rm_Leaf_Tree[i]+ S$Sim$Rm_CR_Tree[i]+

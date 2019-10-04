@@ -57,7 +57,7 @@ coffee_model= function(S,i){
     after(i,2)*
     (S$Parameters$pa_FRoot*S$Sim$DM_FRoot[previous_i(i,1)]*
        S$Parameters$NC_FRoot*S$Parameters$MRN*
-       S$Parameters$Q10_FRoot^((S$Sim$TairCanopy[i]-S$Parameters$TMR)/10))
+       S$Parameters$Q10_FRoot^((S$Sim$TSoil[i]-S$Parameters$TMR)/10))
 
   # Total plant maintenance respiration
   S$Sim$Rm[i]=
