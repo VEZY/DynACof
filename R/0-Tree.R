@@ -70,6 +70,7 @@ Tree= function(){
         -0.54141773 + 0.01775386 * S$Met_c$Tair[i] + 0.01619095 * S$Met_c$VPD[i] +
         0.16202098 * S$Sim$LAI_Tree[i] + 0.50673098 * S$Sim$APAR_Tree[i]
       Transp[Transp<0]= 0 #to discard negative values
+      Transp
     },
     H_Tree               = function(S,i){             # Metamodel for tree sensible heat
       0.15311742  +  0.74344303 * S$Sim$APAR_Tree[i] -  0.73439407 * S$Sim$LAI_Tree[i] -  0.71071620 * S$Sim$T_Tree[i] -  0.03509675 * S$Met_c$VPD[i] +
