@@ -1,4 +1,4 @@
-# DynACof 1.2.1
+# DynACof 1.3.0
 
 * Tsoil used for Rm roots now  
 * Remove `MaxTT` from `GDD`  
