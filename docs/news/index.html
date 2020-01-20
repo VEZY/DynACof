@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DynACof</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -126,6 +126,76 @@
       
     </div>
 
+    <div id="dynacof-121" class="section level1">
+<h1 class="page-header">
+<a href="#dynacof-121" class="anchor"></a>DynACof 1.2.1</h1>
+<ul>
+<li>Tsoil used for Rm roots now<br>
+</li>
+<li>Remove <code>MaxTT</code> from <code>GDD</code><br>
+</li>
+<li>Replace <code>Tleaf_Coffee</code> by <code>TairCanopy</code> in <code>DegreeDays_Tcan</code> and <code>T_VG</code> (for <code>ratioNodestoLAI</code>) as it should be (see documentation)<br>
+</li>
+<li>Put <code>CM_Fruit_Cohort_remain</code> to 0 when harvested<br>
+</li>
+<li>Add option for no harvest at all<br>
+</li>
+<li>
+<code>E_Soil</code> take in priority in surface layer, and then possibly in <code>W_1</code><br>
+</li>
+<li>
+<code>LeafWaterPotential</code> is now fully computed<br>
+</li>
+<li>Rename <code>LeafWaterPotential</code> into <code>PSIL</code><br>
+</li>
+<li>Add <code>PSIL_Tree</code> computation<br>
+</li>
+<li>Update default metamodels and parameters (revision of article)<br>
+</li>
+<li>Remove <code>LAI_max</code> dependence for leaf C demand computation<br>
+</li>
+<li>
+<a href="https://github.com/VEZY/DynACof.jl">DynACof.jl</a> related:
+<ul>
+<li>Update dynacof.jl_setup for dev versions<br>
+</li>
+<li>Update <code>dynacof.jl_setup</code> doc + website<br>
+</li>
+<li>Add Pkg.free when R terminates<br>
+</li>
+<li>Update the code following modifs in julia version (from 69cd69ba69d210e0479b8749deebc9585b58c1c0 to 7239c93bc2c50eb761de330cf4c43429fe18b4ef)<br>
+</li>
+</ul>
+</li>
+<li>Runs shade tree model only if <code>Stocking_Tree &gt; 0.0</code> and remove overcomplicated shade tree models (keep only one now), following <a href="https://github.com/VEZY/DynACof.jl">DynACof.jl</a><br>
+</li>
+<li>Update docs to Roxygen 7.0.0.<br>
+</li>
+<li>Add startup message<br>
+</li>
+<li>Fix several bugs:
+<ul>
+<li>Fix issue in the PENMON implementation<br>
+</li>
+<li>FileName reading<br>
+</li>
+<li>Fix format of simulation Table returned by DynACof with several cycles<br>
+</li>
+<li>Fix error in dynacof_i<br>
+</li>
+<li>Fix issues in the soil module<br>
+</li>
+<li>Fix transpiration metamodel bug<br>
+</li>
+<li>Fix the computation of the overriped fruits (could potentially count the same overriped fruits)<br>
+</li>
+<li>Fix issue in soil RootWaterExtract_*<br>
+</li>
+<li>Fix issue with LeafWaterPotential (was computed before T_Coffee)</li>
+</ul>
+</li>
+</ul>
+</div>
     <div id="dynacof-120" class="section level1">
 <h1 class="page-header">
 <a href="#dynacof-120" class="anchor"></a>DynACof 1.2.0</h1>
@@ -222,6 +292,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#dynacof-121">1.2.1</a></li>
         <li><a href="#dynacof-120">1.2.0</a></li>
         <li><a href="#dynacof-112">1.1.2</a></li>
         <li><a href="#dynacof-111">1.1.1</a></li>
@@ -242,7 +313,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

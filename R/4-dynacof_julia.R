@@ -16,7 +16,7 @@
 #' If you are using a new version of R, please use the argument `rebuild= TRUE` (see [JuliaCall::julia_setup()]).
 #'
 #' @param ... Parameters are passed down to [JuliaCall::julia_setup()]
-#' @param dev_path the path to the `dev` folder location (*e.g.* "C:/Users/<User>/.julia/dev") if a dev version of `DynACof.jl` has to be used.
+#' @param dev_path the path to the `dev` folder location (*e.g.* "C:/Users/{User}/.julia/dev") if a dev version of `DynACof.jl` has to be used.
 #'
 #' @examples
 #' \dontrun{
@@ -186,7 +186,7 @@ dynacof.jl= function(Period=NULL,WriteIt=FALSE,Inpath=NULL,output_f=".RData",
 #' # Setting up julia + DynACof.jl:
 #' dynacof.jl_setup()
 #'
-#' Making a regular simulation using example data:
+#' # Making a regular simulation using example data:
 #' # First, downloading an example meteorology file:
 #' met_file= tempfile()
 #' m= "https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt"
@@ -209,7 +209,7 @@ dynacof.jl= function(Period=NULL,WriteIt=FALSE,Inpath=NULL,output_f=".RData",
 #' # New value of the maintenance respiration for coffee:
 #' S$Sim$Rm[i]
 #'
-#' # To re-run DynACof for several days, use a range for `i`:
+#' # To re-run DynACof for several days, use a range for i:
 #' S= dynacof_i(i:(i+10),S)
 #' }
 dynacof_i.jl= function(i,S){

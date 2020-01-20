@@ -49,7 +49,7 @@ partitioning (Vezy et al., 2018), and probably photosynthesis because it is rela
 and transpiration through stomatal conductance. Therefore, we derived metamodels from MAESPA for the
 diffuse (\eqn{K_{dif_{Tree}}}{K_dif_Tree}) and the direct (\eqn{K_{dir_{Tree}}}{K_dir_Tree}) shade tree light
 extinction coefficients, the light use efficiency (LUE, gC MJ-1), the coffee canopy temperature (Tcan, deg Celsius)
-and leaf water potential (MPa), the transpiration (T_*, mm) and plant sensible heat flux (H_*). The coffee layer was
+and leaf water potential (MPa), the transpiration (T_x, mm) and plant sensible heat flux (H_x). The coffee layer was
 considered homogeneous enough to compute constant extinction coefficients derived from the MAESPA simulation,
 and the partitioning parameter between soil sensible and latent flux was also adjusted using MAESPA outputs.
 MAESPA is a 3D explicit model for energy, carbon and water fluxes simulation, for further details, see:

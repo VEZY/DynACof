@@ -23,7 +23,7 @@ at age > 0 with initializations.
 }
 \examples{
 \dontrun{
-Making a regular simulation using example data:
+# Making a regular simulation using example data:
 S= DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 
 # Value of the maintenance respiration for coffee on day i=100:
@@ -38,7 +38,7 @@ S= dynacof_i(i,S)
 # New value of the maintenance respiration for coffee:
 S$Sim$Rm[i]
 
-# To re-run DynACof for several days, use a range for `i`:
+# To re-run DynACof for several days, use a range for i:
 S= dynacof_i(i:(i+10),S)
 
 }

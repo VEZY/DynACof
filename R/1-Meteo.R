@@ -27,7 +27,7 @@
 #'          likely to be depreciated in the near future as the computation has been replaced by a metamodel. It is kept for
 #'          information for the moment.
 #' \tabular{llll}{
-#' \strong{Var}    \tab \strong{unit} \tab \strong{Definition}                        \tab \strong{If missing} \cr
+#' *Var*           \tab *unit*      \tab *Definition*                                 \tab *If missing* \cr
 #' Date            \tab POSIXct     \tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing \cr
 #' year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
 #' DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
@@ -35,7 +35,7 @@
 #' Tair            \tab Celsius     \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
 #' Tmax            \tab Celsius     \tab Maximum air temperature during the day       \tab Required (error) \cr
 #' Tmin            \tab Celsius     \tab Minimum air temperature during the day       \tab Required (error) \cr
-#' RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
+#' RH              \tab %           \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
 #' RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
 #' Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation. \cr
 #' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Taken as constant: `Parameters$WindSpeed` \cr

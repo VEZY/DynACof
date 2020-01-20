@@ -1,4 +1,6 @@
 ---
+bibliography: references.bib
+csl: environmental-modelling-and-software.csl
 output:
   github_document:
    html_preview: true
@@ -30,7 +32,8 @@ options(tibble.print_min = 5, tibble.print_max = 5)
 ## Overview
 
 The [DynACof](https://vezy.github.io/DynACof) process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield, energy, and water balance of coffee plantations according to management, while accounting for spatial effects using metamodels from the 3D process-based [MAESPA](https://maespa.github.io/). The model also uses coffee bud and fruit cohorts for reproductive development to better represent fruit carbon demand distribution along the year.
-Its official website is available [here](https://vezy.github.io/DynACof).
+
+A research article presenting and evaluating the model is published in @vezyDynACofProcessbasedModel2020. The official website is available [here](https://vezy.github.io/DynACof).
 
 DynACof is also available as a [Julia](https://julialang.org/) package. Use this one for better performance (~100x). Its repository is available [here](https://github.com/VEZY/DynACof.jl), and the documentation is available [here](https://vezy.github.io/DynACof.jl/dev/). The Julia version is also available from the R package. See [the vignette](https://vezy.github.io/DynACof/articles/julia-version.html) for more details. Note that the input parameter files are different from the R-version. They are accessible in the [DynACof.jl_inputs](https://github.com/VEZY/DynACof.jl_inputs) repository.
 
@@ -90,10 +93,10 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## Acknowledgments
 
-The DynACof model was mainly developed thanks to the MACCAC project^[**MACACC project ANR-13-AGRO-0005**,
-Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux 
-AGROBIOSPHERE 2013 program], which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by 
-CIRAD^[Centre de Coopération Internationale en Recherche Agronomique pour le Développement] and INRA^[Institut National de la Recherche Agronomique]. The authors are grateful for the support of the [Aquiares farm](https://aquiares.com/) and the CATIE^[Centro Agronómico Tropical de Investigación y Enseñanza] for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure [ANAEE-F](http://www.anaee-france.fr/fr/); the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.
+The DynACof model was mainly developed thanks to the MACCAC project, which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by 
+[CIRAD](https://www.cirad.fr/) and [INRAE](https://www.inrae.fr/). The authors are grateful for the support of the [Aquiares farm](https://aquiares.com/) and the [CATIE](https://www.catie.ac.cr/) for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure [ANAEE-F](http://www.anaee-france.fr/fr/); the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.
+
+MACACC project: ANR-13-AGRO-0005, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux, AGROBIOSPHERE 2013 program.
 
 ---
 
@@ -103,3 +106,4 @@ CIRAD^[Centre de Coopération Internationale en Recherche Agronomique pour le D�
 # knit("README.Rmd")
 ```
 
+## References

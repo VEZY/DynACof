@@ -14,7 +14,7 @@ Allometries(S, i)
 \value{
 Any variable that is computed by the function. Default: \code{DM_Stem_Tree}, \code{Height_Tree},
 \code{CrownProj_Tree}, \code{CrownRad_Tree}, \code{Crown_H_Tree}, \code{Trunk_H_Tree},
-\code{LA_Tree and LAD_Tree}.
+\verb{LA_Tree and LAD_Tree}.
 }
 \description{
 Compute shade tree allometries, which are optional in the model.

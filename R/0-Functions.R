@@ -248,7 +248,7 @@ GDD= function(Tmax=NULL,Tmin=NULL,MinTT=5,Round=T,Tmean=NULL){
 #'
 #' @note This function force \eqn{S_0= S_g} when \eqn{S_0= 0} to avoid the production of `NA`'s.
 #'
-#' @return \item{\eqn{Hd/H}}{Daily diffuse fraction of light (\%)}
+#' @return \item{\eqn{Hd/H}}{Daily diffuse fraction of light (%)}
 #'
 #' @references \itemize{
 #'   \item Duffie, J.A. and W.A. Beckman, Solar engineering of thermal processes. 2013: John Wiley & Sons.
@@ -344,7 +344,7 @@ Rad_ext= function(DOY,Latitude,Gsc=Constants()$Gsc){
 #' @param RAD         Incident daily total radiation (\eqn{MJ\ m^{-2} d^{-1}}{MJ m-2 d-1})
 #' @param Tmax        Maximum daily air temperature (celsius degree)
 #' @param Tmin        Minimum daily air temperature (celsius degree)
-#' @param Rh          Average daily relative humidity (`\%`)
+#' @param Rh          Average daily relative humidity (`%`)
 #' @param VPD         Mean daily Vapor Pressure Deficit (\eqn{hPa}), only needed if `Rh` is missing
 #' @param Latitude    Latitude (\eqn{deg})
 #' @param Elevation   Elevation (\eqn{m})
@@ -1026,9 +1026,9 @@ logistic_deriv= function(xi,u_log,s_log){
 #' @param a      Parameter
 #' @param b      Parameter
 #' @param x0     Mid-maturation (logistic function inflexion point)
-#' @param y0     Sucrose content at the beginning (in \%, 1-100)
+#' @param y0     Sucrose content at the beginning (in %, 1-100)
 #'
-#' @return Sucrose content, in \% of fruit total dry mass
+#' @return Sucrose content, in % of fruit total dry mass
 #'
 #' @references Pezzopane et al. (2012) :
 #' Pezzopane, J., et al., Agrometeorological parameters for prediction of the maturation period
@@ -1050,11 +1050,11 @@ Sucrose_cont_perc= function(x,a,b,x0,y0){
 #' @description Computes the percentage of living tissue in the organ according to age
 #'
 #' @param Age_Max Maximum age of the organ (year)
-#' @param P_Start Percentage of living tissue at first age (\% of dry mass)
-#' @param P_End   Percentage of living tissue at last age (\% of dry mass)
+#' @param P_Start Percentage of living tissue at first age (% of dry mass)
+#' @param P_End   Percentage of living tissue at last age (% of dry mass)
 #' @param k       Rate between P_Start and P_End
 #'
-#' @return Living tissue at each age in \% of organ dry mass
+#' @return Living tissue at each age in % of organ dry mass
 #'
 #' @details The percentage of living tissue is computed as follows:
 #'  \deqn{P_{End}+\left((P_{Start}-P_{End})\cdot e^{seq(0,-k,length.out=Age_{Max})}\right)}{

@@ -4,9 +4,18 @@
 \alias{G_bulk}
 \title{Bulk aerodynamic conductance}
 \usage{
-G_bulk(Wind, ZHT, Z_top, Z0 = Z_top * 0.1, ZPD = Z_top * 0.75,
-  alpha = 1.5, ZW = ZPD + alpha * (Z_top - ZPD), LAI, extwind = 0,
-  vonkarman = Constants()$vonkarman)
+G_bulk(
+  Wind,
+  ZHT,
+  Z_top,
+  Z0 = Z_top * 0.1,
+  ZPD = Z_top * 0.75,
+  alpha = 1.5,
+  ZW = ZPD + alpha * (Z_top - ZPD),
+  LAI,
+  extwind = 0,
+  vonkarman = Constants()$vonkarman
+)
 }
 \arguments{
 \item{Wind}{Average daily wind speed above canopy (m s-1)}

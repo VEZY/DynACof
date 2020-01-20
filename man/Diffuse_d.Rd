@@ -4,8 +4,7 @@
 \alias{Diffuse_d}
 \title{Diffuse fraction}
 \usage{
-Diffuse_d(DOY, RAD, Latitude = 35, type = c("Spitters", "Page",
-  "Gopinathan"))
+Diffuse_d(DOY, RAD, Latitude = 35, type = c("Spitters", "Page", "Gopinathan"))
 }
 \arguments{
 \item{DOY}{Day Of Year from 1st January (day)}

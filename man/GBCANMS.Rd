@@ -4,8 +4,15 @@
 \alias{GBCANMS}
 \title{Canopy and Soil boundary layer conductance (depreciated)}
 \usage{
-GBCANMS(WIND, ZHT, TREEH, Z0 = TREEH * 0.1, ZPD = TREEH * 0.75,
-  GBCANMS1MIN = 0.0123, VONKARMAN = Constants()$vonkarman)
+GBCANMS(
+  WIND,
+  ZHT,
+  TREEH,
+  Z0 = TREEH * 0.1,
+  ZPD = TREEH * 0.75,
+  GBCANMS1MIN = 0.0123,
+  VONKARMAN = Constants()$vonkarman
+)
 }
 \arguments{
 \item{WIND}{Average daily windspeed (m s-1)}
@@ -41,7 +48,7 @@ one in the inertial sublayer and one in the roughness sublayer.
 \details{
 The defaults for Z0 and ZPD are computed very simply. Other simple formulations:
 \enumerate{
-\item Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \code{h*}
+\item Lettau (1969) proposed an other way: \deqn{Z0= 0.5 . h* . s / S} where \verb{h*}
 is canopy height, s is the average silhouette area (projected area of the tree on a vertical plane)
 and S the specific area, with \eqn{S= A/n}, where A is the total plot area and n the number of trees.
 \item For ZPD, Verhoef et al. (1997) said \eqn{d= 0.67}. h is a good proxy without any prior knowledge.

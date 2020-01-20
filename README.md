@@ -24,8 +24,11 @@ yield, energy, and water balance of coffee plantations according to
 management, while accounting for spatial effects using metamodels from
 the 3D process-based [MAESPA](https://maespa.github.io/). The model also
 uses coffee bud and fruit cohorts for reproductive development to better
-represent fruit carbon demand distribution along the year. Its official
-website is available [here](https://vezy.github.io/DynACof).
+represent fruit carbon demand distribution along the year.
+
+A research article presenting and evaluating the model is published in
+Vezy et al. (2020). The official website is available
+[here](https://vezy.github.io/DynACof).
 
 DynACof is also available as a [Julia](https://julialang.org/) package.
 Use this one for better performance (\~100x). Its repository is
@@ -113,13 +116,14 @@ to abide by its terms.
 
 ## Acknowledgments
 
-The DynACof model was mainly developed thanks to the MACCAC
-project\[1\], which was funded by the french ANR (Agence Nationale de la
-Recherche). The authors were funded by CIRAD\[2\] and INRA\[3\]. The
-authors are grateful for the support of the [Aquiares
-farm](https://aquiares.com/) and the CATIE\[4\] for the long-term coffee
-agroforestry trial, the SOERE F-ORE-T which is supported annually by
-Ecofor, Allenvi and the French national research infrastructure
+The DynACof model was mainly developed thanks to the MACCAC project,
+which was funded by the french ANR (Agence Nationale de la Recherche).
+The authors were funded by [CIRAD](https://www.cirad.fr/) and
+[INRAE](https://www.inrae.fr/). The authors are grateful for the support
+of the [Aquiares farm](https://aquiares.com/) and the
+[CATIE](https://www.catie.ac.cr/) for the long-term coffee agroforestry
+trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi
+and the French national research infrastructure
 [ANAEE-F](http://www.anaee-france.fr/fr/); the CIRAD-IRD-SAFSE project
 (France) and the PCP platform of CATIE. CoffeeFlux observatory was
 supported and managed by CIRAD researchers. We are grateful to the staff
@@ -127,18 +131,28 @@ from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero,
 Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel
 Jara, Alonso Barquero for their technical and field support.
 
+MACACC project: ANR-13-AGRO-0005, Viabilité et Adaptation des
+Ecosystèmes Productifs, Territoires et Ressources face aux Changements
+Globaux, AGROBIOSPHERE 2013 program.
+
 -----
 
 <sub>The DynACof logo was made using
 <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> </sub>
 
-1.  **MACACC project ANR-13-AGRO-0005**, Viabilité et Adaptation des
-    Ecosystèmes Productifs, Territoires et Ressources face aux
-    Changements Globaux AGROBIOSPHERE 2013 program
+## References
 
-2.  Centre de Coopération Internationale en Recherche Agronomique pour
-    le Développement
+<div id="refs" class="references">
 
-3.  Institut National de la Recherche Agronomique
+<div id="ref-vezyDynACofProcessbasedModel2020">
 
-4.  Centro Agronómico Tropical de Investigación y Enseñanza
+Vezy, R., le Maire, G., Christina, M., Georgiou, S., Imbach, P.,
+Hidalgo, H.G., Alfaro, E.J., Blitz-Frayret, C., Charbonnier, F., Lehner,
+P., Loustau, D., Roupsard, O., 2020. DynACof: A process-based model to
+study growth, yield and ecosystem services of coffee agroforestry
+systems. Environmental Modelling & Software 124, 104609.
+<https://doi.org/10.1016/j.envsoft.2019.104609>
+
+</div>
+
+</div>

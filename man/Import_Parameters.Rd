@@ -4,8 +4,10 @@
 \alias{Import_Parameters}
 \title{Import model parameters}
 \usage{
-Import_Parameters(path = NULL, Names = list(Site = "Site.R", Soil =
-  "Soil.R", Coffee = "Coffee.R", Tree = NULL))
+Import_Parameters(
+  path = NULL,
+  Names = list(Site = "Site.R", Soil = "Soil.R", Coffee = "Coffee.R", Tree = NULL)
+)
 }
 \arguments{
 \item{path}{The path to the parameter files folder. If \code{NULL}, take the default files from the package}

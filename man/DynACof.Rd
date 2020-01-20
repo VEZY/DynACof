@@ -4,10 +4,18 @@
 \alias{DynACof}
 \title{Dynamic Agroforestry Coffee Crop Model}
 \usage{
-DynACof(Period = NULL, WriteIt = F, ..., parallel = TRUE,
-  output_f = ".RData", Inpath = NULL, Outpath = Inpath,
-  Simulation_Name = "DynACof", FileName = list(Site = "1-Site.R", Meteo
-  = NULL, Soil = "3-Soil.R", Coffee = "4-Coffee.R", Tree = NULL))
+DynACof(
+  Period = NULL,
+  WriteIt = F,
+  ...,
+  parallel = TRUE,
+  output_f = ".RData",
+  Inpath = NULL,
+  Outpath = Inpath,
+  Simulation_Name = "DynACof",
+  FileName = list(Site = "1-Site.R", Meteo = NULL, Soil = "3-Soil.R", Coffee =
+    "4-Coffee.R", Tree = NULL)
+)
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}
@@ -40,8 +48,9 @@ Default input files are provided with the package as an example parameterization
 \value{
 Return invisibly a list containing three objects (Parameters, Meteo and Sim):
 \itemize{
-\item Sim: A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
-\strong{Type}                \tab \strong{Var}             \tab \strong{unit}       \tab \strong{Definition}                                                                \cr
+\item Sim: A data.frame of the simulation outputs at daily time-step:
+\tabular{llll}{
+\emph{Type}                       \tab \emph{Var}                    \tab \emph{unit}              \tab \emph{Definition}                                                                \cr
 General                      \tab Cycle                    \tab -                   \tab Plantation cycle ID                                                                \cr
 \tab Plot_Age                 \tab year                \tab Plantation age (starting at 1)                                                     \cr
 \tab Plot_Age_num             \tab year (numeric)      \tab Numeric age of plantation                                                          \cr
@@ -149,27 +158,30 @@ Special shade tree variables \tab LA_Tree                  \tab m2 leaves tree-1
 \tab TimetoThin_Tree          \tab boolean             \tab Days on which tree is thinned                                                      \cr
 \tab MThinning_x_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 }
-
-\item Meteo: A data.frame of the input meteorology, potentially coming from the output of \code{\link[=Meteorology]{Meteorology()}}: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
-Date            \tab POSIXct date\tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
+\item Meteo: A data.frame of the input meteorology, potentially coming from the output of \code{\link[=Meteorology]{Meteorology()}}:
+\tabular{llll}{
+\emph{Var}           \tab \emph{unit}      \tab \emph{Definition}                                 \tab \emph{If missing} \cr
+Date            \tab POSIXct     \tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing \cr
 year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
 DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
 Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr
-Tair            \tab deg C       \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
-Tmax            \tab deg C       \tab Maximum air temperature during the day       \tab Required (error) \cr
-Tmin            \tab deg C       \tab Minimum air temperature during the day       \tab Required (error) \cr
-RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
+Tair            \tab Celsius     \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
+Tmax            \tab Celsius     \tab Maximum air temperature during the day       \tab Required (error) \cr
+Tmin            \tab Celsius     \tab Minimum air temperature during the day       \tab Required (error) \cr
+RH              \tab \%           \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
 RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
-Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Try to compute from VPD, Tair and Elevation, or Tair and Elevation. \cr
-WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Try to set it to constant: \code{Parameters$WindSpeed} \cr
-CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Try to set it to constant: \code{Parameters$CO2}\cr
-DegreeDays      \tab deg C       \tab Growing degree days                          \tab Computed using \code{\link[=GDD]{GDD()}} \cr
+Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation. \cr
+WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Taken as constant: \code{Parameters$WindSpeed} \cr
+CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Taken as constant: \code{Parameters$CO2} \cr
+DegreeDays      \tab Celsius     \tab Growing degree days                          \tab Computed using \code{\link[=GDD]{GDD()}} \cr
 PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
-FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link[=Diffuse_d]{Diffuse_d()}} using Spitters formula \cr
+FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using \code{\link[=Diffuse_d]{Diffuse_d()}} using Spitters et al. (1986) formula \cr
 VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
-Rn (!=Rn_tot)    \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using \code{\link[=Rad_net]{Rad_net()}} with RH, or VPD \cr
+Rn              \tab MJ m-2 d-1  \tab Net radiation (will be depreciated)          \tab Computed using \code{\link[=Rad_net]{Rad_net()}} with RH, or VPD \cr
 DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
-Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf:air.density]{bigleaf::air.density()}}}
+Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using \code{\link[bigleaf:air.density]{bigleaf::air.density()}} \cr
+ZEN             \tab radian      \tab Solar zenithal angle at noon                 \tab Computed from Date, Latitude, Longitude and Timezone
+}
 \item Parameters: A list of the input parameters (see \code{\link[=site]{site()}})
 }
 }
@@ -182,7 +194,7 @@ the development of the coffee buds and fruits to better represent fruit carbon d
 \details{
 The user can import a simulation using \code{\link[base:readRDS]{base::readRDS()}}.
 Almost all variables for coffee exist also for shade trees with the suffix
-\code{_Tree} after the name of the variable, e.g. : LAI = coffee LAI,
+\verb{_Tree} after the name of the variable, e.g. : LAI = coffee LAI,
 LAI_Tree = shade tree LAI.
 Special shade tree variables (see return section) are only optional,
 and it may have more variables upon parameterization because variables can be added in

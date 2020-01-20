@@ -9,7 +9,7 @@ dynacof.jl_setup(..., dev_path = NULL)
 \arguments{
 \item{...}{Parameters are passed down to \code{\link[JuliaCall:julia_setup]{JuliaCall::julia_setup()}}}
 
-\item{dev_path}{the path to the \code{dev} folder location (\emph{e.g.} "C:/Users/<User>/.julia/dev") if a dev version of \code{DynACof.jl} has to be used.}
+\item{dev_path}{the path to the \code{dev} folder location (\emph{e.g.} "C:/Users/{User}/.julia/dev") if a dev version of \code{DynACof.jl} has to be used.}
 }
 \description{
 This function initializes Julia and the \href{https://github.com/VEZY/DynACof.jl}{DynACof.jl} package.
@@ -25,7 +25,7 @@ package, or fill one in the \href{https://github.com/VEZY/DynACof.jl/issues}{Dyn
 \note{
 If you run into issues at this step, try to install the development version of \code{JuliaCall}:
 \code{remotes::install_github("Non-Contradiction/JuliaCall")}. If it does not work either, try to open
-Julia from the terminal, and run this command: \code{using Pkg; Pkg.add(["RCall","Suppressor","DynACof"])}
+Julia from the terminal, and run this command: \verb{using Pkg; Pkg.add(["RCall","Suppressor","DynACof"])}
 If you are using a new version of R, please use the argument \code{rebuild= TRUE} (see \code{\link[JuliaCall:julia_setup]{JuliaCall::julia_setup()}}).
 }
 \examples{

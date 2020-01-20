@@ -23,9 +23,10 @@
 #' Default input files are provided with the package as an example parameterization.
 #'
 #' @return Return invisibly a list containing three objects (Parameters, Meteo and Sim):
-#' \itemize{
-#'   \item Sim: A data.frame of the simulation outputs at daily time-step: \tabular{llll}{
-#' \strong{Type}                \tab \strong{Var}             \tab \strong{unit}       \tab \strong{Definition}                                                                \cr
+#'
+#' * Sim: A data.frame of the simulation outputs at daily time-step:
+#' \tabular{llll}{
+#' *Type*                       \tab *Var*                    \tab *unit*              \tab *Definition*                                                                \cr
 #' General                      \tab Cycle                    \tab -                   \tab Plantation cycle ID                                                                \cr
 #'                              \tab Plot_Age                 \tab year                \tab Plantation age (starting at 1)                                                     \cr
 #'                              \tab Plot_Age_num             \tab year (numeric)      \tab Numeric age of plantation                                                          \cr
@@ -134,28 +135,32 @@
 #'                              \tab MThinning_x_Tree         \tab gc m-2 d-1          \tab Mortality due to thining at organ scale
 #'}
 #'
-#'   \item Meteo: A data.frame of the input meteorology, potentially coming from the output of [Meteorology()]: \tabular{llll}{\strong{Var} \tab \strong{unit} \tab \strong{Definition} \tab \strong{If missing} \cr
-#' Date            \tab POSIXct date\tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing\cr
+#' * Meteo: A data.frame of the input meteorology, potentially coming from the output of [Meteorology()]:
+#' \tabular{llll}{
+#' *Var*           \tab *unit*      \tab *Definition*                                 \tab *If missing* \cr
+#' Date            \tab POSIXct     \tab Date in POSIXct format                       \tab Computed from start date parameter, or set a dummy date if missing \cr
 #' year            \tab year        \tab Year of the simulation                       \tab Computed from Date \cr
 #' DOY             \tab day         \tab day of the year                              \tab Computed from Date \cr
 #' Rain            \tab mm          \tab Rainfall                                     \tab Assume no rain \cr
-#' Tair            \tab deg C       \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
-#' Tmax            \tab deg C       \tab Maximum air temperature during the day       \tab Required (error) \cr
-#' Tmin            \tab deg C       \tab Minimum air temperature during the day       \tab Required (error) \cr
-#' RH              \tab \%          \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
+#' Tair            \tab Celsius     \tab Air temperature (above canopy)               \tab Computed from Tmax and Tmin \cr
+#' Tmax            \tab Celsius     \tab Maximum air temperature during the day       \tab Required (error) \cr
+#' Tmin            \tab Celsius     \tab Minimum air temperature during the day       \tab Required (error) \cr
+#' RH              \tab %           \tab Relative humidity                            \tab Not used, but prefered over VPD for Rn computation \cr
 #' RAD             \tab MJ m-2 d-1  \tab Incident shortwave radiation                 \tab Computed from PAR \cr
-#' Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Try to compute from VPD, Tair and Elevation, or Tair and Elevation. \cr
-#' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Try to set it to constant: `Parameters$WindSpeed` \cr
-#' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Try to set it to constant: `Parameters$CO2`\cr
-#' DegreeDays      \tab deg C       \tab Growing degree days                          \tab Computed using [GDD()] \cr
+#' Pressure        \tab hPa         \tab Atmospheric pressure                         \tab Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation. \cr
+#' WindSpeed       \tab m s-1       \tab Wind speed                                   \tab Taken as constant: `Parameters$WindSpeed` \cr
+#' CO2             \tab ppm         \tab Atmospheric CO2 concentration                \tab Taken as constant: `Parameters$CO2` \cr
+#' DegreeDays      \tab Celsius     \tab Growing degree days                          \tab Computed using [GDD()] \cr
 #' PAR             \tab MJ m-2 d-1  \tab Incident photosynthetically active radiation \tab Computed from RAD \cr
-#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using [Diffuse_d()] using Spitters formula \cr
+#' FDiff           \tab Fraction    \tab Diffuse light fraction                       \tab Computed using [Diffuse_d()] using Spitters et al. (1986) formula \cr
 #' VPD             \tab hPa         \tab Vapor pressure deficit                       \tab Computed from RH \cr
-#' Rn (!=Rn_tot)    \tab MJ m-2 d-1  \tab Net radiation (will soon be depreciated)     \tab Computed using [Rad_net()] with RH, or VPD \cr
+#' Rn              \tab MJ m-2 d-1  \tab Net radiation (will be depreciated)          \tab Computed using [Rad_net()] with RH, or VPD \cr
 #' DaysWithoutRain \tab day         \tab Number of consecutive days with no rainfall  \tab Computed from Rain \cr
-#' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using [bigleaf::air.density()]}
-#'   \item Parameters: A list of the input parameters (see [site()])
+#' Air_Density     \tab kg m-3      \tab Air density of moist air (\eqn{\rho}) above canopy \tab Computed using [bigleaf::air.density()] \cr
+#' ZEN             \tab radian      \tab Solar zenithal angle at noon                 \tab Computed from Date, Latitude, Longitude and Timezone
 #' }
+#'
+#' * Parameters: A list of the input parameters (see [site()])
 #'
 #' @details The user can import a simulation using [base::readRDS()].
 #'          Almost all variables for coffee exist also for shade trees with the suffix
@@ -363,7 +368,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 #'
 #' @examples
 #'\dontrun{
-#' Making a regular simulation using example data:
+#' # Making a regular simulation using example data:
 #' S= DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 #'
 #' # Value of the maintenance respiration for coffee on day i=100:
@@ -378,7 +383,7 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 #' # New value of the maintenance respiration for coffee:
 #' S$Sim$Rm[i]
 #'
-#' # To re-run DynACof for several days, use a range for `i`:
+#' # To re-run DynACof for several days, use a range for i:
 #' S= dynacof_i(i:(i+10),S)
 #'
 #'}

@@ -4,8 +4,20 @@
 \alias{PENMON}
 \title{Evapotranspiration}
 \usage{
-PENMON(Rn, Wind, Tair, ZHT, Z_top, Pressure, Gs, VPD, LAI, extwind = 0,
-  wleaf = 0.068, Parameters = Constants())
+PENMON(
+  Rn,
+  Wind,
+  Tair,
+  ZHT,
+  Z_top,
+  Pressure,
+  Gs,
+  VPD,
+  LAI,
+  extwind = 0,
+  wleaf = 0.068,
+  Parameters = Constants()
+)
 }
 \arguments{
 \item{Rn}{Net radiation (MJ m-2 d-1)}

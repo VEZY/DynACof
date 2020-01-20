@@ -4,10 +4,17 @@
 \alias{dynacof.jl}
 \title{Run DynACof.jl (Julia version of DynACof)}
 \usage{
-dynacof.jl(Period = NULL, WriteIt = FALSE, Inpath = NULL,
-  output_f = ".RData", Outpath = Inpath, Simulation_Name = "DynACof",
-  FileName = list(Site = "site.jl", Meteo = "meteorology.txt", Soil =
-  "soil.jl", Coffee = "coffee.jl", Tree = NULL), ...)
+dynacof.jl(
+  Period = NULL,
+  WriteIt = FALSE,
+  Inpath = NULL,
+  output_f = ".RData",
+  Outpath = Inpath,
+  Simulation_Name = "DynACof",
+  FileName = list(Site = "site.jl", Meteo = "meteorology.txt", Soil = "soil.jl", Coffee
+    = "coffee.jl", Tree = NULL),
+  ...
+)
 }
 \arguments{
 \item{Period}{Period of time to be simulated, see details. Default: \code{NULL}}

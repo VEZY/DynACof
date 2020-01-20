@@ -78,7 +78,7 @@ Allows to run a DynACof simulation with starting at age &amp;gt; 0 with initiali
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DynACof</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -164,7 +164,36 @@ the parameters linked to a simulation have either <code>R</code> or <code>Julia<
 </dl>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'># Setting up julia + DynACof.jl:</span>
+<span class='fu'><a href='dynacof.jl_setup.html'>dynacof.jl_setup</a></span>()
+
+<span class='co'># Making a regular simulation using example data:</span>
+<span class='co'># First, downloading an example meteorology file:</span>
+<span class='no'>met_file</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
+<span class='no'>m</span><span class='kw'>=</span> <span class='st'>"https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt"</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/download.file.html'>download.file</a></span>(<span class='no'>m</span>,<span class='no'>met_file</span>)
+
+
+<span class='no'>S</span><span class='kw'>=</span> <span class='fu'><a href='dynacof.jl.html'>dynacof.jl</a></span>(<span class='kw'>Inpath</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>met_file</span>), <span class='kw'>FileName</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Site</span><span class='kw'>=</span><span class='st'>"package"</span>,<span class='kw'>Meteo</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>met_file</span>),
+                                                       <span class='kw'>Soil</span><span class='kw'>=</span><span class='st'>"package"</span>,<span class='kw'>Coffee</span><span class='kw'>=</span><span class='st'>"package"</span>,<span class='kw'>Tree</span><span class='kw'>=</span><span class='kw'>NULL</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>met_file</span>)
+
+<span class='co'># Value of the maintenance respiration for coffee on day i=100:</span>
+<span class='no'>i</span><span class='kw'>=</span> <span class='fl'>100</span>
+<span class='no'>S</span>$<span class='no'>Sim</span>$<span class='no'>Rm</span>[<span class='no'>i</span>]
+
+<span class='co'># Changing the value of Tair in the meteorology for day 100:</span>
+<span class='no'>S</span>$<span class='no'>Meteo</span>$<span class='no'>Tair</span>[<span class='no'>i</span>]<span class='kw'>=</span> <span class='no'>S</span>$<span class='no'>Meteo</span>$<span class='no'>Tair</span>[<span class='no'>i</span>]+<span class='fl'>10.0</span>
+
+<span class='no'>S</span><span class='kw'>=</span> <span class='fu'><a href='dynacof_i.html'>dynacof_i</a></span>(<span class='no'>i</span>,<span class='no'>S</span>)
+
+<span class='co'># New value of the maintenance respiration for coffee:</span>
+<span class='no'>S</span>$<span class='no'>Sim</span>$<span class='no'>Rm</span>[<span class='no'>i</span>]
+
+<span class='co'># To re-run DynACof for several days, use a range for i:</span>
+<span class='no'>S</span><span class='kw'>=</span> <span class='fu'><a href='dynacof_i.html'>dynacof_i</a></span>(<span class='no'>i</span>:(<span class='no'>i</span>+<span class='fl'>10</span>),<span class='no'>S</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -185,7 +214,7 @@ the parameters linked to a simulation have either <code>R</code> or <code>Julia<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

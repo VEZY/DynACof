@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dynamic Crop Model to Simulate Coffee Crop Ecophysiology for Monospecific Stands or Agroforestry • DynACof</title>
+<title>A Process-based Model to Study Growth, Yield and Ecosystem Services of Coffee Agroforestry Systems • DynACof</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Dynamic Crop Model to Simulate Coffee Crop Ecophysiology for Monospecific Stands or Agroforestry">
+<script src="pkgdown.js"></script><meta property="og:title" content="A Process-based Model to Study Growth, Yield and Ecosystem Services of Coffee Agroforestry Systems">
 <meta property="og:description" content="The DynACof process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield,
  energy, and water balance of coffee plantations according to management, while accounting for spatial effects using
  metamodels from the 3D process-based MAESPA. The model also uses coffee bud and fruit cohorts for reproductive
@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">DynACof</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -92,7 +92,8 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <a href="https://vezy.github.io/DynACof">DynACof</a> process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield, energy, and water balance of coffee plantations according to management, while accounting for spatial effects using metamodels from the 3D process-based <a href="https://maespa.github.io/">MAESPA</a>. The model also uses coffee bud and fruit cohorts for reproductive development to better represent fruit carbon demand distribution along the year. Its official website is available <a href="https://vezy.github.io/DynACof">here</a>.</p>
+<p>The <a href="https://vezy.github.io/DynACof">DynACof</a> process-based model computes plot-scale Net Primary Productivity, carbon allocation, growth, yield, energy, and water balance of coffee plantations according to management, while accounting for spatial effects using metamodels from the 3D process-based <a href="https://maespa.github.io/">MAESPA</a>. The model also uses coffee bud and fruit cohorts for reproductive development to better represent fruit carbon demand distribution along the year.</p>
+<p>A research article presenting and evaluating the model is published in Vezy et al. (2020). The official website is available <a href="https://vezy.github.io/DynACof">here</a>.</p>
 <p>DynACof is also available as a <a href="https://julialang.org/">Julia</a> package. Use this one for better performance (~100x). Its repository is available <a href="https://github.com/VEZY/DynACof.jl">here</a>, and the documentation is available <a href="https://vezy.github.io/DynACof.jl/dev/">here</a>. The Julia version is also available from the R package. See <a href="https://vezy.github.io/DynACof/articles/julia-version.html">the vignette</a> for more details. Note that the input parameter files are different from the R-version. They are accessible in the <a href="https://github.com/VEZY/DynACof.jl_inputs">DynACof.jl_inputs</a> repository.</p>
 </div>
 <div id="installation" class="section level2">
@@ -123,7 +124,7 @@
 <a class="sourceLine" id="cb4-5" title="5">        <span class="dt">Inpath =</span> <span class="st">"1-Input/Aquiares/"</span>, <span class="dt">Simulation_Name =</span> <span class="st">"Test1"</span>,</a>
 <a class="sourceLine" id="cb4-6" title="6">        <span class="dt">FileName =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">Site =</span> <span class="st">"1-Site.R"</span>, <span class="dt">Meteo =</span><span class="st">"2-Meteorology.txt"</span>,</a>
 <a class="sourceLine" id="cb4-7" title="7">                        <span class="dt">Soil =</span> <span class="st">"3-Soil.R"</span>,<span class="dt">Coffee =</span> <span class="st">"4-Coffee.R"</span>, <span class="dt">Tree =</span> <span class="ot">NULL</span>))</a></code></pre></div>
-<p>Note that the Meteo file can be of any regular format because the model uses the <code><a href="https://rdrr.io/pkg/data.table/man/fread.html">data.table::fread</a></code> function internally.</p>
+<p>Note that the Meteo file can be of any regular format because the model uses the <code><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">data.table::fread</a></code> function internally.</p>
 </div>
 <div id="notes" class="section level2">
 <h2 class="hasAnchor">
@@ -138,15 +139,27 @@
 <div id="acknowledgments" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgments" class="anchor"></a>Acknowledgments</h2>
-<p>The DynACof model was mainly developed thanks to the MACCAC project[1], which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by CIRAD[2] and INRA[3]. The authors are grateful for the support of the <a href="https://aquiares.com/">Aquiares farm</a> and the CATIE[4] for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure <a href="http://www.anaee-france.fr/fr/">ANAEE-F</a>; the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.</p>
+<p>The DynACof model was mainly developed thanks to the MACCAC project, which was funded by the french ANR (Agence Nationale de la Recherche). The authors were funded by <a href="https://www.cirad.fr/">CIRAD</a> and <a href="https://www.inrae.fr/">INRAE</a>. The authors are grateful for the support of the <a href="https://aquiares.com/">Aquiares farm</a> and the <a href="https://www.catie.ac.cr/">CATIE</a> for the long-term coffee agroforestry trial, the SOERE F-ORE-T which is supported annually by Ecofor, Allenvi and the French national research infrastructure <a href="http://www.anaee-france.fr/fr/">ANAEE-F</a>; the CIRAD-IRD-SAFSE project (France) and the PCP platform of CATIE. CoffeeFlux observatory was supported and managed by CIRAD researchers. We are grateful to the staff from Costa-Rica, in particular Alvaro Barquero, Alejandra Barquero, Jenny Barquero, Alexis Perez, Guillermo Ramirez, Rafael Acuna, Manuel Jara, Alonso Barquero for their technical and field support.</p>
+<p>MACACC project: ANR-13-AGRO-0005, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux, AGROBIOSPHERE 2013 program.</p>
 <hr>
 <p><sub>The DynACof logo was made using <a href="http://logomakr.com" title="Logo Makr">LogoMakr.com</a> </sub></p>
-<ol>
-<li><p><strong>MACACC project ANR-13-AGRO-0005</strong>, Viabilité et Adaptation des Ecosystèmes Productifs, Territoires et Ressources face aux Changements Globaux AGROBIOSPHERE 2013 program</p></li>
-<li><p>Centre de Coopération Internationale en Recherche Agronomique pour le Développement</p></li>
-<li><p>Institut National de la Recherche Agronomique</p></li>
-<li><p>Centro Agronómico Tropical de Investigación y Enseñanza</p></li>
-</ol>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
+<div id="refs" class="references">
+
+<div id="ref-vezyDynACofProcessbasedModel2020">
+
+Vezy, R., le Maire, G., Christina, M., Georgiou, S., Imbach, P.,
+Hidalgo, H.G., Alfaro, E.J., Blitz-Frayret, C., Charbonnier, F., Lehner,
+P., Loustau, D., Roupsard, O., 2020. DynACof: A process-based model to
+study growth, yield and ecosystem services of coffee agroforestry
+systems. Environmental Modelling &amp; Software 124, 104609.
+<https:></https:>
+</div>
+
+</div>
 </div>
 </div>
   </div>
@@ -204,7 +217,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

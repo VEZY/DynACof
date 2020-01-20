@@ -4,8 +4,13 @@
 \alias{write.results}
 \title{Write output results to disk}
 \usage{
-write.results(FinalList, output = ".RData", Simulation_Name = NULL,
-  Outpath = "Outputs", ...)
+write.results(
+  FinalList,
+  output = ".RData",
+  Simulation_Name = NULL,
+  Outpath = "Outputs",
+  ...
+)
 }
 \arguments{
 \item{FinalList}{The model output list}

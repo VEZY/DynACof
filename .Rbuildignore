@@ -9,3 +9,5 @@ man/figures
 ^docs$
 vignettes
 pkgdown
+references.bib
+environmental-modelling-and-software.csl

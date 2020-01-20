@@ -31,7 +31,7 @@ Allows to run a DynACof simulation with starting at age > 0 with initializations
 # Setting up julia + DynACof.jl:
 dynacof.jl_setup()
 
-Making a regular simulation using example data:
+# Making a regular simulation using example data:
 # First, downloading an example meteorology file:
 met_file= tempfile()
 m= "https://raw.githubusercontent.com/VEZY/DynACof.jl_inputs/master/meteorology.txt"
@@ -54,7 +54,7 @@ S= dynacof_i(i,S)
 # New value of the maintenance respiration for coffee:
 S$Sim$Rm[i]
 
-# To re-run DynACof for several days, use a range for `i`:
+# To re-run DynACof for several days, use a range for i:
 S= dynacof_i(i:(i+10),S)
 }
 }

@@ -80,7 +80,7 @@ the development of the coffee buds and fruits to better represent fruit carbon d
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">DynACof</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -138,10 +138,18 @@ metamodels from the 3D process-based model <a href='https://maespa.github.io/'>M
 the development of the coffee buds and fruits to better represent fruit carbon demand distribution along the year.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>DynACof</span>(<span class='kw'>Period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>WriteIt</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>, <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>output_f</span> <span class='kw'>=</span> <span class='st'>".RData"</span>, <span class='kw'>Inpath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Outpath</span> <span class='kw'>=</span> <span class='no'>Inpath</span>,
-  <span class='kw'>Simulation_Name</span> <span class='kw'>=</span> <span class='st'>"DynACof"</span>, <span class='kw'>FileName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Site</span> <span class='kw'>=</span> <span class='st'>"1-Site.R"</span>, <span class='kw'>Meteo</span>
-  <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Soil</span> <span class='kw'>=</span> <span class='st'>"3-Soil.R"</span>, <span class='kw'>Coffee</span> <span class='kw'>=</span> <span class='st'>"4-Coffee.R"</span>, <span class='kw'>Tree</span> <span class='kw'>=</span> <span class='kw'>NULL</span>))</pre>
+    <pre class="usage"><span class='fu'>DynACof</span>(
+  <span class='kw'>Period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>WriteIt</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>output_f</span> <span class='kw'>=</span> <span class='st'>".RData"</span>,
+  <span class='kw'>Inpath</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>Outpath</span> <span class='kw'>=</span> <span class='no'>Inpath</span>,
+  <span class='kw'>Simulation_Name</span> <span class='kw'>=</span> <span class='st'>"DynACof"</span>,
+  <span class='kw'>FileName</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Site</span> <span class='kw'>=</span> <span class='st'>"1-Site.R"</span>, <span class='kw'>Meteo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>Soil</span> <span class='kw'>=</span> <span class='st'>"3-Soil.R"</span>, <span class='kw'>Coffee</span> <span class='kw'>=</span>
+    <span class='st'>"4-Coffee.R"</span>, <span class='kw'>Tree</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -196,7 +204,7 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 
     <p>Return invisibly a list containing three objects (Parameters, Meteo and Sim):</p><ul>
 <li><p>Sim: A data.frame of the simulation outputs at daily time-step:</p><table class='table'>
-<tr><td><strong>Type</strong></td><td><strong>Var</strong></td><td><strong>unit</strong></td><td><strong>Definition</strong></td></tr>
+<tr><td><em>Type</em></td><td><em>Var</em></td><td><em>unit</em></td><td><em>Definition</em></td></tr>
 <tr><td>General</td><td>Cycle</td><td>-</td><td>Plantation cycle ID</td></tr>
 <tr><td></td><td>Plot_Age</td><td>year</td><td>Plantation age (starting at 1)</td></tr>
 <tr><td></td><td>Plot_Age_num</td><td>year (numeric)</td><td>Numeric age of plantation</td></tr>
@@ -306,26 +314,27 @@ write the output list in several <code>.csv</code> and <code>.txt</code> files. 
 </table>
 </li>
 <li><p>Meteo: A data.frame of the input meteorology, potentially coming from the output of <code><a href='Meteorology.html'>Meteorology()</a></code>:</p><table class='table'>
-<tr><td><strong>Var</strong></td><td><strong>unit</strong></td><td><strong>Definition</strong></td><td><strong>If missing</strong></td></tr>
-<tr><td>Date</td><td>POSIXct date</td><td>Date in POSIXct format</td><td>Computed from start date parameter, or set a dummy date if missing</td></tr>
+<tr><td><em>Var</em></td><td><em>unit</em></td><td><em>Definition</em></td><td><em>If missing</em></td></tr>
+<tr><td>Date</td><td>POSIXct</td><td>Date in POSIXct format</td><td>Computed from start date parameter, or set a dummy date if missing</td></tr>
 <tr><td>year</td><td>year</td><td>Year of the simulation</td><td>Computed from Date</td></tr>
 <tr><td>DOY</td><td>day</td><td>day of the year</td><td>Computed from Date</td></tr>
 <tr><td>Rain</td><td>mm</td><td>Rainfall</td><td>Assume no rain</td></tr>
-<tr><td>Tair</td><td>deg C</td><td>Air temperature (above canopy)</td><td>Computed from Tmax and Tmin</td></tr>
-<tr><td>Tmax</td><td>deg C</td><td>Maximum air temperature during the day</td><td>Required (error)</td></tr>
-<tr><td>Tmin</td><td>deg C</td><td>Minimum air temperature during the day</td><td>Required (error)</td></tr>
+<tr><td>Tair</td><td>Celsius</td><td>Air temperature (above canopy)</td><td>Computed from Tmax and Tmin</td></tr>
+<tr><td>Tmax</td><td>Celsius</td><td>Maximum air temperature during the day</td><td>Required (error)</td></tr>
+<tr><td>Tmin</td><td>Celsius</td><td>Minimum air temperature during the day</td><td>Required (error)</td></tr>
 <tr><td>RH</td><td>%</td><td>Relative humidity</td><td>Not used, but prefered over VPD for Rn computation</td></tr>
 <tr><td>RAD</td><td>MJ m-2 d-1</td><td>Incident shortwave radiation</td><td>Computed from PAR</td></tr>
-<tr><td>Pressure</td><td>hPa</td><td>Atmospheric pressure</td><td>Try to compute from VPD, Tair and Elevation, or Tair and Elevation.</td></tr>
-<tr><td>WindSpeed</td><td>m s-1</td><td>Wind speed</td><td>Try to set it to constant: <code>Parameters$WindSpeed</code></td></tr>
-<tr><td>CO2</td><td>ppm</td><td>Atmospheric CO2 concentration</td><td>Try to set it to constant: <code>Parameters$CO2</code></td></tr>
-<tr><td>DegreeDays</td><td>deg C</td><td>Growing degree days</td><td>Computed using <code><a href='GDD.html'>GDD()</a></code></td></tr>
+<tr><td>Pressure</td><td>hPa</td><td>Atmospheric pressure</td><td>Computed from VPD, Tair and Elevation, or alternatively from Tair and Elevation.</td></tr>
+<tr><td>WindSpeed</td><td>m s-1</td><td>Wind speed</td><td>Taken as constant: <code>Parameters$WindSpeed</code></td></tr>
+<tr><td>CO2</td><td>ppm</td><td>Atmospheric CO2 concentration</td><td>Taken as constant: <code>Parameters$CO2</code></td></tr>
+<tr><td>DegreeDays</td><td>Celsius</td><td>Growing degree days</td><td>Computed using <code><a href='GDD.html'>GDD()</a></code></td></tr>
 <tr><td>PAR</td><td>MJ m-2 d-1</td><td>Incident photosynthetically active radiation</td><td>Computed from RAD</td></tr>
-<tr><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td><td>Computed using <code><a href='Diffuse_d.html'>Diffuse_d()</a></code> using Spitters formula</td></tr>
+<tr><td>FDiff</td><td>Fraction</td><td>Diffuse light fraction</td><td>Computed using <code><a href='Diffuse_d.html'>Diffuse_d()</a></code> using Spitters et al. (1986) formula</td></tr>
 <tr><td>VPD</td><td>hPa</td><td>Vapor pressure deficit</td><td>Computed from RH</td></tr>
-<tr><td>Rn (!=Rn_tot)</td><td>MJ m-2 d-1</td><td>Net radiation (will soon be depreciated)</td><td>Computed using <code><a href='Rad_net.html'>Rad_net()</a></code> with RH, or VPD</td></tr>
+<tr><td>Rn</td><td>MJ m-2 d-1</td><td>Net radiation (will be depreciated)</td><td>Computed using <code><a href='Rad_net.html'>Rad_net()</a></code> with RH, or VPD</td></tr>
 <tr><td>DaysWithoutRain</td><td>day</td><td>Number of consecutive days with no rainfall</td><td>Computed from Rain</td></tr>
 <tr><td>Air_Density</td><td>kg m-3</td><td>Air density of moist air (\(\rho\)) above canopy</td><td>Computed using <code><a href='https://rdrr.io/pkg/bigleaf/man/air.density.html'>bigleaf::air.density()</a></code></td></tr>
+<tr><td>ZEN</td><td>radian</td><td>Solar zenithal angle at noon</td><td>Computed from Date, Latitude, Longitude and Timezone</td></tr>
 </table>
 </li>
 <li><p>Parameters: A list of the input parameters (see <code><a href='site.html'>site()</a></code>)</p></li>
@@ -387,7 +396,7 @@ For example the default meteorology file (<code><a href='Aquiares.html'>Aquiares
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

@@ -4,9 +4,19 @@
 \alias{G_interlay}
 \title{Canopy layer to canopy layer aerodynamic conductance}
 \usage{
-G_interlay(Wind, ZHT, Z_top, Z0 = Z_top * 0.1, ZPD = Z_top * 0.75,
-  alpha = 1.5, ZW = ZPD + alpha * (Z_top - ZPD), LAI_top, LAI_bot,
-  extwind = 0, vonkarman = Constants()$vonkarman)
+G_interlay(
+  Wind,
+  ZHT,
+  Z_top,
+  Z0 = Z_top * 0.1,
+  ZPD = Z_top * 0.75,
+  alpha = 1.5,
+  ZW = ZPD + alpha * (Z_top - ZPD),
+  LAI_top,
+  LAI_bot,
+  extwind = 0,
+  vonkarman = Constants()$vonkarman
+)
 }
 \arguments{
 \item{Wind}{Average daily wind speed above canopy (m s-1)}
