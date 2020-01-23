@@ -186,7 +186,7 @@ Init_Sim= function(S){
 
   S$Sim$LAI[1]= S$Sim$CM_Leaf[1]  *  S$Parameters$SLA  /  1000.0  /  S$Parameters$CC_Leaf
   S$Sim$LAIplot[1]= S$Sim$LAI_Tree[1] + S$Sim$LAI[1]
-  S$Sim$Height_Canopy= S$Parameters$Height_Coffee
+  S$Sim$Height_Canopy= rep_len(S$Parameters$Height_Coffee,length(S$Sim$Cycle))
 }
 
 #' @rdname Init_Sim

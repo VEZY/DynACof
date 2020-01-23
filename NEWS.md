@@ -26,7 +26,7 @@
   * Fix error in dynacof_i  
   * Fix issues in the soil module  
   * Fix transpiration metamodel bug  
-  * Fix the computation of the overriped fruits (could potentially count the same overriped fruits)  
+  * Fix the computation of the overriped fruits (could potentially count the same overriped fruits) 
   * Fix issue in soil RootWaterExtract_*  
   * Fix issue with LeafWaterPotential (was computed before T_Coffee)  
 
