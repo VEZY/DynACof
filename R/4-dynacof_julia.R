@@ -49,6 +49,8 @@ dynacof.jl_setup= function (..., dev_path= NULL){
   }else{
     JuliaCall::julia_install_package_if_needed("DynACof")
     JuliaCall::julia_install_package_if_needed("NamedTupleTools")
+    JuliaCall::julia_command("using Pkg")
+    JuliaCall::julia_command("Pkg.update()")
     # JuliaCall::julia_command('Pkg.add(PackageSpec(url="https://github.com/VEZY/DynACof.jl"))')
     JuliaCall::julia_library("DynACof")
   }
