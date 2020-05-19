@@ -400,9 +400,9 @@ dynacof_i= function(i,S,verbose= TRUE){
 
   for (j in i){
     if(verbose){setTxtProgressBar(pb, j)}
-    energy_water_models(Z,i) # the soil is in here also
+    energy_water_models(Z,j) # the soil is in here also
     # Shade Tree computation if any
-    if(S$Sim$Stocking_Tree[i] > 0.0){
+    if(S$Sim$Stocking_Tree[j] > 0.0){
       tree_model(Z,j)
     }
     # LE_Tree (sum of transpiration + leaf evap)
