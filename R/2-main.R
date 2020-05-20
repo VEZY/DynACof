@@ -462,7 +462,7 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
 
     CycleList=
       lapply(1:NCycles, function(x){
-        mainfun(cy = x, Direction = Direction[i,],Meteo,Parameters)
+        mainfun(cy = x, Direction = Direction[i,],Meteo[i,],Parameters)
       })
 
     message(paste("\n", crayon::green$bold$underline("Simulation initialization completed"),"\n"))
