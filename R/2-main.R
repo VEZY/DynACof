@@ -408,8 +408,8 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 #'
 #' # To run DynACof for several days, use a range for i:
 #' S= dynacof_i(102:nrow(S$Meteo),S)
-#' # NB: S$Meteo is the maximum length we can simulate. To increase a simulation, initialize it
-#' # with a wider range for the "Period" argument.
+#' # NB: nrow(S$Meteo) is the maximum length we can simulate. To increase a simulation,
+#' # initialize it with a wider range for the "Period" argument.
 #'
 #'}
 dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
@@ -486,7 +486,7 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
 
     #Day number and Years After Plantation
     ndaysYear= sapply(X= unique(S$Meteo$year[1:max(i)]), FUN= function(x){
-      length(Meteo$year[1:max(i)][S$Meteo$year[1:max(i)]==x])})
+      length(S$Meteo$year[1:max(i)][S$Meteo$year[1:max(i)]==x])})
 
     Direction= data.frame(
       Cycle= rep.int(rep(1:NCycles, each= S$Parameters$AgeCoffeeMax)[1:length(unique(S$Meteo$year[1:max(i)]))],
@@ -524,7 +524,7 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
     Zsim_df[1:nrow(S$Sim),]= S$Sim
 
     Z$Sim= as.list(Zsim_df)
-    Z$Met_c= as.list(S$Meteo)
+    Z$Met_c= as.list(S$Meteo[1:max(i),])
 
     # Main Loop -----------------------------------------------------------------------------------
 
