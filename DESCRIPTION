@@ -1,7 +1,7 @@
 Package: DynACof
 Type: Package
 Title: A Process-based Model to Study Growth, Yield and Ecosystem Services of Coffee Agroforestry Systems
-Version: 1.3.0
+Version: 1.4.0
 Date: 2020-02-01
 Authors@R: c(person("Remi", "Vezy",, "vezy.remi@gmail.com", c("aut", "cre", "cph"),comment = c(ORCID = "0000-0002-0808-1461")),
     person("Olivier", "Roupsard",, "olivier.roupsard@cirad.fr", c("aut", "cph")),
