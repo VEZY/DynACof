@@ -148,11 +148,14 @@ Init_Sim= function(S){
     S$Sim$LE_tot=
     S$Sim$Diff_T=
     S$Sim$Tleaf_Coffee=
+    S$Sim$TSoil=
     S$Sim$WindSpeed_Coffee=
     S$Sim$TairCanopy=
     S$Sim$APAR_Dif=
     S$Sim$APAR=
     S$Sim$PAR_Soil=
+    S$Sim$PAR_Trans_Tree=
+    S$Sim$PAR_Trans=
     S$Sim$SoilWaterPot=
     S$Sim$PSIL=
     S$Sim$AEu=
@@ -207,7 +210,7 @@ No_Shade.init= function(S){
     S$Sim$LE_Tree=
     S$Sim$Height_Tree=
     rep_len(0,length(S$Sim$Cycle))
-  S$Sim$TairCanopy_Tree= S$Met_c$Tair
+  S$Sim$TairCanopy_Tree= S$Met_c$Tair[1:length(S$Sim$Cycle)]
   S$Sim$Stocking_Tree= rep_len(0.0,length(S$Sim$Cycle))
 }
 
@@ -256,8 +259,6 @@ Tree.init= function(S){
     S$Sim$APAR_Dir_Tree=
     S$Sim$APAR_Tree=
     S$Sim$Transmittance_Tree=
-    S$Sim$PAR_Trans_Tree=
-    S$Sim$PAR_Trans=
     S$Sim$lue_Tree=
     S$Sim$T_Tree=
     S$Sim$H_Tree=

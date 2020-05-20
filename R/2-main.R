@@ -325,13 +325,17 @@ mainfun= function(cy,Direction,Meteo,Parameters){
   Init_Sim(S)
   bud_init_period(S)
 
+  S$Sim$BudInitPeriod= S$Sim$BudInitPeriod[1:length(S$Sim$Cycle)]
+
   S$Sim$ALS=
     suppressMessages(ALS(Elevation= S$Parameters$Elevation, SlopeAzimut= S$Parameters$SlopeAzimut,
                          Slope= S$Parameters$Slope, RowDistance= S$Parameters$RowDistance,
                          Shade= S$Parameters$Shade, CanopyHeight.Coffee= S$Parameters$Height_Coffee,
                          Fertilization= S$Parameters$Fertilization, ShadeType= S$Parameters$ShadeType,
                          CoffeePruning= S$Parameters$CoffeePruning,
-                         df_rain= data.frame(year=S$Met_c$year,DOY=S$Met_c$DOY,Rain=S$Met_c$Rain)))
+                         df_rain= data.frame(year=S$Met_c$year[1:length(S$Sim$Cycle)],
+                                             DOY=S$Met_c$DOY[1:length(S$Sim$Cycle)],
+                                             Rain=S$Met_c$Rain[1:length(S$Sim$Cycle)])))
 
   # Main Loop -----------------------------------------------------------------------------------
 
@@ -355,62 +359,190 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 
 #' Step-by-step DynACof
 #'
-#' @description Using DynACof one iteration after another. Allows to run a DynACof simulation with starting
-#' at age > 0 with initializations.
+#' @description Using DynACof one iteration after another. Allows to run a DynACof simulation step by step to
+#' e.g. modify a variable simulated by DynACof using another model for model coupling
 #'
 #' @param i Either an integer, or a range giving the day of simulation needed. Match the row index, so `i=1` make
-#' a simulation for the first row of Sim and Met.
+#' a simulation for the first row of Sim and Met (i.e. the first day).
 #' @param S The simulation list (see [DynACof()]).
 #' @param verbose Boolean. Prints progress bar if `TRUE` (default).
+#' @param Period (Initalization) The maximum period that will be simulated (given at initialization)
+#' @param Inpath (Initalization) Path to the input parameter list folder, Default: `NULL` (take package values)
+#' @param FileName (Initalization) A list of input file names :
+#' \describe{
+#'   \item{Site}{Site parameters file name, see details. Default: `'1-Site.R'`}
+#'   \item{Meteo}{Meteo parameters file name, see details. Default: `'2-Meteorology.txt'`}
+#'   \item{Soil}{Soil parameters file name, see details. Default: `'3-Soil.R'`}
+#'   \item{Coffee}{Coffee parameters file name, see details. Default: `'4-Coffee.R'`}
+#'   \item{Tree}{Shade tree parameters file name, see details. Default: `NULL`}
+#' }
+#' Default input files are provided with the package as an example parameterization.
 #'
-#' @return The modified simulation list `S`
+#' @return Either an initialized simulation list (if S is null) or rhe modified simulation list `S`
 #' @export
 #'
 #' @examples
 #'\dontrun{
-#' # Making a regular simulation using example data:
-#' S= DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
+#' # First, initialize a simulation:
+#' S= dynacof_i(1:100,Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 #'
-#' # Value of the maintenance respiration for coffee on day i=100:
-#' i= 100
-#' S$Sim$Rm[i]
+#' # Then, compute the simulation for the next day:
+#' S= dynacof_i(101,S)
 #'
-#' # Changing the value of Tair in the meteorology for day 100:
-#' S$Meteo$Tair[i]= S$Meteo$Tair[i]+10.0
+#' # We can modifiy the value of some variables before computing the next day and compare with
+#' # unmodified value:
 #'
-#' S= dynacof_i(i,S)
+#' # Make a copy of the simulation list:
+#' S2= S
 #'
-#' # New value of the maintenance respiration for coffee:
-#' S$Sim$Rm[i]
+#' # Changing the value of Tair in the meteorology for day 102 for S2:
+#' S2$Meteo$Tair[102]= S2$Meteo$Tair[102]+10.0
 #'
-#' # To re-run DynACof for several days, use a range for i:
-#' S= dynacof_i(i:(i+10),S)
+#' # Make a computation for each:
+#' S= dynacof_i(102,S)
+#' S2= dynacof_i(102,S2)
+#'
+#' # Compare the values of e.g. the maitenance respiration:
+#' S$Sim$Rm[102]
+#' S2$Sim$Rm[102]
+#'
+#' # To run DynACof for several days, use a range for i:
+#' S= dynacof_i(102:nrow(S$Meteo),S)
+#' # NB: S$Meteo is the maximum length we can simulate. To increase a simulation, initialize it
+#' # with a wider range for the "Period" argument.
 #'
 #'}
-dynacof_i= function(i,S,verbose= TRUE){
+dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
+                    FileName= list(Site="1-Site.R",Meteo=NULL,Soil="3-Soil.R",
+                                   Coffee="4-Coffee.R",Tree=NULL)){
 
-  Z= SimulationClass$new()
-  Z$Parameters= S$Parameters
-  Z$Sim= as.list(S$Sim)
-  Z$Met_c= as.list(S$Meteo)
+  if(is.null(S)){
+    # S is not provided, initializing a simulation
+    message(paste("\n", crayon::green$bold$underline("Starting simulation initialization"),"\n"))
 
-  # Main Loop -----------------------------------------------------------------------------------
+    Parameters= Import_Parameters(path = Inpath, Names= FileName[-grep("Meteo",names(FileName))])
 
-  if(verbose){pb= txtProgressBar(max= max(i), style=3)}
+    test_parameters(Parameters, isTree= !is.null(FileName$Tree))
 
-  for (j in i){
-    if(verbose){setTxtProgressBar(pb, j)}
-    energy_water_models(Z,j) # the soil is in here also
-    # Shade Tree computation if any
-    if(S$Sim$Stocking_Tree[j] > 0.0){
-      tree_model(Z,j)
+    # Importing the meteo -----------------------------------------------------
+    meteo_path=
+      if(!is.null(FileName$Meteo)){
+        file.path(Inpath,FileName$Meteo)
+      }else{
+        NULL
+      }
+
+    Meteo= Meteorology(file= meteo_path, Period= Period,Parameters= Parameters)
+    Parameters$files$Meteorology= file.path(Inpath,FileName$Meteo) # save the meteo file path
+
+
+    # Setting the simulation --------------------------------------------------
+
+    # Number of cycles (rotations) to do over the period (given by the Meteo file):
+    NCycles= ceiling((max(Meteo$year)-min(Meteo$year))/Parameters$AgeCoffeeMax)
+
+    #Day number and Years After Plantation
+    ndaysYear= sapply(X= unique(Meteo$year), FUN= function(x){
+      length(Meteo$year[Meteo$year==x])})
+
+    Direction= data.frame(
+      Cycle= rep.int(rep(1:NCycles, each= Parameters$AgeCoffeeMax)[1:length(unique(Meteo$year))],
+                     times= ndaysYear),
+      Plot_Age= rep.int(rep_len(seq(Parameters$AgeCoffeeMin,Parameters$AgeCoffeeMax),
+                                length.out= length(unique(Meteo$year))),times= ndaysYear))
+    Direction%<>%
+      group_by(Cycle,Plot_Age)%>%
+      mutate(Plot_Age_num= seq(min(Plot_Age),min(Plot_Age)+1, length.out= n()))%>%ungroup()
+    # Variables are reinitialized so each cycle is independant from the others -> mandatory for
+    # parallel processing
+
+    message(paste("Starting a simulation from",crayon::red(min(Meteo$Date)),"to",
+                  crayon::red(max(Meteo$Date)),"over",crayon::red(NCycles),
+                  "plantation cycle(s)"))
+
+    CycleList=
+      lapply(1:NCycles, function(x){
+        mainfun(cy = x, Direction = Direction[i,],Meteo,Parameters)
+      })
+
+    message(paste("\n", crayon::green$bold$underline("Simulation initialization completed"),"\n"))
+
+    return(list(Sim= dplyr::bind_rows(CycleList),Meteo= Meteo, Parameters= Parameters))
+  }else{
+    # S is provided, the user wants to simulate by steps starting from there.
+
+    # Checking that S was not already simulated for the "i" requested because it is not allowed due
+    # to some variables that are cumulatively computed.
+
+    if(min(i)<nrow(S$Sim)){
+      stop(paste(crayon::red$bold$underline("Index or range requested ('i') was already simulated."),
+                 "Please provide an index/range starting from",nrow(S$Sim)+1))
     }
-    # LE_Tree (sum of transpiration + leaf evap)
-    coffee_model(Z,j)
-  }
 
-  S$Sim= as.data.frame(Z$Sim)
-  S$Meteo= as.data.frame(Z$Met_c)
+    # Computing the directions:
+    # Number of cycles (rotations) to do over the period (given by the Meteo file):
+    NCycles= ceiling((max(S$Meteo$year[1:max(i)])-min(S$Meteo$year[1:max(i)]))/
+                       S$Parameters$AgeCoffeeMax)
+
+    #Day number and Years After Plantation
+    ndaysYear= sapply(X= unique(S$Meteo$year[1:max(i)]), FUN= function(x){
+      length(Meteo$year[1:max(i)][S$Meteo$year[1:max(i)]==x])})
+
+    Direction= data.frame(
+      Cycle= rep.int(rep(1:NCycles, each= S$Parameters$AgeCoffeeMax)[1:length(unique(S$Meteo$year[1:max(i)]))],
+                     times= ndaysYear),
+      Plot_Age= rep.int(rep_len(seq(S$Parameters$AgeCoffeeMin,S$Parameters$AgeCoffeeMax),
+                                length.out= length(unique(S$Meteo$year[1:max(i)]))),times= ndaysYear))
+    Direction%<>%
+      group_by(Cycle,Plot_Age)%>%
+      mutate(Plot_Age_num= seq(min(Plot_Age),min(Plot_Age)+1, length.out= n()))%>%ungroup()
+
+    # Initializing the table:
+
+    Z= SimulationClass$new()
+    Z$Parameters= S$Parameters
+    Z$Met_c= as.list(S$Meteo)
+
+    Z$Sim= as.list(Direction)
+
+    Init_Sim(Z)
+    bud_init_period(Z)
+    Z$Sim$BudInitPeriod= Z$Sim$BudInitPeriod[1:length(Z$Sim$Cycle)]
+
+    Z$Sim$ALS=
+      suppressMessages(ALS(Elevation= Z$Parameters$Elevation, SlopeAzimut= Z$Parameters$SlopeAzimut,
+                           Slope= Z$Parameters$Slope, RowDistance= Z$Parameters$RowDistance,
+                           Shade= Z$Parameters$Shade, CanopyHeight.Coffee= Z$Parameters$Height_Coffee,
+                           Fertilization= Z$Parameters$Fertilization, ShadeType= Z$Parameters$ShadeType,
+                           CoffeePruning= Z$Parameters$CoffeePruning,
+                           df_rain= data.frame(year=Z$Met_c$year[1:length(Z$Sim$Cycle)],
+                                               DOY=Z$Met_c$DOY[1:length(Z$Sim$Cycle)],
+                                               Rain=Z$Met_c$Rain[1:length(Z$Sim$Cycle)])))
+
+
+    Zsim_df= as.data.frame(Z$Sim)
+    Zsim_df[1:nrow(S$Sim),]= S$Sim
+
+    Z$Sim= as.list(Zsim_df)
+    Z$Met_c= as.list(S$Meteo)
+
+    # Main Loop -----------------------------------------------------------------------------------
+
+    if(verbose){pb= txtProgressBar(max= max(i), style=3)}
+
+    for (j in i){
+      if(verbose){setTxtProgressBar(pb, j)}
+      energy_water_models(Z,j) # the soil is in here also
+      # Shade Tree computation if any
+      if(Z$Sim$Stocking_Tree[j] > 0.0){
+        tree_model(Z,j)
+      }
+      # LE_Tree (sum of transpiration + leaf evap)
+      coffee_model(Z,j)
+    }
+
+    S$Sim= as.data.frame(Z$Sim)
+  }
 
   return(S)
 }

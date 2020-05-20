@@ -4,42 +4,74 @@
 \alias{dynacof_i}
 \title{Step-by-step DynACof}
 \usage{
-dynacof_i(i, S, verbose = TRUE)
+dynacof_i(
+  i,
+  S = NULL,
+  verbose = TRUE,
+  Period = NULL,
+  Inpath = NULL,
+  FileName = list(Site = "1-Site.R", Meteo = NULL, Soil = "3-Soil.R", Coffee =
+    "4-Coffee.R", Tree = NULL)
+)
 }
 \arguments{
 \item{i}{Either an integer, or a range giving the day of simulation needed. Match the row index, so \code{i=1} make
-a simulation for the first row of Sim and Met.}
+a simulation for the first row of Sim and Met (i.e. the first day).}
 
 \item{S}{The simulation list (see \code{\link[=DynACof]{DynACof()}}).}
 
 \item{verbose}{Boolean. Prints progress bar if \code{TRUE} (default).}
+
+\item{Period}{(Initalization) The maximum period that will be simulated (given at initialization)}
+
+\item{Inpath}{(Initalization) Path to the input parameter list folder, Default: \code{NULL} (take package values)}
+
+\item{FileName}{(Initalization) A list of input file names :
+\describe{
+\item{Site}{Site parameters file name, see details. Default: \code{'1-Site.R'}}
+\item{Meteo}{Meteo parameters file name, see details. Default: \code{'2-Meteorology.txt'}}
+\item{Soil}{Soil parameters file name, see details. Default: \code{'3-Soil.R'}}
+\item{Coffee}{Coffee parameters file name, see details. Default: \code{'4-Coffee.R'}}
+\item{Tree}{Shade tree parameters file name, see details. Default: \code{NULL}}
+}
+Default input files are provided with the package as an example parameterization.}
 }
 \value{
-The modified simulation list \code{S}
+Either an initialized simulation list (if S is null) or rhe modified simulation list \code{S}
 }
 \description{
-Using DynACof one iteration after another. Allows to run a DynACof simulation with starting
-at age > 0 with initializations.
+Using DynACof one iteration after another. Allows to run a DynACof simulation step by step to
+e.g. modify a variable simulated by DynACof using another model for model coupling
 }
 \examples{
 \dontrun{
-# Making a regular simulation using example data:
-S= DynACof(Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
+# First, initialize a simulation:
+S= dynacof_i(1:100,Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 
-# Value of the maintenance respiration for coffee on day i=100:
-i= 100
-S$Sim$Rm[i]
+# Then, compute the simulation for the next day:
+S= dynacof_i(101,S)
 
-# Changing the value of Tair in the meteorology for day 100:
-S$Meteo$Tair[i]= S$Meteo$Tair[i]+10.0
+# We can modifiy the value of some variables before computing the next day and compare with
+# unmodified value:
 
-S= dynacof_i(i,S)
+# Make a copy of the simulation list:
+S2= S
 
-# New value of the maintenance respiration for coffee:
-S$Sim$Rm[i]
+# Changing the value of Tair in the meteorology for day 102 for S2:
+S2$Meteo$Tair[102]= S2$Meteo$Tair[102]+10.0
 
-# To re-run DynACof for several days, use a range for i:
-S= dynacof_i(i:(i+10),S)
+# Make a computation for each:
+S= dynacof_i(102,S)
+S2= dynacof_i(102,S2)
+
+# Compare the values of e.g. the maitenance respiration:
+S$Sim$Rm[102]
+S2$Sim$Rm[102]
+
+# To run DynACof for several days, use a range for i:
+S= dynacof_i(102:nrow(S$Meteo),S)
+# NB: S$Meteo is the maximum length we can simulate. To increase a simulation, initialize it
+# with a wider range for the "Period" argument.
 
 }
 }
