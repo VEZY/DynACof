@@ -15,10 +15,10 @@ dynacof_i(
 )
 }
 \arguments{
-\item{i}{Either an integer, or a range giving the day of simulation needed. Match the row index, so \code{i=1} make
-a simulation for the first row of Sim and Met (i.e. the first day).}
+\item{i}{Either an integer, or a range giving the day(s) of simulation needed. Match the row index, so \code{i=366} make
+a simulation for the row number 366 of Sim and Met (i.e. the 366th day).}
 
-\item{S}{The simulation list (see \code{\link[=DynACof]{DynACof()}}).}
+\item{S}{The simulation list (see \code{\link[=DynACof]{DynACof()}}). If \code{NULL}, the function initialize one.}
 
 \item{verbose}{Boolean. Prints progress bar if \code{TRUE} (default).}
 
@@ -37,19 +37,24 @@ a simulation for the first row of Sim and Met (i.e. the first day).}
 Default input files are provided with the package as an example parameterization.}
 }
 \value{
-Either an initialized simulation list (if S is null) or rhe modified simulation list \code{S}
+Either an initialized simulation list (if S is null) or the modified simulation list \code{S}
 }
 \description{
 Using DynACof one iteration after another. Allows to run a DynACof simulation step by step to
 e.g. modify a variable simulated by DynACof using another model for model coupling
 }
+\details{
+The simulation needs to be initialized first (for one year minimum), and then the model
+can be called day after day (see examples).
+}
 \examples{
 \dontrun{
+Sys.setenv(TZ="UTC")
 # First, initialize a simulation:
-S= dynacof_i(1:100,Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
+S= dynacof_i(1:365,Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 
 # Then, compute the simulation for the next day:
-S= dynacof_i(101,S)
+S= dynacof_i(366,S)
 
 # We can modifiy the value of some variables before computing the next day and compare with
 # unmodified value:
@@ -57,19 +62,19 @@ S= dynacof_i(101,S)
 # Make a copy of the simulation list:
 S2= S
 
-# Changing the value of Tair in the meteorology for day 102 for S2:
-S2$Meteo$Tair[102]= S2$Meteo$Tair[102]+10.0
+# Changing the value of Tair in the meteorology for day 367 for S2:
+S2$Meteo$Tair[367]= S2$Meteo$Tair[367]+10.0
 
 # Make a computation for each:
-S= dynacof_i(102,S)
-S2= dynacof_i(102,S2)
+S= dynacof_i(367,S)
+S2= dynacof_i(367,S2)
 
 # Compare the values of e.g. the maitenance respiration:
-S$Sim$Rm[102]
-S2$Sim$Rm[102]
+S$Sim$Rm[367]
+S2$Sim$Rm[367]
 
 # To run DynACof for several days, use a range for i:
-S= dynacof_i(102:nrow(S$Meteo),S)
+S= dynacof_i(368:nrow(S$Meteo),S)
 # NB: nrow(S$Meteo) is the maximum length we can simulate. To increase a simulation,
 # initialize it with a wider range for the "Period" argument.
 

@@ -194,7 +194,7 @@
 #' @export
 #' @seealso [Meteorology()] [site()]
 #' @importFrom bigleaf air.density
-#' @importFrom dplyr n
+#' @importFrom dplyr n .data
 #' @importFrom foreach %dopar%
 #' @importFrom methods is new
 #' @importFrom doParallel registerDoParallel
@@ -244,8 +244,10 @@ DynACof= function(Period=NULL, WriteIt= F,...,parallel= TRUE,
     Plot_Age= rep.int(rep_len(seq(Parameters$AgeCoffeeMin,Parameters$AgeCoffeeMax),
                               length.out= length(unique(Meteo$year))),times= ndaysYear))
   Direction%<>%
-    group_by(Cycle,Plot_Age)%>%
-    mutate(Plot_Age_num= seq(min(Plot_Age),min(Plot_Age)+1, length.out= n()))%>%ungroup()
+    dplyr::group_by(.data$Cycle,.data$Plot_Age)%>%
+    dplyr::mutate(Plot_Age_num= seq(min(.data$Plot_Age),min(.data$Plot_Age)+1,
+                             length.out= n()))%>%
+    ungroup()
   # Variables are reinitialized so each cycle is independant from the others -> mandatory for
   # parallel processing
 
@@ -362,9 +364,9 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 #' @description Using DynACof one iteration after another. Allows to run a DynACof simulation step by step to
 #' e.g. modify a variable simulated by DynACof using another model for model coupling
 #'
-#' @param i Either an integer, or a range giving the day of simulation needed. Match the row index, so `i=1` make
-#' a simulation for the first row of Sim and Met (i.e. the first day).
-#' @param S The simulation list (see [DynACof()]).
+#' @param i Either an integer, or a range giving the day(s) of simulation needed. Match the row index, so `i=366` make
+#' a simulation for the row number 366 of Sim and Met (i.e. the 366th day).
+#' @param S The simulation list (see [DynACof()]). If `NULL`, the function initialize one.
 #' @param verbose Boolean. Prints progress bar if `TRUE` (default).
 #' @param Period (Initalization) The maximum period that will be simulated (given at initialization)
 #' @param Inpath (Initalization) Path to the input parameter list folder, Default: `NULL` (take package values)
@@ -378,16 +380,20 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 #' }
 #' Default input files are provided with the package as an example parameterization.
 #'
-#' @return Either an initialized simulation list (if S is null) or rhe modified simulation list `S`
+#' @details The simulation needs to be initialized first (for one year minimum), and then the model
+#' can be called day after day (see examples).
+#'
+#' @return Either an initialized simulation list (if S is null) or the modified simulation list `S`
 #' @export
 #'
 #' @examples
 #'\dontrun{
+#' Sys.setenv(TZ="UTC")
 #' # First, initialize a simulation:
-#' S= dynacof_i(1:100,Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
+#' S= dynacof_i(1:365,Period= as.POSIXct(c("1979-01-01", "1980-12-31")))
 #'
 #' # Then, compute the simulation for the next day:
-#' S= dynacof_i(101,S)
+#' S= dynacof_i(366,S)
 #'
 #' # We can modifiy the value of some variables before computing the next day and compare with
 #' # unmodified value:
@@ -395,19 +401,19 @@ mainfun= function(cy,Direction,Meteo,Parameters){
 #' # Make a copy of the simulation list:
 #' S2= S
 #'
-#' # Changing the value of Tair in the meteorology for day 102 for S2:
-#' S2$Meteo$Tair[102]= S2$Meteo$Tair[102]+10.0
+#' # Changing the value of Tair in the meteorology for day 367 for S2:
+#' S2$Meteo$Tair[367]= S2$Meteo$Tair[367]+10.0
 #'
 #' # Make a computation for each:
-#' S= dynacof_i(102,S)
-#' S2= dynacof_i(102,S2)
+#' S= dynacof_i(367,S)
+#' S2= dynacof_i(367,S2)
 #'
 #' # Compare the values of e.g. the maitenance respiration:
-#' S$Sim$Rm[102]
-#' S2$Sim$Rm[102]
+#' S$Sim$Rm[367]
+#' S2$Sim$Rm[367]
 #'
 #' # To run DynACof for several days, use a range for i:
-#' S= dynacof_i(102:nrow(S$Meteo),S)
+#' S= dynacof_i(368:nrow(S$Meteo),S)
 #' # NB: nrow(S$Meteo) is the maximum length we can simulate. To increase a simulation,
 #' # initialize it with a wider range for the "Period" argument.
 #'
@@ -423,6 +429,10 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
 
     if(!all(seq_along(i)==i)){
       stop(crayon::red$bold$underline("i must be a continuous range for initialization"))
+    }
+
+    if(max(i)<365){
+      stop(crayon::red$bold$underline("i must be a range of one year minimum (1:365) for initialization"))
     }
 
     # S is not provided, initializing a simulation
@@ -459,8 +469,10 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
       Plot_Age= rep.int(rep_len(seq(Parameters$AgeCoffeeMin,Parameters$AgeCoffeeMax),
                                 length.out= length(unique(Meteo$year))),times= ndaysYear))
     Direction%<>%
-      group_by(Cycle,Plot_Age)%>%
-      mutate(Plot_Age_num= seq(min(Plot_Age),min(Plot_Age)+1, length.out= n()))%>%ungroup()
+      dplyr::group_by(.data$Cycle,.data$Plot_Age)%>%
+      dplyr::mutate(Plot_Age_num= seq(min(.data$Plot_Age),min(.data$Plot_Age)+1,
+                                      length.out= n()))%>%
+      ungroup()
     # Variables are reinitialized so each cycle is independant from the others -> mandatory for
     # parallel processing
 

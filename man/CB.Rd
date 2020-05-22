@@ -25,7 +25,8 @@ number of buds that break dormancy (less buds break dormancy with increasing T).
 # The function returns the temperature correction function itself.
 # It is called inside DynACof using the leaf temperature:
 Tleaf= 10:30
-plot(Tleaf,CB()(Tleaf), pch= 19, ylab="Buds correction factor (CB)", xlab= "Leaf temperature (Â°C)")
+plot(Tleaf,CB()(Tleaf), pch= 19, ylab="Buds correction factor (CB)",
+ xlab= "Leaf temperature (Â°C)")
 
 }
 \references{

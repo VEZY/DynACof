@@ -3,7 +3,7 @@ pkgdown: 1.5.0
 pkgdown_sha: ~
 articles:
   julia-version: julia-version.html
-last_built: 2020-05-22T09:46Z
+last_built: 2020-05-22T10:15Z
 urls:
   reference: https://vezy.github.io/DynACof//reference
   article: https://vezy.github.io/DynACof//articles

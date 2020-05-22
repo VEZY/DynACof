@@ -1121,7 +1121,8 @@ CN= function(x){
 #' # The function returns the temperature correction function itself.
 #' # It is called inside DynACof using the leaf temperature:
 #' Tleaf= 10:30
-#' plot(Tleaf,CB()(Tleaf), pch= 19, ylab="Buds correction factor (CB)", xlab= "Leaf temperature (°C)")
+#' plot(Tleaf,CB()(Tleaf), pch= 19, ylab="Buds correction factor (CB)",
+#'  xlab= "Leaf temperature (°C)")
 #'
 CB= function(){
   Data_Buds_day= data.frame(Air_T=c(10,15.5,20.5,25.5,30.5),

@@ -157,12 +157,12 @@ e.g. modify a variable simulated by DynACof using another model for model coupli
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>i</th>
-      <td><p>Either an integer, or a range giving the day of simulation needed. Match the row index, so <code>i=1</code> make
-a simulation for the first row of Sim and Met (i.e. the first day).</p></td>
+      <td><p>Either an integer, or a range giving the day(s) of simulation needed. Match the row index, so <code>i=366</code> make
+a simulation for the row number 366 of Sim and Met (i.e. the 366th day).</p></td>
     </tr>
     <tr>
       <th>S</th>
-      <td><p>The simulation list (see <code><a href='DynACof.html'>DynACof()</a></code>).</p></td>
+      <td><p>The simulation list (see <code><a href='DynACof.html'>DynACof()</a></code>). If <code>NULL</code>, the function initialize one.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -191,15 +191,20 @@ a simulation for the first row of Sim and Met (i.e. the first day).</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Either an initialized simulation list (if S is null) or rhe modified simulation list <code>S</code></p>
+    <p>Either an initialized simulation list (if S is null) or the modified simulation list <code>S</code></p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The simulation needs to be initialized first (for one year minimum), and then the model
+can be called day after day (see examples).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/Sys.setenv.html'>Sys.setenv</a></span>(<span class='kw'>TZ</span><span class='kw'>=</span><span class='st'>"UTC"</span>)
 <span class='co'># First, initialize a simulation:</span>
-<span class='no'>S</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>1</span>:<span class='fl'>100</span>,<span class='kw'>Period</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1979-01-01"</span>, <span class='st'>"1980-12-31"</span>)))
+<span class='no'>S</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>1</span>:<span class='fl'>365</span>,<span class='kw'>Period</span><span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1979-01-01"</span>, <span class='st'>"1980-12-31"</span>)))
 
 <span class='co'># Then, compute the simulation for the next day:</span>
-<span class='no'>S</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>101</span>,<span class='no'>S</span>)
+<span class='no'>S</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>366</span>,<span class='no'>S</span>)
 
 <span class='co'># We can modifiy the value of some variables before computing the next day and compare with</span>
 <span class='co'># unmodified value:</span>
@@ -207,19 +212,19 @@ a simulation for the first row of Sim and Met (i.e. the first day).</p></td>
 <span class='co'># Make a copy of the simulation list:</span>
 <span class='no'>S2</span><span class='kw'>=</span> <span class='no'>S</span>
 
-<span class='co'># Changing the value of Tair in the meteorology for day 102 for S2:</span>
-<span class='no'>S2</span>$<span class='no'>Meteo</span>$<span class='no'>Tair</span>[<span class='fl'>102</span>]<span class='kw'>=</span> <span class='no'>S2</span>$<span class='no'>Meteo</span>$<span class='no'>Tair</span>[<span class='fl'>102</span>]+<span class='fl'>10.0</span>
+<span class='co'># Changing the value of Tair in the meteorology for day 367 for S2:</span>
+<span class='no'>S2</span>$<span class='no'>Meteo</span>$<span class='no'>Tair</span>[<span class='fl'>367</span>]<span class='kw'>=</span> <span class='no'>S2</span>$<span class='no'>Meteo</span>$<span class='no'>Tair</span>[<span class='fl'>367</span>]+<span class='fl'>10.0</span>
 
 <span class='co'># Make a computation for each:</span>
-<span class='no'>S</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>102</span>,<span class='no'>S</span>)
-<span class='no'>S2</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>102</span>,<span class='no'>S2</span>)
+<span class='no'>S</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>367</span>,<span class='no'>S</span>)
+<span class='no'>S2</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>367</span>,<span class='no'>S2</span>)
 
 <span class='co'># Compare the values of e.g. the maitenance respiration:</span>
-<span class='no'>S</span>$<span class='no'>Sim</span>$<span class='no'>Rm</span>[<span class='fl'>102</span>]
-<span class='no'>S2</span>$<span class='no'>Sim</span>$<span class='no'>Rm</span>[<span class='fl'>102</span>]
+<span class='no'>S</span>$<span class='no'>Sim</span>$<span class='no'>Rm</span>[<span class='fl'>367</span>]
+<span class='no'>S2</span>$<span class='no'>Sim</span>$<span class='no'>Rm</span>[<span class='fl'>367</span>]
 
 <span class='co'># To run DynACof for several days, use a range for i:</span>
-<span class='no'>S</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>102</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>S</span>$<span class='no'>Meteo</span>),<span class='no'>S</span>)
+<span class='no'>S</span><span class='kw'>=</span> <span class='fu'>dynacof_i</span>(<span class='fl'>368</span>:<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>S</span>$<span class='no'>Meteo</span>),<span class='no'>S</span>)
 <span class='co'># NB: nrow(S$Meteo) is the maximum length we can simulate. To increase a simulation,</span>
 <span class='co'># initialize it with a wider range for the "Period" argument.</span>
 
