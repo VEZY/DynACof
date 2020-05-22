@@ -70,8 +70,8 @@ S2$Sim$Rm[102]
 
 # To run DynACof for several days, use a range for i:
 S= dynacof_i(102:nrow(S$Meteo),S)
-# NB: S$Meteo is the maximum length we can simulate. To increase a simulation, initialize it
-# with a wider range for the "Period" argument.
+# NB: nrow(S$Meteo) is the maximum length we can simulate. To increase a simulation,
+# initialize it with a wider range for the "Period" argument.
 
 }
 }
