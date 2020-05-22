@@ -35,7 +35,8 @@ Init_Sim= function(S){
     S$Sim$CM_FRoot=
     S$Sim$CM_Shoot=
     rep_len(0,length(S$Sim$Cycle))
-  S$Sim$CM_Leaf= rep_len(1,length(S$Sim$Cycle))
+  S$Sim$CM_Leaf= rep_len(NA_real_,length(S$Sim$Cycle))
+  S$Sim$CM_Leaf[1]= 1
 
   S$Sim$DM_Leaf=
     S$Sim$DM_FRoot=

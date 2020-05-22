@@ -417,6 +417,14 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
                                    Coffee="4-Coffee.R",Tree=NULL)){
 
   if(is.null(S)){
+    if(min(i)!=1){
+      stop(crayon::red$bold$underline("i must start at 1 for initialization"))
+    }
+
+    if(!all(seq_along(i)==i)){
+      stop(crayon::red$bold$underline("i must be a continuous range for initialization"))
+    }
+
     # S is not provided, initializing a simulation
     message(paste("\n", crayon::green$bold$underline("Starting simulation initialization"),"\n"))
 
@@ -464,67 +472,70 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
       lapply(1:NCycles, function(x){
         mainfun(cy = x, Direction = Direction[i,],Meteo[i,],Parameters)
       })
+    Sim= dplyr::bind_rows(CycleList)
+
 
     message(paste("\n", crayon::green$bold$underline("Simulation initialization completed"),"\n"))
 
-    return(list(Sim= dplyr::bind_rows(CycleList),Meteo= Meteo, Parameters= Parameters))
+
+    S= SimulationClass$new()
+    S$Parameters= Parameters
+    S$Met_c= as.list(Meteo)
+    S$Sim= as.list(Direction)
+    Init_Sim(S)
+    bud_init_period(S)
+
+    S$Sim$ALS=
+      suppressMessages(ALS(Elevation= S$Parameters$Elevation, SlopeAzimut= S$Parameters$SlopeAzimut,
+                           Slope= S$Parameters$Slope, RowDistance= S$Parameters$RowDistance,
+                           Shade= S$Parameters$Shade, CanopyHeight.Coffee= S$Parameters$Height_Coffee,
+                           Fertilization= S$Parameters$Fertilization, ShadeType= S$Parameters$ShadeType,
+                           CoffeePruning= S$Parameters$CoffeePruning,
+                           df_rain= data.frame(year=S$Met_c$year[1:length(S$Sim$Cycle)],
+                                               DOY=S$Met_c$DOY[1:length(S$Sim$Cycle)],
+                                               Rain=S$Met_c$Rain[1:length(S$Sim$Cycle)])))
+
+
+    Sim_df= as.data.frame(S$Sim)
+    Sim_df[1:nrow(Sim),]= Sim
+
+    n_i= min(max(i)+1,length(Sim_df$LAI))
+
+    Sim_df$LAI[n_i]= Sim_df$CM_Leaf[max(i)]*Parameters$SLA/1000/Parameters$CC_Leaf
+
+    if(Sim_df$Stocking_Tree[max(i)] > 0.0){
+      Sim_df$LAI_Tree[n_i]= Sim_df$DM_Leaf_Tree[max(i)]*(S$Parameters$SLA_Tree/1000)
+      Sim_df$LAIplot[n_i]= Sim_df$LAIplot[n_i] + Sim_df$LAI_Tree[n_i]
+      Sim_df$Height_Canopy[n_i]= max(Sim_df$Height_Tree[max(i)], Parameters$Height_Coffee)
+    }
+
+    Sim_df$LAIplot[n_i]= Sim_df$LAIplot[n_i]+Sim_df$LAI[n_i]
+
+    return(list(Sim= Sim_df, Meteo= Meteo, Parameters= Parameters))
   }else{
     # S is provided, the user wants to simulate by steps starting from there.
+
+    if(any(i>nrow(S$Sim))){
+      stop(paste(crayon::red$bold$underline("Index or range requested ('i') exceeds the range of the simulation."),
+                 "Please provide a maximum index/range of",nrow(S$Sim),
+                 "-> If you need a wider range, please initialize a longer simulation."))
+    }
 
     # Checking that S was not already simulated for the "i" requested because it is not allowed due
     # to some variables that are cumulatively computed.
 
-    if(min(i)<nrow(S$Sim)){
-      stop(paste(crayon::red$bold$underline("Index or range requested ('i') was already simulated."),
-                 "Please provide an index/range starting from",nrow(S$Sim)+1))
+    # First day to start computing should be:
+    first_not_computed= which(is.na(S$Sim$CM_Leaf))[1]
+
+    if(min(i)!=first_not_computed){
+      stop(paste(crayon::red$bold$underline("Index or range requested ('i') should start from",first_not_computed)))
     }
 
-    # Computing the directions:
-    # Number of cycles (rotations) to do over the period (given by the Meteo file):
-    NCycles= ceiling((max(S$Meteo$year[1:max(i)])-min(S$Meteo$year[1:max(i)]))/
-                       S$Parameters$AgeCoffeeMax)
-
-    #Day number and Years After Plantation
-    ndaysYear= sapply(X= unique(S$Meteo$year[1:max(i)]), FUN= function(x){
-      length(S$Meteo$year[1:max(i)][S$Meteo$year[1:max(i)]==x])})
-
-    Direction= data.frame(
-      Cycle= rep.int(rep(1:NCycles, each= S$Parameters$AgeCoffeeMax)[1:length(unique(S$Meteo$year[1:max(i)]))],
-                     times= ndaysYear),
-      Plot_Age= rep.int(rep_len(seq(S$Parameters$AgeCoffeeMin,S$Parameters$AgeCoffeeMax),
-                                length.out= length(unique(S$Meteo$year[1:max(i)]))),times= ndaysYear))
-    Direction%<>%
-      group_by(Cycle,Plot_Age)%>%
-      mutate(Plot_Age_num= seq(min(Plot_Age),min(Plot_Age)+1, length.out= n()))%>%ungroup()
-
-    # Initializing the table:
-
+    # Re-formatting into a list:
     Z= SimulationClass$new()
     Z$Parameters= S$Parameters
     Z$Met_c= as.list(S$Meteo)
-
-    Z$Sim= as.list(Direction)
-
-    Init_Sim(Z)
-    bud_init_period(Z)
-    Z$Sim$BudInitPeriod= Z$Sim$BudInitPeriod[1:length(Z$Sim$Cycle)]
-
-    Z$Sim$ALS=
-      suppressMessages(ALS(Elevation= Z$Parameters$Elevation, SlopeAzimut= Z$Parameters$SlopeAzimut,
-                           Slope= Z$Parameters$Slope, RowDistance= Z$Parameters$RowDistance,
-                           Shade= Z$Parameters$Shade, CanopyHeight.Coffee= Z$Parameters$Height_Coffee,
-                           Fertilization= Z$Parameters$Fertilization, ShadeType= Z$Parameters$ShadeType,
-                           CoffeePruning= Z$Parameters$CoffeePruning,
-                           df_rain= data.frame(year=Z$Met_c$year[1:length(Z$Sim$Cycle)],
-                                               DOY=Z$Met_c$DOY[1:length(Z$Sim$Cycle)],
-                                               Rain=Z$Met_c$Rain[1:length(Z$Sim$Cycle)])))
-
-
-    Zsim_df= as.data.frame(Z$Sim)
-    Zsim_df[1:nrow(S$Sim),]= S$Sim
-
-    Z$Sim= as.list(Zsim_df)
-    Z$Met_c= as.list(S$Meteo[1:max(i),])
+    Z$Sim= as.list(S$Sim)
 
     # Main Loop -----------------------------------------------------------------------------------
 
@@ -534,7 +545,7 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
       if(verbose){setTxtProgressBar(pb, j)}
       energy_water_models(Z,j) # the soil is in here also
       # Shade Tree computation if any
-      if(Z$Sim$Stocking_Tree[j] > 0.0){
+      if(S$Sim$Stocking_Tree[j] > 0.0){
         tree_model(Z,j)
       }
       # LE_Tree (sum of transpiration + leaf evap)
@@ -543,6 +554,7 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
 
     S$Sim= as.data.frame(Z$Sim)
   }
+
 
   return(S)
 }
