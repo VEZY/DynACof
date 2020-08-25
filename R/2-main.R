@@ -477,7 +477,7 @@ dynacof_i= function(i,S=NULL,verbose= TRUE,Period=NULL,Inpath=NULL,
     # parallel processing
 
     message(paste("Starting a simulation from",crayon::red(min(Meteo$Date)),"to",
-                  crayon::red(max(Meteo$Date)),"over",crayon::red(NCycles),
+                  crayon::red(Meteo$Date[max(i)]),"over",crayon::red(NCycles),
                   "plantation cycle(s)"))
 
     CycleList=
