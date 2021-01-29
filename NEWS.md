@@ -1,3 +1,9 @@
+# DynACof 1.5.1
+
+* Make the package compatible with newer versions of `data.table`
+* Fix error in starting simulation message
+* Modified `dynacof_i()` implementation
+
 # DynACof 1.3.0
 
 * Tsoil used for Rm roots now  

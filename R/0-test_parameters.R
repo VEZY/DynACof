@@ -16,7 +16,7 @@
 #' # No error:
 #' test_parameters(Parameters= Import_Parameters())
 #'
-#' \donttest{
+#' \dontrun{
 #'  # Removing a mandatory parameter from the soil:
 #'  params= Import_Parameters()
 #'  params$REWc= NULL
