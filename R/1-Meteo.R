@@ -100,7 +100,11 @@ Meteorology= function(file=NULL, Period=NULL,Parameters= Import_Parameters()){
       warn.var(Var= "Date","dummy 2000/01/01",type='warn')
     }
   }else{
-    MetData$Date= lubridate::fast_strptime(MetData$Date, "%Y-%m-%d",lt=F)
+    if(inherits(MetData$Date,"IDate")){
+      MetData$Date = as.POSIXct(MetData$Date)
+    }else if(inherits(MetData$Date, "character")){
+      MetData$Date= lubridate::fast_strptime(MetData$Date, "%Y-%m-%d",lt=F)
+    }
   }
 
   MetData$year= lubridate::year(MetData$Date)
